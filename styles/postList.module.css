@@ -1,0 +1,13 @@
+
+.postList {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+
+.loader {
+    color: white;
+    font-size: 16pt;
+}
