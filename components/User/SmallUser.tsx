@@ -2,13 +2,14 @@ import { Person } from "lemmy-js-client";
 
 
 import styles from "../../styles/User/SmallUser.module.css"
+import { CSSProperties } from "react";
 
-export default function SmallUser({ user, userHover, baseUrl, setUserHover } : { user: Person, baseUrl: string, userHover: boolean, setUserHover: Function }) {
+export default function SmallUser({ user, userHover, baseUrl, setUserHover, style } : { user: Person, baseUrl: string, userHover: boolean, setUserHover: Function, style?: CSSProperties }) {
     if(!user) throw new Error("Passed User to SmallUser is undefined");
 
     return (
         <>
-            <div onMouseOver={() => setUserHover(true)} onMouseLeave={() => setUserHover(false)} className={`${styles.wrapper} ${userHover && styles.active}`}>
+            <div style={style} onMouseOver={() => setUserHover(true)} onMouseLeave={() => setUserHover(false)} className={`${styles.wrapper} ${userHover && styles.active}`}>
                 <div className={`${styles.userImage}`}>
                     {user.avatar && <img src={user.avatar} alt="User Avatar" width={20} height={20} />}
                 </div>
@@ -22,7 +23,7 @@ export default function SmallUser({ user, userHover, baseUrl, setUserHover } : {
                         <span>{baseUrl}</span>
                     </div>
                 </div>
-                <a href={`https://${baseUrl}/u/${user.name}`} target="_blank"><span className="material-icons">link</span></a>
+                <a href={`https://${baseUrl}/u/${user.name}`} target="_blank"><span className="material-icons">open_in_new</span></a>
             </div>
         </>
     )

@@ -29,13 +29,15 @@ export default function Username({ user, baseUrl } : { user: Person, baseUrl: st
                     </div>
                     <span>{user.avatar && <img className={`${styles.userimage}`} src={user.avatar} alt={user.name} width={10} height={10} /> }</span>
                     <span>{user.name}</span>
+                <SmallUser 
+                    user={user} 
+                    userHover={userHover}
+                    setUserHover={setUserHover}
+                    baseUrl={baseUrl}
+                    style={{ position: "absolute", top: "100%", left: "0" }}
+                />
             </div>
-            <SmallUser 
-                user={user} 
-                userHover={userHover}
-                setUserHover={setUserHover}
-                baseUrl={baseUrl}
-            />
+           
         </>
     )
 }
