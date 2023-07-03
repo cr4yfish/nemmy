@@ -14,8 +14,6 @@ export async function GET(req: Request) {
         let community_name = params.get("community_name") || undefined;
         let saved_only = params.get("saved_only") || undefined;
         let auth = params.get("auth") || undefined;
- 
-        console.log("Getting posts with params: ", { type_, limit, page, sort, community_id, community_name, saved_only, auth })
         
         let client: LemmyHttp = new LemmyHttp("https://lemmy.ml");
         let posts = await client.getPosts({ 
@@ -28,8 +26,6 @@ export async function GET(req: Request) {
             saved_only: saved_only as unknown as boolean,
             auth: auth as unknown as string,
         });
-
-        console.log("Returning posts");
 
         return new Response(JSON.stringify(posts), { status: 200, headers: { 'Content-Type': 'application/json' } })
 
