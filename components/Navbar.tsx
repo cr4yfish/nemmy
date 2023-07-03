@@ -5,7 +5,7 @@ import styles from "../styles/Navbar.module.css";
 
 export default function Navbar() {
     const [isSearching, setIsSearching] = useState(false);
-
+    const [filterClicked, setFilterClicked] = useState(false);
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
@@ -16,6 +16,16 @@ export default function Navbar() {
         <>
         <nav className={styles.wrapper}>    
             <div className={styles.logo}>Nemmy</div>
+
+            <div className={`${styles.filter}`}>
+                <button className={`${styles.filterTitle}`} onClick={() => setFilterClicked(!filterClicked)}><span className="material-icons" >filter_list</span><span className={`${styles.filterTitleText}`}>Filter</span> </button> 
+                <div className={`${styles.filterOptions} ${filterClicked && styles.filterActive}`}>
+                    <button ><span className="material-icons">home</span>Home</button>
+                    <button><span className="material-icons">trending_up</span>Trending</button>
+                </div>
+                
+            </div>
+
             <form onSubmit={(e) => handleSubmit(e)} className={`${styles.searchWrapper} ${isSearching && styles.searchWrapperActive}`}>
                 <span className="material-icons">search</span>
                 <input onFocus={(e) => setIsSearching(true)} onBlur={(e) => e.currentTarget.value.length == 0 && setIsSearching(false)} className={`${styles.search}`} type="text" placeholder="Search" />
@@ -26,11 +36,12 @@ export default function Navbar() {
                     </button>
                 </a>
             </form>
+
             <div className={styles.userWrapper}>
-                <div className={styles.userImage}>
-                </div>
-                <span className={`${styles.username}`}>username</span>
+                <div className={styles.userImage}></div>
+                <span className={`material-icons ${styles.username}`}>person</span>
             </div>
+            
         </nav>
         </>
     )

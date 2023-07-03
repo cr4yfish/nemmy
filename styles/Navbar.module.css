@@ -1,38 +1,97 @@
 .wrapper {
-    position: absolute;
+    @apply 
+        dark:bg-neutral-900 rounded-lg gap-10
+
+        max-md:gap-5
+    ;
+    position: relative;
     top: 0; left: 50%;
     transform: translateX(-50%);
-    background-color: black;
-    border: 1px solid grey;
     margin-top: 1rem;
-    border-radius: 25px;
-    padding: 0 2rem;
-    max-width: 1600px;
+    padding: 1rem 2rem;
+    max-width: 1000px;
     height: 5rem;
-
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    gap: 4rem;
 }
 
 .logo {
+    @apply text-fuchsia-300 max-md:hidden;
     text-transform: uppercase;
-    color: #FF2DD1;
     font-weight: 900;
     font-size: 21pt;
 }
 
-.searchWrapper {
+.filter {
+    @apply 
+    dark:text-neutral-400 dark:bg-neutral-800 rounded-lg
+    px-6
+    max-sm:dark:bg-transparent
+    max-sm:p-0
+    ;
+    height: 100%;
+    display: flex;
+    position: relative;
+}
+
+.filterTitle {
     display: flex;
     align-items: center;
-    background-color: black;
-    border: 1px solid grey;
-    border-radius: 25px;
-    padding: 0 1rem;
+    gap: .5rem;
+}
+
+.filterTitleText {
+    @apply max-sm:hidden;
+}
+
+.filterOptions {
+    position: absolute;
+    left: 0;
+    top: 3.5rem;
+    width: 100%;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-10%);
+    transition: all .15s;
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+}
+
+.filterActive {
+    opacity: 1;
+    pointer-events: all;
+    transform: translateY(0%);
+}
+
+.filterOptions button {
+    @apply 
+        dark:bg-neutral-700 p-2 rounded-lg
+    ;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: .5rem;
+    width: 100%;
+    cursor: pointer;
+    user-select: none;
+}
+
+.searchWrapper {
+    @apply dark:bg-neutral-800 rounded-lg
+    px-2
+    ;
+    display: flex;
+    align-items: center;
     gap: .5rem;
     transition: all .15s;
+    height: 100%;
+}
+
+.searchWrapper input {
+    @apply max-md:w-2/4
 }
 
 .searchWrapperActive {
@@ -63,8 +122,8 @@
 }
 
 .searchIcon {
+    @apply flex max-md:hidden;
     height: 100%;
-    display: flex;
     justify-content: center;
     align-items: center;
     opacity: 0;
@@ -76,4 +135,8 @@
 .searchIconActive {
     opacity: 1;
     transform: translateX(0%);
+}
+
+.userWrapper {
+    @apply max-sm:hidden;
 }
