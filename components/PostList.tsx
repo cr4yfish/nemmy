@@ -36,7 +36,7 @@ export default function PostList() {
 
     return (
         <>
-        <div className="flex flex-col items-center justify-start">
+        <div className="flex flex-col items-center justify-start w-full">
             <InfiniteScroll 
                 pageStart={1}
                 loadMore={async () => await handleLoadMore()}

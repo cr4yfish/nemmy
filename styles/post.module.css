@@ -1,5 +1,8 @@
 .wrapper {
-    @apply dark:bg-neutral-900 text-slate-100;
+    @apply dark:bg-neutral-900 text-slate-100
+    max-w-3xl
+    max-md:w-full
+    ;
     border-radius: 12px;
     padding: 1rem;
     display: flex;
@@ -7,7 +10,7 @@
     justify-content: flex-start;
     align-items: flex-start;
     gap: 15px;
-    max-width: 50rem;
+    overflow: hidden;
 }
 
 .votesDesktop {
@@ -104,7 +107,8 @@
 }
 
 .title {
-    font-size: 16pt;
+    @apply text-lg
+    max-md:text-base
 }
 
 .flair {
@@ -116,12 +120,12 @@
 .content {
     overflow: hidden;
     text-overflow: ellipsis;
-    line-clamp: 1;
     position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    width: 90%;
 }
 
 .body {
@@ -146,8 +150,8 @@
     position: relative;
     border-radius: 9px;
     overflow: hidden;
-    max-height: 600px;
-    width: auto;
+    max-width: 100%;
+    height: auto;
     object-fit: cover;
     justify-self: center;
     align-self: center;

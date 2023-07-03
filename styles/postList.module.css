@@ -4,6 +4,8 @@
     flex-direction: column;
     flex-wrap: wrap;
     gap: 1rem;
+    width: 100%;
+    align-items: center;
 }
 
 
