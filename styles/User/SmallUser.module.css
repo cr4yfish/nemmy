@@ -1,0 +1,44 @@
+
+
+.wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    position: absolute;
+    background-color: #121212;
+    border: 1px solid grey;
+    padding: .5rem;
+    border-radius: 12px;
+    gap: .25rem;
+    min-width: 100px;
+    z-index: 99;
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(10%);
+    transition: all .15s;
+}
+
+.active {
+    opacity: 1;
+    transform: translateY(0%);
+    pointer-events: all !important;
+}
+
+.userImage {
+    overflow: hidden;
+    border-radius: 50%;
+}
+
+.usernames {
+    display: flex;
+    flex-direction: column;
+}
+
+.display_name {
+    color: white;
+    font-size: 12pt;
+}
+
+.name {
+    font-size: 10pt;
+}
