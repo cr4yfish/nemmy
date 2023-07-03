@@ -56,6 +56,12 @@
     outline: none;
 }
 
+.submitButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .searchIcon {
     height: 100%;
     display: flex;
