@@ -41,18 +41,13 @@ export default function Post({ post } : { post: PostView }) {
     // https://lemmy.ml/post/1681855
     const postUrl = `https://${baseUrl}/post/${post.post.id}`;
 
-    const wrapperProps = {
-        ...(!hasMedia && { href: postUrl, target: "_blank" })
-    }
-
     return (
         <>
-        <a 
+        <div 
             className={`${styles.wrapper}`} key={post.post.id} 
             style={{ height: !hasMedia ? "fit-content" : "unset", cursor: hasMedia ? "unset" : "pointer" }}
-            {...wrapperProps}
         >
-            <div className={`${styles.votes}`}>
+            <div className={`${styles.votesDesktop}`}>
                 <span className={`material-icons ${styles.upvote}`}>arrow_upward</span>
                 <span className={`${styles.votesCount}`}>{post.counts.score}</span>
                 <span className={`material-icons ${styles.downvote}`}>arrow_downward</span>
@@ -60,27 +55,29 @@ export default function Post({ post } : { post: PostView }) {
 
             <div className={`${styles.rightSide}`}>
 
-                <a className={`${styles.header}`} href={postUrl} target="_blank">
+                <div className={`${styles.header}`} >
                     <div className={`${styles.votes}`}></div>
                     <div className={`${styles.headerContent}`}>
                         <div className={`${styles.headerMetadata}`}>
                             <div className={`${styles.communityImage}`}>
-                                <img src={post.community.icon} alt={post.community.name} height={20} width={20} />
+                                <img src={post.community.icon} alt={post.community.name} />
                             </div>
-                            <span className={`${styles.sub}`}>c/{post.community.name}</span>
-                            <span className={`${styles.user}`}>
-                                <div>Posted by</div> 
-                                <Username user={post.creator} baseUrl={baseUrl} /> 
-                                <div>on {new Date(post.post.published).toDateString()}</div>
-                            </span>
+                            <div className={`${styles.headerMetadataContent}`}>
+                                <span className={`${styles.sub}`}>c/{post.community.name}</span>
+                                <div className={`${styles.user}`}>
+                                    <div>Posted by</div> 
+                                    <Username user={post.creator} baseUrl={baseUrl} /> 
+                                    <div>on {new Date(post.post.published).toDateString()}</div>
+                                </div>
+                            </div>
+                            
                         </div>
-                        <div className={`${styles.headerTitle}`}>
+                        <a href={postUrl} target="_blank"  className={`${styles.headerTitle}`}>
                             <h2 className={`${styles.title}`}>{post.post.name}</h2>
-                            <span className={`${styles.flair}`}></span>
-                        </div>
+                        </a>
                         <span className={`${styles.headerLink}`}></span>
                     </div>
-                </a>
+                </div>
                 <div className={`${styles.content}`}>
                     <div className={`${styles.contentOverlay}`} style={{ display: hasMedia ? "none" : "block" }}></div>
                     <div className={`${styles.body}`}>{post.post.body}</div> 
@@ -96,14 +93,22 @@ export default function Post({ post } : { post: PostView }) {
                     }
                 </div>
                 <div className={styles.footer}>
-                    <div><span className="material-icons">chat</span> 2 Comments</div>
-                    <div><span className="material-icons">share</span> Share</div>
-                    <div><span className="material-icons">bookmark</span> Save</div>
-                    <div><span className="material-icons">more_horiz</span></div>
+                    <div className={`${styles.votesMobile}`}>
+                        <span className={`material-icons ${styles.upvote}`}>arrow_upward</span>
+                        <span className={`${styles.votesCount}`}>{post.counts.score}</span>
+                        <span className={`material-icons ${styles.downvote}`}>arrow_downward</span>
+                    </div>
+                    <div className={`${styles.footerInteractions}`}>
+                        <button>{post.counts.comments}<span className="material-icons-outlined">chat</span></button>
+                        <button><span className="material-icons-outlined">share</span></button>
+                        <button><span className="material-icons">bookmark_border</span></button>
+                        <button><span className="material-icons-outlined">more_horiz</span></button>
+                    </div>
+                    
                 </div>
             </div>
 
-        </a>
+        </div>
         </>
     )
 }
