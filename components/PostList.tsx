@@ -21,7 +21,6 @@ export default function PostList() {
     const getPosts = async ({ page=1, limit=10 } : { page?: number; limit?: number }) => {
         const data = await fetch(`/api/getPosts?limit=${limit}&page=${page}`);
         const json = (await data.json()).posts;
-        console.log("Got posts", json);
         if(json.length === 0) {
             setMorePages(false);
         }
@@ -35,14 +34,9 @@ export default function PostList() {
         setCurrentPage(currentPage + 1);
     }
 
-    useEffect(() => {
-        console.log("New page: ", currentPage);
-    }, [currentPage])
-
     return (
         <>
         <div className="flex flex-col items-center justify-start">
-            <h2>Posts</h2>
             <InfiniteScroll 
                 pageStart={1}
                 loadMore={async () => await handleLoadMore()}
