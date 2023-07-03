@@ -15,7 +15,7 @@ export async function GET(req: Request) {
         let saved_only = params.get("saved_only") || undefined;
         let auth = params.get("auth") || undefined;
         
-        let client: LemmyHttp = new LemmyHttp("https://lemmy.ml");
+        let client: LemmyHttp = new LemmyHttp("https://lemmy.world");
         let posts = await client.getPosts({ 
             type_: type_ as unknown as ListingType,
             sort: sort as unknown as SortType,

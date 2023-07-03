@@ -6,6 +6,7 @@ import Username from "./User/Username";
 
 
 import styles from "../styles/post.module.css"
+import { useEffect } from "react";
 
 /**
  * Can Handle both images and videos of various types
@@ -40,6 +41,10 @@ export default function Post({ post } : { post: PostView }) {
     const baseUrl = new URL(post.community.actor_id).hostname;
     // https://lemmy.ml/post/1681855
     const postUrl = `https://${baseUrl}/post/${post.post.id}`;
+
+    useEffect(() => {
+        console.log(post)
+    }, [post])
 
     return (
         <>
