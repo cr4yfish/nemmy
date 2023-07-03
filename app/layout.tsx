@@ -1,5 +1,6 @@
 import './globals.css'
 import { Inter, Montserrat } from 'next/font/google'
+import 'material-icons/iconfont/material-icons.css';
 
 const inter = Inter({ subsets: ['latin'] })
 const montserrat = Montserrat({ subsets: ['latin'] })
@@ -9,6 +10,8 @@ export const metadata = {
   description: 'A Lemmy Client for the Web',
 }
 
+import Navbar from '@/components/Navbar';
+
 export default function RootLayout({
   children,
 }: {
@@ -16,7 +19,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={montserrat.className}>{children}</body>
+      <body className={montserrat.className}>
+        <Navbar />
+        {children}
+        </body>
     </html>
   )
 }
