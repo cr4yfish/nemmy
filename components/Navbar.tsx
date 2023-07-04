@@ -15,7 +15,7 @@ export default function Navbar() {
     return (
         <>
         <nav className={styles.wrapper}>    
-            <div className={styles.logo}>Nemmy</div>
+            <a href="/" className={styles.logo}>Nemmy</a>
 
             <div className={`${styles.filter}`}>
                 <button className={`${styles.filterTitle}`} onClick={() => setFilterClicked(!filterClicked)}><span className="material-icons" >filter_list</span><span className={`${styles.filterTitleText}`}>Filter</span> </button> 
