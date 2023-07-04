@@ -26,6 +26,7 @@
 
 .filter {
     @apply 
+    text-neutral-900 bg-neutral-50
     dark:text-neutral-400 dark:bg-neutral-800 rounded-lg
     px-6
     max-sm:dark:bg-transparent
@@ -68,6 +69,7 @@
 
 .filterOptions button {
     @apply 
+        bg-neutral-50 shadow-md dark:shadow-none
         dark:bg-neutral-700 p-2 rounded-lg
     ;
     display: flex;
@@ -80,7 +82,10 @@
 }
 
 .searchWrapper {
-    @apply dark:bg-neutral-800 rounded-lg
+    @apply 
+    bg-neutral-50 text-neutral-900
+    dark:bg-neutral-800 dark:text-neutral-400 
+    rounded-lg
     px-2
     ;
     display: flex;
@@ -99,7 +104,9 @@
 }
 
 .searchWrapperActive span {
-    color: white !important;
+    @apply text-neutral-50
+    dark:text-neutral-900
+    ;
 }
 
 .searchWrapper span {

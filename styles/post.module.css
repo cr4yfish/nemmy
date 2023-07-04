@@ -1,5 +1,5 @@
 .wrapper {
-    @apply dark:bg-neutral-900 text-slate-100
+    @apply bg-neutral-50 dark:bg-neutral-900 text-slate-100
     max-w-3xl
     max-md:w-full
     ;
@@ -11,6 +11,12 @@
     align-items: flex-start;
     gap: 15px;
     overflow: hidden;
+    width: 100%;
+}
+
+.votesDesktop, .votesMobile {
+    @apply text-neutral-900 dark:text-neutral-100
+    transition-all duration-200
 }
 
 .votesDesktop {
@@ -26,6 +32,7 @@
 }
 
 .upvote, .downvote {
+    @apply transition-all duration-100;
     cursor: pointer;
 }
 
@@ -42,6 +49,7 @@
     display: flex;
     flex-direction: column;
     gap: .75rem;
+    width: 100%;
 }
 
 .header {
@@ -105,7 +113,7 @@
 }
 
 .title {
-    @apply text-lg
+    @apply text-lg text-neutral-900 dark:text-neutral-100
     max-md:text-base
 }
 
@@ -185,7 +193,8 @@
         text-neutral-400
          p-2
         rounded-lg 
-        hover:bg-neutral-900
+        hover:bg-neutral-100
+        hover:dark:bg-neutral-900
         gap-3
         ;
     display: flex;
