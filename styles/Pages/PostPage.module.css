@@ -14,7 +14,7 @@
 }
 
 .postHeader {
-    @apply flex flex-col gap-2;
+    @apply flex flex-col gap-2 w-full;
 }
 
 .postHeaderMetadata {
@@ -45,12 +45,24 @@
 }
 
 .postInteractions {
-    @apply flex flex-row gap-6 w-full items-center;
+    @apply flex flex-row gap-6 w-full items-center ;
 }
 
 .postInteractions div {
-    @apply flex items-center gap-2;
+    @apply flex items-center gap-2 
+    text-neutral-500 hover:text-neutral-900
+    dark:text-neutral-500 hover:dark:text-neutral-50
+    transition-all duration-100
+    ;
     cursor: pointer;
+}
+
+.commentsReplies {
+    cursor: unset !important;
+}
+
+.votes span {
+    @apply dark:text-neutral-300;
 }
 
 .votes {
@@ -58,7 +70,7 @@
 }
 
 .upvote, .downvote {
-    @apply transition-all duration-100;
+    @apply transition-all duration-100 ;
     cursor: pointer;
 }
 
@@ -79,7 +91,7 @@
     @apply 
         w-full rounded-lg
         bg-neutral-50
-        dark:bg-neutral-700
+        dark:bg-neutral-900
         text-neutral-900
         dark:text-neutral-50
     ;
@@ -91,7 +103,16 @@
 }
 
 .comments {
-    @apply max-w-2xl flex flex-col gap-6;
+    @apply w-full flex flex-col gap-6;
+}
+
+.commentsInteractions, .commentsInteractionsSort {
+    @apply w-full;
+}
+
+.commentsInteractionsSort {
+    @apply flex flex-row gap-2 items-center;
+    cursor: pointer;
 }
 
 .commentsList {
