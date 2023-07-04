@@ -1,6 +1,6 @@
 .wrapper {
     @apply 
-        dark:bg-neutral-900 rounded-lg gap-10
+         rounded-lg gap-10
 
         max-md:gap-5
     ;
