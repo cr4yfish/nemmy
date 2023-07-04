@@ -44,10 +44,15 @@ export default function Post({ post } : { post: PostView }) {
                     <div className={`${styles.headerContent}`}>
                         <div className={`${styles.headerMetadata}`}>
                             <div className={`${styles.communityImage}`}>
-                                <img src={post.community.icon} alt={post.community.name} />
+                                {post?.community?.icon ?
+                                    <img src={post?.community?.icon} alt="" />
+                                    :
+                                    <div className={`${styles.communityIconFill}`}></div>
+                                }
                             </div>
                             <div className={`${styles.headerMetadataContent}`}>
                                 <span className={`${styles.sub}`}>c/{post.community.name}</span>
+                                <span className={`${styles.dividerDot}`}></span>
                                 <div className={`${styles.user}`}>
                                     <div>Posted by</div> 
                                     <Username user={post.creator} baseUrl={baseUrl} /> 
