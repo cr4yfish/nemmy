@@ -11,7 +11,7 @@ import PostList from "@/components/PostList";
 
 import styles from "../../../styles/Pages/PostPage.module.css";
 
-export default function Post() {
+export default function Community() {
     const [communityData, setCommunityData] = useState<GetCommunityResponse>({} as GetCommunityResponse);
     const [communityDataError, setCommunityDataError] = useState(true);
 
