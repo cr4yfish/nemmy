@@ -135,6 +135,7 @@
 }
 
 .body {
+    @apply text-neutral-700 dark:text-neutral-300;
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
@@ -148,7 +149,9 @@
     z-index: 2;
     height: 100%; width: 100%;
     @apply 
-        bg-gradient-to-b from-neutral-900/50 to-neutral-900/90;
+        bg-gradient-to-b 
+        from-neutral-50/30 to-neutral-50/90
+        dark:from-neutral-900/50 dark:to-neutral-900/90;
         ;
 }
 
