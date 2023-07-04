@@ -58,22 +58,22 @@ export default function PostList({ fetchParams={ limit: 10, page: 1 } } : {
     }
 
     return (
-        <main className="flex flex-col items-center">
-        <div className="flex flex-col items-center justify-start max-w-3xl max-md:w-full">
-            
-            <InfiniteScroll 
-                pageStart={1}
-                loadMore={async () => await handleLoadMore()}
-                hasMore={morePages}
-                loader={<Loader />}
-                className={styles.postList}
-                >
-                {posts.map((post: PostView, index: number) => {
-                    return <Post post={post} key={post.post.id} />
-                })
-                }
-            </InfiniteScroll>
+        <div className="flex flex-col items-center w-full">
+            <div className="flex flex-col items-center justify-start max-w-3xl max-md:w-full">
+                
+                <InfiniteScroll 
+                    pageStart={1}
+                    loadMore={async () => await handleLoadMore()}
+                    hasMore={morePages}
+                    loader={<Loader />}
+                    className={styles.postList}
+                    >
+                    {posts.map((post: PostView, index: number) => {
+                        return <Post post={post} key={post.post.id} />
+                    })
+                    }
+                </InfiniteScroll>
+            </div>
         </div>
-        </main>
     )
 }

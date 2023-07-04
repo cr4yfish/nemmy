@@ -40,7 +40,7 @@ export default function Community() {
 
     
     return (
-        <main className="flex min-h-screen flex-col items-center mt-4">
+        <main className="flex min-h-screen w-full flex-col items-center mt-4">
             <div className=" max-w-2xl">
                 <img src={communityData?.community_view?.community?.banner} alt="" className="w-full h-full"/>
             </div>
