@@ -11,13 +11,9 @@ import styles from "../../styles/User/Username.module.css"
 export default function Username({ user, baseUrl } : { user: Person, baseUrl: string }) {
     const [userHover, setUserHover] = useState<boolean>(false);
 
-    useEffect(() => {
-        console.log("User hover: ", userHover)
-    }, [userHover])
-
     return (
         <>
-            <div 
+           {user ? <div 
                 className={`${styles.wrapper}`}
                 
                 >
@@ -28,7 +24,7 @@ export default function Username({ user, baseUrl } : { user: Person, baseUrl: st
                         >
                     </div>
                     <span>{user.avatar && <img className={`${styles.userimage}`} src={user.avatar} alt={user.name} width={10} height={10} /> }</span>
-                    <span>{user.name}</span>
+                    <span className="font-medium" >@{user.name}</span>
                 <SmallUser 
                     user={user} 
                     userHover={userHover}
@@ -37,6 +33,9 @@ export default function Username({ user, baseUrl } : { user: Person, baseUrl: st
                     style={{ position: "absolute", top: "100%", left: "0" }}
                 />
             </div>
+            : 
+            <span>Loading...</span>    
+        }
            
         </>
     )

@@ -1,0 +1,79 @@
+.wrapper {
+    @apply flex flex-col h-fit;
+    position: relative;
+}
+
+.header {
+    @apply flex flex-row gap-1 items-center;
+}
+
+.avatar {
+    @apply rounded-full;
+    overflow: hidden;
+}
+
+.username {
+    @apply flex flex-row gap-0;
+}
+
+.date {
+    @apply text-neutral-300 text-xs;
+}
+
+.body {
+    @apply flex flex-row;
+    position: relative;
+    height: 100%;
+}
+
+.chainlineWrapper {
+    @apply p-1 flex items-center justify-center;
+    position: relative;
+    width: 20px;
+    height: 100%;
+    cursor: pointer;
+}
+
+.chainlineLine {
+    @apply rounded-lg;
+    position: relative;
+    width: 2px;
+    height: 100%;
+}
+
+.content {
+    @apply flex flex-col gap-3
+}
+
+.comment {
+    @apply flex flex-col gap-1;
+}
+
+.commentText {
+    @apply p-2;
+}
+
+.commentInteractions {
+    @apply flex flex-row gap-2
+}
+
+.commentInteractions div {
+    @apply flex items-center gap-2
+}
+
+.upvote, .downvote {
+    @apply transition-all duration-100;
+    cursor: pointer;
+}
+
+.upvote:hover {
+    @apply text-fuchsia-300;
+}
+
+.downvote:hover {
+    @apply text-indigo-300;
+}
+
+.children {
+    padding-left: 1rem;
+}

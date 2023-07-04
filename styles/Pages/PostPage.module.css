@@ -1,0 +1,109 @@
+
+.pageWrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.wrapper {
+    @apply flex flex-col items-center p-6 gap-6 justify-center;
+    max-width: 700px;
+}
+
+.post {
+    @apply flex flex-col items-center gap-5;
+}
+
+.postHeader {
+    @apply flex flex-col gap-2;
+}
+
+.postHeaderMetadata {
+    @apply flex flex-row gap-2;
+}
+
+.communityImage {
+    @apply rounded-full;
+    overflow: hidden;
+    height: 50px;
+    width: 50px;
+}
+
+.communityImage img {
+    object-fit: contain;
+}
+
+.postHeaderMetadataContent {
+    @apply flex flex-col gap-1;
+}
+
+.postHeaderMetadataContentUsername {
+    @apply flex flex-row gap-1;
+}
+
+.postHeaderTitle {
+    @apply text-3xl font-bold;
+}
+
+.postInteractions {
+    @apply flex flex-row gap-6 w-full items-center;
+}
+
+.postInteractions div {
+    @apply flex items-center gap-2;
+    cursor: pointer;
+}
+
+.votes {
+    cursor: unset;
+}
+
+.upvote, .downvote {
+    @apply transition-all duration-100;
+    cursor: pointer;
+}
+
+.upvote:hover {
+    @apply text-fuchsia-300;
+}
+
+.downvote:hover {
+    @apply text-indigo-300;
+}
+
+.textarea {
+    @apply w-full;
+    position: relative
+}
+
+.textarea textarea {
+    @apply 
+        w-full rounded-lg
+        bg-neutral-50
+        dark:bg-neutral-700
+        text-neutral-900
+        dark:text-neutral-50
+    ;
+    overflow: hidden;
+    overflow-wrap: break-word;
+    resize: vertical;
+    padding: 1rem;
+    outline: none;
+}
+
+.comments {
+    @apply max-w-2xl flex flex-col gap-6;
+}
+
+.commentsList {
+    @apply flex flex-col gap-6;
+}
+
+.postBodyMedia {
+    @apply 
+        rounded-lg
+        shadow-md
+        dark:shadow-none
+        ;
+    max-width: 600px;
+    overflow: hidden;
+}
