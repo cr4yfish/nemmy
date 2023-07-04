@@ -23,7 +23,7 @@ export default function Username({ user, baseUrl } : { user: Person, baseUrl: st
                         onMouseOut={() => setUserHover(false)}
                         >
                     </div>
-                    <span>{user.avatar && <img className={`${styles.userimage}`} src={user.avatar} alt={user.name} width={10} height={10} /> }</span>
+                    <span>{user.avatar && <img className={`${styles.userimage}`} src={user.avatar} alt={user.name} width={20} height={20} /> }</span>
                     <span className="font-medium" >@{user.name}</span>
                 <SmallUser 
                     user={user} 
