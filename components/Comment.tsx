@@ -42,7 +42,6 @@ export default function Comment({ commentView, allComments, depth=0 }: { comment
         <div className={`${styles.wrapper}`}>
 
             <div className={`${styles.header}`}>
-                {commentView?.creator?.avatar && <div className={`${styles.avatar}`}><img src={commentView?.creator?.avatar} height={20} width={20} /></div>}
                 <div className={`${styles.username}`}><Username user={commentView?.creator} baseUrl="" /></div>
                 <span className={`${styles.date}`}>On {new Date(commentView?.comment?.published).toDateString()}</span>
             </div>
