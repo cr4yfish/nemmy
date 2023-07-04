@@ -89,11 +89,14 @@
     @apply flex flex-row gap-2 h-full
     max-md:flex-col max-md:gap-0 max-md:justify-between
     items-center
+    max-md:items-start
     ;
 }
 
 .dividerDot {
-    @apply w-1 h-1 rounded-full bg-neutral-300 dark:bg-neutral-700;
+    @apply w-1 h-1 rounded-full bg-neutral-300 dark:bg-neutral-700
+    max-md:hidden
+    ;
 }
 
 .headerTitle {
@@ -110,10 +113,14 @@
 .user {
     @apply 
     flex-row items-center
-    max-md:text-xs max-md:flex-col;
+    max-md:text-xs max-md:flex-row;
     width: 100%;
     display: flex;
     gap: 3px;
+}
+
+.date {
+    @apply max-sm:hidden
 }
 
 .title {
@@ -139,7 +146,7 @@
 }
 
 .body {
-    @apply text-neutral-700 dark:text-neutral-300;
+    @apply text-neutral-700 dark:text-neutral-300 w-full;
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;

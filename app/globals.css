@@ -19,6 +19,7 @@
 body {
   @apply bg-neutral-100 dark:bg-neutral-950;
   color: rgb(var(--foreground-rgb));
+  overflow-x: hidden;
 }
 
 image {

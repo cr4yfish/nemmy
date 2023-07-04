@@ -56,7 +56,7 @@ export default function Post({ post } : { post: PostView }) {
                                 <div className={`${styles.user}`}>
                                     <div>Posted by</div> 
                                     <Username user={post.creator} baseUrl={baseUrl} /> 
-                                    <div>on {new Date(post.post.published).toDateString()}</div>
+                                    <div className={`${styles.date}`}>on {new Date(post.post.published).toDateString()}</div>
                                 </div>
                             </div>
                             
