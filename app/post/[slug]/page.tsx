@@ -97,7 +97,7 @@ export default function Post() {
                             <span className={`${styles.votesCount}`}>{postData?.post_view?.counts?.score}</span>
                             <span className={`material-icons ${styles.downvote}`}>arrow_downward</span>
                         </div>
-                        <div className={`${styles.commentsReplies}`}><span className="material-icons">chat_bubble_outline</span>{postData.post_view.counts.comments}</div>
+                        <div className={`${styles.commentsReplies}`}><span className="material-icons">chat_bubble_outline</span>{postData?.post_view?.counts?.comments}</div>
                         <div className={`${styles.commentShare}`}><span className="material-icons">share</span></div>
                         <div className={`${styles.commentMore}`}><span className="material-icons">more_vert</span></div>
                     </div>
