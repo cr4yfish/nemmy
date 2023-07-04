@@ -81,7 +81,7 @@ export default function Post() {
                     </div>
 
                     <div className={`${styles.postContent}`}>
-                        <div>{postData?.post_view?.post?.body}</div>
+                        <div className={`${styles.postContentText}`}>{postData?.post_view?.post?.body}</div>
                         <div>{postData?.post_view?.post?.embed_title}</div>
                         <div>{postData?.post_view?.post?.embed_description}</div>
                         <div className={`${styles.postBodyMedia}`}>
