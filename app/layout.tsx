@@ -1,6 +1,7 @@
 import './globals.css'
 import { Inter, Montserrat } from 'next/font/google'
 import 'material-icons/iconfont/material-icons.css';
+import { Analytics } from '@vercel/analytics/react';
 
 const inter = Inter({ subsets: ['latin'] })
 const montserrat = Montserrat({ subsets: ['latin'] })
@@ -22,7 +23,8 @@ export default function RootLayout({
       <body className={montserrat.className}>
         <Navbar />
         {children}
-        </body>
+        <Analytics />
+        </body> 
     </html>
   )
 }
