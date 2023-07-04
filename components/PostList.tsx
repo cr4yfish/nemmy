@@ -9,6 +9,21 @@ import Post from "./Post";
 import styles from "../styles/postList.module.css"
 
 
+function Loader() {
+    return (
+        <>
+        <div className={styles.loader}>
+            <div className="h-14 w-4 dark:bg-neutral-800 rounded-lg max-md:hidden"></div>
+            <div className="flex flex-col gap-4 w-full h-full">
+                <div className="w-full h-4 dark:bg-neutral-800 rounded-lg"></div>
+                <div className="w-full h-6 dark:bg-neutral-800 rounded-lg"></div>
+                <div className="w-full h-12 dark:bg-neutral-800 rounded-lg"></div>
+            </div>
+        </div>
+        </>
+    )
+}
+
 /**
  * PostList
  */
@@ -35,13 +50,14 @@ export default function PostList() {
     }
 
     return (
-        <>
-        <div className="flex flex-col items-center justify-start w-full">
+        <main className="flex flex-col items-center">
+        <div className="flex flex-col items-center justify-start max-w-3xl max-md:w-full">
+            
             <InfiniteScroll 
                 pageStart={1}
                 loadMore={async () => await handleLoadMore()}
                 hasMore={morePages}
-                loader={<div className={styles.loader}>Loading....</div>}
+                loader={<Loader />}
                 className={styles.postList}
                 >
                 {posts.map((post: PostView, index: number) => {
@@ -50,6 +66,6 @@ export default function PostList() {
                 }
             </InfiniteScroll>
         </div>
-        </>
+        </main>
     )
 }

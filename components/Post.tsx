@@ -88,7 +88,7 @@ export default function Post({ post } : { post: PostView }) {
                         <span className={`material-icons ${styles.downvote}`}>arrow_downward</span>
                     </div>
                     <div className={`${styles.footerInteractions}`}>
-                        <button>{post.counts.comments}<span className="material-icons-outlined">chat_bubble_outline</span></button>
+                        <button>{post?.counts?.comments > 0 && post?.counts?.comments}<span className="material-icons-outlined">chat_bubble_outline</span></button>
                         <button><span className="material-icons-outlined">share</span></button>
                         <button><span className="material-icons">bookmark_border</span></button>
                         <button><span className="material-icons-outlined">more_horiz</span></button>
