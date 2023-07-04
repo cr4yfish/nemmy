@@ -76,7 +76,7 @@
 }
 
 .headerMetadata {
-    @apply items-start max-md:items-center;
+    @apply items-center;
 
     display: flex;
     flex-direction: row;
@@ -88,7 +88,12 @@
 .headerMetadataContent {
     @apply flex flex-row gap-2 h-full
     max-md:flex-col max-md:gap-0 max-md:justify-between
+    items-center
     ;
+}
+
+.dividerDot {
+    @apply w-1 h-1 rounded-full bg-neutral-300 dark:bg-neutral-700;
 }
 
 .headerTitle {
@@ -104,11 +109,10 @@
 
 .user {
     @apply 
-    flex-row
+    flex-row items-center
     max-md:text-xs max-md:flex-col;
     width: 100%;
     display: flex;
-    align-items: flex-start;
     gap: 3px;
 }
 
@@ -170,6 +174,12 @@
     @apply rounded-full w-5 h-auto max-md:w-14 max-md:h-auto;
     overflow: hidden;
     object-fit: cover !important;
+}
+
+.communityIconFill {
+    @apply rounded-full w-5 h-5 max-md:w-14 max-md:h-14
+    bg-neutral-300 dark:bg-neutral-700
+    ;
 }
 
 
