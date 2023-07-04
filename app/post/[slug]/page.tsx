@@ -23,16 +23,13 @@ export default function Post() {
     useEffect(() => {
         if(!postDataError) return;
         (async () => {
-            console.log("Loading post data...");
             const data = await fetch(`/api/getPost?id=${pathname}`);
             const json = (await data.json());
             if(json.error) { 
                 console.error(json.error)
                 setPostDataError(true);
             } else {
-                console.log(json);
                 setPostDataError(false);
-                console.log("Retrying post fetch...");   
                 setPostData(json as GetPostResponse);
                 return;
             }
@@ -51,8 +48,6 @@ export default function Post() {
                 setCommentsDataError(true);
                 return;
             }
-            console.log(json.comments);
-            console.log("Retrying comments fetch...");
             setCommentsData(json as GetCommentsResponse);
         })()
     }, [commentsDataError, pathname]);

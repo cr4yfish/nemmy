@@ -21,10 +21,6 @@ export default function Post({ post } : { post: PostView }) {
 
     const postUrl = `/post/${post.post.id}`;
 
-    useEffect(() => {
-        console.log(post)
-    }, [post])
-
     return (
         <>
         <div 
@@ -43,15 +39,15 @@ export default function Post({ post } : { post: PostView }) {
                     <div className={`${styles.votes}`}></div>
                     <div className={`${styles.headerContent}`}>
                         <div className={`${styles.headerMetadata}`}>
-                            <div className={`${styles.communityImage}`}>
+                            <a href={`/c/${post?.community?.name}`} target="_blank" className={`${styles.communityImage}`}>
                                 {post?.community?.icon ?
                                     <img src={post?.community?.icon} alt="" />
                                     :
                                     <div className={`${styles.communityIconFill}`}></div>
                                 }
-                            </div>
+                            </a>
                             <div className={`${styles.headerMetadataContent}`}>
-                                <span className={`${styles.sub}`}>c/{post.community.name}</span>
+                                <a href={`/c/${post?.community?.name}`} target="_blank" className={`${styles.sub}`}>c/{post.community.name}</a>
                                 <span className={`${styles.dividerDot}`}></span>
                                 <div className={`${styles.user}`}>
                                     <div>Posted by</div> 
