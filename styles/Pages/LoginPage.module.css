@@ -1,0 +1,25 @@
+.loginWrapper {
+    @apply flex flex-col gap-3 bg-neutral-900 rounded-lg p-4
+}
+
+.inputWrapper {
+    @apply flex flex-col gap-1
+}
+
+.inputWrapper input {
+    @apply 
+    bg-neutral-100 text-neutral-900
+    dark:bg-neutral-100 dark:text-neutral-900
+    
+    shadow-md dark:shadow-none
+    rounded-lg p-2 px-3;
+    outline: none;
+}
+
+.button {
+    @apply bg-fuchsia-300 text-neutral-100
+    dark:bg-fuchsia-400 dark:text-fuchsia-900
+    font-bold
+    rounded-lg p-1
+    ;
+}
