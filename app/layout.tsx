@@ -9,6 +9,9 @@ const montserrat = Montserrat({ subsets: ['latin'] })
 export const metadata = {
   title: 'Nemmy',
   description: 'A Lemmy Client for the Web',
+  manifest: '/manifest.json',
+  themeColor: '#E8AEFC',
+  applicationName: "Nemmy",
 }
 
 import Navbar from '@/components/Navbar';
