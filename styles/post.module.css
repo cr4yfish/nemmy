@@ -124,8 +124,8 @@
 }
 
 .title {
-    @apply text-lg text-neutral-900 dark:text-neutral-100
-    max-md:text-base
+    @apply text-2xl font-bold text-neutral-900 dark:text-neutral-100
+    max-md:text-lg
 }
 
 .flair {
