@@ -14,6 +14,8 @@ export async function GET(req: Request) {
         let community_name = params.get("community_name") || undefined;
         let saved_only = params.get("saved_only") || undefined;
         let auth = params.get("auth") || undefined;
+
+        if(community_name == "undefined") community_name = undefined;
         
         let client: LemmyHttp = new LemmyHttp("https://lemmy.world");
         let posts = await client.getPosts({ 
