@@ -1,0 +1,8 @@
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "app.nemmy.twa",
+        "sha256_cert_fingerprints": ["BE:CB:98:3B:75:11:A7:D3:F4:D4:23:F8:11:DB:39:CB:A0:E3:51:C3:D2:9B:A2:3A:F3:BE:82:A0:DF:5F:72:44"]
+      }
+    }]
