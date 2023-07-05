@@ -14,8 +14,11 @@
     "@types/react-dom": "18.2.6",
     "@vercel/analytics": "^1.0.1",
     "autoprefixer": "10.4.14",
+    "cookies-next": "^2.1.2",
+    "encoding": "^0.1.13",
     "eslint": "8.43.0",
     "eslint-config-next": "13.4.7",
+    "jsonwebtoken": "^9.0.1",
     "lemmy-js-client": "^0.18.1-rc.2",
     "material-icons": "^1.13.8",
     "next": "13.4.7",
@@ -28,6 +31,7 @@
     "typescript": "5.1.5"
   },
   "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.2",
     "@types/react-infinite-scroller": "^1.2.3"
   }
 }
