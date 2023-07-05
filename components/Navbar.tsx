@@ -1,9 +1,11 @@
 "use client"
 import { FormEvent, useState } from "react";
 
+import { useSession } from "@/hooks/auth";
 import styles from "../styles/Navbar.module.css";
 
 export default function Navbar() {
+    const { session, setSession } = useSession();
     const [isSearching, setIsSearching] = useState(false);
     const [filterClicked, setFilterClicked] = useState(false);
 
@@ -38,8 +40,11 @@ export default function Navbar() {
             </form>
 
             <div className={styles.userWrapper}>
-                <div className={styles.userImage}></div>
-                <span className={`material-icons ${styles.username}`}>person</span>
+                {session?.user?.my_user?.local_user_view?.person?.avatar?
+                    <div className={styles.userImage}><img src={session.user.my_user.local_user_view.person.avatar} height={40} width={40} /></div>
+                : <span className={`material-icons`}>person</span>
+                }
+                <span>{session?.user?.my_user?.local_user_view?.person?.name || "Guest"}</span>
             </div>
             
         </nav>
