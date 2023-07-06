@@ -110,14 +110,20 @@ export default function Post() {
                         }
 
                         {/* Display Embed thumbnail with Link e.g. Article */ }
-                        { postData?.post_view?.post?.url?.endsWith(".html") &&
+                        { (postData?.post_view?.post?.embed_title || postData?.post_view?.post?.url?.endsWith(".html")) &&
                             <div className={`${styles.postBodyEmbed}`}>
                                 <div>
                                     <div className={`${styles.postBodyEmbedTitle}`}>{postData?.post_view?.post?.embed_title}</div>
                                     <div className={`${styles.postBodyEmbedDescription}`}>{postData?.post_view?.post?.embed_description}</div>
                                 </div>
+                                
                                 {postData?.post_view?.post?.thumbnail_url && <div className={`${styles.postBodyEmbedImage}`}><img src={postData?.post_view?.post?.thumbnail_url} alt="" /></div>}
-                                <Link className="a" href={postData?.post_view?.post?.url} target="_blank" rel="noreferrer">{postData?.post_view?.post?.url}</Link>
+                                
+                                {postData?.post_view?.post?.url && 
+                                    <Link className="a" href={postData.post_view.post.url} target="_blank" rel="noreferrer">
+                                        {postData?.post_view?.post?.url}
+                                    </Link>
+                                }
                             </div>
                         }
 
