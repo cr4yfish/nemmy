@@ -13,7 +13,7 @@ export async function POST(req: Request) {
         let sort = body.sort || "Hot";
         let page = body.page || 1;
         let limit = body.limit || 10;
-        let auth = body.jwt || undefined;
+        let auth = body.auth || undefined;
 
         // decode auth
         let decode = jwt.decode(auth) as JwtPayload;

@@ -1,14 +1,17 @@
 import Image from "next/image";
+import { LemmyHttp, PostView } from "lemmy-js-client";
 
-
-import { PostView } from "lemmy-js-client";
 import Username from "./User/Username";
 import { AutoMediaType } from "@/utils/AutoMediaType";
+import Vote from "./Vote";
 
 import styles from "../styles/post.module.css"
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useSession } from "@/hooks/auth";
+import { animateValue } from "framer-motion";
 
 export default function Post({ post } : { post: PostView }) {
+    const { session } = useSession();
 
     if(!post) throw new Error("Post is undefined");
 
@@ -27,11 +30,7 @@ export default function Post({ post } : { post: PostView }) {
             className={`${styles.wrapper}`} key={post.post.id} 
             style={{ height: !hasMedia ? "fit-content" : "unset", cursor: hasMedia ? "unset" : "pointer" }}
         >
-            <div className={`${styles.votesDesktop}`}>
-                <span className={`material-icons ${styles.upvote}`}>arrow_upward</span>
-                <span className={`${styles.votesCount}`}>{post.counts.score}</span>
-                <span className={`material-icons ${styles.downvote}`}>arrow_downward</span>
-            </div>
+            <Vote post={post} />
 
             <div className={`${styles.rightSide}`}>
 
@@ -78,11 +77,7 @@ export default function Post({ post } : { post: PostView }) {
                     }
                 </div>
                 <div className={styles.footer}>
-                    <div className={`${styles.votesMobile}`}>
-                        <span className={`material-icons ${styles.upvote}`}>arrow_upward</span>
-                        <span className={`${styles.votesCount}`}>{post.counts.score}</span>
-                        <span className={`material-icons ${styles.downvote}`}>arrow_downward</span>
-                    </div>
+                    <Vote post={post} horizontal />
                     <div className={`${styles.footerInteractions}`}>
                         <button>{post?.counts?.comments > 0 && post?.counts?.comments}<span className="material-icons-outlined">chat_bubble_outline</span></button>
                         <button><span className="material-icons-outlined">share</span></button>
