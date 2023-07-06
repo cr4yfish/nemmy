@@ -1,6 +1,6 @@
 import { CommentView, GetCommentsResponse } from "lemmy-js-client"
-import { useState, useEffect } from "react"
-
+import React, { useState, useEffect } from "react"
+import RenderMarkdown from "./ui/RenderMarkdown"
 
 import Username from "./User/Username"
 
@@ -37,10 +37,6 @@ export default function Comment({ commentView, allComments, depth=0 }: { comment
         })()
     }, [commentView, allComments, childrenError])
 
-    useEffect(() => {
-        console.log("childrenHidden?", childrenHidden);
-    }, [childrenHidden])
-
     return (
         <>
         <div className={`${styles.wrapper}`}>
@@ -58,7 +54,7 @@ export default function Comment({ commentView, allComments, depth=0 }: { comment
 
                     <div className={`${styles.comment}`}>
                         <div className={`${styles.commentText}`}>
-                            {commentView?.comment?.content}
+                            <RenderMarkdown>{commentView?.comment?.content}</RenderMarkdown>
                         </div>
                         <div className={`${styles.commentInteractions}`}>
                             <div className={`${styles.commentVotes}`}>

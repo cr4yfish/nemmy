@@ -11,6 +11,7 @@ import Button from "@/components/ui/Button";
 import { deleteCookie } from "cookies-next";
 import { useSession } from "@/hooks/auth";
 import { useRouter } from "next/navigation";
+import RenderMarkdown from "@/components/ui/RenderMarkdown";
 
 import postListStyles from "@/styles/postList.module.css"
 import styles from "@/styles/Pages/UserPage.module.css";
@@ -102,7 +103,7 @@ export default function User() {
                             <span className="font-light">@{userData?.person_view?.person?.name}</span>
                         </div>
                         
-                        <span>{userData?.person_view?.person?.bio}</span>
+                        <span><RenderMarkdown>{userData?.person_view?.person?.bio}</RenderMarkdown></span>
                         <span className="flex items-center gap-2 text-neutral-300"><span className="material-icons">cake</span>{new Date(userData?.person_view?.person?.published).toDateString()}</span>
                         
                         { session?.user?.my_user?.local_user_view.person.id == userData?.person_view?.person?.id &&
