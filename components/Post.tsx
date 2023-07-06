@@ -66,15 +66,27 @@ export default function Post({ post } : { post: PostView }) {
                     </div>
                 </div>
                 <div className={`${styles.content}`}>
-                    <div className={`${styles.contentOverlay}`} style={{ display: hasMedia ? "none" : "block" }}></div>
+
+                    {!(post?.post?.url && !post?.post?.url?.endsWith(".html") && !post.post.thumbnail_url ) && <div className={`${styles.contentOverlay}`} style={{ display: hasMedia ? "none" : "block" }}></div>}
+
                     {post?.post?.body && <div className={`${styles.body} ${markdownStyle.markdown}`}><RenderMarkdown>{post?.post?.body}</RenderMarkdown></div> }
+                    {post?.post?.url?.endsWith(".html") &&
+                        <div className={`${styles.link} flex justify-start items-start w-full p-1 pl-0`}>
+                            <a className="a text-xs" href={post.post.url} target="_blank">{post.post.url}</a>
+                    </div>
+                    }    
+                    { post?.post?.url && !post?.post?.url?.endsWith(".html") && !post.post.thumbnail_url &&
+                        <div className={`${styles.image}`}>
+                            <AutoMediaType url={post?.post?.url} alt={post.post.name} />
+                        </div>
+                    }
                     {post.post.embed_video_url &&
                         <div className={`${styles.video}`}>
                             <AutoMediaType url={post.post.embed_video_url} alt={post.post.name} />
                         </div>
                     }
                     {post.post.thumbnail_url &&
-                        <Link className={`${styles.image}`} href={post.post.thumbnail_url} >
+                        <Link className={`${styles.image}`} href={post.post.thumbnail_url} target="_blank" >
                             <AutoMediaType url={post.post.thumbnail_url} alt={post.post.name} />
                         </Link>
                     }
