@@ -97,6 +97,9 @@ This means that there is no single huge "Lemmy Server" but many smaller "instanc
     - [ ] User Themes
     - [ ] Compact Style (Like compact.reddit)
     - [ ] Classic Style (Like old.reddit)
+- [ ] QoL Features
+  - [ ] Auto-Register to other instances
+  - [ ] Subscribe to the same community on multiple instances (like c/nemmy on Lemmy.world and Lemmy.ml) 
 
 
 
