@@ -69,7 +69,7 @@ export default function Comment({ commentView, allComments, depth=0 }: { comment
                     </div>
 
                     {!childrenHidden && 
-                        <div className={`${styles.children}`}>
+                        <div style={{ paddingLeft: `${Math.pow(0.5, depth)}rem` }}>
                             {children?.map((comment, index) => (
                                 <Comment commentView={comment} allComments={allComments} key={index} depth={depth+1} />
                             ))}

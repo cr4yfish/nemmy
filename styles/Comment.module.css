@@ -73,7 +73,3 @@
 .downvote:hover {
     @apply text-indigo-300;
 }
-
-.children {
-    padding-left: 1rem;
-}
