@@ -100,6 +100,8 @@ export default function Post() {
                     </div>
 
                     <div className={`${styles.postContent}`}>
+
+                        {/* Display Media e.g. Image, Video, Gif */ }
                         { (postData?.post_view?.post?.url || postData?.post_view?.post?.embed_video_url) && !postData?.post_view?.post?.url?.endsWith(".html") &&
                         <div className={`${styles.postBodyMedia}`}>
                             {postData?.post_view?.post?.url && <AutoMediaType url={postData?.post_view?.post?.url} />}
@@ -107,16 +109,20 @@ export default function Post() {
                         </div>
                         }
 
+                        {/* Display Embed thumbnail with Link e.g. Article */ }
                         { postData?.post_view?.post?.url?.endsWith(".html") &&
                             <div className={`${styles.postBodyEmbed}`}>
+                                <div>
+                                    <div className={`${styles.postBodyEmbedTitle}`}>{postData?.post_view?.post?.embed_title}</div>
+                                    <div className={`${styles.postBodyEmbedDescription}`}>{postData?.post_view?.post?.embed_description}</div>
+                                </div>
                                 {postData?.post_view?.post?.thumbnail_url && <div className={`${styles.postBodyEmbedImage}`}><img src={postData?.post_view?.post?.thumbnail_url} alt="" /></div>}
                                 <Link className="a" href={postData?.post_view?.post?.url} target="_blank" rel="noreferrer">{postData?.post_view?.post?.url}</Link>
                             </div>
                         }
 
+                        {/* The Text Body rendered in Markdown */ }
                         {postData?.post_view?.post?.body && <div className={`${styles.postContentText} ${markdownStyle.markdown}`}><RenderMarkdown>{postData?.post_view?.post?.body}</RenderMarkdown></div>}
-                        <div>{postData?.post_view?.post?.embed_title}</div>
-                        <div>{postData?.post_view?.post?.embed_description}</div>
                         
                     </div>
 
