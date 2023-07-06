@@ -89,7 +89,7 @@ export default function Post() {
                             {postData?.post_view?.post?.url && <AutoMediaType url={postData?.post_view?.post?.url} />}
                             {postData?.post_view?.post?.embed_video_url && <AutoMediaType url={postData?.post_view?.post?.embed_video_url} />}
                         </div>
-                        <div className={`${styles.postContentText} ${markdownStyle.markdown}`}><ReactMarkdown>{`${postData?.post_view?.post?.body}`}</ReactMarkdown></div>
+                        {postData?.post_view?.post?.body && <div className={`${styles.postContentText} ${markdownStyle.markdown}`}><ReactMarkdown>{`${postData?.post_view?.post?.body}`}</ReactMarkdown></div>}
                         <div>{postData?.post_view?.post?.embed_title}</div>
                         <div>{postData?.post_view?.post?.embed_description}</div>
                         
