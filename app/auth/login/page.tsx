@@ -56,7 +56,7 @@ export default function Login() {
                 body: JSON.stringify({ username, password })
             }).then(res => res.json());
             
-            saveLogin && setCookie("jwt", jwt.jwt, { maxAge: 60 * 60 * 24 * 7})
+            saveLogin && setCookie("jwt", jwt.jwt, { maxAge: 60 * 60 * 24 * 7, domain: undefined })
             sessionStorage.setItem("jwt", jwt.jwt);
             
             // get user details
