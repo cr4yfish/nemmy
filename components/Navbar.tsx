@@ -40,6 +40,12 @@ export default function Navbar() {
             </div>
             }
 
+            { navbar?.showback &&
+            <div className={`${styles.backButton}`}>
+                <button className="flex items-center gap-2" onClick={() => window.history.back()}><span className="material-icons">arrow_back</span>Back</button>
+            </div>
+            }
+
             { navbar?.showSearch &&
             <form onSubmit={(e) => handleSubmit(e)} className={`${styles.searchWrapper} ${isSearching && styles.searchWrapperActive}`}>
                 <span className="material-icons">search</span>

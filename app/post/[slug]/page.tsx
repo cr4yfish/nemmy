@@ -1,16 +1,20 @@
 "use client";
 
 import { usePathname } from "next/navigation"; 
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { GetCommentsResponse, GetPostResponse } from "lemmy-js-client";
+import ReactMarkdown from 'react-markdown'
 
 import { AutoMediaType } from "@/utils/AutoMediaType";
 import Username from "@/components/User/Username";
 import Comment from "@/components/Comment";
+import { useNavbar } from "@/hooks/navbar";
 
 import styles from "../../../styles/Pages/PostPage.module.css";
 
 export default function Post() {
+    const { navbar, setNavbar } = useNavbar();
+
     const [postData, setPostData] = useState<GetPostResponse>({} as GetPostResponse);
     const [postDataError, setPostDataError] = useState(true);
 
@@ -19,6 +23,10 @@ export default function Post() {
 
     // post id
     const pathname = usePathname().split("/")[2];
+
+    useEffect(() => {
+        setNavbar({ ...navbar!, showSort: false, showSearch: false, showback: true })
+    }, [])
 
     useEffect(() => {
         if(!postDataError) return;
@@ -76,14 +84,14 @@ export default function Post() {
                     </div>
 
                     <div className={`${styles.postContent}`}>
-                        <div className={`${styles.postContentText}`}>{postData?.post_view?.post?.body}</div>
-                        <div>{postData?.post_view?.post?.embed_title}</div>
-                        <div>{postData?.post_view?.post?.embed_description}</div>
                         <div className={`${styles.postBodyMedia}`}>
-                        {postData?.post_view?.post?.thumbnail_url && <AutoMediaType url={postData?.post_view?.post?.thumbnail_url} />}
                             {postData?.post_view?.post?.url && <AutoMediaType url={postData?.post_view?.post?.url} />}
                             {postData?.post_view?.post?.embed_video_url && <AutoMediaType url={postData?.post_view?.post?.embed_video_url} />}
                         </div>
+                        <div className={`${styles.postContentText}`}><ReactMarkdown>{`${postData?.post_view?.post?.body}`}</ReactMarkdown></div>
+                        <div>{postData?.post_view?.post?.embed_title}</div>
+                        <div>{postData?.post_view?.post?.embed_description}</div>
+                        
                     </div>
 
                     <div className={`${styles.postInteractions}`}>
@@ -100,19 +108,23 @@ export default function Post() {
 
                 <div className={`${styles.textarea}`}>
                     <textarea 
-                        placeholder="What are your toughts?..." 
+                        placeholder={"What are your toughts?..."} 
                         required
                         rows={2} maxLength={50000}
                         />
                 </div>
 
                 <div className={`${styles.comments}`}>
+
+                    {commentsData?.comments?.length > 0 && 
                     <div className={`${styles.commentsInteractions}`}>
                         <div className={`${styles.commentsInteractionsSort}`}>
                             <span className={`material-icons`}>sort</span>
                             <span>Hot</span>
                         </div>
                     </div>
+                    }
+
                     <div className={`${styles.commentsList}`}>
                         {/* Comments need to be placd by the comment.id, but how do I know the correct sequence? */}
                         {commentsData?.comments?.filter((c) => c.comment.path.split(".")[1] == c.comment.id.toString()).map((comment, index) => (

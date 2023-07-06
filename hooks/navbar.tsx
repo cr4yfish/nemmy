@@ -9,7 +9,7 @@ interface NavbarState {
     showSort: boolean,
     showSearch: boolean,
     showUser: boolean,
-
+    showback: boolean,
     hidden: boolean,
 }
 
@@ -18,7 +18,7 @@ interface NavbarContextProps {
     setNavbar: React.Dispatch<React.SetStateAction<NavbarState>>;
 }
 
-const defaultState: NavbarState = { showSort: true, showSearch: true, showUser: true, hidden: false }
+const defaultState: NavbarState = { showSort: true, showSearch: true, showUser: true, hidden: false, showback: false }
 const NavbarContext = createContext<NavbarContextProps>({ navbar: defaultState, setNavbar: () => { } })
 
 export const NavbarContextProvider = ({ children } : { children: any }) => {
