@@ -11,6 +11,7 @@ import Comment from "@/components/Comment";
 import { useNavbar } from "@/hooks/navbar";
 
 import styles from "../../../styles/Pages/PostPage.module.css";
+import markdownStyle from "@/styles/util/markdown.module.css";
 
 export default function Post() {
     const { navbar, setNavbar } = useNavbar();
@@ -88,7 +89,7 @@ export default function Post() {
                             {postData?.post_view?.post?.url && <AutoMediaType url={postData?.post_view?.post?.url} />}
                             {postData?.post_view?.post?.embed_video_url && <AutoMediaType url={postData?.post_view?.post?.embed_video_url} />}
                         </div>
-                        <div className={`${styles.postContentText}`}><ReactMarkdown>{`${postData?.post_view?.post?.body}`}</ReactMarkdown></div>
+                        <div className={`${styles.postContentText} ${markdownStyle.markdown}`}><ReactMarkdown>{`${postData?.post_view?.post?.body}`}</ReactMarkdown></div>
                         <div>{postData?.post_view?.post?.embed_title}</div>
                         <div>{postData?.post_view?.post?.embed_description}</div>
                         

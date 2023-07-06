@@ -65,23 +65,6 @@
     overflow-wrap: break-word;
 }
 
-.postContentText h1,
-.postContentText h2,
-.postContentText h3, 
-.postContentText h4, 
-.postContentText h5 {
-    @apply text-xl font-bold;
-}
-
-.postContentText a {
-    @apply text-blue-500 hover:text-blue-700;
-}
-
-.postContentText img {
-    @apply m-2 rounded-lg overflow-hidden
-    ;
-}
-
 .postInteractions {
     @apply flex flex-row gap-6 max-w-full items-center ;
 }
