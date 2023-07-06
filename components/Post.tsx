@@ -81,9 +81,9 @@ export default function Post({ post } : { post: PostView }) {
                     {/* Display Link if post has link e.g. Article case */}
                     {(post?.post?.embed_title || post?.post?.url?.endsWith(".html")) &&
                         <div className={`${styles.postBodyEmbed}`}>
-                            <div className="flex flex-col">
-                                <div className="font-bold text-sm">{post?.post?.embed_title}</div>
-                                <div className="font-light text-xs">{post?.post?.embed_description}</div>
+                            <div className="flex flex-col gap-1">
+                                <div className={`${styles.postBodyEmbedTitle}`}>{post?.post?.embed_title}</div>
+                                <div className={`${styles.postBodyEmbedDescription}`}>{post?.post?.embed_description}</div>
                             </div>
                            <div className={`${styles.link} flex justify-start items-start w-full p-1 pl-0`}>
                                 <a className="a text-xs" href={post.post.url} target="_blank">{post.post.url}</a>

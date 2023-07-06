@@ -142,7 +142,7 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    width: 90%;
+    width: 100%;
 }
 
 .body {
@@ -156,22 +156,26 @@
 }
 
 .postBodyEmbed {
-    @apply flex flex-col gap-2
+    @apply flex flex-col gap-0 w-full
     mb-4 p-2 rounded-lg border
     border-neutral-300 dark:border-neutral-600
+    text-neutral-800 dark:text-neutral-200
     ;
 }
 
 .postBodyEmbed a {
-    @apply text-xs
+    @apply text-xs;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 .postBodyEmbedTitle {
-    @apply text-lg font-bold;
+    @apply text-sm font-bold
+    ;
 }
 
 .postBodyEmbedDescription {
-    @apply text-sm font-light;
+    @apply text-sm max-sm:text-xs font-light;
 }
 
 
