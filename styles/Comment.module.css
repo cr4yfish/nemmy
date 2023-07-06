@@ -39,6 +39,7 @@
     position: relative;
     width: 2px;
     height: 100%;
+    min-height: 75px; /*  temporary workaround */
 }
 
 .content {
