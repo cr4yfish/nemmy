@@ -28,7 +28,7 @@ export default function Vote({ horizontal=false, post } : { horizontal?: boolean
     }
 
     const handleLike = async () => {
-        if(liked || !session) return;
+        if(liked || !session?.jwt) return;
 
         disliked ? setScore(score + 2) : setScore(score + 1)
 
@@ -41,7 +41,7 @@ export default function Vote({ horizontal=false, post } : { horizontal?: boolean
     }
 
     const handleDislike = async () => {
-        if(disliked || !session) return;
+        if(disliked || !session?.jwt) return;
 
         liked ? setScore(score-2) : setScore(score - 1);
 
