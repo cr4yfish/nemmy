@@ -41,16 +41,13 @@ export default function User() {
     useEffect(() => {
         if(!userDataError) return;
         (async () => {
-            console.log("Loading User data...");
             const data = await fetch(`/api/getUser?username=${pathname}`);
             const json = (await data.json());
             if(json.error) { 
                 console.error(json.error)
                 setUserDataError(true);
             } else {
-                console.log(json);
-                setUserDataError(false);
-                console.log("Retrying user fetch...");   
+                setUserDataError(false);  
                 setUserData(json as GetPersonDetailsResponse);
                 return;
             }

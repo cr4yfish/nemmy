@@ -26,16 +26,14 @@ export default function Community() {
     useEffect(() => {
         if(!communityDataError) return;
         (async () => {
-            console.log("Loading Community data...");
+
             const data = await fetch(`/api/getCommunity?community_name=${pathname}`);
             const json = (await data.json());
             if(json.error) { 
                 console.error(json.error)
                 setCommunityDataError(true);
             } else {
-                console.log(json);
                 setCommunityDataError(false);
-                console.log("Retrying community fetch...");   
                 setCommunityData(json as GetCommunityResponse);
                 return;
             }

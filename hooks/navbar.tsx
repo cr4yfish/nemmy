@@ -25,13 +25,6 @@ export const NavbarContextProvider = ({ children } : { children: any }) => {
 
     const [navbar, setNavbar] = useState<NavbarState>(defaultState);
 
-    // Auto fetch navbar data
-    useEffect(() => {
-
-        //console.log(navbar);
-
-    }, [navbar])
-
     return (
         <NavbarContext.Provider value={{ navbar, setNavbar }}>
             {children}

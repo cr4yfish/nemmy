@@ -21,7 +21,6 @@ export async function GET(req: Request) {
 
         if(!post_id) throw new Error("post_id is required");
 
-        console.log(baseUrl);
         let client: LemmyHttp = new LemmyHttp(`https://lemmy.world`);
 
         let comments = await client.getComments({

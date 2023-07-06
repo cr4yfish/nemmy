@@ -46,7 +46,6 @@ export default function Post() {
             } else {
                 setPostDataError(false);
                 setPostData(json as GetPostResponse);
-                console.log(json);
                 // Get baseUrl from post
                 const ap_id = json?.post_view?.post?.ap_id;
                 const domain = ap_id?.split("/")[2];
@@ -59,13 +58,11 @@ export default function Post() {
     }, [pathname, postDataError]);
 
     useEffect(() => {
-        if(!commentsDataError) { console.log("No error"); return};
+        if(!commentsDataError) { console.log("No error :)"); return};
         (async () => {
-            console.log("Getting comments", postData);
             setCommentsLoading(true);
             const data = await fetch(`/api/getComments?post_id=${pathname}&sort=Hot&limit=100&page=1&max_depth=8&baseUrl=${baseUrl}&type_=All`);
             const json = (await data.json());
-            console.log("Comments:", json);
             if(json.error) {
                 console.error(json.error)
                 setCommentsDataError(true);
