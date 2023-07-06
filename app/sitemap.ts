@@ -3,7 +3,7 @@ import { MetadataRoute } from "next";
 export default function sitemap(): MetadataRoute.Sitemap {
     return [
         {
-            url: "https://nemmy.vercel.app",
+            url: "https://nemmy.app",
             lastModified: new Date(),
         }
     ]
