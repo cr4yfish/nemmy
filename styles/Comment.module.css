@@ -17,7 +17,9 @@
 }
 
 .date {
-    @apply text-neutral-300 text-xs;
+    @apply text-neutral-300 text-xs
+    max-sm:hidden
+    ;
 }
 
 .body {
@@ -45,7 +47,7 @@
 }
 
 .content {
-    @apply flex flex-col gap-3
+    @apply flex flex-col gap-3 font-normal
 }
 
 .comment {
@@ -53,7 +55,7 @@
 }
 
 .commentText {
-    @apply p-2;
+    @apply p-2 font-normal;
 }
 
 .commentInteractions {
