@@ -99,6 +99,7 @@ This means that there is no single huge "Lemmy Server" but many smaller "instanc
   - [ ] Auto-Register to other instances
   - [ ] Subscribe to the same community on multiple instances (like c/nemmy on Lemmy.world and Lemmy.ml)
   - [ ] Bulk Block/Hide Communities with the same or similar Name
+  - [ ] Subscribe/Unsubscribe from Communities while in Search mode (So you don't need to leave the Search page just to unsubscribe/subscribe)
 
 
 
