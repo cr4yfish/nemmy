@@ -37,8 +37,6 @@
   <p align="center">
     The Neat Lemmy App for the Web. This project is focused on building a Lemmy App with the best possible User Experience.
     <br />
-    <a href="https://github.com/Cr4yfish/Nemmy"><strong>Explore the docs »</strong></a>
-    <br />
     <br />
     <a href="https://nemmy.app/">Website</a>
     ·
@@ -84,7 +82,7 @@ This means that there is no single huge "Lemmy Server" but many smaller "instanc
     - [X] Voting on Posts
     - [ ] Voting on Comments
 - [x] PWA
-- [X] Auth
+- [ ] Auth
     - [X] Login
     - [ ] Register
 - [ ] Creating Content
@@ -97,6 +95,9 @@ This means that there is no single huge "Lemmy Server" but many smaller "instanc
     - [ ] User Themes
     - [ ] Compact Style (Like compact.reddit)
     - [ ] Classic Style (Like old.reddit)
+- [ ] QoL Features
+  - [ ] Auto-Register to other instances
+  - [ ] Subscribe to the same community on multiple instances (like c/nemmy on Lemmy.world and Lemmy.ml) 
 
 
 
