@@ -8,7 +8,6 @@ export function AutoMediaType({ url, alt="" } : { url: string, alt?: string }) {
     if(!extension) throw new Error("No extension found for media");
 
     const imageExtensions = ["jpg", "jpeg", "png", "webp", "gif"];
-    const otherImageExtensions = [""];
     const videoExtensions = ["mp4", "webm", "ogg"];
 
     // If it's an image, use next/image
