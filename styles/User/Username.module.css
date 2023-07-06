@@ -3,7 +3,7 @@
     flex-direction: row;
     align-items: center;
     position: relative;
-    gap: 2px;
+    gap: 7px;
     min-width: 50px;
 }
 

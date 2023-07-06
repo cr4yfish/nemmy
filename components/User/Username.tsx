@@ -24,7 +24,7 @@ export default function Username({ user, baseUrl } : { user: Person, baseUrl: st
                         >
                     </div>
                     <span>{user.avatar && <img className={`${styles.userimage}`} src={user.avatar} alt={user.name} width={20} height={20} /> }</span>
-                    <span className="font-medium" >@{user.name}</span>
+                    <span className="font-medium" >{user.name}</span>
                 <SmallUser 
                     user={user} 
                     userHover={userHover}
