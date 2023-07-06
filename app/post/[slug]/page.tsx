@@ -150,7 +150,7 @@ export default function Post() {
                     </div>
                     }
 
-                    { true &&
+                    { commentsLoading &&
                         <div className="flex justify-center items-center w-full mb-10">
                             <BounceLoader color="#e6b0fa" size={20} speedMultiplier={.75} />
                         </div>
