@@ -1,10 +1,10 @@
 import Image from "next/image";
 import { LemmyHttp, PostView } from "lemmy-js-client";
-import ReactMarkdown from 'react-markdown'
 import Username from "./User/Username";
 import { AutoMediaType } from "@/utils/AutoMediaType";
 import Vote from "./Vote";
 import Link from "next/link";
+import RenderMarkdown from "./ui/RenderMarkdown";
 
 import styles from "../styles/post.module.css"
 import { useEffect, useState } from "react";
@@ -67,7 +67,7 @@ export default function Post({ post } : { post: PostView }) {
                 </div>
                 <div className={`${styles.content}`}>
                     <div className={`${styles.contentOverlay}`} style={{ display: hasMedia ? "none" : "block" }}></div>
-                    {post?.post?.body && <div className={`${styles.body} ${markdownStyle.markdown}`}><ReactMarkdown>{`${post?.post?.body}`}</ReactMarkdown></div> }
+                    {post?.post?.body && <div className={`${styles.body} ${markdownStyle.markdown}`}><RenderMarkdown>{post?.post?.body}</RenderMarkdown></div> }
                     {post.post.embed_video_url &&
                         <div className={`${styles.video}`}>
                             <AutoMediaType url={post.post.embed_video_url} alt={post.post.name} />

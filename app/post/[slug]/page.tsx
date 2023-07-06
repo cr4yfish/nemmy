@@ -3,7 +3,7 @@
 import { usePathname } from "next/navigation"; 
 import React, { useEffect, useState } from "react";
 import { GetCommentsResponse, GetPostResponse } from "lemmy-js-client";
-import ReactMarkdown from 'react-markdown'
+import RenderMarkdown from "@/components/ui/RenderMarkdown";
 
 import { AutoMediaType } from "@/utils/AutoMediaType";
 import Username from "@/components/User/Username";
@@ -102,7 +102,7 @@ export default function Post() {
                             {postData?.post_view?.post?.url && <AutoMediaType url={postData?.post_view?.post?.url} />}
                             {postData?.post_view?.post?.embed_video_url && <AutoMediaType url={postData?.post_view?.post?.embed_video_url} />}
                         </div>
-                        {postData?.post_view?.post?.body && <div className={`${styles.postContentText} ${markdownStyle.markdown}`}><ReactMarkdown>{`${postData?.post_view?.post?.body}`}</ReactMarkdown></div>}
+                        {postData?.post_view?.post?.body && <div className={`${styles.postContentText} ${markdownStyle.markdown}`}><RenderMarkdown>{postData?.post_view?.post?.body}</RenderMarkdown></div>}
                         <div>{postData?.post_view?.post?.embed_title}</div>
                         <div>{postData?.post_view?.post?.embed_description}</div>
                         
