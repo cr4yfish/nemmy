@@ -84,7 +84,7 @@ This means that there is no single huge "Lemmy Server" but many smaller "instanc
     - [X] Voting on Posts
     - [ ] Voting on Comments
 - [x] PWA
-- [X] Auth
+- [ ] Auth
     - [X] Login
     - [ ] Register
 - [ ] Creating Content
