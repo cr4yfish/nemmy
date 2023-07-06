@@ -1,5 +1,3 @@
-"use client";
-
 import './globals.css'
 import { Montserrat } from 'next/font/google'
 import 'material-icons/iconfont/material-icons.css';

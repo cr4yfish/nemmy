@@ -1,3 +1,5 @@
+"use client";
+
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { PersonView, GetSiteResponse} from 'lemmy-js-client';
 import { getCookies } from 'cookies-next';
