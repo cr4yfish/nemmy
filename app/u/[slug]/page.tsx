@@ -2,21 +2,22 @@
 
 import { usePathname } from "next/navigation"; 
 import { useEffect, useState } from "react";
-import { GetPersonDetailsResponse, PostView } from "lemmy-js-client";
+import { GetPersonDetailsResponse, GetSiteResponse, PostView } from "lemmy-js-client";
 import { useNavbar } from "@/hooks/navbar";
-import { AutoMediaType } from "@/utils/AutoMediaType";
-import Username from "@/components/User/Username";
-import Comment from "@/components/Comment";
-import PostList from "@/components/PostList";
 import InfiniteScroll from "react-infinite-scroller";
 import Loader from "@/components/ui/Loader";
 import Post from "@/components/Post";
+import Button from "@/components/ui/Button";
+import { deleteCookie } from "cookies-next";
+import { useSession } from "@/hooks/auth";
+import { useRouter } from "next/navigation";
 
 import postListStyles from "@/styles/postList.module.css"
 import styles from "@/styles/Pages/UserPage.module.css";
 
 export default function User() {
     const { navbar, setNavbar } = useNavbar();
+    const { session, setSession } = useSession();
 
     const [userData, setUserData] = useState<GetPersonDetailsResponse>({} as GetPersonDetailsResponse);
     const [userDataError, setUserDataError] = useState(true);
@@ -26,6 +27,8 @@ export default function User() {
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [pageLimit, setPageLimit] = useState<number>(10);
     const [morePages, setMorePages] = useState<boolean>(true);
+
+    const router = useRouter();
 
     // community id
     const pathname = usePathname().split("/")[2];
@@ -70,6 +73,21 @@ export default function User() {
         setCurrentPage(currentPage + 1);
     }
 
+    const handleLogout = async () => {
+        
+        // delete the cookie
+        deleteCookie("jwt");
+
+        // delete sessionStorage
+        sessionStorage.removeItem("jwt");
+
+        // set session to empty
+        setSession({ user: {} as GetSiteResponse, jwt: "" });
+
+        // redirect to home
+        router.push("/");
+    }
+
     return (
         <div className="flex min-h-screen flex-col items-center mt-4">
             <div className={`${styles.userDetailsWrapper}`}>
@@ -86,7 +104,15 @@ export default function User() {
                         
                         <span>{userData?.person_view?.person?.bio}</span>
                         <span className="flex items-center gap-2 text-neutral-300"><span className="material-icons">cake</span>{new Date(userData?.person_view?.person?.published).toDateString()}</span>
+                        
+                        { session?.user?.my_user?.local_user_view.person.id == userData?.person_view?.person?.id &&
+                        <div className="flex flex-row justify-start items-center w-32 ">
+                            <Button onClick={() => handleLogout()} variant="secondary">Log out</Button>
+                        </div>
+                        }
+                        
                     </div>
+                    
                 </div>
 
                 <img src={userData?.person_view?.person?.banner} alt="" className={`${styles.banner}`} />
