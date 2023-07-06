@@ -1,14 +1,11 @@
 "use client";
 
 import './globals.css'
-import { Inter, Montserrat } from 'next/font/google'
+import { Montserrat } from 'next/font/google'
 import 'material-icons/iconfont/material-icons.css';
 import { Analytics } from '@vercel/analytics/react';
-import { useState, useEffect } from 'react';
-import { Person, PersonView } from 'lemmy-js-client';
 import { SessionContextProvider } from '@/hooks/auth';
 
-const inter = Inter({ subsets: ['latin'] })
 const montserrat = Montserrat({ subsets: ['latin'] })
 
 export const metadata = {
@@ -26,7 +23,6 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  const [session, setSession] = useState<{ user: PersonView, jwt: string }>();
 
   return (
     <html lang="en">

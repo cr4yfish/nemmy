@@ -3,6 +3,7 @@ import { FormEvent, useState } from "react";
 
 import { useSession } from "@/hooks/auth";
 import styles from "../styles/Navbar.module.css";
+import Username from "./User/Username";
 
 export default function Navbar() {
     const { session, setSession } = useSession();
@@ -41,10 +42,10 @@ export default function Navbar() {
 
             <div className={styles.userWrapper}>
                 {session?.user?.my_user?.local_user_view?.person?.avatar?
-                    <div className={styles.userImage}><img src={session.user.my_user.local_user_view.person.avatar} height={40} width={40} /></div>
+                    <div className={styles.userImage}><img src={session.user.my_user.local_user_view.person.avatar} /></div>
                 : <span className={`material-icons`}>person</span>
                 }
-                <span>{session?.user?.my_user?.local_user_view?.person?.name || "Guest"}</span>
+                <span>{session?.user?.my_user?.local_user_view?.person?.name || <a href="/auth"><button>Login</button></a>}</span>
             </div>
             
         </nav>

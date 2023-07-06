@@ -4,11 +4,14 @@ import { getCookies, setCookie } from "cookies-next";
 import { GetPersonDetailsResponse, GetSiteResponse, LemmyHttp, PersonView } from "lemmy-js-client"
 import { FormEvent, useState } from "react";
 import { useSession } from "@/hooks/auth";
+import Logo from "@/components/Logo";
+import { useRouter } from "next/navigation"; 
 
 import styles from "@/styles/Pages/LoginPage.module.css";
 
 export default function Login() {
     const { session, setSession } = useSession();
+    const router = useRouter();
 
     const [form, setForm] = useState<{ username: string, password: string, saveLogin: boolean}>({
         username: "",
@@ -58,6 +61,9 @@ export default function Login() {
             
             // get user details
             const user = await getUserDetails(jwt.jwt);
+            
+            // redirect to home
+            router.push("/");
     
         } catch (e: any) {
             console.log(e.message);
@@ -71,28 +77,30 @@ export default function Login() {
     }
 
     return (
-        <main className="flex items-center justify-start p-2 w-full flex-col">
+        <div className="flex flex-col items-center justify-between h-96 pt-5 gap-16">
+            <Logo />
 
             <div className="flex items-center flex-col gap-4">
-                <h1 className="font-bold text-3xl">Login</h1>
+                <h1 className="font-bold text-3xl">Welcome back</h1>
+
                 <form onSubmit={(e) => handleSubmit(e)} className={`${styles.loginWrapper}`}>
                     <div className={`${styles.inputWrapper}`}>
-                        <label htmlFor="">Username</label>
+                        <label htmlFor="">Email</label>
                         <input required type="email" />
                     </div>
                     <div className={`${styles.inputWrapper}`}>
                         <label htmlFor="">Password</label>
                         <input required type="password" />
                     </div>
-                    <div className={`${styles.inputWrapper}`}>
-                        <label htmlFor="">Save login</label>
-                        <input type="checkbox" id="saveLogin" />
+                    <div onClick={() => setForm({...form, saveLogin: !form.saveLogin})}  className={`flex flex-row gap-3 items-center select-none`}>
+                        <input className="w-fit" type="checkbox" id="saveLogin" checked={form.saveLogin} />
+                        <label className="w-fit" htmlFor="">Save login</label>
                     </div>
-                    <button className={`${styles.button}`} type="submit">Login</button>
+                    <button className={`${styles.button} ${styles.primary}`} type="submit">Login</button>
                 </form>
                 
             </div>
 
-        </main>
+        </div>
     )
 }

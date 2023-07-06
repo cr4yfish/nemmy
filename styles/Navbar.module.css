@@ -145,12 +145,12 @@
 }
 
 .userImage {
-    @apply rounded-full;
+    @apply rounded-full w-5 h-5;
     overflow: hidden;
 }
 
 .userWrapper {
-    @apply max-sm:hidden flex items-center gap-2
+    @apply flex items-center gap-2
     
     ;
 }

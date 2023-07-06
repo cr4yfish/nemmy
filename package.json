@@ -18,6 +18,7 @@
     "encoding": "^0.1.13",
     "eslint": "8.43.0",
     "eslint-config-next": "13.4.7",
+    "framer-motion": "^10.12.18",
     "jsonwebtoken": "^9.0.1",
     "lemmy-js-client": "^0.18.1-rc.2",
     "material-icons": "^1.13.8",
