@@ -16,7 +16,7 @@
 }
 
 .post {
-    @apply flex flex-col items-center gap-5 justify-center max-w-xl;
+    @apply flex flex-col items-center gap-2 justify-center max-w-xl;
 }
 
 .postHeader {
@@ -67,7 +67,7 @@
 }
 
 .postInteractions {
-    @apply flex flex-row gap-6 max-w-full items-center ;
+    @apply flex flex-row gap-6 w-full items-center ;
 }
 
 .postInteractions div {
