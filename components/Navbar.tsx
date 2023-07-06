@@ -40,7 +40,7 @@ export default function Navbar() {
                 </a>
             </form>
 
-            <div className={styles.userWrapper}>
+            <div className={`${styles.userWrapper} cursor-pointer select-none`}>
                 {session?.user?.my_user?.local_user_view?.person?.avatar?
                     <div className={styles.userImage}><img src={session.user.my_user.local_user_view.person.avatar} /></div>
                 : <span className={`material-icons`}>person</span>
