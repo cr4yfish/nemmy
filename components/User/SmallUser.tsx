@@ -23,7 +23,7 @@ export default function SmallUser({ user, userHover, baseUrl, setUserHover, styl
                         <span>{baseUrl}</span>
                     </div>
                 </div>
-                <a href={`https://${baseUrl}/u/${user.name}`} target="_blank"><span className="material-icons">open_in_new</span></a>
+                <a href={baseUrl == "lemmy.world" ? `u/${user.name}` : `https://${baseUrl}/u/${user.name}`} target="_blank"><span className="material-icons">open_in_new</span></a>
             </div>
         </>
     )
