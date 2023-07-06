@@ -4,7 +4,8 @@ import { usePathname } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { GetCommentsResponse, GetPostResponse } from "lemmy-js-client";
 import RenderMarkdown from "@/components/ui/RenderMarkdown";
-
+import Image from "next/image";
+import Link from "next/link";
 import { AutoMediaType } from "@/utils/AutoMediaType";
 import Username from "@/components/User/Username";
 import Comment from "@/components/Comment";
@@ -13,6 +14,7 @@ import { BounceLoader } from "react-spinners";
 
 import styles from "../../../styles/Pages/PostPage.module.css";
 import markdownStyle from "@/styles/util/markdown.module.css";
+
 
 export default function Post() {
     const { navbar, setNavbar } = useNavbar();
@@ -44,7 +46,7 @@ export default function Post() {
             } else {
                 setPostDataError(false);
                 setPostData(json as GetPostResponse);
-
+                console.log(json);
                 // Get baseUrl from post
                 const ap_id = json?.post_view?.post?.ap_id;
                 const domain = ap_id?.split("/")[2];
@@ -87,7 +89,7 @@ export default function Post() {
                             <div className={`${styles.postHeaderMetadataContent}`}>
                                 <span>c/{postData?.post_view?.community?.name}</span>
                                 <span className={`${styles.postHeaderMetadataContentUsername}`}>
-                                    <span>Posted by</span>
+                                    <span className="max-sm:hidden">Posted by</span>
                                     <Username user={postData?.post_view?.creator} baseUrl="" />
                                 </span>
                             </div>
@@ -98,10 +100,20 @@ export default function Post() {
                     </div>
 
                     <div className={`${styles.postContent}`}>
+                        { (postData?.post_view?.post?.url || postData?.post_view?.post?.embed_video_url) && !postData?.post_view?.post?.url?.endsWith(".html") &&
                         <div className={`${styles.postBodyMedia}`}>
                             {postData?.post_view?.post?.url && <AutoMediaType url={postData?.post_view?.post?.url} />}
                             {postData?.post_view?.post?.embed_video_url && <AutoMediaType url={postData?.post_view?.post?.embed_video_url} />}
                         </div>
+                        }
+
+                        { postData?.post_view?.post?.url?.endsWith(".html") &&
+                            <div className={`${styles.postBodyEmbed}`}>
+                                {postData?.post_view?.post?.thumbnail_url && <div className={`${styles.postBodyEmbedImage}`}><img src={postData?.post_view?.post?.thumbnail_url} alt="" /></div>}
+                                <Link className="a" href={postData?.post_view?.post?.url} target="_blank" rel="noreferrer">{postData?.post_view?.post?.url}</Link>
+                            </div>
+                        }
+
                         {postData?.post_view?.post?.body && <div className={`${styles.postContentText} ${markdownStyle.markdown}`}><RenderMarkdown>{postData?.post_view?.post?.body}</RenderMarkdown></div>}
                         <div>{postData?.post_view?.post?.embed_title}</div>
                         <div>{postData?.post_view?.post?.embed_description}</div>
