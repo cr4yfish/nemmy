@@ -37,8 +37,6 @@
   <p align="center">
     The Neat Lemmy App for the Web. This project is focused on building a Lemmy App with the best possible User Experience.
     <br />
-    <a href="https://github.com/Cr4yfish/Nemmy"><strong>Explore the docs »</strong></a>
-    <br />
     <br />
     <a href="https://nemmy.app/">Website</a>
     ·
