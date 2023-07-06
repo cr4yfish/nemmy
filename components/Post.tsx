@@ -67,7 +67,7 @@ export default function Post({ post } : { post: PostView }) {
                 </div>
                 <div className={`${styles.content}`}>
                     <div className={`${styles.contentOverlay}`} style={{ display: hasMedia ? "none" : "block" }}></div>
-                    <div className={`${styles.body} ${markdownStyle.markdown}`}><ReactMarkdown>{`${post.post.body}`}</ReactMarkdown></div> 
+                    {post?.post?.body && <div className={`${styles.body} ${markdownStyle.markdown}`}><ReactMarkdown>{`${post?.post?.body}`}</ReactMarkdown></div> }
                     {post.post.embed_video_url &&
                         <div className={`${styles.video}`}>
                             <AutoMediaType url={post.post.embed_video_url} alt={post.post.name} />
