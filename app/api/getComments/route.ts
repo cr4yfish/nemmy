@@ -9,7 +9,7 @@ export async function GET(req: Request) {
         let type_ = params.get("type_") || "All";
         let sort = params.get("sort") || "Top";
         let max_depth = params.get("max_depth") || 10;
-        let page = params.get("page") || 0;
+        let page = params.get("page") || 1;
         let limit = params.get("limit") || 10;
         let community_id = params.get("community_id") || 0; // Required
         let community_name = params.get("community_name") || undefined;
@@ -21,11 +21,12 @@ export async function GET(req: Request) {
 
         if(!post_id) throw new Error("post_id is required");
 
-        let client: LemmyHttp = new LemmyHttp("https://lemmy.world");
+        console.log(baseUrl);
+        let client: LemmyHttp = new LemmyHttp(`https://lemmy.world`);
 
         let comments = await client.getComments({
             // one of these is causing an error right now
-            //type_: type_ as unknown as ListingType,
+            type_: type_ as unknown as ListingType,
             sort: sort as unknown as CommentSortType,
             max_depth: max_depth as unknown as number,
             page: page as unknown as number,

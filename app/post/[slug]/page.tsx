@@ -9,6 +9,7 @@ import { AutoMediaType } from "@/utils/AutoMediaType";
 import Username from "@/components/User/Username";
 import Comment from "@/components/Comment";
 import { useNavbar } from "@/hooks/navbar";
+import { BounceLoader } from "react-spinners";
 
 import styles from "../../../styles/Pages/PostPage.module.css";
 import markdownStyle from "@/styles/util/markdown.module.css";
@@ -18,9 +19,12 @@ export default function Post() {
 
     const [postData, setPostData] = useState<GetPostResponse>({} as GetPostResponse);
     const [postDataError, setPostDataError] = useState(true);
+    const [baseUrl, setBaseUrl] = useState<string>("");
 
     const [commentsData, setCommentsData] = useState<GetCommentsResponse>({} as GetCommentsResponse);
     const [commentsDataError, setCommentsDataError] = useState(true);
+    const [forceCommentUpdate, setForceCommentUpdate] = useState<number>(0);
+    const [commentsLoading, setCommentsLoading] = useState<boolean>(true);
 
     // post id
     const pathname = usePathname().split("/")[2];
@@ -40,6 +44,12 @@ export default function Post() {
             } else {
                 setPostDataError(false);
                 setPostData(json as GetPostResponse);
+
+                // Get baseUrl from post
+                const ap_id = json?.post_view?.post?.ap_id;
+                const domain = ap_id?.split("/")[2];
+                setBaseUrl(domain);
+
                 return;
             }
         })();
@@ -47,19 +57,22 @@ export default function Post() {
     }, [pathname, postDataError]);
 
     useEffect(() => {
-        if(!commentsDataError) return;
+        if(!commentsDataError) { console.log("No error"); return};
         (async () => {
-            const data = await fetch(`/api/getComments?post_id=${pathname}&sort=Top&limit=100&page=0&max_depth=1`);
+            console.log("Getting comments", postData);
+            setCommentsLoading(true);
+            const data = await fetch(`/api/getComments?post_id=${pathname}&sort=Hot&limit=100&page=1&max_depth=8&baseUrl=${baseUrl}&type_=All`);
             const json = (await data.json());
-            
+            console.log("Comments:", json);
             if(json.error) {
                 console.error(json.error)
                 setCommentsDataError(true);
                 return;
             }
+            setCommentsLoading(false);
             setCommentsData(json as GetCommentsResponse);
         })()
-    }, [commentsDataError, pathname]);
+    }, [commentsDataError, forceCommentUpdate, baseUrl]);
 
     
 
@@ -125,13 +138,23 @@ export default function Post() {
                         </div>
                     </div>
                     }
-
                     <div className={`${styles.commentsList}`}>
-                        {/* Comments need to be placd by the comment.id, but how do I know the correct sequence? */}
                         {commentsData?.comments?.filter((c) => c.comment.path.split(".")[1] == c.comment.id.toString()).map((comment, index) => (
                             <Comment commentView={comment} allComments={commentsData.comments} key={index} />
                         ))}
                     </div>
+
+                    { commentsData?.comments?.length == 0 && !commentsLoading &&
+                    <div className="flex justify-center items-center w-full mb-10">
+                        <button onClick={() => setForceCommentUpdate(forceCommentUpdate + 1)}><span className="material-icons">refresh</span></button>
+                    </div>
+                    }
+
+                    { true &&
+                        <div className="flex justify-center items-center w-full mb-10">
+                            <BounceLoader color="#e6b0fa" size={20} speedMultiplier={.75} />
+                        </div>
+                    }
                 </div>
             </div>
         </main>
