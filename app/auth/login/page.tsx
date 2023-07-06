@@ -77,7 +77,7 @@ export default function Login() {
     }
 
     return (
-        <div className="flex flex-col items-center justify-between h-96 pt-5 gap-16">
+        <div className="flex flex-col items-center justify-between h-96 pt-16 gap-24">
             <Logo />
 
             <div className="flex items-center flex-col gap-4">

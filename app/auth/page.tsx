@@ -1,13 +1,21 @@
+"use client"
+
 import Link from "next/link"
 import Logo from "@/components/Logo"
+import { useNavbar } from "@/hooks/navbar"
+import { useEffect } from "react"
 
 import styles from "@/styles/Pages/AuthPage.module.css"
 
 export default function Auth() {
+    const { navbar, setNavbar } = useNavbar();
 
+    useEffect(() => {
+        setNavbar({ ...navbar!, hidden: true })
+    }, [])
 
     return (
-        <div className="flex flex-col items-center justify-between h-96 pt-5">
+        <div className="flex flex-col items-center justify-between h-96 pt-16 gap-24">
             <Logo />
 
             <div className="flex flex-col gap-12 items-center">

@@ -3,7 +3,7 @@ import { Montserrat } from 'next/font/google'
 import 'material-icons/iconfont/material-icons.css';
 import { Analytics } from '@vercel/analytics/react';
 import { SessionContextProvider } from '@/hooks/auth';
-
+import { NavbarContextProvider } from '@/hooks/navbar';
 const montserrat = Montserrat({ subsets: ['latin'] })
 
 export const metadata = {
@@ -26,8 +26,10 @@ export default function RootLayout({
     <html lang="en">
       <body className={montserrat.className}>
         <SessionContextProvider>
-          <Navbar />
-          {children}
+          <NavbarContextProvider>
+            <Navbar />
+            {children}
+          </NavbarContextProvider>
         </SessionContextProvider>
         <Analytics />
         </body> 
