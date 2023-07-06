@@ -4,6 +4,7 @@ import { LemmyHttp, PostView } from "lemmy-js-client";
 import Username from "./User/Username";
 import { AutoMediaType } from "@/utils/AutoMediaType";
 import Vote from "./Vote";
+import Link from "next/link";
 
 import styles from "../styles/post.module.css"
 import { useEffect, useState } from "react";
@@ -38,15 +39,15 @@ export default function Post({ post } : { post: PostView }) {
                     <div className={`${styles.votes}`}></div>
                     <div className={`${styles.headerContent}`}>
                         <div className={`${styles.headerMetadata}`}>
-                            <a href={`/c/${post?.community?.name}`} target="_blank" className={`${styles.communityImage}`}>
+                            <Link href={`/c/${post?.community?.name}`}  className={`${styles.communityImage}`}>
                                 {post?.community?.icon ?
                                     <img src={post?.community?.icon} alt="" />
                                     :
                                     <div className={`${styles.communityIconFill}`}></div>
                                 }
-                            </a>
+                            </Link>
                             <div className={`${styles.headerMetadataContent}`}>
-                                <a href={`/c/${post?.community?.name}`} target="_blank" className={`${styles.sub}`}>c/{post.community.name}</a>
+                                <Link href={`/c/${post?.community?.name}`}  className={`${styles.sub}`}>c/{post.community.name}</Link>
                                 <span className={`${styles.dividerDot}`}></span>
                                 <div className={`${styles.user}`}>
                                     <div>Posted by</div> 
@@ -56,9 +57,9 @@ export default function Post({ post } : { post: PostView }) {
                             </div>
                             
                         </div>
-                        <a href={postUrl} target="_blank"  className={`${styles.headerTitle}`}>
+                        <Link href={postUrl}   className={`${styles.headerTitle}`}>
                             <h2 className={`${styles.title}`}>{post.post.name}</h2>
-                        </a>
+                        </Link>
                         <span className={`${styles.headerLink}`}></span>
                     </div>
                 </div>
@@ -71,9 +72,9 @@ export default function Post({ post } : { post: PostView }) {
                         </div>
                     }
                     {post.post.thumbnail_url &&
-                        <a className={`${styles.image}`} href={post.post.thumbnail_url} target="_blank">
+                        <Link className={`${styles.image}`} href={post.post.thumbnail_url} >
                             <AutoMediaType url={post.post.thumbnail_url} alt={post.post.name} />
-                        </a>
+                        </Link>
                     }
                 </div>
                 <div className={styles.footer}>

@@ -1,7 +1,9 @@
 
 .pageWrapper {
+    @apply w-full;
     display: flex;
     justify-content: center;
+    overflow-x: hidden;
 }
 
 .wrapper {
@@ -13,7 +15,7 @@
 }
 
 .post {
-    @apply flex flex-col items-center gap-5;
+    @apply flex flex-col items-center gap-5 justify-center max-w-full;
 }
 
 .postHeader {
@@ -44,12 +46,13 @@
 }
 
 .postHeaderTitle {
-    @apply text-3xl font-bold;
+    @apply text-3xl font-bold
+    max-md:text-xl
+    ;
 }
 
 .postContent {
-    @apply w-full;
-    max-width: 600px;
+    @apply max-w-xl  max-md:w-full;
     overflow: hidden;
     overflow-wrap: break-word;
     word-wrap: break-word;
@@ -57,13 +60,30 @@
 }
 
 .postContentText {
-    @apply w-full;
+    @apply w-full text-sm;
     overflow: hidden;
     overflow-wrap: break-word;
 }
 
+.postContentText h1,
+.postContentText h2,
+.postContentText h3, 
+.postContentText h4, 
+.postContentText h5 {
+    @apply text-xl font-bold;
+}
+
+.postContentText a {
+    @apply text-blue-500 hover:text-blue-700;
+}
+
+.postContentText img {
+    @apply m-2 rounded-lg overflow-hidden
+    ;
+}
+
 .postInteractions {
-    @apply flex flex-row gap-6 w-full items-center ;
+    @apply flex flex-row gap-6 max-w-full items-center ;
 }
 
 .postInteractions div {
@@ -143,7 +163,9 @@
         rounded-lg
         shadow-md
         dark:shadow-none
+        max-w-xl
+        max-md:w-full
+        mb-6
         ;
-    max-width: 600px;
     overflow: hidden;
 }
