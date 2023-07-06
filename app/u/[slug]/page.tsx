@@ -3,7 +3,7 @@
 import { usePathname } from "next/navigation"; 
 import { useEffect, useState } from "react";
 import { GetPersonDetailsResponse, PostView } from "lemmy-js-client";
-
+import { useNavbar } from "@/hooks/navbar";
 import { AutoMediaType } from "@/utils/AutoMediaType";
 import Username from "@/components/User/Username";
 import Comment from "@/components/Comment";
@@ -16,6 +16,8 @@ import postListStyles from "@/styles/postList.module.css"
 import styles from "@/styles/Pages/UserPage.module.css";
 
 export default function User() {
+    const { navbar, setNavbar } = useNavbar();
+
     const [userData, setUserData] = useState<GetPersonDetailsResponse>({} as GetPersonDetailsResponse);
     const [userDataError, setUserDataError] = useState(true);
 
@@ -28,6 +30,10 @@ export default function User() {
     // community id
     const pathname = usePathname().split("/")[2];
 
+    useEffect(() => {
+        setNavbar({ ...navbar!, showSort: false, showSearch: true, showUser: true, showback: true })
+    }, [])
+    
     useEffect(() => {
         if(!userDataError) return;
         (async () => {

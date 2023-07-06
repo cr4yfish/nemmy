@@ -3,7 +3,7 @@
 import { usePathname } from "next/navigation"; 
 import { useEffect, useState } from "react";
 import { GetCommentsResponse, GetPostResponse, GetCommunityResponse } from "lemmy-js-client";
-
+import { useNavbar } from "@/hooks/navbar";
 import { AutoMediaType } from "@/utils/AutoMediaType";
 import Username from "@/components/User/Username";
 import Comment from "@/components/Comment";
@@ -12,8 +12,13 @@ import PostList from "@/components/PostList";
 import styles from "../../../styles/Pages/PostPage.module.css";
 
 export default function Community() {
+    const { navbar, setNavbar } = useNavbar();
     const [communityData, setCommunityData] = useState<GetCommunityResponse>({} as GetCommunityResponse);
     const [communityDataError, setCommunityDataError] = useState(true);
+
+    useEffect(() => {
+        setNavbar({ ...navbar!, showSort: true, showSearch: true, showUser: true, showback: false })
+    }, [])
 
     // community id
     const pathname = usePathname().split("/")[2];
