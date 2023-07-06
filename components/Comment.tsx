@@ -37,6 +37,10 @@ export default function Comment({ commentView, allComments, depth=0 }: { comment
         })()
     }, [commentView, allComments, childrenError])
 
+    useEffect(() => {
+        console.log("childrenHidden?", childrenHidden);
+    }, [childrenHidden])
+
     return (
         <>
         <div className={`${styles.wrapper}`}>
@@ -47,7 +51,7 @@ export default function Comment({ commentView, allComments, depth=0 }: { comment
             </div>
 
             <div className={`${styles.body}`}>
-                <div className={`${styles.chainlineWrapper} `} onClick={() => !setChildrenHidden} >
+                <div className={`${styles.chainlineWrapper} `} onClick={() => setChildrenHidden(!childrenHidden)} >
                     <div className={`${styles.chainlineLine} ${colors[depth]}`}></div>
                 </div>
                 <div className={`${styles.content}`}>

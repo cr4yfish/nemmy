@@ -32,6 +32,8 @@
     width: 20px;
     height: 100%;
     cursor: pointer;
+    z-index: 10;
+    pointer-events: all;
 }
 
 .chainlineLine {
