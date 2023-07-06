@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { LemmyHttp, PostView } from "lemmy-js-client";
 import Username from "./User/Username";
-import { AutoMediaType } from "@/utils/AutoMediaType";
+import { AutoMediaType, isImageType } from "@/utils/AutoMediaType";
 import Vote from "./Vote";
 import Link from "next/link";
 import RenderMarkdown from "./ui/RenderMarkdown";
@@ -67,29 +67,52 @@ export default function Post({ post } : { post: PostView }) {
                 </div>
                 <div className={`${styles.content}`}>
 
-                    {!(post?.post?.url && !post?.post?.url?.endsWith(".html") && !post.post.thumbnail_url ) && <div className={`${styles.contentOverlay}`} style={{ display: hasMedia ? "none" : "block" }}></div>}
+                    {/* Display Overlay if post has no media */}
+                    {   !post?.post?.embed_title && // 100% dont display content overlay
+                        !post?.post?.url?.endsWith(".html") && // 100% dont display content overlay
+                        !post.post.thumbnail_url &&  // maybe display content overlay
+                        !(post?.post?.url && isImageType(post?.post?.url)) && // dont display
+                        <div className={`${styles.contentOverlay}`} style={{ display: hasMedia ? "none" : "block" }}></div>
+                    }
 
-                    {post?.post?.body && <div className={`${styles.body} ${markdownStyle.markdown}`}><RenderMarkdown>{post?.post?.body}</RenderMarkdown></div> }
-                    {post?.post?.url?.endsWith(".html") &&
-                        <div className={`${styles.link} flex justify-start items-start w-full p-1 pl-0`}>
-                            <a className="a text-xs" href={post.post.url} target="_blank">{post.post.url}</a>
-                    </div>
+                    {/* Display Body if post has body and is not a Link */}
+                    {post?.post?.body && !(post?.post?.embed_title || post?.post?.url?.endsWith(".html")) && <div className={`${styles.body} ${markdownStyle.markdown}`}><RenderMarkdown>{post?.post?.body}</RenderMarkdown></div> }
+
+                    {/* Display Link if post has link e.g. Article case */}
+                    {(post?.post?.embed_title || post?.post?.url?.endsWith(".html")) &&
+                        <div className={`${styles.postBodyEmbed}`}>
+                            <div className="flex flex-col">
+                                <div className="font-bold text-sm">{post?.post?.embed_title}</div>
+                                <div className="font-light text-xs">{post?.post?.embed_description}</div>
+                            </div>
+                           <div className={`${styles.link} flex justify-start items-start w-full p-1 pl-0`}>
+                                <a className="a text-xs" href={post.post.url} target="_blank">{post.post.url}</a>
+                            </div>
+                            {/* Display Thumbnail */}
+                            {post.post.thumbnail_url &&
+                                <Link className={`${styles.image}`} href={post.post.thumbnail_url} target="_blank" >
+                                    <AutoMediaType url={post.post.thumbnail_url} alt={post.post.name} />
+                                </Link>
+                            }
+                        </div>
+                        
                     }    
-                    { post?.post?.url && !post?.post?.url?.endsWith(".html") && !post.post.thumbnail_url &&
+
+                    { /* Post has post url and no embedding,thus the url has to link to an Image -> Display Image */}
+                    { post?.post?.url && !post?.post?.embed_title &&
                         <div className={`${styles.image}`}>
                             <AutoMediaType url={post?.post?.url} alt={post.post.name} />
                         </div>
                     }
+
+                    {/* Display Embed Video */}
                     {post.post.embed_video_url &&
                         <div className={`${styles.video}`}>
                             <AutoMediaType url={post.post.embed_video_url} alt={post.post.name} />
                         </div>
                     }
-                    {post.post.thumbnail_url &&
-                        <Link className={`${styles.image}`} href={post.post.thumbnail_url} target="_blank" >
-                            <AutoMediaType url={post.post.thumbnail_url} alt={post.post.name} />
-                        </Link>
-                    }
+
+                    
                 </div>
                 <div className={styles.footer}>
                     <Vote post={post} horizontal />

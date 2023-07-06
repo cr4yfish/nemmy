@@ -155,6 +155,26 @@
     overflow: hidden;
 }
 
+.postBodyEmbed {
+    @apply flex flex-col gap-2
+    mb-4 p-2 rounded-lg border
+    border-neutral-300 dark:border-neutral-600
+    ;
+}
+
+.postBodyEmbed a {
+    @apply text-xs
+}
+
+.postBodyEmbedTitle {
+    @apply text-lg font-bold;
+}
+
+.postBodyEmbedDescription {
+    @apply text-sm font-light;
+}
+
+
 .contentOverlay {
     position: absolute;
     z-index: 2;
