@@ -1,0 +1,19 @@
+.loader {
+    @apply 
+    w-full h-44 rounded-lg
+    shadow-md dark:shadow-md
+    bg-neutral-50 dark:bg-neutral-900
+    animate-pulse
+    flex flex-row
+    items-start
+    gap-5
+    p-4
+    ;
+    width: 48rem;
+}
+
+@media screen and (max-width: 768px) {
+    .loader {
+        width: 100vw;
+    }
+}

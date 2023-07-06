@@ -1,6 +1,6 @@
 "use client"
 import { FormEvent, useState } from "react";
-
+import Link from "next/link";
 import { useSession } from "@/hooks/auth";
 import styles from "../styles/Navbar.module.css";
 import Username from "./User/Username";
@@ -13,6 +13,14 @@ export default function Navbar() {
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
         alert("This isn't doing anything yet.")
+    }
+
+
+    const AutoLink = ({ href, children, className } : { href: string, children: any, className: string }) => {
+        return session?.user?.my_user?.local_user_view?.person?.name ?
+        <Link className={className} href={href}>{children}</Link> 
+        : 
+        <div className={className}>{children}</div>
     }
 
     return (
@@ -40,13 +48,13 @@ export default function Navbar() {
                 </a>
             </form>
 
-            <div className={`${styles.userWrapper} cursor-pointer select-none`}>
+            <AutoLink href={`/u/${session?.user?.my_user?.local_user_view?.person?.name}`} className={`${styles.userWrapper} cursor-pointer select-none`}>
                 {session?.user?.my_user?.local_user_view?.person?.avatar?
                     <div className={styles.userImage}><img src={session.user.my_user.local_user_view.person.avatar} /></div>
                 : <span className={`material-icons`}>person</span>
                 }
                 <span>{session?.user?.my_user?.local_user_view?.person?.name || <a href="/auth"><button>Login</button></a>}</span>
-            </div>
+            </AutoLink>
             
         </nav>
         </>
