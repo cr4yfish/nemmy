@@ -1,20 +1,19 @@
 
 
 .wrapper {
-    @apply bg-neutral-50 dark:bg-neutral-800 ;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    position: absolute;
-    padding: .5rem;
-    border-radius: 12px;
-    gap: .25rem;
-    min-width: 100px;
+    @apply 
+    bg-neutral-50 dark:bg-zinc-800 
+    flex flex-row items-center rounded-lg
+    p-4 gap-3
+    
+    ;
+    position: absolute; 
+    min-width: 200px;
     z-index: 99;
     pointer-events: none;
     opacity: 0;
-    transform: translateY(10%);
-    transition: all .15s;
+    transform: translateY(20%);
+    transition: all .2s;
 }
 
 .active {
@@ -23,21 +22,31 @@
     pointer-events: all !important;
 }
 
-.userImage {
-    overflow: hidden;
-    border-radius: 50%;
+.content {
+    @apply flex flex-col items-start;
+}
+
+.avatar {
+    @apply overflow-hidden rounded-full
+    border-2 border-fuchsia-50
+    ;
+}
+
+.userImage, .avatar {
+    @apply w-12 h-12;
 }
 
 .usernames {
-    display: flex;
-    flex-direction: column;
+    @apply flex flex-col items-start h-full;
 }
 
 .display_name {
-    @apply text-neutral-50 dark:text-neutral-800;
+    @apply text-neutral-50 dark:text-fuchsia-300 font-bold;
     font-size: 12pt;
 }
 
 .name {
+    @apply dark:text-fuchsia-50 ;
     font-size: 10pt;
 }
+
