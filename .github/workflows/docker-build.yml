@@ -2,8 +2,6 @@ name: Image Build
 
 on:
   push:
-    branches:
-      - build-test
     tags:
       - 0.*
 env:
