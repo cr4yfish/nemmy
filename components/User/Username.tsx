@@ -15,15 +15,21 @@ export default function Username({ user, baseUrl } : { user: Person, baseUrl: st
         <>
            {user ? <div 
                 className={`${styles.wrapper}`}
-                
+                onMouseOver={() => setUserHover(true)}
+                onMouseOut={() => setUserHover(false)}
                 >
                     <div 
                         className={`${styles.hovercatcher}`} 
-                        onMouseOver={() => setUserHover(true)}
-                        onMouseOut={() => setUserHover(false)}
+                        
                         >
                     </div>
-                    <span>{user.avatar && <img className={`${styles.userimage}`} src={user.avatar} alt={user.name} /> }</span>
+                    <span>
+                        <img 
+                            className={`${styles.userimage} ${user.avatar ? "" : "object-contain"} `} 
+                            src={user.avatar || "https://i.imgur.com/IN6ZY30.png"} 
+                            alt={user.name} 
+                        />
+                    </span>
                     <span className="font-medium" >{user.name}</span>
                 <SmallUser 
                     user={user} 
