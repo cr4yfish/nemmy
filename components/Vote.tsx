@@ -5,42 +5,70 @@ import AnimatedNumber from "react-awesome-animated-number";
 import "react-awesome-animated-number/dist/index.css";
 import { useSession } from "@/hooks/auth";
 
-import styles from "../styles/post.module.css"
-import { PostView } from "lemmy-js-client";
+import styles from "../styles/votes.module.css"
+import { CommentView, PostView } from "lemmy-js-client";
 
-export default function Vote({ horizontal=false, post } : { horizontal?: boolean, post: PostView }) {
-    const [score, setScore] = useState(post?.counts?.score);
+export default function Vote({ horizontal=false, post, comment, isComment } : { horizontal?: boolean, post?: PostView, comment?: CommentView, isComment?: boolean }) {
+    const [score, setScore] = useState((post?.counts?.score || comment?.counts?.score) || 0);
     const [liked, setLiked] = useState(false);
     const [disliked, setDisliked] = useState(false);
     const { session } = useSession();
 
+    // inital score setting
     useEffect(() => {
-        if(post.my_vote === 1) {
+        if(isComment && comment) {
+            setScore(comment.counts.score);
+        } else if(post) {
+            setScore(post.counts.score);
+        }
+    }, [post, comment])
+
+    // TODO oh god this is horrible, need to change this
+    useEffect(() => {
+        if(isComment) return;
+        if(session.pendingAuth) return;
+        if(post?.my_vote === 1) {
             setLiked(true);
-        } else if(post.my_vote === -1) {
+        } else if(post?.my_vote === -1) {
             setDisliked(true);
         }
     }, [session, post, liked, disliked])
 
+    useEffect(() => {
+        if(!isComment) return;
+        if(session.pendingAuth) return;
+
+        if(comment?.my_vote === 1) {
+            setLiked(true);
+        } else if(comment?.my_vote === -1) {
+            setDisliked(true);
+        }
+    }, [session, comment, liked, disliked])
+
     const vote = async (score: number, post_id: number, auth: string) => {
         if(!score || !post_id || !auth) throw new Error("Missing parameters");
+
         const response = await fetch("/api/votePost", {
             method: "POST",
             body: JSON.stringify({
                 post_id: post_id,
                 score: score,
-                auth: auth
+                auth: auth,
+                isComment: isComment
             })
         }).then(res => res.json());
-        return response.post_view as PostView;
+        return isComment ? response.comment_view as CommentView : response.post_view as PostView;
     }
 
     const handleLike = async () => {
-        if(liked || !session?.jwt) return;
-
+        if(liked || !session?.jwt) {return};
         disliked ? setScore(score + 2) : setScore(score + 1)
 
-        const response = await vote(1, post.post.id, session.jwt);
+        let id = (isComment && comment) ? comment.comment.id : false;
+        if(!id) id = post? post.post.id : false;
+        if(!id) throw new Error("No id found");
+
+        const response = await vote(1, id, session.jwt);
         const newVotes = response?.counts?.score;
         setScore(newVotes);
 
@@ -53,7 +81,11 @@ export default function Vote({ horizontal=false, post } : { horizontal?: boolean
 
         liked ? setScore(score-2) : setScore(score - 1);
 
-        const response = await vote(-1, post.post.id, session.jwt);
+        let id = (isComment && comment) ? comment.comment.id : false;
+        if(!id) id = post? post.post.id : false;
+        if(!id) throw new Error("No id found");
+
+        const response = await vote(-1, id, session.jwt);
         const newVotes = response?.counts?.score;
         setScore(newVotes);
 
