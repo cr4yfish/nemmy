@@ -11,6 +11,8 @@ import Username from "@/components/User/Username";
 import Comment from "@/components/Comment";
 import { useNavbar } from "@/hooks/navbar";
 import { BounceLoader } from "react-spinners";
+import { useSession } from "@/hooks/auth";
+import Vote from "@/components/Vote";
 
 import styles from "../../../styles/Pages/PostPage.module.css";
 import markdownStyle from "@/styles/util/markdown.module.css";
@@ -18,6 +20,7 @@ import markdownStyle from "@/styles/util/markdown.module.css";
 
 export default function Post() {
     const { navbar, setNavbar } = useNavbar();
+    const { session } = useSession();
 
     const [postData, setPostData] = useState<GetPostResponse>({} as GetPostResponse);
     const [postDataError, setPostDataError] = useState(true);
@@ -37,8 +40,9 @@ export default function Post() {
 
     useEffect(() => {
         if(!postDataError) return;
+        if(session.pendingAuth) return;
         (async () => {
-            const data = await fetch(`/api/getPost?id=${pathname}`);
+            const data = await fetch(`/api/getPost?id=${pathname}&auth=${session.jwt}`);
             const json = (await data.json());
             if(json.error) { 
                 console.error(json.error)
@@ -55,13 +59,14 @@ export default function Post() {
             }
         })();
 
-    }, [pathname, postDataError]);
+    }, [pathname, postDataError, session]);
 
     useEffect(() => {
         if(!commentsDataError) { console.log("No error :)"); return};
+        if(session.pendingAuth) return;
         (async () => {
             setCommentsLoading(true);
-            const data = await fetch(`/api/getComments?post_id=${pathname}&sort=Hot&limit=100&page=1&max_depth=8&baseUrl=${baseUrl}&type_=All`);
+            const data = await fetch(`/api/getComments?post_id=${pathname}&sort=Hot&limit=100&page=1&max_depth=8&baseUrl=${baseUrl}&type_=All&auth=${session.jwt}`);
             const json = (await data.json());
             if(json.error) {
                 console.error(json.error)
@@ -71,8 +76,7 @@ export default function Post() {
             setCommentsLoading(false);
             setCommentsData(json as GetCommentsResponse);
         })()
-    }, [commentsDataError, forceCommentUpdate, baseUrl]);
-
+    }, [commentsDataError, forceCommentUpdate, baseUrl, session]);
     
     return (
         <main className={`${styles.pageWrapper}`}>
@@ -128,11 +132,7 @@ export default function Post() {
                     </div>
 
                     <div className={`${styles.postInteractions}`}>
-                        <div className={`${styles.votes}`}>
-                            <span className={`material-icons ${styles.upvote}`}>arrow_upward</span>
-                            <span className={`${styles.votesCount}`}>{postData?.post_view?.counts?.score}</span>
-                            <span className={`material-icons ${styles.downvote}`}>arrow_downward</span>
-                        </div>
+                        <Vote post={postData?.post_view} horizontal />
                         <div className={`${styles.commentsReplies}`}><span className="material-icons">chat_bubble_outline</span>{postData?.post_view?.counts?.comments}</div>
                         <div className={`${styles.commentShare}`}><span className="material-icons">share</span></div>
                         <div className={`${styles.commentMore}`}><span className="material-icons">more_vert</span></div>
