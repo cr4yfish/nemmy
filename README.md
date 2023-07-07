@@ -82,9 +82,14 @@ This means that there is no single huge "Lemmy Server" but many smaller "instanc
     - [X] Voting on Posts
     - [X] Voting on Comments
 - [x] PWA
+- [ ] Community Page
+  - [ ] Finish Design
+  - [ ] Add all Community related features
+- [ ] Search   
 - [ ] Auth - Target v0.8
     - [X] Login
     - [ ] Register
+    - [ ] Subscribing to Communities
 - [ ] Creating Content - Target v0.9
     - [ ] Creating Comments
     - [ ] Creating Posts
