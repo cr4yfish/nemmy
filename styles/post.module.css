@@ -14,36 +14,6 @@
     width: 100%;
 }
 
-.votesDesktop, .votesMobile {
-    @apply text-neutral-900 dark:text-neutral-100
-    transition-all duration-200
-}
-
-.votesDesktop {
-    @apply flex max-md:hidden;
-    flex-direction: column;
-    align-items: center;
-}
-
-.votesMobile {
-    @apply hidden max-md:flex
-    gap-1
-    ;
-}
-
-.upvote, .downvote {
-    @apply transition-all duration-100;
-    cursor: pointer;
-}
-
-.upvote:hover {
-    @apply text-fuchsia-300;
-}
-
-.downvote:hover {
-    @apply text-indigo-300;
-}
-
 
 .rightSide {
     display: flex;

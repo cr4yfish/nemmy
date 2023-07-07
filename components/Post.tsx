@@ -33,12 +33,11 @@ export default function Post({ post } : { post: PostView }) {
             className={`${styles.wrapper}`} key={post.post.id} 
             style={{ height: !hasMedia ? "fit-content" : "unset", cursor: hasMedia ? "unset" : "pointer" }}
         >
-            <Vote post={post} />
+            <div className="max-md:hidden"><Vote post={post} /></div>
 
             <div className={`${styles.rightSide}`}>
 
                 <div className={`${styles.header}`} >
-                    <div className={`${styles.votes}`}></div>
                     <div className={`${styles.headerContent}`}>
                         <div className={`${styles.headerMetadata}`}>
                             <Link href={`/c/${post?.community?.name}`}  className={`${styles.communityImage}`}>
@@ -115,7 +114,7 @@ export default function Post({ post } : { post: PostView }) {
                     
                 </div>
                 <div className={styles.footer}>
-                    <Vote post={post} horizontal />
+                    <div className="hidden max-md:flex"><Vote post={post} horizontal /></div> 
                     <div className={`${styles.footerInteractions}`}>
                         <button>{post?.counts?.comments > 0 && post?.counts?.comments}<span className="material-icons-outlined">chat_bubble_outline</span></button>
                         <button><span className="material-icons-outlined">share</span></button>
