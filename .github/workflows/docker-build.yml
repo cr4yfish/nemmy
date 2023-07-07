@@ -5,7 +5,7 @@ on:
     tags:
       - 0.*
 env:
-  REGISTRY_IMAGE: ghcr.io/nohoster/nemmy
+  REGISTRY_IMAGE: ghcr.io/cr4yfish/nemmy
 jobs:
   build:
     runs-on: ubuntu-latest
