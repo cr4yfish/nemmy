@@ -22,7 +22,7 @@
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
-
+[![Image Build](https://github.com/cr4yfish/nemmy/actions/workflows/docker-build.yml/badge.svg)](https://github.com/cr4yfish/nemmy/actions/workflows/docker-build.yml)
 
 
 <!-- PROJECT LOGO -->
