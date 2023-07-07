@@ -32,7 +32,7 @@ export default function Vote({ horizontal=false, post, comment, isComment } : { 
         } else if(post?.my_vote === -1) {
             setDisliked(true);
         }
-    }, [session, post, liked, disliked])
+    }, [session, post])
 
     useEffect(() => {
         if(!isComment) return;
@@ -43,7 +43,7 @@ export default function Vote({ horizontal=false, post, comment, isComment } : { 
         } else if(comment?.my_vote === -1) {
             setDisliked(true);
         }
-    }, [session, comment, liked, disliked])
+    }, [session, comment])
 
     const vote = async (score: number, post_id: number, auth: string) => {
         if(!score || !post_id || !auth) throw new Error("Missing parameters");
@@ -62,7 +62,11 @@ export default function Vote({ horizontal=false, post, comment, isComment } : { 
 
     const handleLike = async () => {
         if(liked || !session?.jwt) {return};
+
         disliked ? setScore(score + 2) : setScore(score + 1)
+
+        setDisliked(false);
+        setLiked(true);
 
         let id = (isComment && comment) ? comment.comment.id : false;
         if(!id) id = post? post.post.id : false;
@@ -72,14 +76,16 @@ export default function Vote({ horizontal=false, post, comment, isComment } : { 
         const newVotes = response?.counts?.score;
         setScore(newVotes);
 
-        setDisliked(false);
-        setLiked(true);
+        
     }
 
     const handleDislike = async () => {
         if(disliked || !session?.jwt) return;
 
         liked ? setScore(score-2) : setScore(score - 1);
+        
+        setDisliked(true)
+        setLiked(false);
 
         let id = (isComment && comment) ? comment.comment.id : false;
         if(!id) id = post? post.post.id : false;
@@ -89,8 +95,8 @@ export default function Vote({ horizontal=false, post, comment, isComment } : { 
         const newVotes = response?.counts?.score;
         setScore(newVotes);
 
-        setLiked(false);
-        setDisliked(true);
+        
+        ;
     }
 
     return (
