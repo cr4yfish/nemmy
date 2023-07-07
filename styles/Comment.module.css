@@ -17,7 +17,7 @@
 }
 
 .date {
-    @apply text-neutral-300 text-xs
+    @apply text-neutral-400 dark:text-neutral-300 text-xs
     max-sm:hidden
     ;
 }
@@ -59,7 +59,7 @@
     @apply flex flex-row gap-2
 }
 
-.commentInteractions div {
+.interaction {
     @apply flex items-center gap-2
 }
 
