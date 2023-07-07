@@ -110,7 +110,7 @@ Ideas for Q4+
 * Think about making a native app
 
 ## License 
-I'm going to keep it simple.
+I'm going to keep it simple. These rules apply to this repo and all forks/clones.
 
 ### What you can do
 * Fork this repo
@@ -131,6 +131,8 @@ I'm going to keep it simple.
 * Publish Nemmy (as a Native clone or PWA) on the IOS App Store, the Google Play Store, or any other App store
 * Add Tracking/Analytics Services that are not GDPR compliant
 * Try to sell or sell any User data
+* Add ads to your fork
+* Make a closed-source fork
 
 ## FOSS
 * Nemmy will always be 100% Open Source, no strings attached.
