@@ -78,9 +78,9 @@ This means that there is no single huge "Lemmy Server" but many smaller "instanc
 ## Roadmap for Q3 2023
 
 - [x] Basic APIs
-- [ ] Voting
+- [X] Voting
     - [X] Voting on Posts
-    - [ ] Voting on Comments
+    - [X] Voting on Comments
 - [x] PWA
 - [ ] Auth
     - [X] Login
