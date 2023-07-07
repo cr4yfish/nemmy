@@ -3,7 +3,7 @@ name: Image Build
 on:
   push:
     branches:
-      - main
+      - build-test
     tags:
       - "*"
 env:
