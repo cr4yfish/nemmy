@@ -82,20 +82,20 @@ This means that there is no single huge "Lemmy Server" but many smaller "instanc
     - [X] Voting on Posts
     - [X] Voting on Comments
 - [x] PWA
-- [ ] Auth
+- [ ] Auth - Target v0.8
     - [X] Login
     - [ ] Register
-- [ ] Creating Content
+- [ ] Creating Content - Target v0.9
     - [ ] Creating Comments
     - [ ] Creating Posts
-- [ ] Offline Features
-    - [ ] Content Cache
-    - [ ] Upload when online
-- [ ] Customization
+- [ ] Customization - Target v1
     - [ ] User Themes
     - [ ] Compact Style (Like compact.reddit)
     - [ ] Classic Style (Like old.reddit)
-- [ ] QoL Features
+- [ ] Offline Features - Target v1.1
+    - [ ] Content Cache
+    - [ ] Upload when online
+- [ ] QoL Features Target v2
   - [ ] Auto-Register to other instances
   - [ ] Subscribe to the same community on multiple instances (like c/nemmy on Lemmy.world and Lemmy.ml)
   - [ ] Bulk Block/Hide Communities with the same or similar Name
