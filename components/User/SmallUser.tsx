@@ -12,8 +12,6 @@ export default function SmallUser({ user, userHover, setUserHover, style } : { u
 
     const baseUrl = actor_id.hostname;
 
-    console.log(user)
-
     return (
         <>
             <div style={style} onMouseOver={() => setUserHover(true)} onMouseLeave={() => setUserHover(false)} className={`${styles.wrapper} ${userHover && styles.active}`}>
