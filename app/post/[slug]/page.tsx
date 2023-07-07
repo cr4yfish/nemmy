@@ -74,8 +74,6 @@ export default function Post() {
     }, [commentsDataError, forceCommentUpdate, baseUrl]);
 
     
-
-    
     return (
         <main className={`${styles.pageWrapper}`}>
             <div className={`${styles.wrapper}`}>

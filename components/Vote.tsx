@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AnimatedNumber from "react-awesome-animated-number";
 import "react-awesome-animated-number/dist/index.css";
 import { useSession } from "@/hooks/auth";
@@ -13,6 +13,14 @@ export default function Vote({ horizontal=false, post } : { horizontal?: boolean
     const [liked, setLiked] = useState(false);
     const [disliked, setDisliked] = useState(false);
     const { session } = useSession();
+
+    useEffect(() => {
+        if(post.my_vote === 1) {
+            setLiked(true);
+        } else if(post.my_vote === -1) {
+            setDisliked(true);
+        }
+    }, [session, post, liked, disliked])
 
     const vote = async (score: number, post_id: number, auth: string) => {
         if(!score || !post_id || !auth) throw new Error("Missing parameters");

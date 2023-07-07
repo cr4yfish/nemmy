@@ -1,5 +1,5 @@
 .wrapper {
-    @apply flex flex-col h-fit;
+    @apply flex flex-col;
     position: relative;
 }
 
@@ -29,10 +29,8 @@
 }
 
 .chainlineWrapper {
-    @apply p-1 flex items-center justify-center;
+    @apply flex items-start justify-center w-5 pt-1;
     position: relative;
-    width: 20px;
-    height: 100%;
     cursor: pointer;
     z-index: 10;
     pointer-events: all;
@@ -42,12 +40,11 @@
     @apply rounded-lg;
     position: relative;
     width: 2px;
-    height: 100%;
-    min-height: 75px; /*  temporary workaround */
+    height: calc(100% - 12px);
 }
 
 .content {
-    @apply flex flex-col gap-3 font-normal
+    @apply flex flex-col gap-3 font-normal justify-start w-full
 }
 
 .comment {
@@ -55,7 +52,7 @@
 }
 
 .commentText {
-    @apply p-2 font-normal;
+    @apply p-1 pt-2 font-normal w-full overflow-hidden;
 }
 
 .commentInteractions {

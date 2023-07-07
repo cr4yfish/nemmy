@@ -7,8 +7,8 @@ import styles from "../styles/Navbar.module.css";
 import Username from "./User/Username";
 
 export default function Navbar() {
-    const { session, setSession } = useSession();
-    const { navbar, setNavbar } = useNavbar();
+    const { session } = useSession();
+    const { navbar } = useNavbar();
     const [isSearching, setIsSearching] = useState(false);
     const [filterClicked, setFilterClicked] = useState(false);
 

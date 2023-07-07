@@ -15,7 +15,7 @@ export default function Register() {
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
 
-
+        alert("Not implemented yet");
         
         // when done router.push("/")
     }

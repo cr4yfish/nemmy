@@ -37,6 +37,10 @@ export default function Comment({ commentView, allComments, depth=0 }: { comment
         })()
     }, [commentView, allComments, childrenError])
 
+    const handleToggleChildren = () => {
+        children.length > 0 ? setChildrenHidden(!childrenHidden) : null;
+    }
+
     return (
         <>
         <div className={`${styles.wrapper}`}>
@@ -47,7 +51,7 @@ export default function Comment({ commentView, allComments, depth=0 }: { comment
             </div>
 
             <div className={`${styles.body}`}>
-                <div className={`${styles.chainlineWrapper} `} onClick={() => setChildrenHidden(!childrenHidden)} >
+                <div className={`${styles.chainlineWrapper} `} onClick={() => handleToggleChildren()} >
                     <div className={`${styles.chainlineLine} ${colors[depth]}`}></div>
                 </div>
                 <div className={`${styles.content}`}>
@@ -68,12 +72,20 @@ export default function Comment({ commentView, allComments, depth=0 }: { comment
                         </div>
                     </div>
 
-                    {!childrenHidden && 
-                        <div style={{ paddingLeft: `${Math.pow(0.5, depth)}rem` }}>
+                    {(!childrenHidden) && 
+                        <div className="flex flex-col gap-4">
                             {children?.map((comment, index) => (
                                 <Comment commentView={comment} allComments={allComments} key={index} depth={depth+1} />
                             ))}
                         </div>
+                    }
+                    {childrenHidden && children.length > 0 &&
+                    <div onClick={() => handleToggleChildren()}>
+                        <div className={`flex items-center gap-1 dark:bg-neutral-800 w-full rounded-lg p-2 text-sm`}>
+                            <span className={`material-icons text-sm`}>expand_more</span>
+                            Tap to see {children.length} {children.length == 1 ? "comment" : "comments"}
+                        </div>
+                    </div>
                     }
 
                 </div>

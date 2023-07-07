@@ -80,7 +80,7 @@ export default function User() {
         sessionStorage.removeItem("jwt");
 
         // set session to empty
-        setSession({ user: {} as GetSiteResponse, jwt: "" });
+        setSession({ ...session, user: {} as GetSiteResponse, jwt: "" });
 
         // redirect to home
         router.push("/");
