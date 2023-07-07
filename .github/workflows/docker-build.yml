@@ -5,7 +5,7 @@ on:
     branches:
       - build-test
     tags:
-      - "*"
+      - 0.*
 env:
   REGISTRY_IMAGE: ghcr.io/nohoster/nemmy
 jobs:
