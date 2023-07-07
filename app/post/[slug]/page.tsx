@@ -133,9 +133,9 @@ export default function Post() {
 
                     <div className={`${styles.postInteractions}`}>
                         <Vote post={postData?.post_view} horizontal />
-                        <div className={`${styles.commentsReplies}`}><span className="material-icons">chat_bubble_outline</span>{postData?.post_view?.counts?.comments}</div>
-                        <div className={`${styles.commentShare}`}><span className="material-icons">share</span></div>
-                        <div className={`${styles.commentMore}`}><span className="material-icons">more_vert</span></div>
+                        <div className={`${styles.interaction}`}><span className="material-icons">chat_bubble_outline</span>{postData?.post_view?.counts?.comments}</div>
+                        <div className={`${styles.interaction}`}><span className="material-icons">share</span></div>
+                        <div className={`${styles.interaction}`}><span className="material-icons">more_vert</span></div>
                     </div>
                 </div>
 

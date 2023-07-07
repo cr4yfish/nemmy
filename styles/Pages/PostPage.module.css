@@ -70,6 +70,10 @@
     @apply flex flex-row gap-6 w-full items-center justify-start ;
 }
 
+.interaction {
+    @apply flex items-center gap-2;
+}
+
 .commentsReplies {
     cursor: unset !important;
 }
