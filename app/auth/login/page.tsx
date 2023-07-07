@@ -72,7 +72,7 @@ export default function Login() {
 
     const getUserDetails = async (jwt: string) => {
         const user: GetSiteResponse = await fetch(`/api/getSite?auth=${jwt}`).then(res => res.json());
-        setSession({ jwt: jwt, user: user })
+        setSession({ ...session, jwt: jwt, user: user })
         return user as GetSiteResponse;
     }
 
