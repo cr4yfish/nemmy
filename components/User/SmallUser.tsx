@@ -15,11 +15,15 @@ export default function SmallUser({ user, userHover, setUserHover, style } : { u
     return (
         <>
             <div style={style} onMouseOver={() => setUserHover(true)} onMouseLeave={() => setUserHover(false)} className={`${styles.wrapper} ${userHover && styles.active}`}>
-                {user.avatar &&
+                
                 <div className={`${styles.userImage}`}>
-                    <img className={`${styles.avatar}`} src={user.avatar} alt="User Avatar" />
+                    <img 
+                        className={`${styles.avatar} ${user.avatar ? "" : "object-contain p-1"}`} 
+                        src={user.avatar || "https://i.imgur.com/IN6ZY30.png"} 
+                        alt="" 
+                    />
                 </div>
-                }
+            
                 <div className={`${styles.content}`}>
                     
                     <div className={`${styles.usernames}`}>

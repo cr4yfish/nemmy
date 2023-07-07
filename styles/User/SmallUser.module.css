@@ -3,12 +3,15 @@
 .wrapper {
     @apply 
     bg-neutral-50 dark:bg-zinc-800 
+    border border-fuchsia-500 dark:border-fuchsia-300
+    shadow-lg dark:shadow-none
     flex flex-row items-center rounded-lg
-    p-4 gap-3
+    p-4 gap-3 max-sm:flex-wrap
     
     ;
     position: absolute; 
     min-width: 200px;
+    min-height: 50px;
     z-index: 99;
     pointer-events: none;
     opacity: 0;
@@ -23,30 +26,36 @@
 }
 
 .content {
-    @apply flex flex-col items-start;
+    @apply flex flex-col items-start min-w-max max-sm:min-w-min;
 }
 
 .avatar {
     @apply overflow-hidden rounded-full
-    border-2 border-fuchsia-50
+    dark:border-2 border dark:border-fuchsia-300 border-fuchsia-500
+    w-12 h-12
+ bg-slate-200
     ;
+    max-width: unset;
+    position: relative;
 }
 
-.userImage, .avatar {
-    @apply w-12 h-12;
+.userImage {
+    @apply w-full h-full;
+    width: 48px;
+    height: fit-content;
 }
 
 .usernames {
-    @apply flex flex-col items-start h-full;
+    @apply flex flex-col items-start h-full w-full max-md:w-fit;
 }
 
 .display_name {
-    @apply text-neutral-50 dark:text-fuchsia-300 font-bold;
+    @apply text-fuchsia-500 dark:text-fuchsia-300 font-bold w-full;
     font-size: 12pt;
 }
 
 .name {
-    @apply dark:text-fuchsia-50 ;
+    @apply dark:text-fuchsia-50 w-full;
     font-size: 10pt;
 }
 

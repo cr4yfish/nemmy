@@ -25,7 +25,7 @@ export default function Username({ user, baseUrl } : { user: Person, baseUrl: st
                     </div>
                     <span>
                         <img 
-                            className={`${styles.userimage} ${user.avatar ? "" : "object-contain"} `} 
+                            className={`${styles.userimage} ${user.avatar ? "" : "object-contain p-1/2"} `} 
                             src={user.avatar || "https://i.imgur.com/IN6ZY30.png"} 
                             alt={user.name} 
                         />
