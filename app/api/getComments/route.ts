@@ -35,7 +35,7 @@ export async function GET(req: Request) {
             post_id: post_id as unknown as PostId,
             parent_id: parent_id as unknown as CommentId,
             //saved_only: saved_only as unknown as boolean,
-            //auth: auth as unknown as string,
+            auth: auth as unknown as string,
         })
 
         return new Response(JSON.stringify(comments), { status: 200, headers: { 'Content-Type': 'application/json' } })
