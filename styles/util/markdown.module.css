@@ -1,3 +1,7 @@
+.markdown {
+    @apply w-full;
+}
+
 .markdown h1,
 .markdown h2,
 .markdown h3, 
