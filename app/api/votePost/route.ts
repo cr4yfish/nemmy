@@ -7,20 +7,32 @@ export async function POST(req: Request) {
         
         const body = await req.json();
 
+        // is either post_id or comment_id, depending on isComment
         let post_id = body.post_id as number || undefined;
+
         let score = body.score as number || undefined;
         let auth = body.auth as string || undefined;
+
+        // determines if post or comment is liked
+        let isComment = body.isComment as boolean || false;
 
         if(!post_id || !score || !auth) {
             return new Response(JSON.stringify({ error: "Missing required fields" }), { status: 400, headers: { 'Content-Type': 'application/json' } })
         }
 
-        let client: LemmyHttp = new LemmyHttp("https://lemmy.world");
-        let response = await client.likePost({ 
-            post_id: post_id,
+        const reqBody = {
             score: score,
             auth: auth
-        });
+        }
+
+        let client: LemmyHttp = new LemmyHttp("https://lemmy.world");
+        let response = !isComment ? await client.likePost({ 
+            ...reqBody,
+            post_id: post_id,
+        }) : await client.likeComment({
+            ...reqBody,
+            comment_id: post_id,
+        })
 
         return new Response(JSON.stringify(response), { status: 200, headers: { 'Content-Type': 'application/json' } })
 
