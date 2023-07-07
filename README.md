@@ -75,7 +75,7 @@ This means that there is no single huge "Lemmy Server" but many smaller "instanc
 * Tailwind
 
 
-## Roadmap
+## Roadmap for Q3 2023
 
 - [x] Basic APIs
 - [ ] Voting
@@ -101,7 +101,13 @@ This means that there is no single huge "Lemmy Server" but many smaller "instanc
   - [ ] Bulk Block/Hide Communities with the same or similar Name
   - [ ] Subscribe/Unsubscribe from Communities while in Search mode (So you don't need to leave the Search page just to unsubscribe/subscribe)
 
-
+Ideas for Q4+
+* Use GPT3.5 to sum up large text bodies
+* Improve search Indexing of Posts
+* Make every single feature of the App 100% usuable for Blind, deaf and color blind people
+* Add a keyword ban (e.g. you don't want anything with "Beans" in your feed)
+* Improve PWA Experience until it feels like a native app
+* Think about making a native app
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
