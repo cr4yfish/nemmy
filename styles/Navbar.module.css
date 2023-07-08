@@ -2,12 +2,13 @@
     @apply 
         gap-10
         max-md:gap-5
-        bg-neutral-50 dark:bg-neutral-950
+        bg-neutral-50/75 dark:bg-neutral-950
         border-b 
         border-neutral-200 dark:border-neutral-800
         h-20 top-0 left-0
         max-xs:overflow-x-scroll
         w-full
+        backdrop-blur-xl
     ;
     padding: 1rem 2rem;
     display: flex;
@@ -53,7 +54,7 @@
 .filterOptions {
     @apply fixed min-h-max w-full top-20 left-0
     flex flex-col gap-2 p-6 overflow-hidden
-    bg-neutral-50  dark:bg-neutral-950
+    bg-neutral-50/75  dark:bg-neutral-950
     transition-all duration-300 pointer-events-none ease-out
     ;
     transform: translateY(-100%);
@@ -84,6 +85,10 @@
     bg-fuchsia-100 text-neutral-900
     dark:bg-fuchsia-900 dark:text-neutral-50
     ;
+}
+
+.searchWrapper {
+    @apply bg-transparent;
 }
 
 .searchWrapper input {
@@ -170,7 +175,9 @@
 
     transition-all ease-out duration-300
 
-    bg-neutral-50 dark:bg-neutral-950
+    bg-neutral-50/75 dark:bg-neutral-950
+
+    backdrop-blur-xl
     ;
     position: absolute;
     top: 0; right: 0;
