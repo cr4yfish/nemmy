@@ -1,3 +1,4 @@
+"use client"
 import './globals.css'
 import { Montserrat } from 'next/font/google'
 import 'material-icons/iconfont/material-icons.css';
@@ -24,11 +25,13 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <body className={montserrat.className}>
+      <body className={`${montserrat.className} overflow-x-hidden`}>
         <SessionContextProvider>
           <NavbarContextProvider>
             <Navbar />
-            {children}
+            <main className={`mt-20 overflow-x-hidden`}>
+              {children}
+            </main>
           </NavbarContextProvider>
         </SessionContextProvider>
         <Analytics />
