@@ -62,6 +62,10 @@ export default function Navbar() {
 
     }
 
+
+    if(navbar?.hidden) return null;
+
+
     return (
         <>
         <nav className={`${styles.wrapper} ${navbar?.hidden && "hidden"}`}>    
