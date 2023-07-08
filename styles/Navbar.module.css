@@ -192,7 +192,7 @@
 }
 
 .userProfiles {
-    @apply flex flex-row gap-4 overflow-x-scroll overflow-y-hidden w-fit h-fit
+    @apply flex flex-row gap-4 overflow-x-scroll overflow-y-hidden w-fit h-fit pb-3
 }
 
 .userProfile {
