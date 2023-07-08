@@ -7,7 +7,8 @@
 
 .bannerOverlay {
     @apply absolute top-0 w-full h-full
-    bg-gradient-to-b from-transparent to-neutral-50
+    bg-gradient-to-b from-transparent 
+    to-neutral-50 dark:to-neutral-950
     ;
     z-index: -1;
     left: 50%;
@@ -17,7 +18,9 @@
 .headerWrapper {
     @apply flex flex-col items-center flex-wrap pt-2
     backdrop-blur-sm
-    bg-gradient-to-b to-neutral-50 from-neutral-50/50
+    bg-gradient-to-b 
+    from-neutral-50/50 to-neutral-50
+    dark:from-neutral-950/50 dark:to-neutral-950
 }
 
 .icon {
@@ -26,7 +29,7 @@
 
 .subscribeButton {
     @apply p-4 rounded-lg font-medium
-    bg-fuchsia-200 text-fuchsia-900
+    bg-fuchsia-200 text-fuchsia-950
 }
 
 .description {
@@ -36,7 +39,7 @@
 .descriptionOverlay {
     @apply absolute w-full h-full
     
-    bg-gradient-to-b from-transparent to-neutral-50;
+    bg-gradient-to-b from-transparent to-neutral-50 dark:to-neutral-950;
     z-index: 1;
 }
 
@@ -48,7 +51,7 @@
 
 .descriptionContentExpanded {
     @apply line-clamp-none
-    bg-neutral-50
+    bg-neutral-50 dark:bg-neutral-950
 }
 
 .mods {
@@ -65,12 +68,15 @@
 
 .postsWrapper {
     @apply 
-    bg-neutral-50
+    bg-neutral-50 dark:bg-neutral-950
+    dark:pt-4
+   
 }
 
 .sortsWrapper {
-    @apply flex flex-row flex-wrap justify-between p-6 py-4 items-center
-    bg-neutral-200
+    @apply flex flex-row flex-wrap justify-between px-28 max-md:p-6 py-4 items-center
+    bg-neutral-200 dark:bg-neutral-900
+     dark:text-neutral-300
 }
 
 .sort {

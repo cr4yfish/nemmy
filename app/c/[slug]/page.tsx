@@ -95,6 +95,7 @@ export default function Community() {
             </div>
         </div>
 
+
         <div className={`${styles.postsWrapper}`}>
 
             <PostList fetchParams={{ community_name: pathname }} />
