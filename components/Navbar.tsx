@@ -19,47 +19,28 @@ export default function Navbar() {
         alert("This isn't doing anything yet.")
     }
 
-
-    const AutoLink = ({ href, children, className } : { href: string, children: any, className: string }) => {
-        return session?.user?.my_user?.local_user_view?.person?.name ?
-        <Link className={className} href={href}>{children}</Link> 
-        : 
-        <div className={className}>{children}</div>
-    }
+    const delay = (ms: number) => new Promise(res => setTimeout(res, ms));
 
     const handleFilterOverlayClose = () => {
-        setTimeout(() => {
-            setFilterClicked(false);
-            navbar && setNavbar({...navbar, overlayActive: false})
-        }, 50)
+        setFilterClicked(false);
+        navbar && setNavbar({...navbar, overlayActive: false})
+    
     }
 
-    const handleUserMenuOverlayClose = () => {
-        setTimeout(() => {
-            handleUserMenuClose();
-            navbar && setNavbar({...navbar, overlayActive: false})
-        }, 50)
-    }
-
-    const handleUserMenuClose = () => {
+    const handleUserMenuClose = async () => {
         // close the menu
         setUserMenu(false);
+        navbar && setNavbar({...navbar, overlayActive: false})
 
-        setTimeout(() => {
-            // set display: none
-            document.getElementById("usermenu")?.style.setProperty("display", "none");
-        }, 300)
+        document.getElementById("usermenu")?.style.setProperty("display", "none");
+ 
     }
 
-    const handleUserMenuOpen = () => {
+    const handleUserMenuOpen = async() => {
+        handleFilterOverlayClose();
         // set display: block
         document.getElementById("usermenu")?.style.setProperty("display", "flex");
-
-        setTimeout(() => {
-            // open the menu
-            setUserMenu(true);
-        }, 10)
-
+        setUserMenu(true);
     }
 
 
@@ -127,7 +108,7 @@ export default function Navbar() {
                 { navbar?.showUser &&
                 <>
                  {session.jwt.length > 0 ? 
-                    <button onClick={() => { handleUserMenuOpen(); handleFilterOverlayClose(); setNavbar({ ...navbar, overlayActive: true }) }}  className={`${styles.userWrapper} cursor-pointer select-none`}>
+                    <button onClick={() => { handleFilterOverlayClose(); handleUserMenuOpen(); setNavbar({ ...navbar, overlayActive: true }) }}  className={`${styles.userWrapper} cursor-pointer select-none`}>
                         <div className={styles.userImage}><img src={session.user.my_user?.local_user_view.person?.avatar || "https://i.imgur.com/IN6ZY30.png" } alt={"Account"} /></div>
                     </button>
                 :
@@ -173,7 +154,7 @@ export default function Navbar() {
 
                 <div className={`${styles.userMenuInteractionsTop}`}>
                     <button><span className="material-icons-outlined">notifications</span>Notifications</button>
-                    <Link onClick={() => handleUserMenuOverlayClose()} href={`/u/${session?.user.my_user?.local_user_view?.person?.name}`}><button><span className="material-icons-outlined">account_circle</span>My Profile</button></Link>
+                    <Link onClick={() => handleUserMenuClose()} href={`/u/${session?.user.my_user?.local_user_view?.person?.name}`}><button><span className="material-icons-outlined">account_circle</span>My Profile</button></Link>
                     <button><span className="material-icons-outlined">add_circle_outline</span>Create a Post</button>
                     <button><span className="material-icons-outlined">group_add</span>Create a Community</button>
                     <button><span className="material-icons-outlined">bookmarks</span>Bookmarked</button>
@@ -183,7 +164,7 @@ export default function Navbar() {
             </div>
 
             <div className={`${styles.userMenuInteractionsBottom}`}>
-                <button onClick={() => handleUserMenuOverlayClose()}><span className="material-icons-outlined">close</span>Close</button>
+                <button onClick={() => handleUserMenuClose()}><span className="material-icons-outlined">close</span>Close</button>
                 <button><span className="material-icons-outlined">settings</span>Settings</button>
                 <button><span className="material-icons-outlined">logout</span>Log out</button>
             </div>
@@ -197,7 +178,7 @@ export default function Navbar() {
         </div>
 
         { /* Mobile Menu Overlay */}
-        <div onMouseUp={() => handleUserMenuOverlayClose()} onTouchEnd={() => handleUserMenuOverlayClose()} className={`${styles.overlay} z-50 ${userMenu && styles.overlayActive}`}></div>
+        <div onMouseUp={() => handleUserMenuClose()} onTouchEnd={() => handleUserMenuClose()} className={`${styles.overlay} z-50 ${userMenu && styles.overlayActive}`}></div>
         
         {/* Filter Overlay */}
         <div onTouchEnd={() => handleFilterOverlayClose()} onMouseUp={() => handleFilterOverlayClose()} className={`${styles.overlay} z-10 ${filterClicked && styles.overlayActive}`}></div>

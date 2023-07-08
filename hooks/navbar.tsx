@@ -1,6 +1,7 @@
 "use client";
 
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import { disablePageScroll, enablePageScroll } from 'scroll-lock';
 
 interface NavbarState {
     showMenu: boolean,
@@ -24,6 +25,14 @@ const NavbarContext = createContext<NavbarContextProps>({ navbar: defaultState, 
 export const NavbarContextProvider = ({ children } : { children: any }) => {
 
     const [navbar, setNavbar] = useState<NavbarState>(defaultState);
+
+    useEffect(() => {
+        if (navbar.overlayActive) {
+            disablePageScroll();
+        } else {
+            enablePageScroll();
+        }
+    }, [navbar.overlayActive])
 
     return (
         <NavbarContext.Provider value={{ navbar, setNavbar }}>

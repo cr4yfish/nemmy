@@ -13,7 +13,7 @@ export default function Home() {
   }, [])
 
   return (
-    <div id="postpage" className={`flex min-h-screen flex-col items-center mt-4 ${navbar?.overlayActive && "min-h-0 h-[calc(100vh-5rem)] overflow-y-hidden no-scrollbar"}`}>
+    <div id="postpage" className={`flex min-h-screen flex-col items-center mt-4`}>
 
       <PostList />
       
