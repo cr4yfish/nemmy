@@ -40,7 +40,7 @@ export default function Post({ post } : { post: PostView }) {
                 <div className={`${styles.header}`} >
                     <div className={`${styles.headerContent}`}>
                         <div className={`${styles.headerMetadata}`}>
-                            <Link href={`/c/${post?.community?.name}`}  className={`${styles.communityImage}`}>
+                            <Link href={`/c/${post?.community?.name}`} target="_blank"  className={`${styles.communityImage}`}>
                                 {post?.community?.icon ?
                                     <img src={post?.community?.icon} alt="" />
                                     :
@@ -58,7 +58,7 @@ export default function Post({ post } : { post: PostView }) {
                             </div>
                             
                         </div>
-                        <Link href={postUrl}   className={`${styles.headerTitle}`}>
+                        <Link href={postUrl} target="_blank"  className={`${styles.headerTitle}`}>
                             <h2 className={`${styles.title}`}>{post.post.name}</h2>
                         </Link>
                         <span className={`${styles.headerLink}`}></span>
