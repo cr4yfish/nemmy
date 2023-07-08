@@ -5,7 +5,7 @@ import styles from "../../styles/User/SmallUser.module.css"
 import { CSSProperties } from "react";
 import { hostname } from "os";
 
-export default function SmallUser({ user, userHover, setUserHover, style } : { user: Person, baseUrl: string, userHover: boolean, setUserHover: Function, style?: CSSProperties }) {
+export default function SmallUser({ user, userHover, setUserHover, style, opensToTop=false } : { user: Person, baseUrl: string, userHover: boolean, setUserHover: Function, style?: CSSProperties, opensToTop?: boolean }) {
     if(!user) throw new Error("Passed User to SmallUser is undefined");
 
     const actor_id = new URL(user.actor_id);
@@ -14,7 +14,11 @@ export default function SmallUser({ user, userHover, setUserHover, style } : { u
 
     return (
         <>
-            <div style={style} onMouseOver={() => setUserHover(true)} onMouseLeave={() => setUserHover(false)} className={`${styles.wrapper} ${userHover && styles.active}`}>
+            <div 
+                style={style} 
+                onMouseOver={() => setUserHover(true)} 
+                onMouseLeave={() => setUserHover(false)} 
+                className={`${styles.wrapper} ${opensToTop ? "-translate-y-full" : "translate-y-1/4"} ${userHover && styles.active} ${userHover && opensToTop && styles.activeToTop}`}>
                 
                 <div className={`${styles.userImage}`}>
                     <img 

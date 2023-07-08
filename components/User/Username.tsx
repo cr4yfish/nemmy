@@ -8,7 +8,7 @@ import SmallUser from "./SmallUser";
 
 import styles from "../../styles/User/Username.module.css"
 
-export default function Username({ user, baseUrl } : { user: Person, baseUrl: string }) {
+export default function Username({ user, baseUrl, opensToTop=false } : { user: Person, baseUrl: string, opensToTop?: boolean }) {
     const [userHover, setUserHover] = useState<boolean>(false);
 
     return (
@@ -36,6 +36,7 @@ export default function Username({ user, baseUrl } : { user: Person, baseUrl: st
                     userHover={userHover}
                     setUserHover={setUserHover}
                     baseUrl={baseUrl}
+                    opensToTop={opensToTop}
                     style={{ position: "absolute", top: "100%", left: "0" }}
                 />
             </div>

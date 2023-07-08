@@ -12,16 +12,22 @@
     position: absolute; 
     min-width: 200px;
     min-height: 50px;
-    z-index: 99;
+    z-index: 999;
     pointer-events: none;
     opacity: 0;
-    transform: translateY(20%);
     transition: all .2s;
 }
+
 
 .active {
     opacity: 1;
     transform: translateY(0%);
+    pointer-events: all !important;
+}
+
+.activeToTop {
+    opacity: 1;
+    transform: translateY(-130%);
     pointer-events: all !important;
 }
 

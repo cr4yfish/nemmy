@@ -72,7 +72,7 @@ export default function Community() {
                         <span className="font-bold">Moderators</span>
                         <div className={`${styles.mods}`}>
                             {communityData?.moderators?.map((moderator) => (
-                                <Username user={moderator?.moderator} baseUrl="" key={moderator?.moderator?.id} />
+                                <Username user={moderator?.moderator} baseUrl="" key={moderator?.moderator?.id} opensToTop />
                             ))}
                         </div>
                     </div>
