@@ -1,16 +1,16 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import { PersonView, GetSiteResponse} from 'lemmy-js-client';
-import { getCookies } from 'cookies-next';
-import { getUserDetails } from '@/utils/lemmy';
+import React, { createContext, useContext, useState } from 'react';
 
 interface NavbarState {
+    showMenu: boolean,
+    showFilter: boolean,
     showSort: boolean,
     showSearch: boolean,
     showUser: boolean,
     showback: boolean,
     hidden: boolean,
+    overlayActive: boolean,
 }
 
 interface NavbarContextProps {
@@ -18,7 +18,7 @@ interface NavbarContextProps {
     setNavbar: React.Dispatch<React.SetStateAction<NavbarState>>;
 }
 
-const defaultState: NavbarState = { showSort: true, showSearch: true, showUser: true, hidden: false, showback: false }
+const defaultState: NavbarState = { showMenu: true, showFilter: true, showSort: true, showSearch: true, showUser: true, hidden: false, showback: false, overlayActive: false }
 const NavbarContext = createContext<NavbarContextProps>({ navbar: defaultState, setNavbar: () => { } })
 
 export const NavbarContextProvider = ({ children } : { children: any }) => {
