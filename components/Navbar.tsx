@@ -21,24 +21,24 @@ export default function Navbar() {
 
     const delay = (ms: number) => new Promise(res => setTimeout(res, ms));
 
-    const handleFilterOverlayClose = () => {
-        setFilterClicked(false);
+    const handleFilterOverlayClose = async () => {
         navbar && setNavbar({...navbar, overlayActive: false})
-    
+        await delay(100);
+        setFilterClicked(false);
     }
 
     const handleUserMenuClose = async () => {
-        // close the menu
-        setUserMenu(false);
+    
+        document.getElementById("usermenu")?.style.setProperty("display", "none");
         navbar && setNavbar({...navbar, overlayActive: false})
 
-        document.getElementById("usermenu")?.style.setProperty("display", "none");
- 
+        await delay(100);
+        
+        setUserMenu(false);
     }
 
     const handleUserMenuOpen = async() => {
         handleFilterOverlayClose();
-        // set display: block
         document.getElementById("usermenu")?.style.setProperty("display", "flex");
         setUserMenu(true);
     }
