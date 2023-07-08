@@ -35,7 +35,7 @@ export default function User() {
     const pathname = usePathname().split("/")[2];
 
     useEffect(() => {
-        setNavbar({ ...navbar!, showSort: false, showSearch: true, showUser: true, showback: true })
+        setNavbar({ ...navbar!, showFilter: false, showSort: false, showSearch: true, showUser: true, showback: true })
     }, [])
     
     useEffect(() => {
@@ -87,7 +87,7 @@ export default function User() {
     }
 
     return (
-        <div className="flex min-h-screen flex-col items-center mt-4">
+        <div className="flex min-h-screen flex-col items-center mt-4 overflow-x-hidden">
             <div className={`${styles.userDetailsWrapper}`}>
                     
                 <div className={`${styles.userDetails}`}>

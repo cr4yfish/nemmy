@@ -17,7 +17,7 @@ export default function Community() {
     const [communityDataError, setCommunityDataError] = useState(true);
 
     useEffect(() => {
-        setNavbar({ ...navbar!, showSort: true, showSearch: true, showUser: true, showback: false })
+        setNavbar({ ...navbar!, showSort: true, showFilter: false, showSearch: true, showUser: true, showback: false })
     }, [])
 
     // community id

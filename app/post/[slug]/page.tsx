@@ -35,7 +35,7 @@ export default function Post() {
     const pathname = usePathname().split("/")[2];
 
     useEffect(() => {
-        setNavbar({ ...navbar!, showSort: false, showSearch: false, showback: true })
+        setNavbar({ ...navbar!, showSort: false, showFilter: false, showSearch: false, showback: true })
     }, [])
 
     useEffect(() => {
