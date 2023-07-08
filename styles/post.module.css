@@ -1,9 +1,10 @@
 .wrapper {
-    @apply bg-neutral-50 dark:bg-neutral-900 text-slate-100
+    @apply 
+    bg-neutral-50 text-slate-100 border-b border-neutral-300 rounded-none
+    dark:bg-neutral-900 dark:rounded-lg dark:border-0
     max-w-3xl
     max-md:w-full
     ;
-    border-radius: 12px;
     padding: 1rem;
     display: flex;
     flex-direction: row;
