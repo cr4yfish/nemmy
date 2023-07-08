@@ -69,36 +69,41 @@ export default function Navbar() {
     return (
         <>
         <nav className={`${styles.wrapper} ${navbar?.hidden && "hidden"}`}>    
-            <a href="/" className={styles.logo}>Nemmy</a>
 
-            <div className="flex flex-row gap-4 items-center">
+            <div className="flex flex-row items-center gap-6">
+                <a href="/" className={styles.logo}>Nemmy</a>
 
-                { navbar?.showMenu &&
-                <button className={`${styles.menu}`}>
-                    <span className="material-icons">menu</span>
-                </button>
-                }
+                <div className="flex flex-row gap-4 items-center">
 
-                { navbar?.showFilter &&
-                <button className={`${styles.navButton}`} onClick={() =>{ setFilterClicked(!filterClicked); handleUserMenuClose(); setNavbar({...navbar, overlayActive: !filterClicked})  }}>
-                    <div>
-                        <span className="material-icons">filter_list</span>
-                        <span className={`${styles.navButtonText}`}>All</span>
-                    </div>
-                    <span className="material-icons">arrow_drop_down</span> 
-                </button> 
-                }
+                    { navbar?.showMenu &&
+                    <button className={`${styles.menu}`}>
+                        <span className="material-icons">menu</span>
+                    </button>
+                    }
 
-                { navbar?.showSort &&
-                <button className={`${styles.navButton}`}>
-                    <div className="flex items-center gap-1">
-                        <span className="material-icons-outlined">sort</span>
-                        <span className={`${styles.navButtonText}`}>Hot</span>
-                    </div>
-                    <span className="material-icons">arrow_drop_down</span> 
-                </button>
-                }
+                    { navbar?.showFilter &&
+                    <button className={`${styles.navButton}`} onClick={() =>{ setFilterClicked(!filterClicked); handleUserMenuClose(); setNavbar({...navbar, overlayActive: !filterClicked})  }}>
+                        <div>
+                            <span className="material-icons">filter_list</span>
+                            <span className={`${styles.navButtonText}`}>All</span>
+                        </div>
+                        <span className="material-icons">arrow_drop_down</span> 
+                    </button> 
+                    }
+
+                    { navbar?.showSort &&
+                    <button className={`${styles.navButton}`}>
+                        <div className="flex items-center gap-1">
+                            <span className="material-icons-outlined">sort</span>
+                            <span className={`${styles.navButtonText}`}>Hot</span>
+                        </div>
+                        <span className="material-icons">arrow_drop_down</span> 
+                    </button>
+                    }
+                </div>
+
             </div>
+            
 
             
 
