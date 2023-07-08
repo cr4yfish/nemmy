@@ -8,16 +8,18 @@ import { AutoMediaType } from "@/utils/AutoMediaType";
 import Username from "@/components/User/Username";
 import Comment from "@/components/Comment";
 import PostList from "@/components/PostList";
+import RenderMarkdown from "@/components/ui/RenderMarkdown";
 
-import styles from "../../../styles/Pages/PostPage.module.css";
+import styles from "@/styles/Pages/CommunityPage.module.css";
 
 export default function Community() {
     const { navbar, setNavbar } = useNavbar();
     const [communityData, setCommunityData] = useState<GetCommunityResponse>({} as GetCommunityResponse);
     const [communityDataError, setCommunityDataError] = useState(true);
+    const [descriptionExpanded, setDescriptionExpanded] = useState(false);
 
     useEffect(() => {
-        setNavbar({ ...navbar!, showSort: true, showFilter: false, showSearch: true, showUser: true, showback: false })
+        setNavbar({ ...navbar!, showSort: false, showFilter: false, showSearch: true, showUser: true, showback: false })
     }, [])
 
     // community id
@@ -43,24 +45,64 @@ export default function Community() {
 
     
     return (
-        <main className="flex min-h-screen w-full flex-col items-center mt-4">
-            <div className=" max-w-2xl">
-                <img src={communityData?.community_view?.community?.banner} alt="" className="w-full h-full"/>
-            </div>
-            
-
-            <div className="flex flex-row max-w-3xl mb-6 max-md:flex-col max-md:p-6">
-                <div className="flex w-full h-full">
-                    <img src={communityData?.community_view?.community?.icon} alt="" height={100} width={100} />
-                </div>
-                <div className="flex flex-col">
+        <>
+        <div className={`${styles.bannerOverlay}`}></div>
+        <img src={communityData?.community_view?.community?.banner} alt="" className={`${styles.banner}`} />
+        <div className={`${styles.headerWrapper}`}>
+            <div className="flex flex-row gap-4 p-6 max-w-xl max-md:w-full items-center flex-wrap">
+                <img className={`${styles.icon}`} src={communityData?.community_view?.community?.icon} alt=""  />
+                <div className="flex flex-col h-full max-w-xl">
                     <h1 className=" text-3xl font-bold">c/{pathname}</h1>
-                    <span>{communityData?.community_view?.community?.description}</span>
+                    <span>{communityData?.community_view?.counts?.subscribers} Subscribers</span>
+                    <span>{communityData.community_view?.counts?.users_active_day} Users/Day</span>
                 </div>
+                <button className={`${styles.subscribeButton}`}>Subscribe</button>
             </div>
             
+            <div className={`${styles.description}`}>
+                <button onClick={() => setDescriptionExpanded(true)} className={`${styles.expandButton} ${descriptionExpanded && "hidden"}`}>Tap to expand</button>
+                <div className={`${styles.descriptionOverlay}  ${descriptionExpanded && "hidden"}`}></div>
+                <div className={`${styles.descriptionContent} ${descriptionExpanded && styles.descriptionContentExpanded} `}>
+                    <span className="font-bold">Community Description</span>
+                    <RenderMarkdown>{communityData?.community_view?.community?.description}</RenderMarkdown>
+                    <div className="flex flex-col mt-4"> 
+                        <span className="font-bold">Moderators</span>
+                        <div className={`${styles.mods}`}>
+                            {communityData?.moderators?.map((moderator) => (
+                                <Username user={moderator?.moderator} baseUrl="" key={moderator?.moderator?.id} />
+                            ))}
+                        </div>
+                    </div>
+                    
+                </div>
+                <button onClick={() => setDescriptionExpanded(false)} className={`p-4 mt-2 ${!descriptionExpanded && "hidden"}`}>Collapse</button>
+            </div>
+
+        </div>   
+
+        <div className={`${styles.sortsWrapper}`}>
+            <div className={`${styles.sort}`}>
+                <div className="flex flex-row items-center gap-0">
+                    <span className="material-icons-outlined">whatshot</span>
+                    <span>Hot</span>
+                </div>
+                
+                <span className="material-icons">expand_more</span>
+            </div>
+
+            <div className="flex items-center">
+                <span className="material-icons-outlined">view_day</span>
+            </div>
+        </div>
+
+        <div className={`${styles.postsWrapper}`}>
+
             <PostList fetchParams={{ community_name: pathname }} />
+        </div>
+
+           
         
-        </main>
+        
+        </>
     )
 }

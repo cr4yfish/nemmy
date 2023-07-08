@@ -1,0 +1,78 @@
+.banner {
+    @apply absolute top-0 w-full h-full object-cover;
+    z-index: -2;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.bannerOverlay {
+    @apply absolute top-0 w-full h-full
+    bg-gradient-to-b from-transparent to-neutral-50
+    ;
+    z-index: -1;
+    left: 50%;
+    transform: translateX(-50%)
+}
+
+.headerWrapper {
+    @apply flex flex-col items-center flex-wrap pt-2
+    backdrop-blur-sm
+    bg-gradient-to-b to-neutral-50 from-neutral-50/50
+}
+
+.icon {
+    @apply w-20 h-20 rounded-full overflow-hidden;
+}
+
+.subscribeButton {
+    @apply p-4 rounded-lg font-medium
+    bg-fuchsia-200 text-fuchsia-900
+}
+
+.description {
+    @apply flex flex-col p-4 items-center overflow-hidden relative w-full
+}
+
+.descriptionOverlay {
+    @apply absolute w-full h-full
+    
+    bg-gradient-to-b from-transparent to-neutral-50;
+    z-index: 1;
+}
+
+
+.descriptionContent {
+    @apply transition-all duration-300 ease-in-out
+    p-4 rounded-lg line-clamp-3
+}
+
+.descriptionContentExpanded {
+    @apply line-clamp-none
+    bg-neutral-50
+}
+
+.mods {
+    @apply flex flex-row flex-wrap gap-4
+}
+
+.expandButton {
+    @apply absolute bottom-6
+    p-4 rounded-lg font-medium
+    bg-fuchsia-100 text-fuchsia-950
+    ;
+    z-index: 2;
+}
+
+.postsWrapper {
+    @apply 
+    bg-neutral-50
+}
+
+.sortsWrapper {
+    @apply flex flex-row flex-wrap justify-between p-6 py-4 items-center
+    bg-neutral-200
+}
+
+.sort {
+    @apply flex flex-row items-center gap-1
+}
