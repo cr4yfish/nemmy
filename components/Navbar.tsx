@@ -6,13 +6,17 @@ import { useSession } from "@/hooks/auth";
 import { useNavbar } from "@/hooks/navbar";
 import styles from "../styles/Navbar.module.css";
 import Username from "./User/Username";
+import { handleLogout } from "@/utils/authFunctions";
+import { useRouter } from "next/navigation"; 
 
 export default function Navbar() {
-    const { session } = useSession();
+    const { session, setSession } = useSession();
     const { navbar, setNavbar } = useNavbar();
     const [isSearching, setIsSearching] = useState(false);
     const [filterClicked, setFilterClicked] = useState(false);
     const [userMenu, setUserMenu] = useState(false);
+
+    const router = useRouter();
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
@@ -90,7 +94,7 @@ export default function Navbar() {
 
             { navbar?.showback &&
             <div className={`${styles.backButton}`}>
-                <button className="flex items-center gap-2" onClick={() => window.history.back()}><span className="material-icons">arrow_back</span>Back</button>
+                <button className="flex items-center gap-2" onClick={() => router.back()}><span className="material-icons">arrow_back</span>Back</button>
             </div>
             }
 
@@ -166,7 +170,7 @@ export default function Navbar() {
             <div className={`${styles.userMenuInteractionsBottom}`}>
                 <button onClick={() => handleUserMenuClose()}><span className="material-icons-outlined">close</span>Close</button>
                 <button><span className="material-icons-outlined">settings</span>Settings</button>
-                <button><span className="material-icons-outlined">logout</span>Log out</button>
+                <button onClick={() => { handleUserMenuClose(); handleLogout({ session: session, setSession: setSession, router: router }) }} ><span className="material-icons-outlined">logout</span>Log out</button>
             </div>
         </div>
 
