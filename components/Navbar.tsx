@@ -117,7 +117,7 @@ export default function Navbar() {
                 
                 { navbar?.showUser &&
                 <>
-                 {session ? 
+                 {session.jwt.length > 0 ? 
                     <button onClick={() => { handleUserMenuOpen(); handleFilterOverlayClose(); setNavbar({ ...navbar, overlayActive: true }) }}  className={`${styles.userWrapper} cursor-pointer select-none`}>
                         <div className={styles.userImage}><img src={session.user.my_user?.local_user_view.person?.avatar || "https://i.imgur.com/IN6ZY30.png" } alt={"Account"} /></div>
                     </button>
