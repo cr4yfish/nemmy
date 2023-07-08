@@ -180,7 +180,7 @@
 
     backdrop-blur-xl
     ;
-    position: absolute;
+    position: fixed;
     top: 0; right: 0;
     z-index: 51;
     transform: translateX(100%);
