@@ -19,7 +19,7 @@ export default function Community() {
     const [descriptionExpanded, setDescriptionExpanded] = useState(false);
 
     useEffect(() => {
-        setNavbar({ ...navbar!, showSort: false, showFilter: false, showSearch: true, showUser: true, showback: false })
+        setNavbar({ ...navbar!, showSort: false, showFilter: false, showSearch: true, showUser: true, showback: true })
     }, [])
 
     // community id
@@ -50,7 +50,7 @@ export default function Community() {
         <img src={communityData?.community_view?.community?.banner} alt="" className={`${styles.banner}`} />
         <div className={`${styles.headerWrapper}`}>
             <div className="flex flex-row gap-4 p-6 max-w-xl max-md:w-full items-center flex-wrap">
-                <img className={`${styles.icon}`} src={communityData?.community_view?.community?.icon} alt=""  />
+                <img className={`${styles.icon} ${!communityData?.community_view?.community?.icon && "object-contain p-2"} `} src={communityData?.community_view?.community?.icon || "https://i.imgur.com/IN6ZY30.png"} alt=""  />
                 <div className="flex flex-col h-full max-w-xl">
                     <h1 className=" text-3xl font-bold">c/{pathname}</h1>
                     <span>{communityData?.community_view?.counts?.subscribers} Subscribers</span>
@@ -64,7 +64,10 @@ export default function Community() {
                 <div className={`${styles.descriptionOverlay}  ${descriptionExpanded && "hidden"}`}></div>
                 <div className={`${styles.descriptionContent} ${descriptionExpanded && styles.descriptionContentExpanded} `}>
                     <span className="font-bold">Community Description</span>
-                    <RenderMarkdown>{communityData?.community_view?.community?.description}</RenderMarkdown>
+                    {communityData?.community_view?.community?.description ? <RenderMarkdown>{communityData?.community_view?.community?.description}</RenderMarkdown>
+                    :
+                    <div className=" italic ">This community does not have a description</div>
+                    }
                     <div className="flex flex-col mt-4"> 
                         <span className="font-bold">Moderators</span>
                         <div className={`${styles.mods}`}>
