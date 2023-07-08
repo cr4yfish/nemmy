@@ -2,7 +2,7 @@
     @apply 
         gap-10
         max-md:gap-5
-        bg-neutral-50/75 dark:bg-neutral-950
+        bg-neutral-50/75 dark:bg-neutral-950/75
         border-b 
         border-neutral-200 dark:border-neutral-800
         h-20 top-0 left-0
@@ -54,7 +54,8 @@
 .filterOptions {
     @apply fixed min-h-max w-full top-20 left-0
     flex flex-col gap-2 p-6 overflow-hidden
-    bg-neutral-50/75  dark:bg-neutral-950
+    bg-neutral-50/75  dark:bg-neutral-950/75
+    backdrop-blur-xl
     transition-all duration-300 pointer-events-none ease-out
     ;
     transform: translateY(-100%);
@@ -175,7 +176,7 @@
 
     transition-all ease-out duration-300
 
-    bg-neutral-50/75 dark:bg-neutral-950
+    bg-neutral-50/75 dark:bg-neutral-950/75
 
     backdrop-blur-xl
     ;
