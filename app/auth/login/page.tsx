@@ -6,6 +6,7 @@ import { FormEvent, useState } from "react";
 import { useSession } from "@/hooks/auth";
 import Logo from "@/components/Logo";
 import { useRouter } from "next/navigation"; 
+import Link from "next/link";
 
 import styles from "@/styles/Pages/LoginPage.module.css";
 
@@ -97,6 +98,7 @@ export default function Login() {
                         <label className="w-fit" htmlFor="">Save login</label>
                     </div>
                     <button className={`${styles.button} ${styles.primary}`} type="submit">Login</button>
+                    <Link className="a" href="/auth/signup">Or sign up</Link>
                 </form>
                 
             </div>

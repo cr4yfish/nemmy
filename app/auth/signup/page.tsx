@@ -4,6 +4,8 @@ import { useState, useEffect, FormEvent } from "react"
 import { useSession } from "@/hooks/auth"
 import Logo from "@/components/Logo"
 import { useRouter } from "next/navigation"
+import { useNavbar } from "@/hooks/navbar"
+import Link from "next/link"
 
 import styles from "@/styles/Pages/LoginPage.module.css"
 
@@ -11,6 +13,11 @@ export default function Register() {
     const [form, setForm] = useState<{ username: string, password: string, saveLogin: boolean}>({} as any)
     const { session, setSession } = useSession()
     const router = useRouter()
+    const { navbar, setNavbar } = useNavbar()
+
+    useEffect(() => {
+        setNavbar({ ...navbar!, hidden: true })
+    }, [])
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
@@ -45,6 +52,7 @@ export default function Register() {
                         <label className="w-fit cursor-pointer" htmlFor="">Show NSFW Content</label>
                     </div>
                     <button className={`${styles.button} ${styles.primary}`} type="submit">Sign up</button>
+                    <Link className="a" href="/auth/login" >Or sign in</Link>
                 </form>
                 
             </div>
