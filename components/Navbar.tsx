@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 "use client"
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import Link from "next/link";
 import { useSession } from "@/hooks/auth";
 import { useNavbar } from "@/hooks/navbar";
@@ -15,6 +15,7 @@ export default function Navbar() {
     const [isSearching, setIsSearching] = useState(false);
     const [filterClicked, setFilterClicked] = useState(false);
     const [userMenu, setUserMenu] = useState(false);
+    const [menu, setMenu] = useState(false);
 
     const router = useRouter();
 
@@ -47,6 +48,20 @@ export default function Navbar() {
         setUserMenu(true);
     }
 
+    const handleMenuOpen = async() => {
+        handleFilterOverlayClose();
+        document.getElementById("menu")?.style.setProperty("display", "flex");
+        setMenu(true);
+    }
+
+    const handleMenuClose = async() => {
+        document.getElementById("menu")?.style.setProperty("display", "none");
+        navbar && setNavbar({...navbar, overlayActive: false})
+        
+        await delay(100);
+
+        setMenu(false);
+    }
 
     if(navbar?.hidden) return null;
 
@@ -61,7 +76,8 @@ export default function Navbar() {
                 <div className="flex flex-row gap-4 items-center">
 
                     { navbar?.showMenu &&
-                    <button className={`${styles.menu}`}>
+                    
+                    <button onClick={() => handleMenuOpen()} className={`${styles.menuButton}`}>
                         <span className="material-icons">menu</span>
                     </button>
                     }
@@ -131,13 +147,40 @@ export default function Navbar() {
                 }
 
             </div>
-
-          
-
             
         </nav>
 
         {/* Mobile Menu Left Side */}
+        <div id="menu" className={`${styles.menu} ${menu && styles.menuActive}`}>
+            <div className={`flex flex-col h-fit gap-6`}>
+                <button className={`${styles.currentInstance}`} onClick={() => alert("Soon you'll be able to see Instance Details here.")} >
+                    <div className="flex flex-col">
+                        <span className=" uppercase font-bold text-xs dark:text-fuchsia-300">Current Instance</span>
+                        <span className="font-bold ">Lemmy.world</span>
+                    </div>
+                    
+                    <span className="material-symbols-outlined">expand_content</span>
+                </button>
+
+                <div className={`${styles.menuLinks}`}>
+                    <Link href={"/"}><button><span className="material-icons">home</span>Home</button></Link>
+                </div>
+
+            </div>
+            <div className={`flex flex-col gap-2`}>
+                <div className="flex items-center gap-1 justify-between">
+                    <span className="font-bold">Communities</span>
+                    <span className="material-symbols-outlined">arrow_drop_down</span>
+                </div>
+               
+                <div className={`flex flex-col gap-2`}>
+                    <Link href={"/c/Nemmy"} onClick={() => handleMenuClose()} className={`${styles.menuCommunity}`}>
+                        <img className="w-10 h-10 overflow-hidden rounded-full" src="https://lemmy.world/pictrs/image/5194b9c5-bee3-4363-aaf9-3e57251fb0a7.png?format=webp" alt="" />
+                        <span>c/Nemmy</span>
+                    </Link>
+                </div>
+            </div>
+        </div>
 
         {/* User Menu Right Side */}
         <div id="usermenu" className={`${styles.userMenu} ${userMenu && styles.userMenuActive}`}>
@@ -186,7 +229,7 @@ export default function Navbar() {
         </div>
 
         { /* Mobile Menu Overlay */}
-        <div onMouseUp={() => handleUserMenuClose()} onTouchEnd={() => handleUserMenuClose()} className={`${styles.overlay} z-50 ${userMenu && styles.overlayActive}`}></div>
+        <div onMouseUp={() => {handleUserMenuClose(); handleMenuClose()}} onTouchEnd={() => {handleUserMenuClose(); handleMenuClose()}} className={`${styles.overlay} z-50 ${(userMenu || menu) && styles.overlayActive}`}></div>
         
         {/* Filter Overlay */}
         <div onTouchEnd={() => handleFilterOverlayClose()} onMouseUp={() => handleFilterOverlayClose()} className={`${styles.overlay} z-10 ${filterClicked && styles.overlayActive}`}></div>

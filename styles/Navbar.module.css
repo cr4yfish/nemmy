@@ -26,7 +26,7 @@
     font-size: 21pt;
 }
 
-.menu {
+.menuButton {
     @apply flex items-center justify-center h-full
 }
 
@@ -190,8 +190,55 @@
     
 }
 
+.menu {
+    @apply flex-col gap-6 p-6 h-screen overflow-hidden justify-start
+
+    max-sm:max-w-xs
+    max-xs:w-72
+
+    transition-all ease-out duration-300
+
+    bg-neutral-50/75 dark:bg-neutral-950/75
+
+    backdrop-blur-xl;
+    position: fixed;
+    top: 0; left: 0;
+    z-index: 51;
+    transform: translateX(-100%);
+    pointer-events: all;
+    overflow: hidden;
+    display: none;
+}
+
+.menuActive {
+    transform: translateX(0%);
+}
+
 .userMenuActive {
     transform: translateX(0%);
+}
+
+.currentInstance {
+    @apply flex flex-row justify-between gap-4 rounded-lg p-4 py-3 items-center
+    bg-neutral-300 text-neutral-900
+    dark:bg-fuchsia-800 dark:text-fuchsia-50
+}
+
+
+.menuLinks {
+    @apply flex flex-col gap-4 w-full
+}
+
+.menuLinks button {
+    @apply w-full flex flex-row gap-1 items-center justify-start
+}
+
+.menuCommunitiesList {
+    @apply flex flex-col gap-4
+}
+
+.menuCommunity {
+    @apply flex flex-row gap-2 items-center
 }
 
 
