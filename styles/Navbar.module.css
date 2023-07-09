@@ -24,6 +24,7 @@
     text-transform: uppercase;
     font-weight: 900;
     font-size: 21pt;
+    user-select: none;
 }
 
 .menuButton {
@@ -90,6 +91,7 @@
 
 .searchWrapper {
     @apply bg-transparent;
+    user-select: none;
 }
 
 .searchWrapper input {
@@ -247,7 +249,8 @@
 }
 
 .userProfiles {
-    @apply flex flex-row gap-4 overflow-x-scroll overflow-y-hidden w-fit h-fit pb-3
+    @apply flex flex-row gap-4 overflow-x-scroll overflow-y-hidden w-fit h-fit pb-3;
+    user-select: none;
 }
 
 .userProfile {
