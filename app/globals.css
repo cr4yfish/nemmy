@@ -43,3 +43,13 @@ image {
   @apply w-1 h-1 rounded-full bg-neutral-300 dark:bg-neutral-700
   ;
 }
+
+.snack {
+  @apply flex flex-row p-2 px-4 gap-1 rounded-3xl
+  text-xs font-semibold
+  bg-amber-200 text-amber-900 
+}
+
+.snack span {
+  @apply text-xs
+}
