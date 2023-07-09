@@ -129,7 +129,7 @@ export default function User() {
                         </div>
 
                         <div className={"flex flex-row flex-wrap gap-4"}>
-                                <div className={`${styles.snack}`}>
+                                <div className={`snack`}>
                                     <span className="material-icons">auto_awesome</span>
                                     <NumericFormat displayType="text" className="flex bg-transparent w-full appearance-none " value={karma} thousandSeparator />
                                     <span>Points</span>
