@@ -87,7 +87,15 @@ export default function User() {
         router.push("/");
     }
 
-    let karma = Math.ceil((userData?.person_view?.counts?.post_score + userData?.person_view?.counts?.comment_score) / (userData?.person_view?.counts?.post_count*0.75 + userData?.person_view?.counts?.comment_count*0.25)*10)
+    let post_score= userData?.person_view?.counts?.post_score;
+    let comment_score = userData?.person_view?.counts?.comment_score;
+    let post_count = userData?.person_view?.counts?.post_count;
+    let comment_count = userData?.person_view?.counts?.comment_count;
+    
+    let comment_amount = userData?.comments?.length;
+    let post_amount = userData?.posts?.length;
+
+    let karma = Math.ceil(((post_score*0.9 + comment_score*0.5) + (comment_amount*0.5 + post_amount*0.9)) / (post_count*0.75 + comment_count*0.25)*20)
 
     return (
     <>
