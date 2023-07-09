@@ -38,3 +38,8 @@ image {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+.dividerDot {
+  @apply w-1 h-1 rounded-full bg-neutral-300 dark:bg-neutral-700
+  ;
+}
