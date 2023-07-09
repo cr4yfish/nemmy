@@ -72,21 +72,6 @@ export default function User() {
         setCurrentPage(currentPage + 1);
     }
 
-    const handleLogout = async () => {
-        
-        // delete the cookie
-        deleteCookie("jwt");
-
-        // delete sessionStorage
-        sessionStorage.removeItem("jwt");
-
-        // set session to empty
-        setSession({ ...session, user: {} as GetSiteResponse, jwt: "" });
-
-        // redirect to home
-        router.push("/");
-    }
-
     let post_score= userData?.person_view?.counts?.post_score;
     let comment_score = userData?.person_view?.counts?.comment_score;
     let post_count = userData?.person_view?.counts?.post_count;
@@ -129,20 +114,14 @@ export default function User() {
                         </div>
 
                         <div className={"flex flex-row flex-wrap gap-4"}>
-                                <div className={`snack`}>
-                                    <span className="material-icons">auto_awesome</span>
-                                    <NumericFormat displayType="text" className="flex bg-transparent w-full appearance-none " value={karma} thousandSeparator />
-                                    <span>Points</span>
-                                        
-                                </div>
+                            <div className={`snack`}>
+                                <span className="material-icons">auto_awesome</span>
+                                <NumericFormat displayType="text" className="flex bg-transparent w-full appearance-none " value={karma} thousandSeparator />
+                                <span>Points</span>
+                                    
                             </div>
-                        
-                        
-                        { session?.user?.my_user?.local_user_view.person.id == userData?.person_view?.person?.id &&
-                        <div className="flex flex-row justify-start items-center w-32 ">
-                            <Button onClick={() => handleLogout()} variant="secondary">Log out</Button>
                         </div>
-                        }
+                        
                         
                     </div>
                     
