@@ -66,6 +66,12 @@ export default function Navbar() {
                     </button>
                     }
 
+                    { navbar?.showback &&
+                    <div className={`${styles.backButton}`}>
+                        <button className="flex items-center gap-2" onClick={() => router.back()}><span className="material-icons">arrow_back</span>Back</button>
+                    </div>
+                    }
+                    
                     { navbar?.showFilter &&
                     <button className={`${styles.navButton}`} onClick={() =>{ setFilterClicked(!filterClicked); handleUserMenuClose(); setNavbar({...navbar, overlayActive: !filterClicked})  }}>
                         <div>
@@ -87,16 +93,14 @@ export default function Navbar() {
                     }
                 </div>
 
+                
+
             </div>
             
 
             
 
-            { navbar?.showback &&
-            <div className={`${styles.backButton}`}>
-                <button className="flex items-center gap-2" onClick={() => router.back()}><span className="material-icons">arrow_back</span>Back</button>
-            </div>
-            }
+          
 
             <div className="flex flex-row items-center gap-4">
 
