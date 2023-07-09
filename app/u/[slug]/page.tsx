@@ -12,6 +12,7 @@ import { deleteCookie } from "cookies-next";
 import { useSession } from "@/hooks/auth";
 import { useRouter } from "next/navigation";
 import RenderMarkdown from "@/components/ui/RenderMarkdown";
+import { NumericFormat } from "react-number-format";
 
 import postListStyles from "@/styles/postList.module.css"
 import styles from "@/styles/Pages/UserPage.module.css";
@@ -86,8 +87,13 @@ export default function User() {
         router.push("/");
     }
 
+    let karma = Math.ceil((userData?.person_view?.counts?.post_score + userData?.person_view?.counts?.comment_score) / (userData?.person_view?.counts?.post_count*0.75 + userData?.person_view?.counts?.comment_count*0.25)*10)
+
     return (
-        <div className="flex min-h-screen flex-col items-center mt-4 overflow-x-hidden">
+    <>
+        <div className={`${styles.bannerOverlay}`}></div>
+        <img src={userData?.person_view?.person?.banner} alt="" className={`${styles.banner}`} />
+        <div className="flex min-h-screen flex-col items-center overflow-x-hidden">
             <div className={`${styles.userDetailsWrapper}`}>
                     
                 <div className={`${styles.userDetails}`}>
@@ -97,11 +103,32 @@ export default function User() {
                     <div className="flex flex-col gap-2">
                         <div className="flex flex-col gap-0">
                             <h1 className=" text-3xl font-bold">{userData?.person_view?.person?.display_name}</h1>
-                            <span className="font-light">@{userData?.person_view?.person?.name}</span>
+                            <div className="flex flex-row gap-4 items-center max-sm:text-xs">
+                                <span className="font-light flex items-center justify-center">@{userData?.person_view?.person?.name}</span>
+                                <span className="dividerDot"></span>
+                                <span className="flex items-center justify-center gap-1 text-neutral-300">
+                                    <span className="material-icons" style={{ fontSize: "1rem" }}>cake</span>
+                                    <span className="flex items-center justify-center">{new Date(userData?.person_view?.person?.published).toDateString()}</span>
+                                </span>
+                            </div>
                         </div>
                         
                         <span><RenderMarkdown>{userData?.person_view?.person?.bio}</RenderMarkdown></span>
-                        <span className="flex items-center gap-2 text-neutral-300"><span className="material-icons">cake</span>{new Date(userData?.person_view?.person?.published).toDateString()}</span>
+
+                        <div className="flex flex-row gap-2 items-center">
+                            <button className={`${styles.button} ${styles.buttonFuchsia}`}><span className="material-icons-outlined">chat_bubble_outline</span>Message</button>
+                            <button className={`${styles.button} ${styles.buttonBlock}`}><span className="material-icons">block</span>Block user</button>
+                        </div>
+
+                        <div className={"flex flex-row flex-wrap gap-4"}>
+                                <div className={`${styles.snack}`}>
+                                    <span className="material-icons">auto_awesome</span>
+                                    <NumericFormat displayType="text" className="flex bg-transparent w-full appearance-none " value={karma} thousandSeparator />
+                                    <span>Points</span>
+                                        
+                                </div>
+                            </div>
+                        
                         
                         { session?.user?.my_user?.local_user_view.person.id == userData?.person_view?.person?.id &&
                         <div className="flex flex-row justify-start items-center w-32 ">
@@ -113,13 +140,43 @@ export default function User() {
                     
                 </div>
 
-                <img src={userData?.person_view?.person?.banner} alt="" className={`${styles.banner}`} />
+                
             </div>
             
+            
+            <div className="flex flex-col items-center w-full bg-neutral-50 dark:bg-neutral-950 dark:pt-4 gap-4">
 
-            
-            
-            <div className="flex flex-col items-center w-full">
+                <div className={`${styles.sortsWrapper}`}>
+
+                    <div className="flex flex-row gap-4 items-center">
+
+                        <div className={`${styles.sort}`}>
+                            <div className="flex flex-row items-center gap-2">
+                                <span className="material-icons-outlined">whatshot</span>
+                                <span>Hot</span>
+                            </div>
+                            
+                            <span className="material-icons">expand_more</span>
+                        </div>
+
+                        <div className={`${styles.sort}`}>
+                            <div className="flex flex-row items-center gap-2">
+                                <span className="material-icons-outlined">auto_awesome_motion</span>
+                                <span>Posts</span>
+                            </div>
+                            
+                            <span className="material-icons">expand_more</span>
+                        </div>
+
+                    </div>
+                    
+
+
+                    <div className="flex items-center">
+                        <span className="material-icons-outlined">view_day</span>
+                    </div>
+                </div>
+
                 <div className="flex flex-col items-center justify-start max-w-3xl max-md:w-full">
                     
                     <InfiniteScroll 
@@ -138,5 +195,6 @@ export default function User() {
             </div>
         
         </div>
+    </>
     )
 }

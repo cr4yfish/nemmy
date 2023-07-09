@@ -1,20 +1,30 @@
-.userDetailsWrapper {
-    @apply relative h-fit p-6 py-10 w-full flex items-center mb-10;
-    overflow: hidden
-}
-
 .banner {
     @apply  max-h-fit absolute w-full h-auto;
     overflow: hidden;
     top: 0; left: 0;
     object-fit: contain;
-    opacity: .5;
+    z-index: -2;
+}
+
+.bannerOverlay {
+    @apply absolute top-0 left-0 w-full h-full
+    backdrop-blur-sm
+    bg-neutral-900/25;
     z-index: -1;
 }
 
+.userDetailsWrapper {
+    @apply relative h-fit p-6 
+    py-10 max-w-3xl flex items-center justify-center;
+    overflow: hidden
+}
+
+
 .userDetails {
-    @apply flex flex-row mb-6 w-full justify-center 
-    max-md:flex-col max-md:p-6 gap-4 items-center;
+    @apply flex flex-row w-full justify-start 
+    max-md:flex-col max-md:p-6 gap-2 items-start
+    text-neutral-50
+    ;
 }
 
 .userAvatar {
@@ -23,4 +33,42 @@
 
 .banner img {
     object-fit: contain;
+}
+
+.button {
+    @apply flex flex-row items-center justify-center gap-1
+    border rounded-2xl p-1 px-4 text-xs font-bold
+}
+
+.button span {
+    @apply text-sm
+}
+
+.buttonFuchsia {
+    @apply bg-fuchsia-200 text-fuchsia-900 border-fuchsia-900
+}
+
+.buttonBlock {
+    @apply bg-rose-200 text-rose-900 border-rose-900
+}
+
+.snack {
+    @apply flex flex-row p-2 px-4 gap-1 rounded-3xl
+    text-xs font-semibold
+    bg-amber-200 text-amber-900 
+}
+
+.snack span {
+    @apply text-xs
+}
+
+
+.sortsWrapper {
+    @apply flex flex-row flex-wrap justify-between px-28 max-md:p-6 py-4 items-center w-full
+    bg-neutral-200 dark:bg-neutral-900
+     dark:text-neutral-300
+}
+
+.sort {
+    @apply flex flex-row items-center gap-1
 }
