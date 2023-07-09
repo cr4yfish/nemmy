@@ -3,7 +3,7 @@ import { Person } from "lemmy-js-client";
 
 import styles from "../../styles/User/SmallUser.module.css"
 import { CSSProperties } from "react";
-import { hostname } from "os";
+import Link from "next/link";
 
 export default function SmallUser({ user, userHover, setUserHover, style, opensToTop=false } : { user: Person, baseUrl: string, userHover: boolean, setUserHover: Function, style?: CSSProperties, opensToTop?: boolean }) {
     if(!user) throw new Error("Passed User to SmallUser is undefined");
@@ -35,7 +35,7 @@ export default function SmallUser({ user, userHover, setUserHover, style, opensT
                         <span className={`${styles.name}`}>@{user.name} {!user.local && !user.display_name && `on ${baseUrl}`}</span>
                     </div>
                 </div>
-                <a className="flex h-full" href={baseUrl == "lemmy.world" ? `u/${user.name}` : `https://${baseUrl}/u/${user.name}`} target="_blank"><span className="material-icons">open_in_new</span></a>
+                <Link className="flex h-full" href={baseUrl == "lemmy.world" ? `/u/${user.name}` : `https://${baseUrl}/u/${user.name}`} target="_blank"><span className="material-icons">open_in_new</span></Link>
             </div>
         </>
     )
