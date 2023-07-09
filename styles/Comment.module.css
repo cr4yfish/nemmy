@@ -20,6 +20,7 @@
     @apply text-neutral-400 dark:text-neutral-300 text-xs
     max-sm:hidden
     ;
+    user-select: none;
 }
 
 .body {
@@ -56,11 +57,12 @@
 }
 
 .commentInteractions {
-    @apply flex flex-row gap-2
+    @apply flex flex-row gap-2;
+    user-select: none;
 }
 
 .interaction {
-    @apply flex items-center gap-2
+    @apply flex items-center gap-2;
 }
 
 .upvote, .downvote {

@@ -71,7 +71,7 @@ export default function Comment({ commentView, allComments, depth=0 }: { comment
                     </div>
 
                     {(!childrenHidden) && 
-                        <div className="flex flex-col gap-4">
+                        <div className="flex flex-col gap-0">
                             {children?.map((comment, index) => (
                                 <Comment commentView={comment} allComments={allComments} key={index} depth={depth+1} />
                             ))}

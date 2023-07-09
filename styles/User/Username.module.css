@@ -6,6 +6,7 @@
     position: relative;
     gap: 3px;
     min-width: 50px;
+    user-select: none;
 }
 
 .userimage {

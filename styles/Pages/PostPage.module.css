@@ -68,6 +68,7 @@
 
 .postInteractions {
     @apply flex flex-row gap-6 w-full items-center justify-start ;
+    user-select: none;
 }
 
 .interaction {
@@ -105,6 +106,7 @@
 
 .commentsInteractions, .commentsInteractionsSort {
     @apply w-2/3;
+    user-select: none;
 }
 
 .commentsInteractionsSort {

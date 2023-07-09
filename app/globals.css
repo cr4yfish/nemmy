@@ -26,6 +26,10 @@ image {
   object-fit: inherit;
 }
 
+button {
+  user-select: none;
+}
+
 .a {
   @apply text-blue-500 hover:text-blue-700;
 }

@@ -163,7 +163,7 @@ export default function Navbar() {
                 </button>
 
                 <div className={`${styles.menuLinks}`}>
-                    <Link href={"/"}><button><span className="material-icons">home</span>Home</button></Link>
+                    <Link onClick={() => handleMenuClose()} href={"/"}><button><span className="material-icons">home</span>Home</button></Link>
                 </div>
 
             </div>

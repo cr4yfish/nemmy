@@ -32,7 +32,7 @@ export default function SmallUser({ user, userHover, setUserHover, style, opensT
                     
                     <div className={`${styles.usernames}`}>
                         {user.display_name && <span className={`${styles.display_name}`}>{user.display_name}</span>}
-                        <span className={`${styles.name}`}>@{user.name} {!user.local && !user.display_name && `on ${baseUrl}`}</span>
+                        <span className={`${styles.name}`}><span className=" select-all ">@{user.name}</span> {!user.local && !user.display_name && `on ${baseUrl}`}</span>
                     </div>
                 </div>
                 <Link className="flex h-full" href={baseUrl == "lemmy.world" ? `/u/${user.name}` : `https://${baseUrl}/u/${user.name}`} target="_blank"><span className="material-icons">open_in_new</span></Link>
