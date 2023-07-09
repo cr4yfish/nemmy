@@ -46,8 +46,8 @@ image {
 
 .snack {
   @apply flex flex-row p-2 px-4 gap-1 rounded-3xl
-  text-xs font-semibold
-  bg-amber-200 text-amber-900 
+  text-xs font-semibold border
+  bg-amber-200 text-amber-900 border-amber-900 
 }
 
 .snack span {
