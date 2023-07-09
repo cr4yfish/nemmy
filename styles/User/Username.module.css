@@ -1,9 +1,10 @@
 .wrapper {
+    margin-left: 2px;
     display: flex;
     flex-direction: row;
     align-items: center;
     position: relative;
-    gap: 7px;
+    gap: 3px;
     min-width: 50px;
 }
 
