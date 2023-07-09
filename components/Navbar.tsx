@@ -14,6 +14,7 @@ export default function Navbar() {
     const { navbar, setNavbar } = useNavbar();
     const [isSearching, setIsSearching] = useState(false);
     const [filterClicked, setFilterClicked] = useState(false);
+    const [sortOptions, setSortOptions] = useState(false);
     const [userMenu, setUserMenu] = useState(false);
     const [menu, setMenu] = useState(false);
 
@@ -30,6 +31,7 @@ export default function Navbar() {
         navbar && setNavbar({...navbar, overlayActive: false})
         await delay(100);
         setFilterClicked(false);
+        setSortOptions(false);
     }
 
     const handleUserMenuClose = async () => {
@@ -89,7 +91,7 @@ export default function Navbar() {
                     }
                     
                     { navbar?.showFilter &&
-                    <button className={`${styles.navButton}`} onClick={() =>{ setFilterClicked(!filterClicked); handleUserMenuClose(); setNavbar({...navbar, overlayActive: !filterClicked})  }}>
+                    <button className={`${styles.navButton}`} onClick={() =>{ setFilterClicked(!filterClicked); setSortOptions(false); handleUserMenuClose(); setNavbar({...navbar, overlayActive: !filterClicked})  }}>
                         <div>
                             <span className="material-icons">filter_list</span>
                             <span className={`${styles.navButtonText}`}>All</span>
@@ -99,7 +101,7 @@ export default function Navbar() {
                     }
 
                     { navbar?.showSort &&
-                    <button className={`${styles.navButton}`}>
+                    <button className={`${styles.navButton}`} onClick={() =>{ setSortOptions(!sortOptions); handleUserMenuClose(); handleMenuClose(); setFilterClicked(false); setNavbar({...navbar, overlayActive: !sortOptions})  }} >
                         <div className="flex items-center gap-1">
                             <span className="material-icons-outlined">sort</span>
                             <span className={`${styles.navButtonText}`}>Hot</span>
@@ -223,16 +225,25 @@ export default function Navbar() {
 
         {/* Filter Options */}
         <div className={`${styles.filterOptions} ${filterClicked && styles.filterActive}`}>
-            <button className={`${styles.activeFilterOption}`} ><span className="material-icons">home</span>Home</button>
-            <button><span className="material-icons-outlined">public</span>All</button>
+            <button className={`${styles.activeFilterOption}`}><span className="material-icons-outlined">public</span>All</button>
             <button><span className="material-icons-outlined">location_on</span>Local</button>
+        </div>
+
+        {/* Sort Options */}
+        <div className={`${styles.sortOptions} ${sortOptions && styles.sortOptionsActive}`}>
+            <button className={`${styles.activeFilterOption}`} ><span className="material-symbols-outlined">whatshot</span>Hot</button>
+            <button><span className="active m-2"></span>Active</button>
+            <button><span className="material-symbols-outlined">history</span>New</button>
+            <button><span className="material-symbols-outlined">arrows_more_up</span>Most Comments</button>
+
+
         </div>
 
         { /* Mobile Menu Overlay */}
         <div onMouseUp={() => {handleUserMenuClose(); handleMenuClose()}} onTouchEnd={() => {handleUserMenuClose(); handleMenuClose()}} className={`${styles.overlay} z-50 ${(userMenu || menu) && styles.overlayActive}`}></div>
         
         {/* Filter Overlay */}
-        <div onTouchEnd={() => handleFilterOverlayClose()} onMouseUp={() => handleFilterOverlayClose()} className={`${styles.overlay} z-10 ${filterClicked && styles.overlayActive}`}></div>
+        <div onTouchEnd={() => handleFilterOverlayClose()} onMouseUp={() => handleFilterOverlayClose()} className={`${styles.overlay} z-10 ${(filterClicked || sortOptions) && styles.overlayActive}`}></div>
         </>
     )
 }

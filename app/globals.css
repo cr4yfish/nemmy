@@ -57,3 +57,32 @@ button {
 .snack span {
   @apply text-xs
 }
+
+.active {
+  @apply bg-red-500
+    h-2 w-2 rounded-full
+  ;
+  position: relative;
+  animation: active 3s infinite;
+}
+
+.active::after {
+  @apply bg-red-500/30
+    h-2 w-2 rounded-full blur-sm
+  ;
+  content: "";
+  display:inline-block;
+  z-index: -1;
+  position: absolute;
+  top: 0; left: 0;
+  animation: active 3s infinite;
+}
+
+@keyframes active {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.25);
+  }
+}
