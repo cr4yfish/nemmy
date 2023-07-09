@@ -53,8 +53,11 @@ export default function Community() {
                 <img className={`${styles.icon} ${!communityData?.community_view?.community?.icon && "object-contain p-2"} `} src={communityData?.community_view?.community?.icon || "https://i.imgur.com/IN6ZY30.png"} alt=""  />
                 <div className="flex flex-col h-full max-w-xl">
                     <h1 className=" text-3xl font-bold">c/{pathname}</h1>
-                    <span>{communityData?.community_view?.counts?.subscribers} Subscribers</span>
-                    <span>{communityData.community_view?.counts?.users_active_day} Users/Day</span>
+                    <div className="flex flex-row flex-wrap gap-2 pt-2">
+                        <span className="snack"><span className="material-symbols-outlined">communities</span> {communityData?.community_view?.counts?.subscribers} Subscribers</span>
+                        <span className="snack"><span className="material-symbols-outlined">group</span> {communityData.community_view?.counts?.users_active_day} Users / Day</span>
+                    </div>
+                    
                 </div>
                 <button className={`${styles.subscribeButton}`}>Subscribe</button>
             </div>
