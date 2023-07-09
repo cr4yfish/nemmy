@@ -2,6 +2,7 @@
 import './globals.css'
 import { Montserrat } from 'next/font/google'
 import 'material-icons/iconfont/material-icons.css';
+import 'material-symbols';
 import { Analytics } from '@vercel/analytics/react';
 import { SessionContextProvider } from '@/hooks/auth';
 import { NavbarContextProvider } from '@/hooks/navbar';
