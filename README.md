@@ -82,29 +82,30 @@ This means that there is no single huge "Lemmy Server" but many smaller "instanc
     - [X] Voting on Posts
     - [X] Voting on Comments
 - [x] PWA
-- [ ] Community Page
-  - [ ] Finish Design
-  - [ ] Add all Community related features
-- [ ] Search   
-- [ ] Auth - Target v0.8
+- [X] Community Page
+- [ ] Search, Filter and Sorting
+- [ ] Auth
     - [X] Login
     - [ ] Register
     - [ ] Subscribing to Communities
-- [ ] Creating Content - Target v0.9
+- [ ] Creating Content 
     - [ ] Creating Comments
     - [ ] Creating Posts
-- [ ] Customization - Target v1
+    - [ ] Creating Communities
+- [ ] Customization
     - [ ] User Themes
     - [ ] Compact Style (Like compact.reddit)
     - [ ] Classic Style (Like old.reddit)
-- [ ] Offline Features - Target v1.1
+- [ ] Offline Features 
     - [ ] Content Cache
     - [ ] Upload when online
-- [ ] QoL Features Target v2
+- [ ] Moderation Tools
+- [ ] QoL Features
   - [ ] Auto-Register to other instances
   - [ ] Subscribe to the same community on multiple instances (like c/nemmy on Lemmy.world and Lemmy.ml)
   - [ ] Bulk Block/Hide Communities with the same or similar Name
   - [ ] Subscribe/Unsubscribe from Communities while in Search mode (So you don't need to leave the Search page just to unsubscribe/subscribe)
+  - [ ] Improved Sorting
 
 Ideas for Q4+
 * Use GPT3.5 to sum up large text bodies
