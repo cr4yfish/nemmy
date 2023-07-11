@@ -301,7 +301,7 @@
 
 .searchOverlay {
     @apply fixed top-0 left-0 w-full h-full flex items-center flex-col
-    bg-neutral-50 dark:bg-neutral-950/90
+    bg-neutral-50/10 dark:bg-neutral-950/90
     backdrop-blur-3xl opacity-0 pointer-events-none
     transition-all duration-300 ease-out
     ;
@@ -315,16 +315,16 @@
 
 .searchInputWrapper {
     @apply flex flex-row gap-3 items-center px-6 p-4 border-b w-full justify-center
-    border-neutral-600 
-    dark:bg-neutral-950
-
+    bg-neutral-50
+    border-neutral-300
+    dark:border-neutral-600
     ;
 }
 
 .searchInput {
     @apply flex flex-row justify-between rounded-lg p-4 w-full items-center
     
-    bg-neutral-50 dark:bg-neutral-950
+    bg-neutral-200 dark:bg-neutral-950
     dark:border border-neutral-700
 
     dark:focus:border-neutral-400
@@ -333,5 +333,5 @@
 }
 
 .searchOverlayTrending {
-    @apply flex flex-col gap-4 p-4 px-6
+    @apply flex flex-col gap-4 p-4 px-4 w-full
 }

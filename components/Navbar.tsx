@@ -262,14 +262,14 @@ export default function Navbar() {
                 {!isSearching &&
                 <div className={`${styles.searchOverlayTrending}`}>
 
-                    <div className="flex flex-col gap-2">
+                    <div className="flex flex-col gap-2 w-full">
                         <span className="font-bold text-xl">Popular</span>
-                        <div className="bg-neutral-950 p-4 flex flex-row justify-between rounded-xl border dark:border-fuchsia-800">
+                        <div className=" bg-neutral-50 dark:bg-neutral-950 p-4 flex flex-row justify-between rounded-xl border border-fuchsia-500 dark:border-fuchsia-800">
                             <div className="flex flex-row gap-1 w-9/12">
                                 <span className="material-symbols-outlined" style={{ fontSize: "2rem" }}>chart_data</span>
                                 <div className="flex flex-col">
                                     <span className="font-bold">Reddit Moment</span>
-                                    <span className="text-neutral-300">c/Memes@lemmy.ml</span>
+                                    <span className=" text-neutral-500 dark:text-neutral-300">c/Memes@lemmy.ml</span>
                                 </div>
                             </div>
                             <img className="h-20 w-20 rounded-lg" src={"https://lemmy.world/pictrs/image/5d9409fd-a9a0-4303-bb7a-dd8f2799af73.png?format=webp"} alt="" />
@@ -278,7 +278,7 @@ export default function Navbar() {
 
                     <div className="flex flex-col gap-2">
                         <span className="font-bold text-xl">Trending communities</span>
-                        <div className="bg-neutral-950 p-4 flex flex-row justify-start items-center gap-2 rounded-xl border dark:border-fuchsia-800">
+                        <div className=" bg-neutral-50 dark:bg-neutral-950 p-4 flex flex-row justify-start items-center gap-2 rounded-xl border border-fuchsia-500 dark:border-fuchsia-800">
                             <img className="h-12 w-12 rounded-full" src={"https://lemmy.world/pictrs/image/5d9409fd-a9a0-4303-bb7a-dd8f2799af73.png?format=webp"} alt="" />
                             <div className="flex flex-col gap-1">
                                 <span className="font-bold">Techno</span>
@@ -296,7 +296,7 @@ export default function Navbar() {
                 { isSearching &&
                 <div className="flex flex-col gap-0 w-full overflow-scroll h-full relative">
                     {searchResults.posts?.map((result, index) => (
-                        <div key={index} className="flex flex-row p-4 items-center justify-between dark:bg-neutral-950 border-b border-neutral-700">
+                        <div key={index} className="flex flex-row p-4 items-center justify-between bg-neutral-50 dark:bg-neutral-950 border-b border-neutral-700">
                             <div className="flex flex-col gap-3">
 
                                 <div className="flex flex-row items-center gap-2 ">
@@ -313,24 +313,24 @@ export default function Navbar() {
 
                                 <div className="flex flex-col gap-1">
                                     <span className="font-bold">{result?.post?.name}</span>
-                                   {!result?.post?.thumbnail_url && <span className="text-neutral-300 line-clamp-2"><RenderMarkdown>{result?.post?.body}</RenderMarkdown></span>}
+                                   {!result?.post?.thumbnail_url && <span className=" text-neutral-500 dark:text-neutral-300 line-clamp-2"><RenderMarkdown>{result?.post?.body}</RenderMarkdown></span>}
                                 </div>
 
-                                <div className="flex flex-row gap-4">
-                                    <div className="flex flex-row gap-2 items-center">
-                                        <div className="flex items-center gap-1">
+                                <div className="flex flex-row gap-4 text-neutral-500 dark:text-neutral-300">
+                                    <div className="flex flex-row gap-2 items-center ">
+                                        <div className="flex items-center gap-1 ">
                                             <span className="material-symbols-outlined">thumb_up</span>
-                                            <span className="text-neutral-300">{result?.counts.upvotes}</span>
+                                            <span className="">{result?.counts.upvotes}</span>
                                         </div>
                                         <div className="flex items-center gap-1">
                                             <span className="material-symbols-outlined">thumb_down</span>
-                                            <span className="text-neutral-300">{result?.counts?.downvotes}</span>
+                                            <span className="">{result?.counts?.downvotes}</span>
                                         </div>
                                     </div>
 
                                     <div className="flex items-center gap-1">
                                         <span className="material-symbols-outlined">chat_bubble</span>
-                                        <span className="text-neutral-300">{result?.counts?.comments}</span>
+                                        <span className="">{result?.counts?.comments}</span>
                                     </div>
                                     
                                 </div>
