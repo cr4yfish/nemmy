@@ -9,7 +9,7 @@ export async function GET(req: Request) {
         let type_ = params.get("type_") || "All";
         let limit = params.get("limit") || 10;
         let page = params.get("page") || 1;
-        let sort = params.get("sort") || "Hot";
+        let sort = params.get("sort") || "Active";
         let community_id = params.get("community_id") || undefined;
         let community_name = params.get("community_name") || undefined;
         let saved_only = params.get("saved_only") || undefined;
