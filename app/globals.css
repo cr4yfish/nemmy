@@ -86,3 +86,7 @@ button {
     transform: scale(1.25);
   }
 }
+
+.filled {
+  font-variation-settings: "FILL" 1;
+}
