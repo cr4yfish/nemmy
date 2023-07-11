@@ -1,9 +1,10 @@
 "use client";
 
+import { ListingType, SortType } from 'lemmy-js-client';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { disablePageScroll, enablePageScroll } from 'scroll-lock';
 
-interface NavbarState {
+export interface NavbarState {
     showMenu: boolean,
     showFilter: boolean,
     showSort: boolean,
@@ -12,6 +13,8 @@ interface NavbarState {
     showback: boolean,
     hidden: boolean,
     overlayActive: boolean,
+    currentSort: SortType,
+    currentType: ListingType,
 }
 
 interface NavbarContextProps {
@@ -19,7 +22,7 @@ interface NavbarContextProps {
     setNavbar: React.Dispatch<React.SetStateAction<NavbarState>>;
 }
 
-const defaultState: NavbarState = { showMenu: true, showFilter: true, showSort: true, showSearch: true, showUser: true, hidden: false, showback: false, overlayActive: false }
+const defaultState: NavbarState = { showMenu: true, showFilter: true, showSort: true, showSearch: true, showUser: true, hidden: false, showback: false, overlayActive: false, currentSort: "Active", currentType: "All" }
 const NavbarContext = createContext<NavbarContextProps>({ navbar: defaultState, setNavbar: () => { } })
 
 export const NavbarContextProvider = ({ children } : { children: any }) => {

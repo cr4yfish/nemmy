@@ -3,11 +3,70 @@
 import { FormEvent, useEffect, useState } from "react";
 import Link from "next/link";
 import { useSession } from "@/hooks/auth";
-import { useNavbar } from "@/hooks/navbar";
+import { useNavbar, NavbarState } from "@/hooks/navbar";
 import styles from "../styles/Navbar.module.css";
-import Username from "./User/Username";
 import { handleLogout } from "@/utils/authFunctions";
 import { useRouter } from "next/navigation"; 
+import { ListingType, SortType } from "lemmy-js-client";
+
+const delay = (ms: number) => new Promise(res => setTimeout(res, ms));
+
+function SortButton({option, label, navbar, setNavbar, icon=undefined, replaceIcon=undefined, setSortOptions, sortOptions } : { option: SortType, label: string, navbar?: NavbarState, setNavbar?: any, icon?: string, replaceIcon?: React.ReactNode, setSortOptions: Function, sortOptions: boolean }) {
+    if(!option || !label || !navbar || !setNavbar) {
+        console.error("SortButton: option or label not provided", option, label, icon, replaceIcon )
+        return null
+    };
+
+    const handleFilterOverlayClose = async () => {
+        navbar && setNavbar({ ...navbar, overlayActive: false, currentSort: option })
+        await delay(100);
+        setSortOptions(false);
+    }
+
+    return (
+        <>
+            <button 
+                onClick={() => { handleFilterOverlayClose()  }} 
+                className={`${( sortOptions && navbar?.currentSort == option) && styles.activeFilterOption}`}>
+                    {icon && <span className={`material-symbols-outlined`}>{icon}</span>}
+                    {replaceIcon}
+                    {label}
+            </button>
+        </>
+    )
+}
+
+function FilterButton({ label, option, icon, navbar, setNavbar, setFilterClicked, filterClicked } : { label: string, option: ListingType, icon: string, navbar?: NavbarState, setNavbar?: any, setFilterClicked: Function, filterClicked: boolean }) {
+    const { session } = useSession();
+    const router = useRouter();
+    
+    const handleFilterOverlayClose = async () => {
+        if(option == "Subscribed") {
+            if(!session.user.my_user?.local_user_view.person.id) {
+                navbar && setNavbar({...navbar, overlayActive: false })
+                setFilterClicked(false);
+                router.push("/auth");
+                return;
+            }
+        }
+
+        navbar && setNavbar({...navbar, overlayActive: false, currentType: option  })
+        await delay(100);
+        setFilterClicked(false);
+    }
+
+    return (
+        <>
+        <button 
+            onClick={() => handleFilterOverlayClose()} 
+            className={`${ filterClicked && navbar?.currentType == option && styles.activeFilterOption}`}>
+                <span className="material-symbols-outlined">{icon}</span>
+                {label}
+        </button>
+        </>
+    )
+}
+
 
 export default function Navbar() {
     const { session, setSession } = useSession();
@@ -24,8 +83,6 @@ export default function Navbar() {
         e.preventDefault();
         alert("This isn't doing anything yet.")
     }
-
-    const delay = (ms: number) => new Promise(res => setTimeout(res, ms));
 
     const handleFilterOverlayClose = async () => {
         navbar && setNavbar({...navbar, overlayActive: false})
@@ -225,18 +282,17 @@ export default function Navbar() {
 
         {/* Filter Options */}
         <div className={`${styles.filterOptions} ${filterClicked && styles.filterActive}`}>
-            <button className={`${styles.activeFilterOption}`}><span className="material-icons-outlined">public</span>All</button>
-            <button><span className="material-icons-outlined">location_on</span>Local</button>
+            <FilterButton label="All" option="All" icon="public" navbar={navbar} setNavbar={setNavbar} setFilterClicked={setFilterClicked} filterClicked={filterClicked} />
+            <FilterButton label="Local" option="Local" icon="location_on" navbar={navbar} setNavbar={setNavbar} setFilterClicked={setFilterClicked} filterClicked={filterClicked} />
+            <FilterButton label="Subscribed" option="Subscribed" icon="communities" navbar={navbar} setNavbar={setNavbar} setFilterClicked={setFilterClicked} filterClicked={filterClicked} />
         </div>
 
         {/* Sort Options */}
         <div className={`${styles.sortOptions} ${sortOptions && styles.sortOptionsActive}`}>
-            <button className={`${styles.activeFilterOption}`} ><span className="material-symbols-outlined">whatshot</span>Hot</button>
-            <button><span className="active m-2"></span>Active</button>
-            <button><span className="material-symbols-outlined">history</span>New</button>
-            <button><span className="material-symbols-outlined">arrows_more_up</span>Most Comments</button>
-
-
+            <SortButton label="Active" option="Active" navbar={navbar} setNavbar={setNavbar} replaceIcon={<span className="active m-2"></span>} setSortOptions={setSortOptions} sortOptions={sortOptions} />
+            <SortButton label="Hot" option="Hot" icon="whatshot" navbar={navbar} setNavbar={setNavbar} setSortOptions={setSortOptions} sortOptions={sortOptions} />
+            <SortButton label="New" option="New" icon="history" navbar={navbar} setNavbar={setNavbar} setSortOptions={setSortOptions} sortOptions={sortOptions} />
+            <SortButton label="Most Comments" option="MostComments" icon="arrows_more_up" navbar={navbar} setNavbar={setNavbar} setSortOptions={setSortOptions} sortOptions={sortOptions} />
         </div>
 
         { /* Mobile Menu Overlay */}
