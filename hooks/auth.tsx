@@ -35,7 +35,13 @@ export const SessionContextProvider = ({ children } : { children: any }) => {
 
         if (jwt && jwt.length > 1) {
             getUserDetails(jwt).then(res => {
-                setSession({ user: res, jwt: jwt!, pendingAuth: false })
+                if(typeof res == "boolean") {
+                    console.error("Failed to validate user details. JWT has been wiped.")
+                    setSession({ user: {} as GetSiteResponse, jwt: "", pendingAuth: false })
+                    return;
+                } else {
+                    setSession({ user: res, jwt: jwt!, pendingAuth: false })
+                }
             })
         } else {
             setSession({ user: {} as GetSiteResponse, jwt: "", pendingAuth: false })

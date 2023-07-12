@@ -1,5 +1,4 @@
 import { LemmyHttp, Login} from "lemmy-js-client"
-import { setCookie } from "cookies-next";
 
 async function userLogin(username: string, password: string, baseUrl: string) {
     let client: LemmyHttp = new LemmyHttp(baseUrl);
