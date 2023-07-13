@@ -128,6 +128,9 @@ export default function Post() {
     const sendComment = async (e: FormEvent) => {
         e.preventDefault();
         if(replyCommentText.length < 1) return alert("Comment cannot be empty");
+
+        if(!session.jwt) return alert("You must be logged in to comment");
+
         const data: CommentResponse = await fetch(`/api/createComment`, {
             method: "POST",
             headers: {
