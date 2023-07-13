@@ -1,6 +1,6 @@
 
 .pageWrapper {
-    @apply w-full;
+    @apply w-full mb-24;
     display: flex;
     justify-content: center;
     overflow-x: hidden;
@@ -80,22 +80,21 @@
 }
 
 .textarea {
-    @apply w-full;
+    @apply w-full max-md:hidden
+    bg-neutral-50 dark:bg-neutral-900
+    text-neutral-900 dark:text-neutral-50
+    rounded-lg p-2 flex flex-col items-end
+    ;
     position: relative
 }
 
 .textarea textarea {
-    @apply 
-        w-full rounded-lg
-        bg-neutral-50
-        dark:bg-neutral-900
-        text-neutral-900
-        dark:text-neutral-50
+    @apply
+    bg-transparent w-full p-2
     ;
     overflow: hidden;
     overflow-wrap: break-word;
     resize: vertical;
-    padding: 1rem;
     outline: none;
 }
 
@@ -159,4 +158,12 @@
 
 .spinner span {
     border-color: red;
+}
+
+.showReply {
+    @apply fixed;
+}
+
+.hideReply {
+    @apply hidden;
 }
