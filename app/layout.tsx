@@ -30,7 +30,7 @@ export default function RootLayout({
         <SessionContextProvider>
           <NavbarContextProvider>
             <Navbar />
-            <main className={`mt-20 overflow-x-hidden min-h-screen`}>
+            <main className={`overflow-x-hidden min-h-screen`}>
               {children}
             </main>
           </NavbarContextProvider>
