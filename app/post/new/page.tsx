@@ -147,7 +147,7 @@ export default function New() {
     }
 
     return (
-    <div className="flex justify-center">
+    <div className="flex justify-center w-full">
         <div className={`bg-neutral-50 dark:bg-neutral-950 min-h-screen w-full p-20 max-md:p-0 justify-center items-center flex flex-col `}>
         
         { step == 0 &&
@@ -190,7 +190,7 @@ export default function New() {
 
         <AnimatePresence  mode="popLayout" >
             {step == 0 && 
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0, x: "-500%" }} className="p-4 flex flex-col gap-4 mt-16 w-full  h-full max-w-3xl">
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0, x: "-500%" }} className="p-4 flex flex-col gap-4 mt-16 w-full  h-full max-w-3xl max-sm:w-full">
                     <form id="stepzero" onSubmit={(e) => handleStep0(e)} className="flex flex-col gap-2 w-full">
                         <div className="flex flex-row gap-2 pb-2 w-full border-b border-neutral-300 overflow-x-auto max-sm:pb-4">
                             <RenderFormattingOptions />
@@ -215,7 +215,7 @@ export default function New() {
 
         <AnimatePresence mode="popLayout"  >
             { step == 1 && 
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.15 }} className="flex flex-col gap-4 p-4 mt-16 h-full max-w-3xl" >
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.15 }} className="flex flex-col gap-4 p-4 mt-16 h-full max-w-3xl max-sm:w-full" >
                     <motion.div 
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
@@ -248,7 +248,7 @@ export default function New() {
 
         <AnimatePresence mode="popLayout"  >
             { step == 2 &&
-                <motion.form id="steptwo" onSubmit={(e) => handleStep2(e)} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ x: "-500%" }} className="p-4 flex flex-col gap-4 mt-16  h-full">
+                <motion.form id="steptwo" onSubmit={(e) => handleStep2(e)} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ x: "-500%" }} className="p-4 flex flex-col gap-4 mt-16 h-full max-w-3xl  max-sm:w-full">
                     <div className="flex flex-col w-full justify-between items-start gap-4 ">
                         <button type="button" onClick={() => setStep(1)} className="flex flex-row gap-2 h-fit overflow-visible">
                             <CommunityCard community={selectedCommunity} />
@@ -271,7 +271,7 @@ export default function New() {
                     </div>
 
                     <div  className="flex flex-col gap-2" >
-                        <div className="flex flex-row gap-2 pb-2 w-full border-b border-neutral-300 dark:text-neutral-500">
+                        <div className="flex flex-row gap-2 pb-2 w-full border-b border-neutral-300 dark:text-neutral-500 overflow-x-auto max-sm:pb-4">
                             <RenderFormattingOptions />
                         </div>
                             
