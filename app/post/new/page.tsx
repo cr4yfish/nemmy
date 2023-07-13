@@ -16,7 +16,7 @@ import styles from "@/styles/Pages/NewPost.module.css";
 
 function CommunityCard({ community} : { community: CommunityView }) {
     return (
-        <div className="flex flex-row gap-2 justify-start items-center h-full w-full">
+        <div className="flex flex-row gap-2 justify-start items-center h-full w-full transition-all duration-100 dark:hover:translate-y-1 max-md:hover:translate-y-0">
             <img src={community?.community?.icon || "https://i.imgur.com/IN6ZY30.png"} alt="" className="w-8 h-8 rounded-full overflow-hidden object-contain" />
             <div className="flex flex-col items-start h-full justify-center">
                 <span className="font-bold">c/{community?.community?.name}</span>
@@ -147,7 +147,8 @@ export default function New() {
     }
 
     return (
-        <div className="bg-neutral-50 dark:bg-neutral-950 min-h-screen">
+    <div className="flex justify-center">
+        <div className={`bg-neutral-50 dark:bg-neutral-950 min-h-screen w-full p-20 max-md:p-0 justify-center items-center flex flex-col `}>
         
         { step == 0 &&
             <AnimatePresence>
@@ -167,7 +168,7 @@ export default function New() {
 
                     <button onClick={() => setStep(0)} className="flex items-center justify-center"><span className="material-symbols-outlined">arrow_back</span></button>
 
-                    <span className="font-bold text-neutral-950 text-xl">Select a Community to post in</span>
+                    <span className="font-bold text-neutral-950 dark:text-neutral-100 text-xl">Select a Community to post in</span>
 
                 </motion.div>
             </AnimatePresence>
@@ -189,22 +190,22 @@ export default function New() {
 
         <AnimatePresence  mode="popLayout" >
             {step == 0 && 
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ x: "-100%" }} className="p-4 flex flex-col gap-4 mt-16  h-full">
-                    <form id="stepzero" onSubmit={(e) => handleStep0(e)} className="flex flex-col gap-2">
-                        <div className="flex flex-row gap-2 pb-2 w-full border-b border-neutral-300">
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0, x: "-500%" }} className="p-4 flex flex-col gap-4 mt-16 w-full  h-full max-w-3xl">
+                    <form id="stepzero" onSubmit={(e) => handleStep0(e)} className="flex flex-col gap-2 w-full">
+                        <div className="flex flex-row gap-2 pb-2 w-full border-b border-neutral-300 overflow-x-auto max-sm:pb-4">
                             <RenderFormattingOptions />
                         </div>
                         
-                        <div className="mt-4">
-                            <input required value={form.name} onChange={(e) => setForm({ ...form, name: e.currentTarget.value })} type="text" placeholder="An interesting title" className=" bg-transparent font-bold text-3xl outline-none dark:text-neutral-100" />
+                        <div className="mt-4 w-full">
+                            <input required value={form.name} onChange={(e) => setForm({ ...form, name: e.currentTarget.value })} type="text" placeholder="An interesting title" className={`${styles.input}`} />
                         </div>
-                        <div>
+                        <div className={`w-full border border-transparent p-2 rounded-lg dark:bg-neutral-900`}>
                             <textarea 
                                 ref={textareaRef}
                                 value={form.body}
                                 onChange={(e) => setForm({ ...form, body: e.currentTarget.value })}
                                 name="" id="" style={{ resize: "vertical" }} 
-                                className=" bg-transparent w-full outline-none" placeholder="Tell the world what you think" />
+                                className={`${styles.textarea}`} placeholder="Tell the world what you think" />
                         </div>
                     </form>
                 </motion.div>
@@ -214,7 +215,7 @@ export default function New() {
 
         <AnimatePresence mode="popLayout"  >
             { step == 1 && 
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.15 }} className="flex flex-col gap-4 p-4 mt-16  h-full" >
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.15 }} className="flex flex-col gap-4 p-4 mt-16 h-full max-w-3xl" >
                     <motion.div 
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
@@ -247,15 +248,13 @@ export default function New() {
 
         <AnimatePresence mode="popLayout"  >
             { step == 2 &&
-                <motion.form id="steptwo" onSubmit={(e) => handleStep2(e)} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ x: "-100%" }} className="p-4 flex flex-col gap-4 mt-16  h-full">
-                    <div className="flex flex-row w-full justify-between items-center">
+                <motion.form id="steptwo" onSubmit={(e) => handleStep2(e)} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ x: "-500%" }} className="p-4 flex flex-col gap-4 mt-16  h-full">
+                    <div className="flex flex-col w-full justify-between items-start gap-4 ">
                         <button type="button" onClick={() => setStep(1)} className="flex flex-row gap-2 h-fit overflow-visible">
                             <CommunityCard community={selectedCommunity} />
                             <span className="material-symbols-outlined">expand_more</span>
                         </button>
-                        <div>
-                            <button type="button" onClick={() => setCommunityRulesPopup(true)} className=" text-fuchsia-500 font-bold text-xs">Community Description</button>
-                        </div>
+                        <button type="button" onClick={() => setCommunityRulesPopup(true)} className=" text-fuchsia-500 border border-fuchsia-500 rounded-lg p-2 w-fit font-bold text-xs">Community Description</button>
                     </div>
 
                     <div className="flex flex-row w-full items-center">
@@ -277,7 +276,7 @@ export default function New() {
                         </div>
                             
                         <div className="mt-4">
-                            <input value={form.name} onChange={(e) => setForm({ ...form, name: e.currentTarget.value })} type="text" placeholder="An interesting title" className=" bg-transparent font-bold text-3xl outline-none" />
+                            <input value={form.name} onChange={(e) => setForm({ ...form, name: e.currentTarget.value })} type="text" placeholder="An interesting title" className={`${styles.input}`} />
                         </div>
                         <div>
                             <textarea 
@@ -285,7 +284,7 @@ export default function New() {
                                 value={form.body}
                                 onChange={(e) => setForm({ ...form, body: e.currentTarget.value })}
                                 name="" id="" style={{ resize: "vertical" }} 
-                                className=" bg-transparent w-full outline-none" placeholder="Tell the world what you think" />
+                                className={`${styles.textarea}`} placeholder="Tell the world what you think" />
                         </div>
                     </div>
                 </motion.form>
@@ -295,8 +294,8 @@ export default function New() {
 
             <AnimatePresence>
                 { communityRulesPopup &&
-                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute top-0 left-0 min-h-screen dark:bg-neutral-950/75 backdrop-blur-lg rounded-lg">
-                        <div className="relative w-full h-full p-6 flex justify-center pt-20 flex-col gap-1">
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute flex justify-center top-0 left-0 min-h-screen min-w-full dark:bg-neutral-950/75 backdrop-blur-lg rounded-lg">
+                        <div className="relative w-fit h-full p-6 flex justify-center pt-20 flex-col gap-1">
                             <button onClick={() => setCommunityRulesPopup(false)} className="flex items-center justify-center"><span className="material-symbols-outlined absolute top-10 left-10">close</span></button>
                             <span className="font-bold text-xl">{selectedCommunity?.community?.title}</span>
                             <RenderMarkdown>{selectedCommunity?.community?.description}</RenderMarkdown>
@@ -306,5 +305,6 @@ export default function New() {
             </AnimatePresence>
 
         </div>
+    </div>
     )
 }
