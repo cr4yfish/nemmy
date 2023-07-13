@@ -117,7 +117,6 @@ export default function Post({ post } : { post: PostView }) {
                     <div className="hidden max-md:flex"><Vote post={post} horizontal /></div> 
                     <div className={`${styles.footerInteractions}`}>
                         <button>{post?.counts?.comments > 0 && post?.counts?.comments}<span className="material-icons-outlined">chat_bubble_outline</span></button>
-                        <button><span className="material-icons-outlined">share</span></button>
                         <button><span className="material-icons">bookmark_border</span></button>
                         <button><span className="material-icons-outlined">more_horiz</span></button>
                     </div>

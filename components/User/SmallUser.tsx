@@ -15,7 +15,6 @@ export default function SmallUser({ user, userHover, setUserHover, style, opensT
     const actor_id = new URL(user.actor_id);
 
     const baseUrl = actor_id.hostname;
-
     
     const getUserData = async () => {
         const data = await fetch(`/api/getUser?username=${user.name}&baseUrl=${baseUrl}`);

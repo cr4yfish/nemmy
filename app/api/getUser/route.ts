@@ -14,15 +14,16 @@ export async function GET(req: Request) {
         let limit = params.get("limit") || 10;
         let page = params.get("page") || 1;
         let auth = params.get("auth") || undefined;
+        let base = params.get("baseUrl") || undefined;
 
-        let client: LemmyHttp = new LemmyHttp("https://lemmy.world");
+        let client: LemmyHttp = new LemmyHttp(base ? `https://${base}` : "https://lemmy.world");
         let person = await client.getPersonDetails({ 
             person_id: id as unknown as number,
             username: username as unknown as string,
             sort: sort as unknown as SortType,
             page: page as unknown as number,
             limit: limit as unknown as number,
-            auth: auth as unknown as string
+            auth: auth as unknown as string,
         });
 
         return new Response(JSON.stringify(person), { status: 200, headers: { 'Content-Type': 'application/json' } })
