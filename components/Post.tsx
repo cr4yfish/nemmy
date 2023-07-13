@@ -27,6 +27,12 @@ export default function Post({ post } : { post: PostView }) {
 
     const postUrl = `/post/${post.post.id}`;
 
+    useEffect(() => {
+        if(post.post.nsfw) {
+            console.log("NSFW Post", post.post.id, post.post.name, typeof post.post.nsfw, post.post.nsfw)
+        }
+    }, [post])
+
     return (
         <>
         <div 
@@ -60,6 +66,7 @@ export default function Post({ post } : { post: PostView }) {
                         </div>
                         <Link href={postUrl} target="_blank"  className={`${styles.headerTitle}`}>
                             <h2 className={`${styles.title}`}>{post.post.name}</h2>
+                            {post?.post?.nsfw && <span className=" bg-red-400 text-red-950 rounded-full p-2 py-1 text-xs font-bold ">NSFW</span>}
                         </Link>
                         <span className={`${styles.headerLink}`}></span>
                     </div>
@@ -90,7 +97,7 @@ export default function Post({ post } : { post: PostView }) {
                             {/* Display Thumbnail */}
                             {post.post.thumbnail_url &&
                                 <Link className={`${styles.image}`} href={post.post.thumbnail_url} target="_blank" >
-                                    <AutoMediaType url={post.post.thumbnail_url} alt={post.post.name} />
+                                    <AutoMediaType url={post.post.thumbnail_url} alt={post.post.name} nsfw={post?.post?.nsfw} />
                                 </Link>
                             }
                         </div>
@@ -100,14 +107,14 @@ export default function Post({ post } : { post: PostView }) {
                     { /* Post has post url and no embedding,thus the url has to link to an Image -> Display Image */}
                     { post?.post?.url && !post?.post?.embed_title &&
                         <div className={`${styles.image}`}>
-                            <AutoMediaType url={post?.post?.url} alt={post.post.name} />
+                            <AutoMediaType url={post?.post?.url} alt={post.post.name} nsfw={post?.post?.nsfw} />
                         </div>
                     }
 
                     {/* Display Embed Video */}
                     {post.post.embed_video_url &&
                         <div className={`${styles.video}`}>
-                            <AutoMediaType url={post.post.embed_video_url} alt={post.post.name} />
+                            <AutoMediaType url={post.post.embed_video_url} alt={post.post.name} nsfw={post?.post?.nsfw} />
                         </div>
                     }
 
