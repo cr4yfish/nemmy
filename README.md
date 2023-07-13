@@ -84,14 +84,14 @@ This means that there is no single huge "Lemmy Server" but many smaller "instanc
     - [X] Voting on Comments
 - [x] PWA
 - [X] Community Page
-- [ ] Search, Filter and Sorting
+- [X] Search, Filter and Sorting 
 - [ ] Auth
     - [X] Login
     - [ ] Register
     - [ ] Subscribing to Communities
 - [ ] Creating Content 
-    - [ ] Creating Comments
-    - [ ] Creating Posts
+    - [ ] Creating Comments <- Almost done
+    - [ ] Creating Posts <- WIP
     - [ ] Creating Communities
 - [ ] Customization
     - [ ] User Themes
