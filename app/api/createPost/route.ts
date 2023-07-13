@@ -16,6 +16,8 @@ export async function POST(req: Request) {
 
         if(!name || !community_id || !auth) throw new Error("missing parameters");
 
+        console.log("Creating post");
+
         let client: LemmyHttp = new LemmyHttp(`https://lemmy.world`);
 
         let response = await client.createPost({
