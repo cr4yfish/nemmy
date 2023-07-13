@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 "use client"
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { useSession } from "@/hooks/auth";
 import { useNavbar, NavbarState } from "@/hooks/navbar";
@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import { ListingType, Search, SearchResponse, SortType } from "lemmy-js-client";
 import Username from "./User/Username";
 import RenderMarkdown from "./ui/RenderMarkdown";
+import { ClipLoader } from "react-spinners";
 
 const delay = (ms: number) => new Promise(res => setTimeout(res, ms));
 
@@ -70,7 +71,6 @@ function FilterButton({ label, option, icon, navbar, setNavbar, setFilterClicked
 }
 
 async function search({ searchParams } : { searchParams: Search }) {
-    console.log("searchParams", searchParams)
 
     // add a signature to the object to make typescript happy
     const params: { [index: string]: any } = {
@@ -101,22 +101,39 @@ export default function Navbar() {
     const [searchOverlay, setSearchOverlay] = useState(false);
     const [currentSearch, setCurrentSearch] = useState("");
     const [searchResults, setSearchResults] = useState<SearchResponse>({} as SearchResponse);
+    const searchInputRef = useRef<HTMLInputElement>(null);
+    const [searchLoading, setSearchLoading] = useState(false);
 
     const router = useRouter();
 
+    // Update input value when user stops typing
     useEffect(() => {
-        console.log("Search:", currentSearch)
+        const timer = setTimeout(async () => {
+            if(currentSearch.length == 0) return;
+            if(currentSearch.length < 2) return alert("Search term must be at least 2 characters long");
+            setSearchLoading(true)
+            const data = await search({ searchParams: {
+                q: currentSearch
+            }})
+            setIsSearching(true);
+            setSearchResults(data);
+            setSearchLoading(false)
+        }, 1000);
+
+        return () => clearTimeout(timer);
+        
     }, [currentSearch])
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
         setIsSearching(true);
+        setSearchLoading(true)
         const resp = await search({ searchParams: { 
             q: currentSearch, community_id: undefined, 
             community_name: undefined, creator_id: undefined, type_: "Posts", sort: undefined, 
             listing_type: undefined, page: undefined, limit: undefined, auth: session?.jwt || undefined 
         }})
-        console.log(resp);
+        setSearchLoading(false)
         setSearchResults(resp);
     }
 
@@ -215,7 +232,7 @@ export default function Navbar() {
             <div className="flex flex-row items-center gap-4">
 
                 { navbar?.showSearch &&
-                    <button className="flex justify-center items-center" onClick={() => setSearchOverlay(true)}><span className="material-symbols-outlined">search</span></button>
+                    <button className="flex justify-center items-center" onClick={() => { setSearchOverlay(true); searchInputRef?.current?.focus()  }}><span className="material-symbols-outlined">search</span></button>
                 }
 
                 
@@ -245,15 +262,20 @@ export default function Navbar() {
                 <div className={`${styles.searchInputWrapper}`}>
                     <button onClick={() => handleCloseSearchOverlay()} ><span className="material-symbols-outlined text-neutral-400">arrow_back</span></button>
                     <form onSubmit={handleSubmit} className="flex flex-row items-center w-full">
-                        <div className={`${styles.searchInput}`}>
+                        <div onClick={() => searchInputRef?.current?.focus()} className={`${styles.searchInput}`}>
                             <div className="flex flex-row gap-2 items-center w-full">
                                 <span className="material-symbols-outlined text-neutral-400 select-none">search</span>
                                 <input 
                                     value={currentSearch} onChange={(e) => setCurrentSearch(e.currentTarget.value)} 
+                                    ref={searchInputRef}
                                     type="text" placeholder="Search" className="w-full h-full bg-transparent appearance-none outline-none font-bold" />
                             </div>
                            
+                            { searchLoading ?
+                            <ClipLoader color={"#e6b0fa"} size={20} />
+                            :
                             <button type="button" className="flex items-center justify-center" onClick={() => setCurrentSearch("")}><span className="material-symbols-outlined filled text-neutral-400 select-none">cancel</span></button>
+                            }
                         </div>
                         
                     </form>
@@ -296,7 +318,7 @@ export default function Navbar() {
                 { isSearching &&
                 <div className="flex flex-col gap-0 w-full overflow-scroll h-full relative">
                     {searchResults.posts?.map((result, index) => (
-                        <div key={index} className="flex flex-row p-4 items-center justify-between bg-neutral-50 dark:bg-neutral-950 border-b border-neutral-700">
+                        <Link href={`/post/${result?.post?.id}`} target="_blank" key={index} className="flex flex-row p-4 items-center justify-between bg-neutral-50 dark:bg-neutral-950 border-b border-neutral-700">
                             <div className="flex flex-col gap-3">
 
                                 <div className="flex flex-row items-center gap-2 ">
@@ -337,7 +359,7 @@ export default function Navbar() {
 
                             </div>
                             {result?.post?.thumbnail_url && <img className="w-24 h-24 rounded-lg" src={result.post.thumbnail_url} alt="" /> }
-                        </div>
+                        </Link>
                     ))}
                 </div>
                 }
