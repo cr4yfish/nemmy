@@ -2,7 +2,7 @@
     @apply 
         gap-10
         max-md:gap-5
-        bg-neutral-50/75 dark:bg-neutral-950/75
+        bg-neutral-50/25 dark:bg-neutral-950/25
         border-b 
         border-neutral-200 dark:border-neutral-800
         h-20 top-0 left-0
@@ -84,7 +84,7 @@
 .activeFilterOption, .activeSortOption {
     @apply 
     font-bold
-    bg-fuchsia-100 text-neutral-900
+    bg-neutral-100 text-neutral-900
     dark:bg-fuchsia-900 dark:text-neutral-50
     ;
 }
