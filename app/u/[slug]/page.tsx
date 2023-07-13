@@ -84,10 +84,10 @@ export default function User() {
 
     return (
     <>
-        <div className={`${styles.bannerOverlay}`}></div>
+        <div className={`${styles.bannerOverlay} `}></div>
         <img src={userData?.person_view?.person?.banner} alt="" className={`${styles.banner}`} />
-        <div className="flex min-h-screen flex-col items-center overflow-x-hidden">
-            <div className={`${styles.userDetailsWrapper}`}>
+        <div className="flex min-h-screen flex-col items-center overflow-x-hidden mt-20">
+            <div className={`${styles.userDetailsWrapper} `}>
                     
                 <div className={`${styles.userDetails}`}>
                     <div className={`${styles.userAvatar}`}>

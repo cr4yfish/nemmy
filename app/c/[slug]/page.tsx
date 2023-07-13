@@ -46,7 +46,7 @@ export default function Community() {
     
     return (
         <>
-        <div className={`${styles.bannerOverlay}`}></div>
+        <div className={`${styles.bannerOverlay} mt-20`}></div>
         <img src={communityData?.community_view?.community?.banner} alt="" className={`${styles.banner}`} />
         <div className={`${styles.headerWrapper}`}>
             <div className="flex flex-row gap-4 p-6 max-w-xl max-md:w-full items-center flex-wrap">

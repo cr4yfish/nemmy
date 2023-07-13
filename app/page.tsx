@@ -13,7 +13,7 @@ export default function Home() {
   }, [])
 
   return (
-    <div id="postpage" className={`flex min-h-screen flex-col items-center mt-4`}>
+    <div id="postpage" className={`flex min-h-screen flex-col items-center mt-24`}>
 
       <PostList />
       

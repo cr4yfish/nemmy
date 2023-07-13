@@ -1,0 +1,7 @@
+.blurOn {
+    @apply opacity-100
+}
+
+.blurOff {
+    @apply opacity-0
+}

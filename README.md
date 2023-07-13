@@ -91,7 +91,7 @@ This means that there is no single huge "Lemmy Server" but many smaller "instanc
     - [ ] Subscribing to Communities
 - [ ] Creating Content 
     - [ ] Creating Comments <- Almost done
-    - [ ] Creating Posts <- WIP
+    - [X] Creating Posts
     - [ ] Creating Communities
 - [ ] Customization
     - [ ] User Themes

@@ -422,7 +422,7 @@ export default function Navbar() {
                 <div className={`${styles.userMenuInteractionsTop}`}>
                     <button><span className="material-icons-outlined">notifications</span>Notifications</button>
                     <Link onClick={() => handleUserMenuClose()} href={`/u/${session?.user.my_user?.local_user_view?.person?.name}`}><button><span className="material-icons-outlined">account_circle</span>My Profile</button></Link>
-                    <button><span className="material-icons-outlined">add_circle_outline</span>Create a Post</button>
+                    <Link onClick={() => handleUserMenuClose()} href="/post/new"><button><span className="material-icons-outlined">add_circle_outline</span>Create a Post</button></Link>
                     <button><span className="material-icons-outlined">group_add</span>Create a Community</button>
                     <button><span className="material-icons-outlined">bookmarks</span>Bookmarked</button>
                 </div>

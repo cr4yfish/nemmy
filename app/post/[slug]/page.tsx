@@ -13,30 +13,13 @@ import { useNavbar } from "@/hooks/navbar";
 import { BounceLoader } from "react-spinners";
 import { useSession } from "@/hooks/auth";
 import Vote from "@/components/Vote";
+import RenderFormattingOptions from "@/components/ui/RenderFormattingOptions";
 
 import styles from "../../../styles/Pages/PostPage.module.css";
 import markdownStyle from "@/styles/util/markdown.module.css";
 
 
-function RenderFormattingOptions() {
 
-    return (
-        <>
-        <button className=" flex items-center "><span className="material-symbols-outlined">format_bold</span></button>
-        <button className=" flex items-center "><span className="material-symbols-outlined">format_italic</span></button>
-        <button className=" flex items-center "><span className="material-symbols-outlined">link</span></button>
-        <button className=" flex items-center "><span className="material-symbols-outlined">add_reaction</span></button>
-        <button className=" flex items-center "><span className="material-symbols-outlined">add_photo_alternate</span></button>
-        <button className=" flex items-center "><span className="material-symbols-outlined">format_h1</span></button>
-        <button className=" flex items-center "><span className="material-symbols-outlined">strikethrough_s</span></button>
-        <button className=" flex items-center "><span className="material-symbols-outlined">format_quote</span></button>
-        <button className=" flex items-center "><span className="material-symbols-outlined">format_list_bulleted</span></button>
-        <button className=" flex items-center "><span className="material-symbols-outlined">code</span></button>
-        <button className=" flex items-center "><span className="material-symbols-outlined">ad_group_off</span></button>
-        <button className=" flex items-center "><span className="material-symbols-outlined">superscript</span></button>
-        </>
-    )
-}
 
 
 export default function Post() {
@@ -61,7 +44,7 @@ export default function Post() {
     const pathname = usePathname().split("/")[2];
 
     useEffect(() => {
-        setNavbar({ ...navbar!, showSort: false, showFilter: false, showSearch: false, showback: false })
+        setNavbar({ ...navbar!, showSort: false, showFilter: false, showSearch: false, showback: false, hidden: false })
     }, [])
 
     useEffect(() => {
@@ -157,7 +140,7 @@ export default function Post() {
     
     return (
         <>
-        <main className={`${styles.pageWrapper}`}>
+        <main className={`${styles.pageWrapper} mt-20`}>
             <div className={`${styles.wrapper}`}>
                 <div className={`${styles.post}`}>
                     <div className={`${styles.postHeader}`}>
