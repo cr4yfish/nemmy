@@ -48,6 +48,13 @@
   </p>
 </div>
 
+<div style="width: 100%; display: flex; justify-content: center; gap: 1rem;">
+  <img src="https://i.imgur.com/OxkGnC4.png" style="height: 500px; width: auto;" >
+  <img src="https://i.imgur.com/twzhIFG.png" style="height: 500px; width: auto;" >
+  <img src="https://i.imgur.com/SGJFQuo.png" style="height: 500px; width: auto;" >
+  <img src="https://i.imgur.com/BljmUFd.png" style="height: 500px; width: auto;" >
+
+</div>
 
 
 <!-- ABOUT THE PROJECT -->
@@ -64,7 +71,7 @@ If you like the idea of Nemmy, this is the perfect opportunity for you to influe
 There are other good Apps for Lemmy out there, even other PWAs like [wefwef.app](wwefwef.app).
 What singles out Nemmy is not focusing on a single devices (e.g. Mobile-only design like wefwef or Desktop Only design like the default Lemmy Web UI) but making the user experience equally good on most devices.
 
-#### What's Lemmy?
+##### What's Lemmy?
 The short version is, that Lemmy is similar to Reddit. The main difference is that Lemmy is Open-Source and Federated.
 This means that there is no single huge "Lemmy Server" but many smaller "instances" of Lemmy hosted by different people. These instances can communicate with each other, so you can follow people on other instances and see their posts and comments.
 
