@@ -1,0 +1,7 @@
+.showReply {
+    @apply fixed;
+}
+
+.hideReply {
+    @apply hidden;
+}
