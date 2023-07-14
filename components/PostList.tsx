@@ -64,7 +64,7 @@ export default function PostList({ fetchParams={ limit: 10, page: 1 } } : {
     const getPosts = async ({ page=1 } : { page?: number }) => {
         const data = await fetch(`/api/getPosts?limit=${pageLimit}&page=${page}&community_name=${fetchParams.community_name}&auth=${session?.jwt}&sort=${currentSort}&type_=${currentType}`);
         const json = (await data.json()).posts;
-        if(json.length === 0) {
+        if(json?.length === 0) {
             setMorePages(false);
         }
 
@@ -74,6 +74,8 @@ export default function PostList({ fetchParams={ limit: 10, page: 1 } } : {
     const handleLoadMore = async () => {
         if(session.pendingAuth) return;
         const data = await getPosts({ page: currentPage });
+        
+        if(!data) return;
         setPosts([...posts, ...data]);
         setCurrentPage(currentPage + 1);
     }
