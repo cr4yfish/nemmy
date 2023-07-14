@@ -10,6 +10,7 @@ import styles from "../styles/post.module.css"
 import { useEffect, useState } from "react";
 import { useSession } from "@/hooks/auth";
 import { animateValue } from "framer-motion";
+import { FormatDate } from "@/utils/formatDate";
 
 import markdownStyle from "@/styles/util/markdown.module.css";
 
@@ -26,12 +27,6 @@ export default function Post({ post } : { post: PostView }) {
     //const postUrl = `https://${baseUrl}/post/${post.post.id}`;
 
     const postUrl = `/post/${post.post.id}`;
-
-    useEffect(() => {
-        if(post.post.nsfw) {
-            console.log("NSFW Post", post.post.id, post.post.name, typeof post.post.nsfw, post.post.nsfw)
-        }
-    }, [post])
 
     return (
         <>
@@ -59,7 +54,8 @@ export default function Post({ post } : { post: PostView }) {
                                 <div className={`${styles.user}`}>
                                     <div>Posted by</div> 
                                     <Username user={post.creator} baseUrl={baseUrl} /> 
-                                    <div className={`${styles.date}`}>on {new Date(post.post.published).toDateString()}</div>
+                                    <div className="dividerDot"></div>
+                                    <div className={`${styles.date}`}><FormatDate date={new Date(post.post.published)} /></div>
                                 </div>
                             </div>
                             

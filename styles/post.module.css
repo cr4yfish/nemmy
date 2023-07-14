@@ -92,9 +92,6 @@
     gap: 3px;
 }
 
-.date {
-    @apply max-sm:hidden
-}
 
 .title {
     @apply text-2xl font-bold text-neutral-900 dark:text-neutral-100
