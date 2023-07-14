@@ -62,7 +62,7 @@ If you like the idea of Nemmy, this is the perfect opportunity for you to influe
 
 ##### Why Nemmy?
 There are other good Apps for Lemmy out there, even other PWAs like [wefwef.app](wwefwef.app).
-What singles out Nemmy is not focusing on a single devices (e.g. Mobile-First design) but making the user experience equally good on most devices.
+What singles out Nemmy is not focusing on a single devices (e.g. Mobile-only design like wefwef or Desktop Only design like the default Lemmy Web UI) but making the user experience equally good on most devices.
 
 #### What's Lemmy?
 The short version is, that Lemmy is similar to Reddit. The main difference is that Lemmy is Open-Source and Federated.
