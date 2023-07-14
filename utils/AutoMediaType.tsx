@@ -19,7 +19,7 @@ function NSFWRBlurRender({ defaultState=false } : { defaultState?: boolean }) {
  * Can Handle both images and videos of various types
  * @param url: string The url of the media
  */
-export function AutoMediaType({ url, alt="", nsfw=true } : { url: string, alt?: string, nsfw?: boolean }) {
+export function AutoMediaType({ url, alt="", nsfw=false } : { url: string, alt?: string, nsfw?: boolean }) {
     
 
     // figure out media type by extension
