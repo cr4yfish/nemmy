@@ -210,7 +210,7 @@ export default function Navbar() {
                     <button className={`${styles.navButton}`} onClick={() =>{ setFilterClicked(!filterClicked); setSortOptions(false); handleUserMenuClose(); setNavbar({...navbar, overlayActive: !filterClicked})  }}>
                         <div>
                             <span className="material-icons">filter_list</span>
-                            <span className={`${styles.navButtonText}`}>All</span>
+                            <span className={`${styles.navButtonText}`}>{navbar?.currentType}</span>
                         </div>
                         <span className="material-icons">arrow_drop_down</span> 
                     </button> 
@@ -220,7 +220,7 @@ export default function Navbar() {
                     <button className={`${styles.navButton}`} onClick={() =>{ setSortOptions(!sortOptions); handleUserMenuClose(); handleMenuClose(); setFilterClicked(false); setNavbar({...navbar, overlayActive: !sortOptions})  }} >
                         <div className="flex items-center gap-1">
                             <span className="material-icons-outlined">sort</span>
-                            <span className={`${styles.navButtonText}`}>Hot</span>
+                            <span className={`${styles.navButtonText}`}>{navbar?.currentSort}</span>
                         </div>
                         <span className="material-icons">arrow_drop_down</span> 
                     </button>
