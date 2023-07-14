@@ -19,6 +19,7 @@ export async function POST(req: Request) {
         let response = await client.createComment({
             content: content as unknown as string,
             post_id: post_id as unknown as PostId,
+            parent_id: parent_id as unknown as CommentId,
             auth: auth as unknown as string,
         })
 
