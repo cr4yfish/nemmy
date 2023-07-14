@@ -17,6 +17,8 @@ export default function SmallUser({ user, userHover, setUserHover, style, opensT
     const baseUrl = actor_id.hostname;
     
     const getUserData = async () => {
+        if(baseUrl !== "lemmy.world") return;
+
         const data = await fetch(`/api/getUser?username=${user.name}&baseUrl=${baseUrl}`);
         const json = (await data.json());
         if(json.error) {
