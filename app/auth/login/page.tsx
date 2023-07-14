@@ -7,12 +7,14 @@ import { useSession } from "@/hooks/auth";
 import Logo from "@/components/Logo";
 import { useRouter } from "next/navigation"; 
 import Link from "next/link";
+import { CircleLoader, ClipLoader } from "react-spinners";
 
 import styles from "@/styles/Pages/LoginPage.module.css";
 
 export default function Login() {
     const { session, setSession } = useSession();
     const router = useRouter();
+    const [loading, setLoading] = useState<boolean>(false);
 
     const [form, setForm] = useState<{ username: string, password: string, saveLogin: boolean}>({
         username: "",
@@ -23,6 +25,8 @@ export default function Login() {
     const handleSubmit = async (e: FormEvent) => {
         try {
             e.preventDefault();
+            if(loading) return;
+            setLoading(true);
             let usernameEle = (e.target as HTMLFormElement).elements[0] as any;
             let passwordEle = (e.target as HTMLFormElement).elements[1] as any;
             let saveLoginEle = (e.target as HTMLFormElement).elements[2] as any;    
@@ -64,9 +68,11 @@ export default function Login() {
             const user = await getUserDetails(jwt.jwt);
             
             // redirect to home
+            setLoading(false);
             router.push("/");
     
         } catch (e: any) {
+            setLoading(false);
             console.error(e.message);
         }
     }
@@ -87,17 +93,17 @@ export default function Login() {
                 <form onSubmit={(e) => handleSubmit(e)} className={`${styles.loginWrapper}`}>
                     <div className={`${styles.inputWrapper}`}>
                         <label htmlFor="">Email</label>
-                        <input required type="email" />
+                        <input required type="email" disabled={loading} />
                     </div>
                     <div className={`${styles.inputWrapper}`}>
                         <label htmlFor="">Password</label>
-                        <input required type="password" />
+                        <input required type="password" disabled={loading} />
                     </div>
                     <div onClick={() => setForm({...form, saveLogin: !form.saveLogin})}  className={`flex flex-row gap-3 items-center select-none`}>
-                        <input className="w-fit" type="checkbox" id="saveLogin" checked={form.saveLogin} />
+                        <input className="w-fit" type="checkbox" id="saveLogin" checked={form.saveLogin} disabled={loading} />
                         <label className="w-fit" htmlFor="">Save login</label>
                     </div>
-                    <button className={`${styles.button} ${styles.primary}`} type="submit">Login</button>
+                    <button disabled={loading} className={`${styles.button} ${styles.primary}`} type="submit">{loading ? <ClipLoader color={"#e6b0fa"} size={20} />: "Login"}</button>
                     <Link className="a" href="/auth/signup">Or sign up</Link>
                 </form>
                 
