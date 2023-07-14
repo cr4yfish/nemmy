@@ -3,16 +3,12 @@
 }
 
 .inputWrapper {
-    @apply flex flex-col gap-1
+    @apply flex flex-col gap-1 relative
 }
 
 .inputWrapper input {
     @apply 
-    
-    bg-neutral-200 text-neutral-950
-    dark:bg-transparent dark:text-neutral-100
-    dark:border-neutral-500 dark:border
-    dark:focus:border-fuchsia-200
+    border
 
     transition-all duration-200
     
@@ -38,4 +34,19 @@
     @apply 
     bg-fuchsia-500 text-fuchsia-100
     dark:bg-fuchsia-500 dark:text-fuchsia-100
+}
+
+.input {
+    @apply     
+    border-transparent
+    bg-neutral-200 text-neutral-950
+    dark:bg-transparent dark:text-neutral-100
+    dark:border-neutral-500 dark:border
+    dark:focus:border-fuchsia-200
+}
+
+.inputError {
+    @apply border-red-500
+    bg-red-50 text-red-950
+    dark:bg-red-900 dark:text-red-50
 }

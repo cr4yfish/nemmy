@@ -7,13 +7,14 @@ export async function GET(req: Request) {
         let params = new URL(req.url).searchParams;
         
         let auth = params.get("auth");
+        let baseUrl = params.get("baseUrl");
 
         if(!auth) throw new Error("auth is required");
 
-        let client: LemmyHttp = new LemmyHttp("https://lemmy.world");
+        let client: LemmyHttp = new LemmyHttp(baseUrl ? `https://${baseUrl}` : "https://lemmy.ml");
 
         let site = await client.getSite({ 
-            auth: auth as string, 
+            auth: auth as unknown as string, 
         });
 
         return new Response(JSON.stringify(site), { status: 200, headers: { 'Content-Type': 'application/json' } })
