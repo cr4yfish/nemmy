@@ -1,5 +1,4 @@
 import { LemmyHttp, ListingType, SortType, CommunityId } from "lemmy-js-client"
-import jwt, { JwtPayload } from "jsonwebtoken";
 
 // POST /api/getUser
 // Post for security reasons
@@ -16,9 +15,7 @@ export async function GET(req: Request) {
         let auth = params.get("auth") || undefined;
         let base = params.get("baseUrl") || undefined;
 
-        if(base !== "lemmy.world") throw new Error("Other instances are not supported yet");
-
-        let client: LemmyHttp = new LemmyHttp(base ? `https://${base}` : "https://lemmy.world");
+        let client: LemmyHttp = new LemmyHttp("https://lemmy.world");
         let person = await client.getPersonDetails({ 
             person_id: id as unknown as number,
             username: username as unknown as string,
