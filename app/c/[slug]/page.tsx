@@ -9,14 +9,20 @@ import Username from "@/components/User/Username";
 import Comment from "@/components/Comment";
 import PostList from "@/components/PostList";
 import RenderMarkdown from "@/components/ui/RenderMarkdown";
+import { useSession } from "@/hooks/auth";
+import { subscribeToCommunity } from "@/utils/lemmy";
 
 import styles from "@/styles/Pages/CommunityPage.module.css";
+import { ClipLoader } from "react-spinners";
 
 export default function Community() {
     const { navbar, setNavbar } = useNavbar();
+    const { session } = useSession();
     const [communityData, setCommunityData] = useState<GetCommunityResponse>({} as GetCommunityResponse);
     const [communityDataError, setCommunityDataError] = useState(true);
     const [descriptionExpanded, setDescriptionExpanded] = useState(false);
+
+    const [subscribeLoading, setSubscribeLoading] = useState(false);
 
     useEffect(() => {
         setNavbar({ ...navbar!, showSort: false, showFilter: false, showSearch: true, showUser: true, showback: true })
@@ -43,6 +49,18 @@ export default function Community() {
 
     }, [pathname, communityDataError]);
 
+    const subscribe = async () => {
+        if(subscribeLoading) return;
+        setSubscribeLoading(true);
+        if(!session || !communityData.community_view.community.id) return;
+        const res = await subscribeToCommunity({ community_id: communityData.community_view.community.id, auth: session.jwt, follow: true });
+        if(!res) {
+            console.error("Could not follow community");
+        } else {
+            setCommunityData({...communityData, community_view: {...communityData.community_view, subscribed: "Subscribed"}});
+        }
+        setSubscribeLoading(false);
+    }
     
     return (
         <>
@@ -59,7 +77,7 @@ export default function Community() {
                     </div>
                     
                 </div>
-                <button className={`${styles.subscribeButton}`}>Subscribe</button>
+                {communityData?.community_view?.subscribed == "NotSubscribed" && <button onClick={() => subscribe()} className={`${styles.subscribeButton}`}>{subscribeLoading ? <ClipLoader color={"#e6b0fa"} size={20} /> : "Subscribe"}</button>}
             </div>
             
             <div className={`${styles.description}`}>

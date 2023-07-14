@@ -1,15 +1,9 @@
 import { deleteCookie } from "cookies-next";
-import { CommentResponse, CommentView, CreateComment, CreatePost, GetComments, GetCommentsResponse, GetPostResponse, GetSiteResponse, ListCommunities, ListCommunitiesResponse, PostResponse } from "lemmy-js-client"
+import { CommentResponse, CommentView, CreateComment, CreatePost, FollowCommunity, GetComments, GetCommentsResponse, GetPostResponse, GetSiteResponse, ListCommunities, ListCommunitiesResponse, PostResponse, Search, SearchResponse } from "lemmy-js-client"
 import { FormEvent } from "react";
 
-export const getUserDetails = async (jwt: string) :  Promise<(boolean | GetSiteResponse)> => {
-    const user: GetSiteResponse = await fetch(`/api/getSite?auth=${jwt}`).then(res => res.json());
-    if(!user.my_user) {
-        console.warn("user.my_user is null -> JWT is invalid");
-        sessionStorage.removeItem("jwt");
-        deleteCookie("jwt");
-        return false;
-    }
+export const getUserDetails = async (jwt: string, baseUrl: string) :  Promise<(boolean | GetSiteResponse)> => {
+    const user: GetSiteResponse = await fetch(`/api/getSite?auth=${jwt}&baseUrl=${baseUrl}`).then(res => res.json());
     return user as GetSiteResponse;
 }
 
@@ -57,4 +51,25 @@ export const getComments = async (params: GetComments, baseUrl: string) : Promis
         return console.warn("Something went wrong getting the comments");
     }
     return data;
+}
+
+export const subscribeToCommunity = async (params: FollowCommunity) : Promise<CommentResponse> => {
+    const data = await fetch(`/api/subscribeToCommunity`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ community_id: params.community_id, follow: params.follow, auth: params.auth })
+    }).then(res => res.json());
+    console.log(data);
+    return data;
+}
+
+export const search = async (params: Search) : Promise<(void | SearchResponse)> => {
+    const data = await fetch(`/api/search?q=${params.q}&type_=${params.type_}&auth=${params.auth}&listing_type=${params.listing_type}`).then(res => res.json());
+    if(!data) {
+        return console.warn("Something went wrong searching");
+    }
+    return data;
+
 }
