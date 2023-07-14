@@ -327,7 +327,7 @@ export default function Navbar() {
                                         <span>c/{result?.community?.name}</span>
                                         <div className="flex flex-row">
                                             {result.creator && <Username user={result.creator} baseUrl="" />}
-                                            <div className="divider-dot"></div>
+                                            <div className="dividerDot"></div>
                                         </div>
                                         
                                     </div>
