@@ -84,29 +84,49 @@ This means that there is no single huge "Lemmy Server" but many smaller "instanc
     - [X] Voting on Comments
 - [x] PWA
 - [X] Community Page
-- [X] Search, Filter and Sorting 
-- [ ] Auth
+- [ ] Sort/Filter/Search
+    - [X] Search
+    - [ ] Filter -- Not implemented everywhere yet
+    - [ ] Sorting -- Same as Filter
+    - [ ] Explore Section
+- [ ] Authentication
     - [X] Login
     - [ ] Register
+    - [X] Support for multiple instances
     - [X] Subscribing to Communities
 - [ ] Creating Content 
     - [X] Creating Comments
     - [X] Creating Posts
     - [ ] Creating Communities
+    - [ ] Supporting *all* Lemmy Markdown Features
+- [ ] User Page
+    - [ ] User Settings
+    - [ ] User Notifications
+    - [X] User Profile
+    - [X] User Posts
+    - [X] User Bookmarks
+    - [ ] User Comments
+- [ ] Sidebar
+    - [ ] Subscribed Communities
+    - [ ] Instance Info
+- [ ] Moderation Tools
+    - [ ] Delete Posts/Comments
+    - [ ] Ban Users
+    - [ ] Lock Posts/Comments
+    - [ ] Modify Posts (e.g. change title, mark as NSFW)
+- [ ] Offline Features 
+    - [ ] Content Cache
+    - [ ] Upload when online
 - [ ] Customization
     - [ ] User Themes
     - [ ] Compact Style (Like compact.reddit)
     - [ ] Classic Style (Like old.reddit)
-- [ ] Offline Features 
-    - [ ] Content Cache
-    - [ ] Upload when online
-- [ ] Moderation Tools
 - [ ] QoL Features
-  - [ ] Auto-Register to other instances
-  - [ ] Subscribe to the same community on multiple instances (like c/nemmy on Lemmy.world and Lemmy.ml)
-  - [ ] Bulk Block/Hide Communities with the same or similar Name
-  - [ ] Subscribe/Unsubscribe from Communities while in Search mode (So you don't need to leave the Search page just to unsubscribe/subscribe)
-  - [ ] Improved Sorting
+    - [ ] Auto-Register to other instances
+    - [ ] Subscribe to the same community on multiple instances (like c/nemmy on Lemmy.world and Lemmy.ml)
+    - [ ] Bulk Block/Hide Communities with the same or similar Name
+    - [ ] Subscribe/Unsubscribe from Communities while in Search mode (So you don't need to leave the Search page just to unsubscribe/subscribe)
+    - [ ] Improved Sorting
 
 Ideas for Q4+
 * Use GPT3.5 to sum up large text bodies
