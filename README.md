@@ -88,7 +88,7 @@ This means that there is no single huge "Lemmy Server" but many smaller "instanc
 - [ ] Auth
     - [X] Login
     - [ ] Register
-    - [ ] Subscribing to Communities
+    - [X] Subscribing to Communities
 - [ ] Creating Content 
     - [X] Creating Comments
     - [X] Creating Posts
