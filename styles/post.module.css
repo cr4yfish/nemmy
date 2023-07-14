@@ -79,17 +79,24 @@
 }
 
 .sub, .user {
-    color: grey;
-    font-size: 10pt;
+    @apply text-xs
+    ;
+}
+
+.sub {
+    @apply text-neutral-600 dark:text-neutral-300
 }
 
 .user {
     @apply 
+    flex
     flex-row items-center
-    max-md:text-xs max-md:flex-row;
+    max-md:text-xs max-md:flex-row
+    max-sm:flex-wrap
+    dark:text-neutral-400 text-neutral-500
+    ;
     width: 100%;
     display: flex;
-    gap: 3px;
 }
 
 
