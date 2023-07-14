@@ -90,7 +90,7 @@ export default function PostList({ fetchParams={ limit: 10, page: 1 } } : {
                     className={styles.postList}
                     key={"postList"}
                     >
-                    {posts.map((post: PostView, index: number) => {
+                    {posts.filter((post) => !post.post.deleted && !post.post.removed).map((post: PostView, index: number) => {
                         return <Post post={post} key={index} />
                     })
                     }
