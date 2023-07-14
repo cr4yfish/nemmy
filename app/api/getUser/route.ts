@@ -16,6 +16,8 @@ export async function GET(req: Request) {
         let auth = params.get("auth") || undefined;
         let base = params.get("baseUrl") || undefined;
 
+        if(base !== "lemmy.world") throw new Error("Other instances are not supported yet");
+
         let client: LemmyHttp = new LemmyHttp(base ? `https://${base}` : "https://lemmy.world");
         let person = await client.getPersonDetails({ 
             person_id: id as unknown as number,
