@@ -90,7 +90,7 @@ This means that there is no single huge "Lemmy Server" but many smaller "instanc
     - [ ] Register
     - [ ] Subscribing to Communities
 - [ ] Creating Content 
-    - [ ] Creating Comments <- Almost done
+    - [X] Creating Comments
     - [X] Creating Posts
     - [ ] Creating Communities
 - [ ] Customization
