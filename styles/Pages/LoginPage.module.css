@@ -1,5 +1,5 @@
 .loginWrapper {
-    @apply flex flex-col gap-3 p-4
+    @apply flex flex-col gap-3 p-4 w-full max-sm:w-full
 }
 
 .inputWrapper {
@@ -49,4 +49,20 @@
     @apply border-red-500
     bg-red-50 text-red-950
     dark:bg-red-900 dark:text-red-50
+}
+
+.weakPassword {
+    @apply text-red-500
+}
+
+.passwordOk {
+    @apply text-green-500
+}
+
+.passwordStrong {
+    @apply text-fuchsia-500
+}
+
+.passwordUltimate {
+    @apply text-indigo-500
 }

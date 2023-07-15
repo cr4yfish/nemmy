@@ -13,7 +13,7 @@ export default function Layout({
     }, [navbar])
 
     return (
-        <div>
+        <div className=" w-full min-h-screen">
             {children}
         </div>
     )

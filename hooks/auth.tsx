@@ -40,7 +40,6 @@ export const SessionContextProvider = ({ children } : { children: any }) => {
             getUserDetails(jwt, instance).then(res => {
                 if(typeof res == "boolean") {
                     console.error("Failed to validate user details. JWT has been wiped.")
-                    console.log(res);
                     setSession({ user: {} as GetSiteResponse, jwt: "", pendingAuth: false, defaultInstance: "lemmy.ml" })
                     return;
                 } else {

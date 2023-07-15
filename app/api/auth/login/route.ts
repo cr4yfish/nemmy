@@ -1,7 +1,6 @@
 import { LemmyHttp, Login} from "lemmy-js-client"
 
 async function userLogin(username: string, password: string, baseUrl: string) {
-    console.log("Logging", username, "into", baseUrl);
     let client: LemmyHttp = new LemmyHttp(baseUrl);
     let loginForm: Login = {
         username_or_email: username,

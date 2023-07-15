@@ -82,7 +82,6 @@ export default function Login() {
             // get user details
             const user = await getUserDetails(jwt.jwt, form.instance);
 
-            console.log("Got user:", user);
 
             setSession({ ...session, jwt: jwt.jwt, user: user })
             

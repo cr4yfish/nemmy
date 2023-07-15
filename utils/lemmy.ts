@@ -1,6 +1,6 @@
-import { deleteCookie } from "cookies-next";
-import { CommentResponse, CommentView, CreateComment, CreatePost, FollowCommunity, GetComments, GetCommentsResponse, GetPostResponse, GetSiteResponse, ListCommunities, ListCommunitiesResponse, PostResponse, Search, SearchResponse } from "lemmy-js-client"
-import { FormEvent } from "react";
+
+import { CommentResponse, CommentView, CreateComment, CreatePost, FollowCommunity, GetComments, GetCommentsResponse, 
+    GetPostResponse, GetSiteResponse, ListCommunities, ListCommunitiesResponse, PostResponse, Register, Search, SearchResponse, LoginResponse, GetCaptcha, GetFederatedInstances, GetFederatedInstancesResponse, GetCaptchaResponse } from "lemmy-js-client"
 
 export const getUserDetails = async (jwt: string, baseUrl: string) :  Promise<(boolean | GetSiteResponse)> => {
     const user: GetSiteResponse = await fetch(`/api/getSite?auth=${jwt}&baseUrl=${baseUrl}`).then(res => res.json());
@@ -61,7 +61,6 @@ export const subscribeToCommunity = async (params: FollowCommunity) : Promise<Co
         },
         body: JSON.stringify({ community_id: params.community_id, follow: params.follow, auth: params.auth })
     }).then(res => res.json());
-    console.log(data);
     return data;
 }
 
@@ -71,5 +70,48 @@ export const search = async (params: Search) : Promise<(void | SearchResponse)> 
         return console.warn("Something went wrong searching");
     }
     return data;
+}
 
+export const register = async (params: Register, instance: string) : Promise<(void | LoginResponse)> => {
+    const data = await fetch("/api/auth/signup", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            username: params.username,
+            password: params.password,
+            password_verify: params.password_verify,
+            show_nsfw: params.show_nsfw,
+            email: params.email,
+            instance: instance,
+            captcha_uuid: params.captcha_uuid,
+            captcha_answer: params.captcha_answer,
+        })
+    }).then(res => res.json());
+    return data.register;
+}
+
+export const getCaptcha = async (params: GetCaptcha, instance: string) : Promise<(void | GetCaptchaResponse)> => {
+    const data = await fetch("/api/auth/getCaptcha", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            auth: params.auth,
+            instance: instance
+        })
+    }).then(res => res.json());
+    return data.response;
+}
+
+export const getFederatedInstances = async (params?: GetFederatedInstances, instance?: string) : Promise<(void | GetFederatedInstancesResponse)> => {
+    const data = await fetch(`/api/getFederatedInstances?auth=${params?.auth}&instance=${instance}`).then(res => res.json());
+    return data;
+}
+
+export const getCuratedInstances = async () => {
+    const data = await fetch("/api/getCuratedInstances").then(res => res.json());
+    return data;
 }
