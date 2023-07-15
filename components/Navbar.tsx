@@ -1,18 +1,23 @@
 /* eslint-disable @next/next/no-img-element */
 "use client"
 import { FormEvent, useEffect, useState, useRef } from "react";
+import { CommunityView, ListingType, PostView, Search, SearchResponse, SortType } from "lemmy-js-client";
 import Link from "next/link";
+import { useRouter } from "next/navigation"; 
+import { ClipLoader } from "react-spinners";
+import { DEFAULT_INSTANCE } from "@/constants/settings";
+
 import { useSession } from "@/hooks/auth";
 import { useNavbar, NavbarState } from "@/hooks/navbar";
-import styles from "../styles/Navbar.module.css";
+
 import { handleLogout } from "@/utils/authFunctions";
-import { useRouter } from "next/navigation"; 
-import { ListingType, Search, SearchResponse, SortType } from "lemmy-js-client";
-import Username from "./User/Username";
-import RenderMarkdown from "./ui/RenderMarkdown";
-import { ClipLoader } from "react-spinners";
+import { getTrendingCommunities, getTrendingTopics } from "@/utils/lemmy";
+
+import Username from "@/components/User/Username";
+import RenderMarkdown from "@/components//ui/RenderMarkdown";
 import Input from "@/components/ui/Input";
 
+import styles from "@/styles/Navbar.module.css";
 const delay = (ms: number) => new Promise(res => setTimeout(res, ms));
 
 function SortButton({option, label, navbar, setNavbar, icon=undefined, replaceIcon=undefined, setSortOptions, sortOptions } : { option: SortType, label: string, navbar?: NavbarState, setNavbar?: any, icon?: string, replaceIcon?: React.ReactNode, setSortOptions: Function, sortOptions: boolean }) {
@@ -90,6 +95,36 @@ async function search({ searchParams } : { searchParams: Search }) {
     return data;
 }
 
+function TrendingCommunity({ community, closeSearch } : { community: CommunityView, closeSearch: Function }) {
+    return (
+    <Link href={`/c/${community.community.name}`} onClick={() => closeSearch()} className=" bg-neutral-50 dark:bg-neutral-950 p-4 flex flex-row justify-start items-center gap-2 rounded-xl border border-fuchsia-500 dark:border-fuchsia-800">
+        <img className="h-12 w-12 rounded-full" src={community.community.icon} alt="" />
+        <div className="flex flex-col gap-1">
+            <span className="font-bold">{community.community.name}</span>
+            <div className="flex flex-row gap-2 h-fit">
+                <div className="snack"><span className="material-symbols-outlined">communities</span>{community.counts.subscribers}</div>
+                <div className="snack"><span className="material-symbols-outlined">group</span>{community.counts.users_active_day} / Day</div>
+            </div>
+        </div>
+    </Link>
+)
+}
+
+function TrendingTopic({ post, closeSearch } : { post: PostView, closeSearch: Function }) {
+    return (
+        <Link href={`/post/${post.post.id}`} onClick={() => closeSearch()} className=" bg-neutral-50 dark:bg-neutral-950 p-4 flex flex-row justify-between rounded-xl border border-fuchsia-500 dark:border-fuchsia-800">
+            <div className="flex flex-row gap-1 w-9/12">
+                <span className="material-symbols-outlined" style={{ fontSize: "2rem" }}>chart_data</span>
+                <div className="flex flex-col">
+                    <span className="font-bold">{post?.post?.name}</span>
+                    <span className=" text-neutral-500 dark:text-neutral-300">c/{post?.community?.name}</span>
+                </div>
+            </div>
+            <img className="h-20 w-20 rounded-lg object-contain" src={post?.post?.thumbnail_url || post?.post?.url} alt="" />
+        </Link>
+    )
+}
+
 
 export default function Navbar() {
     const { session, setSession } = useSession();
@@ -108,6 +143,8 @@ export default function Navbar() {
     const [searchResults, setSearchResults] = useState<SearchResponse>({} as SearchResponse);
     const searchInputRef = useRef<HTMLInputElement>(null);
     const [searchLoading, setSearchLoading] = useState(false);
+    const [trendingCommunities, setTrendingCommunities] = useState<CommunityView[]>([]);
+    const [trendingTopics, setTrendingTopics] = useState<PostView[]>([]);
 
     const router = useRouter();
 
@@ -128,6 +165,19 @@ export default function Navbar() {
         return () => clearTimeout(timer);
         
     }, [currentSearch])
+
+    useEffect(() => {
+        getTrendingCommunities().then((data) => {
+            console.log(data);
+            if(typeof data === "boolean") return;
+            setTrendingCommunities(data.communities);
+        })
+        getTrendingTopics().then((data) => {
+            console.log(data);
+            if(typeof data === "boolean") return;
+            setTrendingTopics(data.posts);
+        })
+    }, [searchOverlay])
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
@@ -291,30 +341,20 @@ export default function Navbar() {
 
                     <div className="flex flex-col gap-2 w-full">
                         <span className="font-bold text-xl">Popular</span>
-                        <div className=" bg-neutral-50 dark:bg-neutral-950 p-4 flex flex-row justify-between rounded-xl border border-fuchsia-500 dark:border-fuchsia-800">
-                            <div className="flex flex-row gap-1 w-9/12">
-                                <span className="material-symbols-outlined" style={{ fontSize: "2rem" }}>chart_data</span>
-                                <div className="flex flex-col">
-                                    <span className="font-bold">Reddit Moment</span>
-                                    <span className=" text-neutral-500 dark:text-neutral-300">c/Memes@lemmy.ml</span>
-                                </div>
-                            </div>
-                            <img className="h-20 w-20 rounded-lg" src={"https://lemmy.world/pictrs/image/5d9409fd-a9a0-4303-bb7a-dd8f2799af73.png?format=webp"} alt="" />
-                        </div>
+
+                        {trendingTopics?.map((post, index) => (
+                            <TrendingTopic key={index} post={post} closeSearch={handleCloseSearchOverlay} />
+                        ))}
+
                     </div>
 
                     <div className="flex flex-col gap-2">
                         <span className="font-bold text-xl">Trending communities</span>
-                        <div className=" bg-neutral-50 dark:bg-neutral-950 p-4 flex flex-row justify-start items-center gap-2 rounded-xl border border-fuchsia-500 dark:border-fuchsia-800">
-                            <img className="h-12 w-12 rounded-full" src={"https://lemmy.world/pictrs/image/5d9409fd-a9a0-4303-bb7a-dd8f2799af73.png?format=webp"} alt="" />
-                            <div className="flex flex-col gap-1">
-                                <span className="font-bold">Techno</span>
-                                <div className="flex flex-row gap-2 h-fit">
-                                    <div className="snack"><span className="material-symbols-outlined">communities</span>2k</div>
-                                    <div className="snack"><span className="material-symbols-outlined">group</span>2 / Day</div>
-                                </div>
-                            </div>
-                        </div>
+
+                        {trendingCommunities?.map((community, index) => (
+                            <TrendingCommunity key={index} community={community} closeSearch={handleCloseSearchOverlay}  />
+                        ))}
+
                     </div>
 
                 </div>
@@ -377,7 +417,7 @@ export default function Navbar() {
                 <button className={`${styles.currentInstance}`} onClick={() => alert("Soon you'll be able to see Instance Details here.")} >
                     <div className="flex flex-col">
                         <span className=" uppercase font-bold text-xs dark:text-fuchsia-300">Current Instance</span>
-                        <span className="font-bold ">Lemmy.world</span>
+                        <span className="font-bold ">{DEFAULT_INSTANCE}</span>
                     </div>
                     
                     <span className="material-symbols-outlined">expand_content</span>

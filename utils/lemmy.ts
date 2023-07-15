@@ -1,6 +1,7 @@
 
 import { CommentResponse, CommentView, CreateComment, CreatePost, FollowCommunity, GetComments, GetCommentsResponse, 
-    GetPostResponse, GetSiteResponse, ListCommunities, ListCommunitiesResponse, PostResponse, Register, Search, SearchResponse, LoginResponse, GetCaptcha, GetFederatedInstances, GetFederatedInstancesResponse, GetCaptchaResponse } from "lemmy-js-client"
+    GetPostResponse, GetSiteResponse, ListCommunities, ListCommunitiesResponse, PostResponse, Register, Search, SearchResponse, 
+    LoginResponse, GetCaptcha, GetFederatedInstances, GetFederatedInstancesResponse, GetCaptchaResponse, GetPosts, GetPostsResponse } from "lemmy-js-client"
 
 export const getUserDetails = async (jwt: string, baseUrl: string) :  Promise<(GetSiteResponse)> => {
     const user: GetSiteResponse = await fetch(`/api/getSite?auth=${jwt}&baseUrl=${baseUrl}`).then(res => res.json());
@@ -14,6 +15,37 @@ export const listCommunities = async (params : ListCommunities) :  Promise<(bool
         return false;
     }
     return communities as ListCommunitiesResponse;
+}
+
+export const getPosts = async (params: GetPosts) : Promise<(boolean | GetPostsResponse)> => {
+    const posts: GetPostsResponse = await fetch(`/api/getPosts?auth=${params.auth}&type_=${params.type_}&sort=${params.sort}&page=${params.page}&limit=${params.limit}`).then(res => res.json());
+    if(!posts.posts) {
+        console.warn("Could not retrieve posts");
+        return false;
+    }
+    return posts;
+}
+
+export const getTrendingCommunities = async () : Promise<(boolean | ListCommunitiesResponse)> => {
+    const data = await listCommunities({
+        type_: "All",
+        sort: "TopTwelveHour",
+        page: 1,
+        limit: 3
+    });
+    if(!data) return false;
+    return data;
+}
+
+export const getTrendingTopics = async () : Promise<(boolean | GetPostsResponse)> => {
+    const data = await getPosts({
+        type_: "All",
+        sort: "TopTwelveHour",
+        page: 1,
+        limit: 3
+    });
+    if(!data) return false;
+    return data;
 }
 
 export const createPost = async (params: CreatePost) : Promise<(boolean | PostResponse)> => {
