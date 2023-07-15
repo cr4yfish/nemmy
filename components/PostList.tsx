@@ -5,7 +5,7 @@ import { CommunityId, ListingType, PostView, SortType} from "lemmy-js-client";
 import InfiniteScroll from "react-infinite-scroller";
 import { useSession } from "@/hooks/auth";
 import { useNavbar } from "@/hooks/navbar";
-
+import { usePathname } from "next/navigation";
 
 import Post from "./Post";
 
@@ -37,6 +37,7 @@ export default function PostList({ fetchParams={ limit: 10, page: 1 } } : {
             saved_only?: boolean, auth?: string
         }
     }) {
+    const pathname = usePathname();
     const { session } = useSession();
     const { navbar, setNavbar } = useNavbar();
     const [posts, setPosts] = useState<PostView[]>([]);
@@ -61,6 +62,18 @@ export default function PostList({ fetchParams={ limit: 10, page: 1 } } : {
         }
     }, [navbar?.currentType])
 
+    // load Cached posts
+    useEffect(() => {
+        if(pathname) {
+            const cache = sessionStorage.getItem("cache:path:" + pathname);
+            if(cache) {
+                const cacheObj: { currentSort: string, currentType: string, page: number, posts: PostView[] } = JSON.parse(cache);
+                currentSort == cacheObj.currentSort && currentType == cacheObj.currentType && setPosts(cacheObj.posts);
+                setCurrentPage(cacheObj.page + 1);
+            }
+        }
+    }, [pathname])
+
     const getPosts = async ({ page=1 } : { page?: number }) => {
         const data = await fetch(`/api/getPosts?limit=${pageLimit}&page=${page}&community_name=${fetchParams.community_name}&auth=${session?.jwt}&sort=${currentSort}&type_=${currentType}`);
         const json = (await data.json()).posts;
@@ -73,11 +86,23 @@ export default function PostList({ fetchParams={ limit: 10, page: 1 } } : {
 
     const handleLoadMore = async () => {
         if(session.pendingAuth) return;
-        const data = await getPosts({ page: currentPage });
+        let data = await getPosts({ page: currentPage });
         
         if(!data) return;
+
+        sessionStorage.setItem(`cache:path:${pathname}`, JSON.stringify(
+            {
+                posts: [...posts, ...data],
+                page: currentPage,
+                currentSort: currentSort,
+                currentType: currentType
+            }
+        ));
+    
+
         setPosts([...posts, ...data]);
         setCurrentPage(currentPage + 1);
+
     }
 
     return (
