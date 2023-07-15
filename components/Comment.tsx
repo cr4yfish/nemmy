@@ -50,9 +50,9 @@ export default function Comment({ commentView, allComments, depth=0, setReplyCom
     useEffect(() => {
         if(!childrenError) return;
         if(session.pendingAuth) return;
-        
+        return;
         (async () => {
-            const data = await fetch(`/api/getComments?post_id=${commentView.comment.post_id}&parent_id=${commentView.comment.id}&sort=Top&limit=100&page=0&max_depth=1&auth=${session.jwt}
+            const data = await fetch(`/api/getComments?post_id=${commentView.comment.post_id}&parent_id=${commentView.comment.id}&sort=Top&page=0&max_depth=4&auth=${session.jwt}
             `);
             const json = (await data.json());
             if(json.error) {
