@@ -120,7 +120,7 @@ This means that there is no single huge "Lemmy Server" but many smaller "instanc
     - [X] User Bookmarks
     - [ ] User Comments
 - [ ] Sidebar
-    - [ ] Subscribed Communities
+    - [X] Subscribed Communities
     - [ ] Instance Info
 - [ ] Moderation Tools
     - [ ] Delete Posts/Comments
