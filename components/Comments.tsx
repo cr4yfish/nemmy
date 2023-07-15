@@ -34,7 +34,7 @@ export default function Comments({
 
     const [showReply, setShowReply] = useState<boolean>(false);
 
-    const [currentCommentsPage, setCurrentCommentsPage] = useState<number>(1);
+    const [currentCommentsPage, setCurrentCommentsPage] = useState<number>(0);
     const [forceCommentUpdate, setForceCommentUpdate] = useState<number>(0);
     const [commentsLoading, setCommentsLoading] = useState<boolean>(true);
 
@@ -100,13 +100,11 @@ export default function Comments({
         const data = await getComments({
             post_id: postData.post_view.post.id,
             sort:"Hot",
-            limit:100,
-            max_depth: 8,
-            page:currentCommentsPage,
+            max_depth: 6,
             auth: session.jwt
         }, instance || DEFAULT_INSTANCE);
-        console.log("Comments:",data);
         if(data) { 
+            console.log("Amount of comments received:", data.comments.length)
             setCommentsLoading(false)
             if(commentsData?.comments?.length > 0) {
                 const oldData = commentsData;
