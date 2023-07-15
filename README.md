@@ -99,9 +99,9 @@ This means that there is no single huge "Lemmy Server" but many smaller "instanc
     - [ ] Filter -- Not implemented everywhere yet
     - [ ] Sorting -- Same as Filter
     - [ ] Explore Section
-- [ ] Authentication
+- [X] Authentication
     - [X] Login
-    - [ ] Register
+    - [X] Register
     - [X] Support for multiple instances
     - [X] Subscribing to Communities
 - [ ] Creating Content 
