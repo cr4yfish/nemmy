@@ -26,8 +26,7 @@ export function FormatDate({date} : { date: Date}) {
     const years = Math.floor(days / 365);
     
     if (seconds < 60) {
-        if(seconds == 1) return `1 second ago`;
-        return `${seconds} seconds ago`;
+        return `Just now`;
     } else if (minutes < 60) {
         if(minutes == 1) return `1 minute ago`;
         return `${minutes} minutes ago`;
