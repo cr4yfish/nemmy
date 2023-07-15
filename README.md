@@ -40,11 +40,14 @@
     <br />
     <a href="https://nemmy.app/">Website</a>
     ·
+    <a href="https://play.google.com/store/apps/details?id=app.nemmy.twa">Google Play Store</a>
+    ·
     <a href="https://lemmy.world/c/nemmy">Lemmy Community</a>
     .
     <a href="https://github.com/Cr4yfish/Nemmy/issues">Report Bug</a>
     ·
     <a href="https://github.com/Cr4yfish/Nemmy/issues">Request Feature</a>
+    
   </p>
 </div>
 
@@ -99,9 +102,9 @@ This means that there is no single huge "Lemmy Server" but many smaller "instanc
     - [ ] Filter -- Not implemented everywhere yet
     - [ ] Sorting -- Same as Filter
     - [ ] Explore Section
-- [ ] Authentication
+- [X] Authentication
     - [X] Login
-    - [ ] Register
+    - [X] Register
     - [X] Support for multiple instances
     - [X] Subscribing to Communities
 - [ ] Creating Content 
