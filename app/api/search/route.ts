@@ -1,4 +1,5 @@
 import { LemmyHttp, ListingType, SortType, CommunityId, Search, SearchResponse, PersonId, SearchType } from "lemmy-js-client"
+import { DEFAULT_INSTANCE } from "@/constants/settings";
 
 // GET /api/search
 export async function GET(req: Request) {
@@ -17,7 +18,7 @@ export async function GET(req: Request) {
         let limit = params.get("limit") || 25;
         let auth = params.get("auth") || "";
 
-        let client: LemmyHttp = new LemmyHttp("https://lemmy.world");
+        let client: LemmyHttp = new LemmyHttp(DEFAULT_INSTANCE);
         let searchResponse = await client.search({ 
             q: q as unknown as string,
             community_id: community_id as unknown as CommunityId,

@@ -1,4 +1,5 @@
 import { LemmyHttp, PostId, CommentId } from "lemmy-js-client"
+import { DEFAULT_INSTANCE } from "@/constants/settings";
 
 export async function GET(req: Request) {
     try {
@@ -12,7 +13,7 @@ export async function GET(req: Request) {
 
         if(!id) throw new Error("id is required");
 
-        let client: LemmyHttp = new LemmyHttp("https://lemmy.world");
+        let client: LemmyHttp = new LemmyHttp(DEFAULT_INSTANCE);
 
         let posts = await client.getPost({ 
             id: id as unknown as PostId, 

@@ -1,4 +1,5 @@
 import { LemmyHttp, Login} from "lemmy-js-client"
+import { DEFAULT_INSTANCE } from "@/constants/settings";
 
 async function userLogin(username: string, password: string, baseUrl: string) {
     let client: LemmyHttp = new LemmyHttp(baseUrl);
@@ -14,7 +15,7 @@ async function userLogin(username: string, password: string, baseUrl: string) {
 export async function POST(req: Request) {
     try {
         const body = await req.json();
-        const jwt = await userLogin(body.username, body.password, body.instance ? `https://${body.instance}` : "https://lemmy.world");
+        const jwt = await userLogin(body.username, body.password, body.instance ? `https://${body.instance}` : DEFAULT_INSTANCE);
         
         // TODO encrypt jwt
         const encryptedJwt = jwt;

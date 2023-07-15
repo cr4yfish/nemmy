@@ -1,4 +1,5 @@
 import { LemmyHttp } from "lemmy-js-client"
+import { DEFAULT_INSTANCE } from "@/constants/settings";
 
 // POST /api/getUser
 // Post for security reasons
@@ -25,7 +26,7 @@ export async function POST(req: Request) {
             auth: auth
         }
 
-        let client: LemmyHttp = new LemmyHttp("https://lemmy.world");
+        let client: LemmyHttp = new LemmyHttp(DEFAULT_INSTANCE);
         let response = !isComment ? await client.likePost({ 
             ...reqBody,
             post_id: post_id,

@@ -1,4 +1,5 @@
 import { LemmyHttp, ListingType, SortType, CommunityId } from "lemmy-js-client"
+import { DEFAULT_INSTANCE } from "@/constants/settings";
 
 export async function GET(req: Request) {
     try {
@@ -10,7 +11,7 @@ export async function GET(req: Request) {
         let name = params.get("community_name") || undefined;
         let auth = params.get("auth") || undefined;
         
-        let client: LemmyHttp = new LemmyHttp("https://lemmy.world");
+        let client: LemmyHttp = new LemmyHttp(DEFAULT_INSTANCE);
         let community = await client.getCommunity({ 
             id: id as unknown as CommunityId,
             name: name as unknown as string,

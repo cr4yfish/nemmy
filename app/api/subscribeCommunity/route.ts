@@ -1,4 +1,5 @@
 import { LemmyHttp, CommunityId} from "lemmy-js-client"
+import { DEFAULT_INSTANCE } from "@/constants/settings";
 
 // POST /api/subscribeToCommunity
 export async function POST(req: Request) {
@@ -9,7 +10,7 @@ export async function POST(req: Request) {
         const follow = body.follow || undefined;
         const auth = body.auth || undefined;
 
-        let client: LemmyHttp = new LemmyHttp("https://lemmy.world");
+        let client: LemmyHttp = new LemmyHttp(DEFAULT_INSTANCE);
         let communityResponse = await client.followCommunity({ 
             community_id: community_id as unknown as CommunityId,
             follow: follow as unknown as boolean,

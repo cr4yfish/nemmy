@@ -1,10 +1,11 @@
 import { LemmyHttp, Login, GetCaptcha} from "lemmy-js-client"
+import { DEFAULT_INSTANCE } from "@/constants/settings";
 
 export async function POST(req: Request) {
     try {
         const body = await req.json();
 
-        const auth = body.auth, instance = body.instance ? `https://${body.instance}` : "https://lemmy.world";
+        const auth = body.auth, instance = body.instance ? `https://${body.instance}` : DEFAULT_INSTANCE;
         console.log(body.instance, instance);
         const client = new LemmyHttp(instance);
 

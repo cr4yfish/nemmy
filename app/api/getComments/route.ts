@@ -1,4 +1,5 @@
 import { LemmyHttp, PostId, CommentId, CommentSortType, CommunityId, ListingType } from "lemmy-js-client"
+import { DEFAULT_INSTANCE } from "@/constants/settings";
 
 export async function GET(req: Request) {
     try {
@@ -17,11 +18,11 @@ export async function GET(req: Request) {
         let parent_id = params.get("parent_id") || undefined;
         let saved_only = params.get("saved_only") || undefined;
         let auth = params.get("auth") || undefined;
-        let baseUrl = params.get("baseUrl") || "lemmy.world";
+        let baseUrl = params.get("baseUrl") || DEFAULT_INSTANCE;
 
         if(!post_id) throw new Error("post_id is required");
 
-        let client: LemmyHttp = new LemmyHttp(`https://lemmy.world`);
+        let client: LemmyHttp = new LemmyHttp(DEFAULT_INSTANCE);
 
         let comments = await client.getComments({
             // one of these is causing an error right now

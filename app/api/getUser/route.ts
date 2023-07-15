@@ -1,4 +1,5 @@
 import { LemmyHttp, ListingType, SortType, CommunityId } from "lemmy-js-client"
+import { DEFAULT_INSTANCE } from "@/constants/settings";
 
 // POST /api/getUser
 // Post for security reasons
@@ -15,7 +16,7 @@ export async function GET(req: Request) {
         let auth = params.get("auth") || undefined;
         let base = params.get("baseUrl") || undefined;
 
-        let client: LemmyHttp = new LemmyHttp("https://lemmy.world");
+        let client: LemmyHttp = new LemmyHttp(DEFAULT_INSTANCE);
         let person = await client.getPersonDetails({ 
             person_id: id as unknown as number,
             username: username as unknown as string,
