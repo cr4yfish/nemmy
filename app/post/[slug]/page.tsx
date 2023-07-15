@@ -3,12 +3,14 @@
 import React, { FormEvent, useEffect, useRef, useState } from "react";
 import { LemmyHttp, PostId } from "lemmy-js-client";
 
+import { DEFAULT_INSTANCE } from "@/constants/settings";
+
 import PostPage from "@/components/PostPage";
 import { cookies } from "next/dist/client/components/headers";
 
 async function getPostData (postId: string, jwt?: string, instance?: string) {
 
-    let client: LemmyHttp = new LemmyHttp(`https://${instance}` || "https://lemmy.world");
+    let client: LemmyHttp = new LemmyHttp(instance ? `https://${instance}` : DEFAULT_INSTANCE);
 
     let posts = await client.getPost({ 
         id: postId as unknown as PostId, 
