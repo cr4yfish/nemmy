@@ -1,15 +1,19 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
-import { CommentResponse, CommentView, GetCommentsResponse, GetPostResponse, PostView } from "lemmy-js-client";
-import { useState, useEffect, useRef, FormEvent } from "react";
+import { CommentView, GetCommentsResponse, GetPostResponse } from "lemmy-js-client";
+import { useState, FormEvent } from "react";
+import { ClipLoader } from "react-spinners";
+
 import { sendComment } from "@/utils/lemmy";
-import RenderFormattingOptions from "./ui/RenderFormattingOptions";
-import RenderMarkdown from "./ui/RenderMarkdown";
-import Username from "./User/Username";
+
+import RenderFormattingOptions from "@/components/ui/RenderFormattingOptions";
+import RenderMarkdown from "@/components/ui/RenderMarkdown";
+import Username from "@/components/User/Username";
+
 import { useSession } from "@/hooks/auth";
 
 import styles from "@/styles/ui/WriteCommentOverlay.module.css"
-import { BounceLoader, ClipLoader } from "react-spinners";
+
 
 export default function WriteCommentOverlay({ 
         post, comment, show, setShow, allComments, setPost, setComments

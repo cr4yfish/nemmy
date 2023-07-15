@@ -1,6 +1,6 @@
 
 .pageWrapper {
-    @apply w-full mb-24;
+    @apply w-full;
     display: flex;
     justify-content: center;
     overflow-x: hidden;
@@ -8,7 +8,7 @@
 
 .wrapper {
     @apply flex flex-col items-center 
-    p-6 gap-6 justify-center
+    gap-6 justify-center pb-4
     max-w-2xl
     max-md:w-full
     max-sm:p-2
