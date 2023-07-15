@@ -14,12 +14,40 @@
     --background-start-rgb: 0, 0, 0;
     --background-end-rgb: 0, 0, 0;
   }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-neutral-900;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-neutral-700;
+  }
 }
 
 body {
   @apply bg-neutral-100 dark:bg-neutral-950;
   color: rgb(var(--foreground-rgb));
   overflow-x: hidden;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-neutral-50;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-neutral-200;
+}
+
+::-webkit-scrollbar {
+  @apply w-2;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  @apply rounded-full 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
 
 image {
