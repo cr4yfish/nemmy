@@ -127,8 +127,8 @@ This means that there is no single huge "Lemmy Server" but many smaller "instanc
     - [ ] Ban Users
     - [ ] Lock Posts/Comments
     - [ ] Modify Posts (e.g. change title, mark as NSFW)
-- [ ] Offline Features 
-    - [ ] Content Cache
+- [ ] Offline Features <- Is being worked on on another branch
+    - [ ] Content Cache 
     - [ ] Upload when online
 - [ ] Customization
     - [ ] User Themes
