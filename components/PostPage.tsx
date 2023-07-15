@@ -1,15 +1,13 @@
 "use client"
 
 import { usePathname } from "next/navigation"; 
-import React, { FormEvent, useEffect, useRef, useState } from "react";
-import { CommentView, GetCommentsResponse, GetPostResponse } from "lemmy-js-client";
+import React, {  useEffect, useState } from "react";
+import { GetPostResponse } from "lemmy-js-client";
 import Link from "next/link";
 
-import { useSession } from "@/hooks/auth";
 import { useNavbar } from "@/hooks/navbar";
 
 import { AutoMediaType } from "@/utils/AutoMediaType";
-import { sendComment } from "@/utils/lemmy";
 import { restoreScrollPos } from "@/utils/scrollPosition";
 
 import styles from "@/styles/Pages/PostPage.module.css";
@@ -24,19 +22,9 @@ import Comments from "./Comments";
 
 export default function PostPage({ data, instance, jwt } :  { data: GetPostResponse, instance?: string, jwt?: string }) {
     const { navbar, setNavbar } = useNavbar();
-    const { session } = useSession();
 
     const [postData, setPostData] = useState<GetPostResponse>(data);
-    const [postDataError, setPostDataError] = useState(true);
     const [baseUrl, setBaseUrl] = useState<string>("");
-
-    const [commentsData, setCommentsData] = useState<GetCommentsResponse>({} as GetCommentsResponse);
-    const [replyLoading, setReplyLoading] = useState<boolean>(false);
-
-    const [showReply, setShowReply] = useState<boolean>(false);
-    const [replyComment, setReplyCommet] = useState<CommentView>({} as CommentView);
-    const [replyCommentText, setReplyCommentText] = useState<string>("");
-    const textareaRef = useRef<HTMLTextAreaElement>(null);
 
     // post id
     const pathname = usePathname().split("/")[2];
@@ -53,59 +41,12 @@ export default function PostPage({ data, instance, jwt } :  { data: GetPostRespo
 
     }, [postData]);
 
-    // Adjust textarea height to content on user input
-    useEffect(() => {
-        const textarea = textareaRef.current;
 
-        function adjustHeight() {
-            if(!textarea) return;
-            textarea.style.height = "auto";
-            textarea.style.height = textarea.scrollHeight + "px";
-        }
 
-        textarea?.addEventListener("input", adjustHeight);
-        adjustHeight();
-
-        // Cleanup on onmount
-        return () => {
-            textarea?.removeEventListener("input", adjustHeight);
-        }
-
-    }, [])
-
-    const handleSubmit = async (e: FormEvent) => {
-        e.preventDefault();
-        setReplyLoading(true);
-
-        if(!session.jwt || !postData.post_view.post.id || replyCommentText.length < 1) return;
-
-        const comment = await sendComment({
-            content: replyCommentText,
-            post_id: postData?.post_view?.post?.id,
-            parent_id: replyComment?.comment?.id,
-            auth: session.jwt
-        });
-
-        if(!comment) return alert("Something went wrong");
-
-        const oldComments = commentsData.comments;
-        const newComments = [comment, ...oldComments];
-        setCommentsData({ ...commentsData, comments: newComments });
-
-        const oldPostData = postData;
-        const newPostData = { ...oldPostData, post_view: { ...oldPostData.post_view, post: { ...oldPostData.post_view.post, num_comments: oldPostData.post_view.counts.comments + 1 } } }
-        setPostData(newPostData);
-
-        setReplyCommentText("");
-        setShowReply(false);
-
-        setReplyLoading(false);
-    }
-    
     return (
         <>
 
-        <div className={`${styles.pageWrapper} mt-20`}>
+        <div className={`${styles.pageWrapper} mt-24`}>
             <div className={`${styles.wrapper}`}>
                 <div className={`${styles.post}`}>
                     <div className={`${styles.postHeader}`}>
@@ -174,7 +115,7 @@ export default function PostPage({ data, instance, jwt } :  { data: GetPostRespo
 
         <Comments 
             postId={postData?.post_view?.post?.id}
-            instance={baseUrl} jwt={jwt}
+            instance={instance} jwt={jwt}
             postData={postData} setPostData={setPostData}
         />
 
