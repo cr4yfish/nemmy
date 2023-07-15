@@ -39,7 +39,7 @@ export default function SmallUser({ user, userHover, setUserHover, style, opensT
     }
 
     useEffect(() => {
-        getUserData();
+        //getUserData();
     }, [user])
 
     return (
