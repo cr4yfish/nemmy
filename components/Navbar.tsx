@@ -11,6 +11,7 @@ import { ListingType, Search, SearchResponse, SortType } from "lemmy-js-client";
 import Username from "./User/Username";
 import RenderMarkdown from "./ui/RenderMarkdown";
 import { ClipLoader } from "react-spinners";
+import Input from "@/components/ui/Input";
 
 const delay = (ms: number) => new Promise(res => setTimeout(res, ms));
 
@@ -97,7 +98,11 @@ export default function Navbar() {
     const [filterClicked, setFilterClicked] = useState(false);
     const [sortOptions, setSortOptions] = useState(false);
     const [userMenu, setUserMenu] = useState(false);
+
+
     const [menu, setMenu] = useState(false);
+    const [communitySearch, setCommunitySearch] = useState<string>("");
+
     const [searchOverlay, setSearchOverlay] = useState(false);
     const [currentSearch, setCurrentSearch] = useState("");
     const [searchResults, setSearchResults] = useState<SearchResponse>({} as SearchResponse);
@@ -367,8 +372,8 @@ export default function Navbar() {
         </div>
 
         {/* Mobile Menu Left Side */}
-        <div id="menu" className={`${styles.menu} ${menu && styles.menuActive}`}>
-            <div className={`flex flex-col h-fit gap-6`}>
+        <div id="menu" className={`${styles.menu} ${menu && styles.menuActive} overflow-y-auto`}>
+            <div className={`flex flex-col h-fit gap-6 relative `}>
                 <button className={`${styles.currentInstance}`} onClick={() => alert("Soon you'll be able to see Instance Details here.")} >
                     <div className="flex flex-col">
                         <span className=" uppercase font-bold text-xs dark:text-fuchsia-300">Current Instance</span>
@@ -389,11 +394,24 @@ export default function Navbar() {
                     <span className="material-symbols-outlined">arrow_drop_down</span>
                 </div>
                
-                <div className={`flex flex-col gap-2`}>
-                    <Link href={"/c/Nemmy"} onClick={() => handleMenuClose()} className={`${styles.menuCommunity}`}>
-                        <img className="w-10 h-10 overflow-hidden rounded-full" src="https://lemmy.world/pictrs/image/5194b9c5-bee3-4363-aaf9-3e57251fb0a7.png?format=webp" alt="" />
-                        <span>c/Nemmy</span>
-                    </Link>
+
+                <div className="flex">
+                    <Input 
+                    onChange={(e) => setCommunitySearch(e.currentTarget.value)}
+                    type="text" label="" name="searchCommunities" placeholder="Search Communities"
+                    
+                    />
+                </div>
+
+                <div className={`flex flex-col gap-4 overflow-y-auto relative`}>
+                    {session?.user?.my_user?.follows?.filter((c) => c.community.name.includes(communitySearch)).map((community, index) => (
+                        <div key={index}>
+                            <Link href={"/c/Nemmy"} onClick={() => handleMenuClose()} className={`${styles.menuCommunity}`}>
+                                <img className="w-10 h-10 overflow-hidden rounded-full" src={community?.community?.icon || "https://i.imgur.com/OzAB6Y0.png"} alt="" />
+                                <span className=" capitalize ">{community.community.name}</span>
+                            </Link>                 
+                        </div>
+                    ))}
                 </div>
             </div>
         </div>
