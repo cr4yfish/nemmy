@@ -1,5 +1,5 @@
 import { Person } from "lemmy-js-client";
-
+import { DEFAULT_INSTANCE } from "@/constants/settings";
 
 import styles from "../../styles/User/SmallUser.module.css"
 import { CSSProperties, useEffect, useState } from "react";
@@ -17,7 +17,7 @@ export default function SmallUser({ user, userHover, setUserHover, style, opensT
     const baseUrl = actor_id.hostname;
     
     const getUserData = async () => {
-        if(baseUrl !== "lemmy.world") return;
+        if(baseUrl !== DEFAULT_INSTANCE.replace("https://", "")) return;
 
         const data = await fetch(`/api/getUser?username=${user.name}&baseUrl=${baseUrl}`);
         const json = (await data.json());
@@ -66,7 +66,7 @@ export default function SmallUser({ user, userHover, setUserHover, style, opensT
                     </div>
                 </div>
                 {karma > 0 && <span className="snack"><NumericFormat displayType="text" className="flex bg-transparent w-full appearance-none " value={karma} thousandSeparator /> Points</span>}
-                <Link className="flex h-full" href={baseUrl == "lemmy.world" ? `/u/${user.name}` : `https://${baseUrl}/u/${user.name}`} target="_blank"><span className="material-icons">open_in_new</span></Link>
+                <Link className="flex h-full" href={baseUrl == DEFAULT_INSTANCE.replace("https://", "") ? `/u/${user.name}` : `https://${baseUrl}/u/${user.name}`} target="_blank"><span className="material-icons">open_in_new</span></Link>
             </div>
         </>
     )

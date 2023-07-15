@@ -11,6 +11,7 @@ import { getUserDetails, register, getCaptcha, getCuratedInstances } from "@/uti
 import { setCookie } from "cookies-next"
 import { motion, AnimatePresence } from "framer-motion"
 import { setCookies } from "@/utils/authFunctions"
+import { DEFAULT_INSTANCE } from "@/constants/settings";
 
 import styles from "@/styles/Pages/LoginPage.module.css"
 import { CaptchaResponse } from "lemmy-js-client"
@@ -330,7 +331,7 @@ export default function Register() {
                             <div className={`${styles.inputWrapper} w-full relative`}>
                                 <label htmlFor="intance">Instance</label>
                                 <input 
-                                    placeholder="lemmy.world" className={`${(signupError) ? styles.inputError : styles.input} w-full`} 
+                                    placeholder={DEFAULT_INSTANCE} className={`${(signupError) ? styles.inputError : styles.input} w-full`} 
                                     type="text"
                                     onChange={(e) => { setForm({...form, instance: e.currentTarget.value}); setSelectedInstance(null) }}
                                     value={form.instance}
@@ -431,7 +432,7 @@ export default function Register() {
                             <div className={`${styles.inputWrapper} w-full relative`}>
                                 <label >Instance</label>
                                 <input 
-                                    placeholder="lemmy.world" className={`${(signupError) ? styles.inputError : styles.input} w-full`} 
+                                    placeholder={DEFAULT_INSTANCE} className={`${(signupError) ? styles.inputError : styles.input} w-full`} 
                                     type="text"
                                     disabled
                                     value={form.instance}
