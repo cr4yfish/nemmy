@@ -11,6 +11,7 @@ import { CircleLoader, ClipLoader } from "react-spinners";
 import { search } from "@/utils/lemmy";
 
 import styles from "@/styles/Pages/LoginPage.module.css";
+import { setCookies } from "@/utils/authFunctions";
 
 export default function Login() {
     const { session, setSession } = useSession();
@@ -43,12 +44,10 @@ export default function Login() {
             if(loading) return;
             setLoading(true);
             let usernameEle = (e.target as HTMLFormElement).elements[0] as any;
-            let passwordEle = (e.target as HTMLFormElement).elements[1] as any;
-            let saveLoginEle = (e.target as HTMLFormElement).elements[2] as any;    
+            let passwordEle = (e.target as HTMLFormElement).elements[1] as any; 
     
             let username: string = usernameEle.value;
             let password: string = passwordEle.value;
-            let saveLogin: boolean = saveLoginEle.checked;
 
             // first check if jwt in session storage
             const sessionJwt = sessionStorage.getItem("jwt");
@@ -74,10 +73,7 @@ export default function Login() {
 
             console.log("JWT:", jwt);
             
-            saveLogin && setCookie("jwt", jwt.jwt, { maxAge: 60 * 60 * 24 * 7, domain: undefined })
-            saveLogin && setCookie("instance", form.instance, { maxAge: 60 * 60 * 24 * 7, domain: undefined })
-            sessionStorage.setItem("jwt", jwt.jwt);
-            sessionStorage.setItem("instance", form.instance);
+            setCookies(jwt.jwt, form.instance);
             
             // get user details
             const user = await getUserDetails(jwt.jwt, form.instance);
@@ -151,11 +147,6 @@ export default function Login() {
                     <div className={`${styles.inputWrapper}`}>
                         <label htmlFor="">Instance</label>
                         <input value={form.instance} onChange={(e) => setForm({...form, instance:e.currentTarget.value})} required type="text" disabled={loading} className={`${loginError ? styles.inputError : styles.input}`}  />
-                    </div>
-
-                    <div onClick={() => setForm({...form, saveLogin: !form.saveLogin})}  className={`flex flex-row gap-3 items-center select-none`}>
-                        <input className="w-fit" type="checkbox" id="saveLogin" checked={form.saveLogin} disabled={loading} />
-                        <label className="w-fit" htmlFor="">Save login</label>
                     </div>
 
 

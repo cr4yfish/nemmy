@@ -10,6 +10,7 @@ import { validateUsername, validatePassword, verifyASCII, validatePasswordStrong
 import { getUserDetails, register, getCaptcha, getCuratedInstances } from "@/utils/lemmy"
 import { setCookie } from "cookies-next"
 import { motion, AnimatePresence } from "framer-motion"
+import { setCookies } from "@/utils/authFunctions"
 
 import styles from "@/styles/Pages/LoginPage.module.css"
 import { CaptchaResponse } from "lemmy-js-client"
@@ -152,6 +153,7 @@ export default function Register() {
     useEffect(() => {
         getCuratedInstances().then(res => {
             if(!res) return console.error("Could not get federated instances");
+            console.log(res)
             setCuratedInstances(res);
         })
     }, [])
@@ -192,10 +194,7 @@ export default function Register() {
             return;
         }
 
-        saveLogin && setCookie("jwt", res.jwt, { maxAge: 60 * 60 * 24 * 30, domain: undefined })
-        saveLogin && setCookie("instance", form.instance, { maxAge: 60 * 60 * 24 * 30, domain: undefined })
-        sessionStorage.setItem("jwt", res.jwt);
-        sessionStorage.setItem("instance", form.instance);
+        setCookies(res.jwt, form.instance);
         
         if(res.verify_email_sent) {
             setHasVerificationEmail(true);

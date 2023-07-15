@@ -38,13 +38,7 @@ export const SessionContextProvider = ({ children } : { children: any }) => {
 
         if (jwt && jwt.length > 1 && instance && instance.length > 1) {
             getUserDetails(jwt, instance).then(res => {
-                if(typeof res == "boolean") {
-                    console.error("Failed to validate user details. JWT has been wiped.")
-                    setSession({ user: {} as GetSiteResponse, jwt: "", pendingAuth: false, defaultInstance: "lemmy.ml" })
-                    return;
-                } else {
-                    setSession({ ...session, user: res, jwt: jwt!, pendingAuth: false })
-                }
+                setSession({ ...session, user: res, jwt: jwt!, pendingAuth: false })
             })
         } else {
             setSession({ ...session, user: {} as GetSiteResponse, jwt: "", pendingAuth: false })
