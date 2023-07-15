@@ -38,6 +38,26 @@ export default function Comments({
     const [forceCommentUpdate, setForceCommentUpdate] = useState<number>(0);
     const [commentsLoading, setCommentsLoading] = useState<boolean>(true);
 
+    // Adjust textarea height to content on user input
+    useEffect(() => {
+        const textarea = textareaRef.current;
+
+        function adjustHeight() {
+            if(!textarea) return;
+            textarea.style.height = "auto";
+            textarea.style.height = textarea.scrollHeight + "px";
+        }
+
+        textarea?.addEventListener("input", adjustHeight);
+        adjustHeight();
+
+        // Cleanup on onmount
+        return () => {
+            textarea?.removeEventListener("input", adjustHeight);
+        }
+
+    }, [])
+
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
         setReplyLoading(true);
