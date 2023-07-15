@@ -101,7 +101,7 @@ This means that there is no single huge "Lemmy Server" but many smaller "instanc
     - [X] Search
     - [ ] Filter -- Not implemented everywhere yet
     - [ ] Sorting -- Same as Filter
-    - [ ] Explore Section
+    - [X] Explore Section
 - [X] Authentication
     - [X] Login
     - [X] Register
