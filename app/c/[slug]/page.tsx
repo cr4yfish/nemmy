@@ -2,11 +2,9 @@
 
 import { usePathname } from "next/navigation"; 
 import { useEffect, useState } from "react";
-import { GetCommentsResponse, GetPostResponse, GetCommunityResponse } from "lemmy-js-client";
+import { GetCommunityResponse } from "lemmy-js-client";
 import { useNavbar } from "@/hooks/navbar";
-import { AutoMediaType } from "@/utils/AutoMediaType";
 import Username from "@/components/User/Username";
-import Comment from "@/components/Comment";
 import PostList from "@/components/PostList";
 import RenderMarkdown from "@/components/ui/RenderMarkdown";
 import { useSession } from "@/hooks/auth";
