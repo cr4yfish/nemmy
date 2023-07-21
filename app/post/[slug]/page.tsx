@@ -5,18 +5,30 @@ import { LemmyHttp, PostId } from "lemmy-js-client";
 
 import { DEFAULT_INSTANCE } from "@/constants/settings";
 
-import PostPage from "@/components/PostPage";
+import PostPage from "@/components/PageComponents/PostPage";
 import { cookies } from "next/dist/client/components/headers";
 
 async function getPostData (postId: string, jwt?: string, instance?: string) {
 
-    let client: LemmyHttp = new LemmyHttp(instance ? `https://${instance}` : DEFAULT_INSTANCE);
+    try {
+        let client: LemmyHttp = new LemmyHttp(instance ? `https://${instance}` : DEFAULT_INSTANCE);
 
-    let posts = await client.getPost({ 
-        id: postId as unknown as PostId, 
-        auth: jwt as unknown as string,
-    });
-    return posts;
+        let posts = await client.getPost({ 
+            id: postId as unknown as PostId, 
+            auth: jwt as unknown as string,
+        });
+
+        return posts;
+    } catch (e) {
+        // Force default instance, disable auth
+        let client: LemmyHttp = new LemmyHttp(DEFAULT_INSTANCE);
+
+        let posts = await client.getPost({
+            id: postId as unknown as PostId,
+        });
+
+        return posts;
+    }
 }
 
 export default async function Post({ params: { slug } } : { params: { slug: string } }) {
