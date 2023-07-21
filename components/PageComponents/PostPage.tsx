@@ -18,7 +18,7 @@ import { FormatDate } from "@/utils/formatDate";
 import Username from "@/components/User/Username";
 import Vote from "@/components/Vote";
 import RenderMarkdown from "@/components/ui/RenderMarkdown";
-import Comments from "./Comments";
+import Comments from "../Comments";
 
 export default function PostPage({ data, instance, jwt } :  { data: GetPostResponse, instance?: string, jwt?: string }) {
     const { navbar, setNavbar } = useNavbar();
