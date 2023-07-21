@@ -16,10 +16,6 @@ export default function InboxInfiniteScroller({ initReplies, auth, instance } : 
     const [currentPage, setCurrentPage] = useState<number>(2);
     const [hasMore, setHasMore] = useState<boolean>(true);
 
-    useEffect(() => {
-        console.log(replies);
-    }, [replies])
-
     const handleLoadMore = () => {
         getReplies({ auth: auth, page: currentPage + 1, sort: "New", unread_only: false }, instance).then((res) => {
             if(!res || res.replies.length == 0) {

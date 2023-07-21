@@ -92,7 +92,6 @@ export default function Comments({
     }, [forceCommentUpdate, instance, session.pendingAuth]);
 
     const handleLoadMoreComments = async () => {
-        console.log("Loading comments", postData);
         if(session?.pendingAuth) return;
         if(!postData?.post_view?.post?.id) return;
 
@@ -105,7 +104,6 @@ export default function Comments({
             page:currentCommentsPage,
             auth: session.jwt
         }, instance || DEFAULT_INSTANCE);
-        console.log("Comments:",data);
         if(data) { 
             setCommentsLoading(false)
             if(commentsData?.comments?.length > 0) {

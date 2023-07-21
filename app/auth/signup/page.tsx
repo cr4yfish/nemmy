@@ -91,7 +91,6 @@ export default function Register() {
 
     // check password strength
     useEffect(() => {
-        console.log(form);
         const email = form.email, password = form.password;
 
         if(form.username) {
@@ -99,7 +98,6 @@ export default function Register() {
                 setUsernameErrorText("")
                 return;
             }
-            console.log("username", form.username, form.username.length, form.username.length < 3)
             const isUsernameASCII = verifyASCII(form.username);
             const isUsernameValid = validateUsername(form.username);
             const isUsernameShort = form.username.length < 3;
@@ -154,7 +152,6 @@ export default function Register() {
     useEffect(() => {
         getCuratedInstances().then(res => {
             if(!res) return console.error("Could not get federated instances");
-            console.log(res)
             setCuratedInstances(res);
         })
     }, [])
@@ -182,8 +179,6 @@ export default function Register() {
             captcha_uuid: captcha.uuid,
             captcha_answer: form.captcha
         }, form.instance);
-
-        console.log(res);
 
         const saveLogin = form.saveLogin;
 
@@ -228,7 +223,6 @@ export default function Register() {
     // Load captcha from instance
     useEffect(() => {
         form.instance && selectedInstance?.Instance && getCaptcha({}, form.instance).then(res => {
-            console.log("Captcha:",res)
             if(!res || !res.ok) return;
 
             setCaptcha(res.ok);

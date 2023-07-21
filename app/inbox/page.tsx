@@ -24,9 +24,7 @@ export default async function Inbox({ params: { page } } : { params: { page: num
     const cookieStore = cookies();
     const jwt = cookieStore.get("jwt")?.value;
     const instance = cookieStore.get("instance")?.value;
-    
-    // get params
-    console.log(page);
+
 
     const replies = await getReplies({ jwt: jwt, instance: instance });
 

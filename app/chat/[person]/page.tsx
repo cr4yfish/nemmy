@@ -66,8 +66,6 @@ export default async function UserChat({ params: { person } } : { params: { pers
 
         const messages = await getMessages({ auth: auth, instance: instance, creator: person });
 
-        console.log("Person:", person)
-
         let currentDate = getDayMonth(messages[0].private_message.published);
 
         return (
@@ -98,7 +96,6 @@ export default async function UserChat({ params: { person } } : { params: { pers
             </>
         )
     } catch(e) {
-        console.log(e)
         return (
             <RenderError />
         )

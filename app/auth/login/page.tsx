@@ -71,8 +71,6 @@ export default function Login() {
                 },
                 body: JSON.stringify({ username, password, instance: form.instance })
             }).then(res => res.json());
-
-            console.log("JWT:", jwt);
             
             setCookies(jwt.jwt, form.instance);
             
@@ -107,7 +105,6 @@ export default function Login() {
 
     const searchUsers = async (query: string) => {
         const data = await search({ q: query, type_: "Users", listing_type: "All" })
-        console.log(data);
         if(!data) return;
         setUsers(data.users);
 

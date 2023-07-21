@@ -36,7 +36,6 @@ export const SessionContextProvider = ({ children } : { children: any }) => {
 
             // try cookies
             const cookies = getCookies();
-            console.log("Cookies:", cookies, jwt, instance);
             jwt = (jwt == "" && cookies.jwt) ? cookies.jwt : jwt;
             instance = (instance == "" && cookies.instance) ? cookies.instance : instance;
 

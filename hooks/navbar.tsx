@@ -43,10 +43,6 @@ export const NavbarContextProvider = ({ children } : { children: any }) => {
         }
     }, [navbar.overlayActive])
 
-    useEffect(() => {
-        console.log("Navbar:", navbar);
-    }, [navbar])
-
     return (
         <NavbarContext.Provider value={{ navbar, setNavbar }}>
             {children}

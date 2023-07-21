@@ -172,12 +172,10 @@ export default function Navbar() {
     useEffect(() => {
         if(!searchOverlay) return;
         getTrendingCommunities().then((data) => {
-            console.log(data);
             if(typeof data === "boolean") return;
             setTrendingCommunities(data.communities);
         })
         getTrendingTopics().then((data) => {
-            console.log(data);
             if(typeof data === "boolean") return;
             setTrendingTopics(data.posts);
         })
@@ -187,7 +185,6 @@ export default function Navbar() {
         if(session.pendingAuth) return;
         getUnreadCount({ auth: session.jwt }, session.defaultInstance).then((data) => {
             if(!data) return;
-            console.log(data)
             const total = data.replies + data.mentions;
             setUnreadCount(total);
         })
