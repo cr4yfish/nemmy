@@ -15,6 +15,8 @@ export interface NavbarState {
     overlayActive: boolean,
     currentSort: SortType,
     currentType: ListingType,
+    titleOverride: string,
+    icon: string;
 }
 
 interface NavbarContextProps {
@@ -22,7 +24,11 @@ interface NavbarContextProps {
     setNavbar: React.Dispatch<React.SetStateAction<NavbarState>>;
 }
 
-const defaultState: NavbarState = { showMenu: true, showFilter: true, showSort: true, showSearch: true, showUser: true, hidden: false, showback: false, overlayActive: false, currentSort: "Active", currentType: "All" }
+const defaultState: NavbarState = { 
+    showMenu: true, showFilter: true, showSort: true, showSearch: true,
+    showUser: true, hidden: false, showback: false, overlayActive: false, currentSort: "Active", currentType: "All",
+    titleOverride: "", icon: ""
+}
 const NavbarContext = createContext<NavbarContextProps>({ navbar: defaultState, setNavbar: () => { } })
 
 export const NavbarContextProvider = ({ children } : { children: any }) => {
@@ -36,6 +42,10 @@ export const NavbarContextProvider = ({ children } : { children: any }) => {
             enablePageScroll();
         }
     }, [navbar.overlayActive])
+
+    useEffect(() => {
+        console.log("Navbar:", navbar);
+    }, [navbar])
 
     return (
         <NavbarContext.Provider value={{ navbar, setNavbar }}>

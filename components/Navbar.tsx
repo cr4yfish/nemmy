@@ -5,13 +5,13 @@ import { CommunityView, ListingType, PostView, Search, SearchResponse, SortType 
 import Link from "next/link";
 import { useRouter } from "next/navigation"; 
 import { ClipLoader } from "react-spinners";
-import { DEFAULT_INSTANCE } from "@/constants/settings";
+import { DEFAULT_INSTANCE, DEFAULT_AVATAR} from "@/constants/settings";
 
 import { useSession } from "@/hooks/auth";
 import { useNavbar, NavbarState } from "@/hooks/navbar";
 
 import { handleLogout } from "@/utils/authFunctions";
-import { getTrendingCommunities, getTrendingTopics } from "@/utils/lemmy";
+import { getTrendingCommunities, getTrendingTopics, getUnreadCount } from "@/utils/lemmy";
 
 import Username from "@/components/User/Username";
 import RenderMarkdown from "@/components//ui/RenderMarkdown";
@@ -146,10 +146,13 @@ export default function Navbar() {
     const [trendingCommunities, setTrendingCommunities] = useState<CommunityView[]>([]);
     const [trendingTopics, setTrendingTopics] = useState<PostView[]>([]);
 
+    const [unreadCount, setUnreadCount] = useState(0);
+
     const router = useRouter();
 
     // Update input value when user stops typing
     useEffect(() => {
+        if(currentSearch?.length == 0) return;
         const timer = setTimeout(async () => {
             if(currentSearch.length == 0) return;
             if(currentSearch.length < 2) return alert("Search term must be at least 2 characters long");
@@ -167,6 +170,7 @@ export default function Navbar() {
     }, [currentSearch])
 
     useEffect(() => {
+        if(!searchOverlay) return;
         getTrendingCommunities().then((data) => {
             console.log(data);
             if(typeof data === "boolean") return;
@@ -178,6 +182,16 @@ export default function Navbar() {
             setTrendingTopics(data.posts);
         })
     }, [searchOverlay])
+
+    useEffect(() => {
+        if(session.pendingAuth) return;
+        getUnreadCount({ auth: session.jwt }, session.defaultInstance).then((data) => {
+            if(!data) return;
+            console.log(data)
+            const total = data.replies + data.mentions;
+            setUnreadCount(total);
+        })
+    }, [session.pendingAuth])
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
@@ -238,7 +252,6 @@ export default function Navbar() {
 
     if(navbar?.hidden) return null;
 
-
     return (
         <>
         <nav className={`${styles.wrapper} ${navbar?.hidden && "hidden"}`}>    
@@ -248,36 +261,42 @@ export default function Navbar() {
 
                 <div className="flex flex-row gap-4 items-center">
 
-                    { navbar?.showMenu &&
-                    
+                    { navbar?.showMenu &&  
                     <button onClick={() => handleMenuOpen()} className={`${styles.menuButton}`}>
-                        <span className="material-icons">menu</span>
+                        <span className="material-symbols-outlined">menu</span>
                     </button>
                     }
 
                     { navbar?.showback &&
                     <div className={`${styles.backButton}`}>
-                        <button className="flex items-center gap-2" onClick={() => router.back()}><span className="material-icons">arrow_back</span>Back</button>
+                        <button className="flex items-center gap-2" onClick={() => router.back()}><span className="material-symbols-outlined">arrow_back</span>Back</button>
+                    </div>
+                    }
+
+                    { (navbar?.titleOverride && (navbar?.titleOverride?.length > 0)) &&
+                    <div className="flex items-center gap-2">
+                        <span className="material-symbols-outlined">{navbar?.icon}</span>
+                        <span className="font-bold">{navbar?.titleOverride}</span>
                     </div>
                     }
                     
                     { navbar?.showFilter &&
                     <button className={`${styles.navButton}`} onClick={() =>{ setFilterClicked(!filterClicked); setSortOptions(false); handleUserMenuClose(); setNavbar({...navbar, overlayActive: !filterClicked})  }}>
                         <div>
-                            <span className="material-icons">filter_list</span>
+                            <span className="material-symbols-outlined">filter_list</span>
                             <span className={`${styles.navButtonText}`}>{navbar?.currentType}</span>
                         </div>
-                        <span className="material-icons">arrow_drop_down</span> 
+                        <span className="material-symbols-outlined">arrow_drop_down</span> 
                     </button> 
                     }
 
                     { navbar?.showSort &&
                     <button className={`${styles.navButton}`} onClick={() =>{ setSortOptions(!sortOptions); handleUserMenuClose(); handleMenuClose(); setFilterClicked(false); setNavbar({...navbar, overlayActive: !sortOptions})  }} >
                         <div className="flex items-center gap-1">
-                            <span className="material-icons-outlined">sort</span>
+                            <span className="material-symbols-outlined">sort</span>
                             <span className={`${styles.navButtonText}`}>{navbar?.currentSort}</span>
                         </div>
-                        <span className="material-icons">arrow_drop_down</span> 
+                        <span className="material-symbols-outlined">arrow_drop_down</span> 
                     </button>
                     }
                 </div>
@@ -295,7 +314,7 @@ export default function Navbar() {
                 <>
                  {session.jwt.length > 0 ? 
                     <button onClick={() => { handleFilterOverlayClose(); handleUserMenuOpen(); setNavbar({ ...navbar, overlayActive: true }) }}  className={`${styles.userWrapper} cursor-pointer select-none`}>
-                        <div className={styles.userImage}><img src={session.user.my_user?.local_user_view.person?.avatar || "https://i.imgur.com/IN6ZY30.png" } alt={"Account"} /></div>
+                        <div className={styles.userImage}><img src={session.user.my_user?.local_user_view.person?.avatar || DEFAULT_AVATAR } alt={"Account"} /></div>
                     </button>
                 :
                     <Link href="/auth">
@@ -412,6 +431,7 @@ export default function Navbar() {
         </div>
 
         {/* Mobile Menu Left Side */}
+        { 
         <div id="menu" className={`${styles.menu} ${menu && styles.menuActive} overflow-y-auto`}>
             <div className={`flex flex-col h-fit gap-6 relative `}>
                 <button className={`${styles.currentInstance}`} onClick={() => alert("Soon you'll be able to see Instance Details here.")} >
@@ -424,7 +444,7 @@ export default function Navbar() {
                 </button>
 
                 <div className={`${styles.menuLinks}`}>
-                    <Link onClick={() => handleMenuClose()} href={"/"}><button><span className="material-icons">home</span>Home</button></Link>
+                    <Link onClick={() => handleMenuClose()} href={"/"}><button><span className="material-symbols-outlined">home</span>Home</button></Link>
                 </div>
 
             </div>
@@ -455,8 +475,10 @@ export default function Navbar() {
                 </div>
             </div>
         </div>
+        }
 
         {/* User Menu Right Side */}
+        { 
         <div id="usermenu" className={`${styles.userMenu} ${userMenu && styles.userMenuActive}`}>
             <div className={`${styles.userMenuTop}`}>
 
@@ -473,27 +495,44 @@ export default function Navbar() {
                     </div>
 
                     <div className="flex justify-center items-center w-12 h-52 px-6">
-                        <button onClick={() => alert("Multiple Accounts are work in progress :)")}><span className="material-icons">add_circle</span></button>
+                        <button onClick={() => alert("Multiple Accounts are work in progress :)")}><span className="material-symbols-outlined">add</span></button>
                     </div>
                 </div>
 
                 <div className={`${styles.userMenuInteractionsTop}`}>
-                    <button><span className="material-icons-outlined">notifications</span>Notifications</button>
-                    <Link onClick={() => handleUserMenuClose()} href={`/u/${session?.user.my_user?.local_user_view?.person?.name}`}><button><span className="material-icons-outlined">account_circle</span>My Profile</button></Link>
-                    <Link onClick={() => handleUserMenuClose()} href="/post/new"><button><span className="material-icons-outlined">add_circle_outline</span>Create a Post</button></Link>
-                    <button><span className="material-icons-outlined">group_add</span>Create a Community</button>
-                    <button><span className="material-icons-outlined">bookmarks</span>Bookmarked</button>
+                    <Link onClick={() => handleUserMenuClose()} href={"/inbox"}>
+                        <button className="relative">
+                            <div className="relative h-full flex items-center justify-center w-fit">
+                                {unreadCount > 0 && 
+                                    <span 
+                                        className=" m-2 absolute left-1/3 top-0
+                                        bg-red-400 text-red-950 rounded-full px-1 text-xs font-bold
+                                        ">
+                                        {unreadCount}
+                                    </span>
+                                }
+                                <span className="material-symbols-outlined">notifications</span>
+                            </div>
+                            Notifications
+                        </button>
+                    </Link>
+                    <Link onClick={() => handleUserMenuClose()} href={`/u/${session?.user.my_user?.local_user_view?.person?.name}`}><button><span className="material-symbols-outlined">account_circle</span>My Profile</button></Link>
+                    <Link onClick={() => handleUserMenuClose()} href="/post/new"><button><span className="material-symbols-outlined">add_circle_outline</span>Create a Post</button></Link>
+                    <button className="text-neutral-400 dark:text-neutral-500 cursor-not-allowed"><span className="material-symbols-outlined">group_add</span>Create a Community</button>
+                    <button className="text-neutral-400 dark:text-neutral-500 cursor-not-allowed"><span className="material-symbols-outlined">bookmarks</span>Bookmarked</button>
+                    <Link onClick={() => handleCloseSearchOverlay()} href={"/chat"}><button><span className="material-symbols-outlined">chat</span>Chat</button></Link>
                 </div>
 
 
             </div>
 
             <div className={`${styles.userMenuInteractionsBottom}`}>
-                <button onClick={() => handleUserMenuClose()}><span className="material-icons-outlined">close</span>Close</button>
-                <button><span className="material-icons-outlined">settings</span>Settings</button>
-                <button onClick={() => { handleUserMenuClose(); handleLogout({ session: session, setSession: setSession, router: router }) }} ><span className="material-icons-outlined">logout</span>Log out</button>
+                <button onClick={() => handleUserMenuClose()}><span className="material-symbols-outlined">close</span>Close</button>
+                <Link onClick={() => handleUserMenuClose()} href={"/settings"}><button><span className="material-symbols-outlined">settings</span>Settings</button></Link>
+                <button onClick={() => { handleUserMenuClose(); handleLogout({ session: session, setSession: setSession, router: router }) }} ><span className="material-symbols-outlined">logout</span>Log out</button>
             </div>
         </div>
+        }
 
         {/* Filter Options */}
         <div className={`${styles.filterOptions} ${filterClicked && styles.filterActive}`}>
