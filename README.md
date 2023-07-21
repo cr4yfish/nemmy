@@ -99,8 +99,8 @@ This means that there is no single huge "Lemmy Server" but many smaller "instanc
 - [X] Community Page
 - [ ] Sort/Filter/Search
     - [X] Search
-    - [ ] Filter -- Not implemented everywhere yet
-    - [ ] Sorting -- Same as Filter
+    - [ ] Filter **<- Almost done**
+    - [ ] Sorting  **-- Same as Filter**
     - [X] Explore Section
 - [X] Authentication
     - [X] Login
@@ -110,11 +110,11 @@ This means that there is no single huge "Lemmy Server" but many smaller "instanc
 - [ ] Creating Content 
     - [X] Creating Comments
     - [X] Creating Posts
-    - [ ] Creating Communities
-    - [ ] Supporting *all* Lemmy Markdown Features
+    - [ ] Creating Communities **<- Pre-Design phase**
+    - [ ] Supporting *all* Lemmy Markdown Features **<- "Thinking about it" phase**
 - [ ] User Page
-    - [ ] User Settings
-    - [ ] User Notifications
+    - [ ] User Settings **<- Being worked on**
+    - [ ] User Notifications **<- Almost done**
     - [X] User Profile
     - [X] User Posts
     - [X] User Bookmarks
@@ -127,12 +127,12 @@ This means that there is no single huge "Lemmy Server" but many smaller "instanc
     - [ ] Ban Users
     - [ ] Lock Posts/Comments
     - [ ] Modify Posts (e.g. change title, mark as NSFW)
-- [ ] Offline Features <- Is being worked on on another branch
+- [ ] Offline Features **<- Is being worked on on another branch**
     - [ ] Content Cache 
     - [ ] Upload when online
 - [ ] Customization
     - [ ] User Themes
-    - [ ] Compact Style (Like compact.reddit)
+    - [ ] Compact Style (Like compact.reddit) **<- Design phase**
     - [ ] Classic Style (Like old.reddit)
 - [ ] QoL Features
     - [ ] Auto-Register to other instances
