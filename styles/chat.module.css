@@ -1,0 +1,8 @@
+
+.ownMessage {
+    @apply bg-blue-500 text-neutral-50 self-end
+}
+
+.ownMessageMetadata {
+    @apply text-blue-300
+}
