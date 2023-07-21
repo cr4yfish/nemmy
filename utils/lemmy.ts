@@ -1,7 +1,7 @@
 
 import { CommentResponse, CommentView, CreateComment, CreatePost, FollowCommunity, GetComments, GetCommentsResponse, 
     GetPostResponse, GetSiteResponse, ListCommunities, ListCommunitiesResponse, PostResponse, Register, Search, SearchResponse, 
-    LoginResponse, GetCaptcha, GetFederatedInstances, GetFederatedInstancesResponse, GetCaptchaResponse, GetPosts, GetPostsResponse } from "lemmy-js-client"
+    LoginResponse, GetCaptcha, GetFederatedInstances, GetFederatedInstancesResponse, GetCaptchaResponse, GetPosts, GetPostsResponse, GetReplies, GetRepliesResponse, GetUnreadCount, GetUnreadCountResponse } from "lemmy-js-client"
 
 export const getUserDetails = async (jwt: string, baseUrl: string) :  Promise<(GetSiteResponse)> => {
     const user: GetSiteResponse = await fetch(`/api/getSite?auth=${jwt}&baseUrl=${baseUrl}`).then(res => res.json());
@@ -145,5 +145,16 @@ export const getFederatedInstances = async (params?: GetFederatedInstances, inst
 
 export const getCuratedInstances = async () => {
     const data = await fetch("/api/getCuratedInstances").then(res => res.json());
+    return data;
+}
+
+export const getReplies = async (params: GetReplies, instance: string) : Promise<(void | GetRepliesResponse)> => {
+    const data = await fetch(`/api/getReplies?auth=${params.auth}&sort=${params.sort}&page=${params.page}&unread_only=${params.unread_only}&instance=${instance}`)
+    .then(res => res.json());
+    return data;
+}
+
+export const getUnreadCount = async (params: GetUnreadCount, instance?: string) : Promise<(void | GetUnreadCountResponse)> => {
+    const data = await fetch(`/api/getUnreadCount?auth=${params.auth}&instance=${instance}`).then(res => res.json());
     return data;
 }
