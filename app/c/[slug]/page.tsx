@@ -11,6 +11,7 @@ import PostList from "@/components/PostList";
 import RenderMarkdown from "@/components/ui/RenderMarkdown";
 import { useSession } from "@/hooks/auth";
 import { subscribeToCommunity } from "@/utils/lemmy";
+import { DEFAULT_AVATAR } from "@/constants/settings";
 
 import styles from "@/styles/Pages/CommunityPage.module.css";
 import { ClipLoader } from "react-spinners";
@@ -68,7 +69,7 @@ export default function Community() {
         <img src={communityData?.community_view?.community?.banner} alt="" className={`${styles.banner}`} />
         <div className={`${styles.headerWrapper}`}>
             <div className="flex flex-row gap-4 p-6 max-w-xl max-md:w-full items-center flex-wrap">
-                <img className={`${styles.icon} ${!communityData?.community_view?.community?.icon && "object-contain p-2"} `} src={communityData?.community_view?.community?.icon || "https://i.imgur.com/IN6ZY30.png"} alt=""  />
+                <img className={`${styles.icon} ${!communityData?.community_view?.community?.icon && "object-contain p-2"} `} src={communityData?.community_view?.community?.icon || DEFAULT_AVATAR} alt=""  />
                 <div className="flex flex-col h-full max-w-xl">
                     <h1 className=" text-3xl font-bold">c/{pathname}</h1>
                     <div className="flex flex-row flex-wrap gap-2 pt-2">

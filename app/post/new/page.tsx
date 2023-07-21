@@ -10,6 +10,7 @@ import { listCommunities, createPost } from "@/utils/lemmy";
 import { useSession } from "@/hooks/auth";
 import { useRouter } from "next/navigation";
 import RenderMarkdown from "@/components/ui/RenderMarkdown";
+import { DEFAULT_AVATAR } from "@/constants/settings";
 
 import styles from "@/styles/Pages/NewPost.module.css";
 
@@ -17,7 +18,7 @@ import styles from "@/styles/Pages/NewPost.module.css";
 function CommunityCard({ community} : { community: CommunityView }) {
     return (
         <div className="flex flex-row gap-2 justify-start items-center h-full w-full transition-all duration-100 dark:hover:translate-y-1 max-md:hover:translate-y-0">
-            <img src={community?.community?.icon || "https://i.imgur.com/IN6ZY30.png"} alt="" className="w-8 h-8 rounded-full overflow-hidden object-contain" />
+            <img src={community?.community?.icon || DEFAULT_AVATAR} alt="" className="w-8 h-8 rounded-full overflow-hidden object-contain" />
             <div className="flex flex-col items-start h-full justify-center">
                 <span className="font-bold">c/{community?.community?.name}</span>
                 <span className="text-neutral-400 text-xs">{community?.counts?.subscribers} Subscribers</span>

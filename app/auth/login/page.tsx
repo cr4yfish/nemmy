@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { CircleLoader, ClipLoader } from "react-spinners";
 import { search } from "@/utils/lemmy";
+import { DEFAULT_AVATAR } from "@/constants/settings";
 
 import styles from "@/styles/Pages/LoginPage.module.css";
 import { setCookies } from "@/utils/authFunctions";
@@ -124,11 +125,11 @@ export default function Login() {
                         <label htmlFor="">Username</label>
                         <input value={form.username} onChange={(e) => {setForm({...form, username: e.currentTarget.value}); setSelectedUser(null)}} required type="text" disabled={loading} className={`${loginError ? styles.inputError : styles.input}`} />
 
-                        {users.length > 0 && !selectedUser &&
+                        {users?.length > 0 && !selectedUser &&
                         <div className="absolute bg-neutral-100/75 dark:bg-neutral-900/90 backdrop-blur-3xl p-4 flex flex-col gap-4 rounded-lg left-0 translate-y-full z-50 w-full border border-neutral-300 dark:border-neutral-700" style={{ bottom: "-10%" }}>
                             {users.map((user, i) => (
                                 <div onClick={() => setSelectedUser(user)} key={i} className="flex flex-row gap-2 items-center">
-                                    <img src={user.person.avatar ||"https://i.imgur.com/IN6ZY30.png"} className="w-10 h-10 rounded-full overflow-hidden object-contain" alt="" />
+                                    <img src={user.person.avatar || DEFAULT_AVATAR} className="w-10 h-10 rounded-full overflow-hidden object-contain" alt="" />
                                     <div className="flex flex-col">
                                         <span className="font-bold">{user.person.display_name || user.person.name}</span>
                                         <span className="text-xs dark:text-neutral-300">@{new URL(user.person.actor_id).hostname}</span>

@@ -4,6 +4,7 @@ import { useEffect, useState, useRef } from "react";
 
 import { Person } from "lemmy-js-client";
 import SmallUser from "./SmallUser";
+import { DEFAULT_AVATAR } from "@/constants/settings";
 
 
 import styles from "../../styles/User/Username.module.css"
@@ -26,7 +27,7 @@ export default function Username({ user, baseUrl, opensToTop=false } : { user: P
                     <span>
                         <img 
                             className={`${styles.userimage} ${user.avatar ? "" : "object-contain p-1/2"} `} 
-                            src={user.avatar || "https://i.imgur.com/IN6ZY30.png"} 
+                            src={user.avatar || DEFAULT_AVATAR} 
                             alt={user.name} 
                         />
                     </span>

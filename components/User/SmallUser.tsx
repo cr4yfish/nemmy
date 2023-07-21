@@ -1,5 +1,5 @@
 import { Person } from "lemmy-js-client";
-import { DEFAULT_INSTANCE } from "@/constants/settings";
+import { DEFAULT_INSTANCE, DEFAULT_AVATAR } from "@/constants/settings";
 
 import styles from "../../styles/User/SmallUser.module.css"
 import { CSSProperties, useEffect, useState } from "react";
@@ -53,7 +53,7 @@ export default function SmallUser({ user, userHover, setUserHover, style, opensT
                 <div className={`${styles.userImage}`}>
                     <img 
                         className={`${styles.avatar} ${user.avatar ? "" : "object-contain p-1"}`} 
-                        src={user.avatar || "https://i.imgur.com/IN6ZY30.png"} 
+                        src={user.avatar || DEFAULT_AVATAR} 
                         alt="" 
                     />
                 </div>
