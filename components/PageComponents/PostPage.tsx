@@ -30,7 +30,7 @@ export default function PostPage({ data, instance, jwt } :  { data: GetPostRespo
     const pathname = usePathname().split("/")[2];
 
     useEffect(() => {
-        setNavbar({ ...navbar!, showSort: false, showFilter: false, showSearch: false, showback: false, hidden: false })
+        setNavbar({ ...navbar!, showSort: false, showFilter: false, showSearch: false, showback: false, hidden: false, titleOverride: "" })
     }, [])
 
     useEffect(() => {

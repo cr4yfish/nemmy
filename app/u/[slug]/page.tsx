@@ -36,7 +36,7 @@ export default function User() {
     const pathname = usePathname().split("/")[2];
 
     useEffect(() => {
-        setNavbar({ ...navbar!, showFilter: false, showSort: false, showSearch: true, showUser: true, showback: true })
+        setNavbar({ ...navbar!, showFilter: false, showSort: false, showSearch: true, showUser: true, showback: true, titleOverride: "" })
     }, [])
     
     useEffect(() => {

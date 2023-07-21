@@ -9,7 +9,7 @@ export default function Home() {
   const { navbar, setNavbar } = useNavbar();
 
   useEffect(() => {
-    setNavbar({ ...navbar!, showMenu: true, showSort: true, showFilter: true, showSearch: true, showUser: true, showback: false, hidden: false })
+    setNavbar({ ...navbar!, showMenu: true, showSort: true, showFilter: true, showSearch: true, showUser: true, showback: false, hidden: false, titleOverride: "" })
   }, [])
 
   return (

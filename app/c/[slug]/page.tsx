@@ -26,7 +26,7 @@ export default function Community() {
     const [subscribeLoading, setSubscribeLoading] = useState(false);
 
     useEffect(() => {
-        setNavbar({ ...navbar!, showSort: false, showFilter: false, showSearch: true, showUser: true, showback: true })
+        setNavbar({ ...navbar!, showSort: false, showFilter: false, showSearch: true, showUser: true, showback: true, titleOverride: "" })
     }, [])
 
     // community id
