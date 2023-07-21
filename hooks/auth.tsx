@@ -4,6 +4,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import { PersonView, GetSiteResponse} from 'lemmy-js-client';
 import { getCookies } from 'cookies-next';
 import { getUserDetails } from '@/utils/lemmy';
+import { DEFAULT_INSTANCE } from '@/constants/settings';
 
 interface SessionState {
     user: GetSiteResponse,
@@ -17,7 +18,7 @@ interface SessionContextProps {
     setSession: React.Dispatch<React.SetStateAction<SessionState>>;
 }
 
-const defaultState: SessionState = { user: {} as GetSiteResponse, jwt: "", pendingAuth: true, defaultInstance: "lemmy.ml" }
+const defaultState: SessionState = { user: {} as GetSiteResponse, jwt: "", pendingAuth: true, defaultInstance: DEFAULT_INSTANCE }
 const SessionContext = createContext<SessionContextProps>({ session: defaultState, setSession: () => { } })
 
 export const SessionContextProvider = ({ children } : { children: any }) => {
@@ -26,24 +27,31 @@ export const SessionContextProvider = ({ children } : { children: any }) => {
 
     // Auto fetch session data
     useEffect(() => {
-        
-        // try session storage
-        let jwt = sessionStorage.getItem("jwt") == null ? "" : sessionStorage.getItem("jwt");
-        let instance = sessionStorage.getItem("instance") == null ? "" : sessionStorage.getItem("instance");
+        try {
+            if (!session.pendingAuth) return;
+            
+            // try session storage
+            let jwt = sessionStorage.getItem("jwt") == null ? "" : sessionStorage.getItem("jwt");
+            let instance = sessionStorage.getItem("instance") == null ? "" : sessionStorage.getItem("instance");
 
-        // try cookies
-        const cookies = getCookies();
-        jwt = (jwt == "" && cookies.jwt) ? cookies.jwt : jwt;
-        instance = (instance == "" && cookies.instance) ? cookies.instance : instance;
+            // try cookies
+            const cookies = getCookies();
+            console.log("Cookies:", cookies, jwt, instance);
+            jwt = (jwt == "" && cookies.jwt) ? cookies.jwt : jwt;
+            instance = (instance == "" && cookies.instance) ? cookies.instance : instance;
 
-        if (jwt && jwt.length > 1 && instance && instance.length > 1) {
-            getUserDetails(jwt, instance).then(res => {
-                setSession({ ...session, user: res, jwt: jwt!, pendingAuth: false })
-            })
-        } else {
-            setSession({ ...session, user: {} as GetSiteResponse, jwt: "", pendingAuth: false })
+            if (jwt && jwt.length > 1 && instance && instance.length > 1) {
+                getUserDetails(jwt, instance).then(res => {
+                    const instanceUrl = new URL(res.my_user!.local_user_view.person.actor_id).host;
+                    setSession({ ...session, user: res, jwt: jwt!, pendingAuth: false, defaultInstance: instanceUrl })
+                })
+            } else {
+                throw new Error("No session data found")
+            }
+        } catch (e) {
+            console.warn(e);
+            setSession({ ...session, user: {} as GetSiteResponse, jwt: "", pendingAuth: false, defaultInstance: DEFAULT_INSTANCE })
         }
-
     }, [])
 
     return (
