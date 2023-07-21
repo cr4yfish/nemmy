@@ -1,5 +1,5 @@
 import { DEFAULT_AVATAR, DEFAULT_INSTANCE } from "@/constants/settings";
-import { GetPrivateMessages, LemmyHttp, PrivateMessagesResponse } from "lemmy-js-client";
+import { LemmyHttp, PrivateMessagesResponse } from "lemmy-js-client";
 import { cookies } from "next/dist/client/components/headers";
 import Link from "next/link";
 
@@ -8,37 +8,51 @@ import RenderMarkdown from "@/components/ui/RenderMarkdown";
 import RenderError from "@/components/ui/RenderError";
 
 async function getChats({ auth, instance} : { auth: string, instance: string }): Promise<PrivateMessagesResponse> {
-    const client = new LemmyHttp(instance ? `https://${instance}` : DEFAULT_INSTANCE);
-    const chats = await client.getPrivateMessages({ 
-        auth: auth, 
-        page: 1,
-        unread_only: false,
-    });
-    return chats;
+    try {
+        const client = new LemmyHttp(instance ? `https://${instance}` : DEFAULT_INSTANCE);
+        const chats = await client.getPrivateMessages({ 
+            auth: auth, 
+            page: 1,
+            unread_only: false,
+        });
+        return chats;
+    } catch(e) {
+        console.error(e);
+        return {
+            private_messages: [],
+        }
+    }
 }
 
 function ChatPreview({creator, chats} : {creator: any, chats: PrivateMessagesResponse}) {
-    const lastMessage = chats.private_messages.filter((m) => m.creator.id == creator.id)[0].private_message;
-    return (
-        <>
-        <Link href={`/chat/${creator.name}`} key={creator.id} className="flex flex-row items-center gap-2 w-full bg-fuchsia-100 p-4 rounded-lg cursor-pointer">
-            <div className=" h-20 w-20 overflow-hidden rounded-full flex items-center justify-center">
-                <img src={creator.avatar || DEFAULT_AVATAR} alt="" className="w-full h-full object-contain"  />
-            </div>
-            <div className="flex flex-col w-full">
-                <div className=" w-full flex justify-between">
-                    <span className="font-xl font-bold text-fuchsia-950">{creator.name}</span>
-                    <span className=" text-xs font-light text-fuchsia-600">{FormatDate({date: new Date(lastMessage.published)})}</span>
+    try {
+        const lastMessage = chats?.private_messages?.filter((m) => m.creator.id == creator.id)[0].private_message;
+        return (
+            <>
+            <Link href={`/chat/${creator.name}`} key={creator.id} className="flex flex-row items-center gap-2 w-full bg-fuchsia-100 p-4 rounded-lg cursor-pointer">
+                <div className=" h-20 w-20 overflow-hidden rounded-full flex items-center justify-center">
+                    <img src={creator.avatar || DEFAULT_AVATAR} alt="" className="w-full h-full object-contain"  />
                 </div>
-                
-                {/* newest message by creator */}
-                <div className=" text-ellipsis overflow-hidden overflow-clip line-clamp-1 font-light text-fuchsia-900 max-w-xs">
-                    <RenderMarkdown>{lastMessage.content}</RenderMarkdown>
+                <div className="flex flex-col w-full">
+                    <div className=" w-full flex justify-between">
+                        <span className="font-xl font-bold text-fuchsia-950">{creator.name}</span>
+                        <span className=" text-xs font-light text-fuchsia-600">{FormatDate({date: new Date(lastMessage.published)})}</span>
+                    </div>
+                    
+                    {/* newest message by creator */}
+                    <div className=" text-ellipsis overflow-hidden overflow-clip line-clamp-1 font-light text-fuchsia-900 max-w-xs">
+                        <RenderMarkdown>{lastMessage.content}</RenderMarkdown>
+                    </div>
                 </div>
-            </div>
-        </Link>
-        </>
-    )
+            </Link>
+            </>
+        )
+    } catch(e) {
+        console.error(e);
+        return (
+            <RenderError />
+        )
+    }
 }
 
 
@@ -88,7 +102,6 @@ export default async function Chat() {
             </>
         )
     } catch(e) {
-        console.error(e);
         return (
             <RenderError />
         )
