@@ -3,6 +3,8 @@ import { DEFAULT_INSTANCE } from "@/constants/settings";
 
 // POST /api/getUser
 // Post for security reasons
+export const dynamic = "force-dynamic"
+
 export async function GET(req: Request) {
     try {
         

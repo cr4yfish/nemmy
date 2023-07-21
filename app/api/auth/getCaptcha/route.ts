@@ -6,7 +6,6 @@ export async function POST(req: Request) {
         const body = await req.json();
 
         const auth = body.auth, instance = body.instance ? `https://${body.instance}` : DEFAULT_INSTANCE;
-        console.log(body.instance, instance);
         const client = new LemmyHttp(instance);
 
         const response = await client.getCaptcha();

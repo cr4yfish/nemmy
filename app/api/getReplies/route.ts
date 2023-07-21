@@ -1,6 +1,8 @@
 import { LemmyHttp, ListingType, SortType, CommunityId, CommentSortType } from "lemmy-js-client"
 import { DEFAULT_INSTANCE } from "@/constants/settings";
 
+export const dynamic = "force-dynamic"
+
 export async function GET(req: Request) {
     try {
 

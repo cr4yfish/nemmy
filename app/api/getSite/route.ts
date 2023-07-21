@@ -1,5 +1,7 @@
 import { LemmyHttp} from "lemmy-js-client"
 
+export const dynamic = "force-dynamic"
+
 export async function GET(req: Request) {
     try {
 

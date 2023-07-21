@@ -10,8 +10,6 @@ export async function POST(req: Request) {
 
         const client = new LemmyHttp(instance);
 
-        console.log(username, password, email, show_nsfw, instance);
-
         const register = await client.register({ username, password, password_verify: password, email, show_nsfw: show_nsfw, captcha_uuid, captcha_answer, honeypot, answer });
 
         return new Response(JSON.stringify({ register }), { status: 200, headers: { 'Content-Type': 'application/json' } })

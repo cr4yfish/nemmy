@@ -1,5 +1,7 @@
 import { parse } from "papaparse";
 
+export const dynamic = "force-dynamic"
+
 export async function GET(req: Request) {
     try {
         const url_to_csv = "https://raw.githubusercontent.com/maltfield/awesome-lemmy-instances/main/awesome-lemmy-instances.csv";

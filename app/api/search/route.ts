@@ -2,6 +2,8 @@ import { LemmyHttp, ListingType, SortType, CommunityId, Search, SearchResponse, 
 import { DEFAULT_INSTANCE } from "@/constants/settings";
 
 // GET /api/search
+export const dynamic = "force-dynamic"
+
 export async function GET(req: Request) {
     try {
         
