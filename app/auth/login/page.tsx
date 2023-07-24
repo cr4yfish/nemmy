@@ -4,6 +4,7 @@ import { GetSiteResponse, PersonView } from "lemmy-js-client"
 import { FormEvent, useState, useEffect } from "react";
 import { useRouter } from "next/navigation"; 
 import Link from "next/link";
+import { motion } from "framer-motion";
 import { ClipLoader } from "react-spinners";
 
 import { useSession } from "@/hooks/auth";
@@ -27,6 +28,8 @@ export default function Login() {
     const [users, setUsers] = useState<PersonView[]>([]);
     const [selectedUser, setSelectedUser] = useState<PersonView | null>(null);
     const [loginError, setLoginError] = useState<boolean>(false);
+
+    const [searchingUserLoading, setSearchingUserLoading] = useState<boolean>(false);
 
     const [form, setForm] = useState<{ username: string, password: string, saveLogin: boolean, instance: string}>({
         username: "",
@@ -119,14 +122,20 @@ export default function Login() {
     }, [form.username])
 
     const searchUsers = async (query: string) => {
+        setSearchingUserLoading(true);
         const data = await search({ q: query, type_: "Users", listing_type: "All" })
         if(!data) return;
         setUsers(data.users);
-
+        setSearchingUserLoading(false);
     }
 
     return (
-        <div className="flex flex-col items-center justify-between h-96 pt-16 gap-24">
+        <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            className="flex flex-col items-center justify-between h-96 pt-16 gap-24"
+        >
             {!inputFocus && <Logo />}
 
             <div className="flex items-center flex-col gap-4">
@@ -135,7 +144,19 @@ export default function Login() {
                 <form onSubmit={(e) => handleSubmit(e)} className={`${styles.loginWrapper}`}>
                     <div className={`${styles.inputWrapper}`}>
                         <label htmlFor="">Username</label>
-                        <input value={form.username} onChange={(e) => {setForm({...form, username: e.currentTarget.value}); setSelectedUser(null)}} required type="text" disabled={loading} className={`${loginError ? styles.inputError : styles.input}`} />
+
+                        <div className={`${loginError ? styles.inputError : styles.input} overflow-hidden rounded-lg relative`}>
+                            <input 
+                                value={form.username} 
+                                onChange={(e) => {setForm({...form, username: e.currentTarget.value}); setSelectedUser(null)}} 
+                                required type="text" disabled={loading} className={`bg-transparent w-full h-full outline-none`}
+                            />
+                            <div className="absolute right-0 top-0 h-full flex justify-center items-center pr-2">
+                                <ClipLoader color={"#e6b0fa"} size={20} loading={searchingUserLoading} className="" />
+                            </div>
+                            
+                        </div>
+
 
                         {users?.length > 0 && !selectedUser &&
                         <div className="absolute bg-neutral-100/75 dark:bg-neutral-900/90 backdrop-blur-3xl p-4 flex flex-col gap-4 rounded-lg left-0 translate-y-full z-50 w-full border border-neutral-300 dark:border-neutral-700" style={{ bottom: "-10%" }}>
@@ -169,6 +190,6 @@ export default function Login() {
                 
             </div>
 
-        </div>
+        </motion.div>
     )
 }
