@@ -52,7 +52,6 @@ export default function Comment({ commentView, allComments, depth=0, setReplyCom
         if(!childrenError) return;
         (async () => {
             if(session.pendingAuth) return;
-            console.log("Loading children")
             const data = await fetch(`/api/getComments?post_id=${commentView.comment.post_id}&parent_id=${commentView.comment.id}&sort=Top&page=1&auth=${session.currentAccount?.jwt}
             `);
             const json = (await data.json());

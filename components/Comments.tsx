@@ -1,7 +1,8 @@
 "use client"
 import { useState, useRef, FormEvent, useEffect } from "react"
 import { ClipLoader, BounceLoader } from "react-spinners"
-import { CommentView, GetCommentsResponse, GetPostResponse } from "lemmy-js-client"
+import { CommentSortType, CommentView, GetCommentsResponse, GetPostResponse } from "lemmy-js-client"
+import InfiniteScroll from "react-infinite-scroller"
 
 import RenderFormattingOptions from "./ui/RenderFormattingOptions"
 
@@ -15,7 +16,16 @@ import WriteCommentOverlay from "./WriteCommentOverlay"
 import { DEFAULT_INSTANCE } from "@/constants/settings"
 
 import styles from "@/styles/Pages/PostPage.module.css"
+import EndlessScrollingEnd from "./ui/EndlessSrollingEnd"
 
+
+function Loader() {
+    return (
+        <div className="flex justify-center items-center w-full mb-10">
+            <BounceLoader color="#e6b0fa" size={20} speedMultiplier={.75} />
+        </div>
+    )
+}
 
 export default function Comments({
     postId, jwt, instance, setPostData, postData
@@ -36,8 +46,10 @@ export default function Comments({
     const [showReply, setShowReply] = useState<boolean>(false);
 
     const [currentCommentsPage, setCurrentCommentsPage] = useState<number>(1);
+    const [currentCommentSort, setCurrentCommentSort] = useState<CommentSortType | undefined>("Hot");
     const [forceCommentUpdate, setForceCommentUpdate] = useState<number>(0);
     const [commentsLoading, setCommentsLoading] = useState<boolean>(true);
+    const [hasMoreComments, setHasMoreComments] = useState<boolean>(true);
 
     // Adjust textarea height to content on user input
     useEffect(() => {
@@ -101,32 +113,41 @@ export default function Comments({
         
         const data = await getComments({
             post_id: postData.post_view.post.id,
-            sort:"Hot",
+            sort: currentCommentSort,
             page: currentCommentsPage,
             auth: session.currentAccount?.jwt
         }, instance || DEFAULT_INSTANCE);
         if(data) { 
             setCommentsLoading(false)
+            console.log(data)
+
+            if(data.comments.length == 0) return setHasMoreComments(false);
+
+            // Has old data
             if(commentsData?.comments?.length > 0) {
                 const oldData = commentsData;
                 const newData = data;
 
                 // filter out duplicates
-                const filtered = newData.comments.filter((newComment) => {
+                const uniqueComments = newData.comments.filter((newComment) => {
                     return !oldData.comments.some((oldComment) => {
                         return oldComment.comment.id === newComment.comment.id;
                     })
                 })
 
+                // filter out removed comments and only get top-level comments
+                const filtered = uniqueComments.filter((c) => !c.comment.removed && !c.comment.deleted && c.comment.path.split(".")[1] == c.comment.id.toString());
+
                 setCommentsData({ ...oldData, comments: [...oldData.comments, ...filtered] });
-            } else {
+            } 
+            // No old data => just set new data
+            else {
                 setCommentsData(data);
             }
             setCurrentCommentsPage(currentCommentsPage + 1);
         }
     }
 
-    
     return (
         <>
         <div className={`flex flex-col items-center w-full gap-2`}>
@@ -154,7 +175,6 @@ export default function Comments({
                 </button>
                 }
             </form>
-
             
             {/* mobile comments button => opens WriteCommentOverlay */}
             <button onClick={() => setShowReply(true)} className={` invisible max-md:visible fixed bottom-0 w-full flex items-center justify-center bg-neutral-50 dark:bg-neutral-950 dark:border-t border-neutral-700 shadow-lg p-4 px-2 `} style={{  zIndex: "40" }} >
@@ -162,7 +182,6 @@ export default function Comments({
                     <span>What are your thoughts?</span>
                 </div>
             </button>
-
 
             <WriteCommentOverlay 
                 post={postData} comment={replyComment} show={showReply} setShow={setShowReply}
@@ -181,15 +200,22 @@ export default function Comments({
                 }
 
                 {/* Comments  */}
-                <div className={`${styles.commentsList}`}>
-                    {commentsData?.comments?.filter((c) => !c.comment.deleted && !c.comment.removed && c.comment.path.split(".")[1] == c.comment.id.toString()).map((comment, index) => (
+                <InfiniteScroll 
+                    className={`${styles.commentsList}`}
+                    pageStart={1}
+                    hasMore={hasMoreComments}
+                    loadMore={async () => await handleLoadMoreComments()}
+                    loader={<Loader />}
+                    >
+                    {commentsData?.comments?.filter((c) => c.comment.path.split(".")[1] == c.comment.id.toString()).map((comment, index) => (
                         <Comment 
                             commentView={comment} allComments={commentsData.comments}
                             key={index} 
                             setReplyComment={setReplyCommet} setShowReply={setShowReply}
                             />
                     ))}
-                </div>
+                    {!hasMoreComments && commentsData?.comments?.length > 0 && <EndlessScrollingEnd />}
+                </InfiniteScroll>
 
 
                 { commentsData?.comments?.length == 0 && !commentsLoading &&
@@ -198,17 +224,12 @@ export default function Comments({
                 </div>
                 }
 
-                { commentsLoading &&
-                    <div className="flex justify-center items-center w-full mb-10">
-                        <BounceLoader color="#e6b0fa" size={20} speedMultiplier={.75} />
-                    </div>
-                }
-
-                {commentsData?.comments?.length > 1 && !commentsLoading &&
+                {commentsData?.comments?.length > 1 && !commentsLoading && hasMoreComments &&
                     <div className="flex justify-center items-center w-full mb-10">
                     <button onClick={() => handleLoadMoreComments()}><span className="material-symbols-outlined">expand_circle_down</span></button>
                 </div>
                 }
+
             </div>
         </div>
         </>
