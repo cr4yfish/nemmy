@@ -30,9 +30,9 @@ export interface AccountWithSiteResponse extends Account {
 
 /**
  * Removes the account from the cookie
- * @param { session, setSession, router, account } : { session: any, setSession: Function, router: any, account: Account }
+ * @param { session, setSession, router, account } : { session: SessionState, setSession: React.Dispatch<React.SetStateAction<SessionState>>, router: any, account: Account }
  */
-export const handleLogout = async ({ session, setSession, router, account } : { session: any, setSession: Function, router: any, account?: Account }) => {
+export const handleLogout = async ({ session, setSession, router, account } : { session: SessionState, setSession: React.Dispatch<React.SetStateAction<SessionState>>, router: any, account?: Account }) => {
     if(!account) return;
     const accounts = getAccounts();
     const defaultAccount = getDefaultAccount();
@@ -54,11 +54,33 @@ export const handleLogout = async ({ session, setSession, router, account } : { 
     const currentAccount = getCurrentAccount();
     if(currentAccount && currentAccount.username == account.username) {
         deleteCookie(cookieCurrentAccountName);
+
+        // if there are no accounts left, wipe the accounts
+        if(newAccounts.length == 0) {
+            wipeAccounts();
+             // set session to empty
+            setSession({ ...session, currentAccount: undefined, accounts: newAccounts, siteResponse: undefined });
+        }
+
+        // if there is a default account, set the current account to the default account
+        if(defaultAccount) {
+            setCurrentAccount(defaultAccount.username);
+            // get default account with site response
+            const defaultAccountWithSite = getUserDataFromLocalStorage(defaultAccount);
+            setSession({ ...session, currentAccount: defaultAccount, siteResponse: defaultAccountWithSite?.site, accounts: newAccounts });
+        }
+
+        // if there is no default account, set the current account to the first account in the list
+        if(!defaultAccount && newAccounts.length > 0) {
+            setCurrentAccount(newAccounts[0].username);
+            // get new account with site response
+            const newAccountWithSite = getUserDataFromLocalStorage(newAccounts[0]);
+            setSession({ ...session, currentAccount: newAccounts[0], siteResponse: newAccountWithSite?.site, accounts: newAccounts });
+        }
+    } else {
+        // set session to the account
+        setSession({ ...session, accounts: newAccounts, siteResponse: undefined, currentAccount: undefined });
     }
-
-    // set session to empty
-    setSession({ ...session, user: {} as LocalUserView, account: undefined, defaultAccount: wasDefault ? undefined : defaultAccount });
-
     // redirect to home
     router.push("/");
 }
@@ -69,7 +91,7 @@ export const handleLogout = async ({ session, setSession, router, account } : { 
  */
 export const handleLogin = async ({ 
     session, setSession, router, accountWithSite } : { 
-        session: any, setSession: Function, router: any, accountWithSite: AccountWithSiteResponse 
+        session: SessionState, setSession: React.Dispatch<React.SetStateAction<SessionState>>, router: any, accountWithSite: AccountWithSiteResponse 
     }) => {
 
     const account: Account = {
@@ -80,7 +102,7 @@ export const handleLogin = async ({
     }
 
     // set session to the account
-    setSession({ ...session, user: accountWithSite.user, account: account }); 
+    setSession({ ...session, currentAccount: account, accounts: [...session.accounts, account], siteResponse: accountWithSite.site }); 
     
     // save the account
     saveAccount(account);
