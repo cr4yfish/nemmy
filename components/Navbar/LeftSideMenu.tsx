@@ -13,9 +13,9 @@ import styles from "@/styles/components/Navbar/LeftSideMenu.module.css"
 import Image from "next/image"
 
 export default function LeftSideMenu(
-    { menu, handleMenuClose, setCommunitySearch, communitySearch 
+    { handleMenuClose, setCommunitySearch, communitySearch 
     } : { 
-    menu: boolean, handleMenuClose: any, setCommunitySearch: any, communitySearch: any 
+    handleMenuClose: any, setCommunitySearch: any, communitySearch: any 
     }) {
     const { session } = useSession();
     const [showSiteInfo, setShowSiteInfo] = useState(false)
@@ -27,7 +27,12 @@ export default function LeftSideMenu(
                 <SiteInfo siteResponse={session.siteResponse} close={() => setShowSiteInfo(false)} />
             }
         </AnimatePresence>
-        <div id="menu" className={`${styles.menu} ${menu && styles.menuActive} overflow-y-auto`}>
+        <motion.div 
+            id="menu" className={`${styles.menu} overflow-y-auto`}
+            initial={{ opacity: 0, x: -300 }}
+            animate={{ opacity: 1, x: 0, transition: { bounce: 0 } }}
+            exit={{ opacity: 0, x: -300 }}
+            >
             <div className={`flex flex-col h-fit gap-6 relative `}>
                 <button className={`${styles.currentInstance}`} onClick={() => setShowSiteInfo(true)} >
                     <div className="flex flex-col justify-start items-start">
@@ -43,6 +48,7 @@ export default function LeftSideMenu(
                 </div>
 
             </div>
+
             <div className={`flex flex-col gap-2`}>
                 <div className="flex items-center gap-1 justify-between">
                     <span className="font-bold">Communities</span>
@@ -50,6 +56,8 @@ export default function LeftSideMenu(
                 </div>
                
 
+                { session.currentAccount ?
+                <>
                 <div className="flex">
                     <Input 
                     onChange={(e) => setCommunitySearch(e.currentTarget.value)}
@@ -68,8 +76,17 @@ export default function LeftSideMenu(
                         </div>
                     ))}
                 </div>
+                </>
+                :
+                <div key={"scrollerend"} className=" w-full flex flex-col items-center justify-center gap-2 mt-24 mb-24">
+                    <span className="material-symbols-outlined text-blue-400">info</span>
+                    <span className=" w-full flex items-center justify-center flex-wrap gap-1"><Link href={"/auth"} className="a">Log in</Link> to view your communities</span>
+                </div>
+                }
+                
             </div>
-        </div>
+
+        </motion.div>
         </>
     )
 }
