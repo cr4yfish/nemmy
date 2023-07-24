@@ -2,18 +2,22 @@
 import Link from "next/link";
 import Marquee from "react-fast-marquee";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Mousewheel, Scrollbar } from "swiper/modules";
+import 'swiper/css';
+import 'swiper/css/scrollbar';
+import { motion } from "framer-motion";
 
-import { DEFAULT_INSTANCE, DEFAULT_AVATAR } from "@/constants/settings";
+import { DEFAULT_AVATAR } from "@/constants/settings";
 import { useSession } from "@/hooks/auth";
 
 import styles from "@/styles/components/Navbar/UserMenu.module.css";
 import { Account, switchToAccount } from "@/utils/authFunctions";
 
 export default function UserMenu( {
-    active, handleUserMenuClose, handleLogout, unreadCount, handleCloseSearchOverlay, router
+    handleUserMenuClose, handleLogout, unreadCount, router
  } : { 
-    active: boolean, handleUserMenuClose: any, handleLogout: any, unreadCount: any, handleCloseSearchOverlay: any, router: any }) {
+    handleUserMenuClose: any, handleLogout: any, unreadCount: any, router: any }) {
     const { session, setSession } = useSession();
 
 
@@ -24,30 +28,48 @@ export default function UserMenu( {
 
     return (
         <>
-        <div id="usermenu" className={`${styles.userMenu} ${active && styles.userMenuActive}`}>
-            <div className={`${styles.userMenuTop}`}>
+        <motion.div 
+            initial={{ opacity: 0, x: 300 }}
+            animate={{ opacity: 1, x: 0, transition: { bounce: 0 } }}
+            exit={{ opacity: 0, x: 300 }}
+            id="usermenu" 
+            className={`${styles.userMenu}`}
+        >
+            <div className={`flex flex-col gap-4 h-full w-full`}>
 
-                <div className={`${styles.userProfiles}`}>
+                {<Swiper 
+                    modules={[Mousewheel, Scrollbar]}
+                    className="h-52 w-full"
+                    spaceBetween={50}
+                    slidesPerView={1}
+                    mousewheel={{
+                        forceToAxis: true,
+                        releaseOnEdges: true,
+                    }}
+                    scrollbar={{
+                        draggable: true,
+                    }}
+                    >
 
                     {session.accounts.map((account, index) => (
-                        <div onClick={() => handleSwitchAccount(account)} key={index} className={`${styles.userProfile} ${(account.username == session.currentAccount?.username) && styles.userProfileActive} cursor-pointer`}>
+                        <SwiperSlide onClick={() => handleSwitchAccount(account)} key={index} className={`${styles.userProfile} ${(account.username == session.currentAccount?.username) && styles.userProfileActive} cursor-pointer`}>
                             <Image width={100} height={50} className={`${styles.userProfileBanner}`} src={account?.user?.person.banner || ""} alt="" />
                             <div className={`${styles.userProfileBannerOverlay}`}></div>
                             <Image width={40} height={40} className={`${styles.userProfileAvatar}`} src={account.user?.person?.avatar || DEFAULT_AVATAR} alt="" />
                             <div className={`${styles.userProfileText}`}>
                                 <span className={`${styles.userProfileUsername} text-xs`}>{account.instance}</span>
-                                {account.username.length > 15 ? <Marquee><span className={`${styles.userProfileDisplayName} text-sm`}>u/{account.username}</span></Marquee>
+                                {account.username.length > 30 ? <Marquee><span className={`${styles.userProfileDisplayName} text-sm`}>u/{account.username}</span></Marquee>
                                 :
                                 <span className={`${styles.userProfileDisplayName} text-sm`} >u/{account.username}</span>
                                 }
                             </div>
-                        </div>
+                        </SwiperSlide>
                     ))}
 
-                    <div className="flex justify-center items-center w-12 h-52 px-6">
+                    <SwiperSlide className="flex justify-center items-center w-12 h-52 px-6">
                         <Link href={"/auth"}><button onClick={() => handleUserMenuClose()}><span className="material-symbols-outlined">add</span></button></Link>
-                    </div>
-                </div>
+                    </SwiperSlide>
+                </Swiper>}
 
                 <div className={`${styles.userMenuInteractionsTop}`}>
                     <Link onClick={() => handleUserMenuClose()} href={"/inbox"}>
@@ -81,7 +103,7 @@ export default function UserMenu( {
                 <Link onClick={() => handleUserMenuClose()} href={"/settings"}><button><span className="material-symbols-outlined">settings</span>Settings</button></Link>
                 <button onClick={() => { handleUserMenuClose(); handleLogout({ session: session, setSession: setSession, router: router, account: session.currentAccount }) }} ><span className="material-symbols-outlined">logout</span>Log out</button>
             </div>
-        </div>
+        </motion.div>
         </>
     )
 }

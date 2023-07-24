@@ -37,6 +37,7 @@
     "react-number-format": "^5.2.2",
     "react-spinners": "^0.13.8",
     "scroll-lock": "^2.1.5",
+    "swiper": "^10.0.4",
     "tailwindcss": "3.3.2",
     "typescript": "5.1.5"
   },
