@@ -11,10 +11,14 @@ const nextConfig = {
             {
                 protocol: "https",
                 hostname: "lemmy.**"
+            },
+            {
+                protocol: "https",
+                hostname: "**.**" // match everything, is this a good idea? One way to find out I guess
             }
         ]
     },
-    reactStrictMode: true
+    reactStrictMode: false
 }
 
 module.exports = withPWA( nextConfig ) 
