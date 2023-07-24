@@ -29,11 +29,12 @@
 }
 
 .chainlineWrapper {
-    @apply flex items-start justify-center w-5 pt-1;
+    @apply flex items-start justify-center pt-1;
     position: relative;
     cursor: pointer;
     z-index: 10;
     pointer-events: all;
+    width: 1.5rem
 }
 
 .chainlineLine {

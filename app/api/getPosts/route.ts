@@ -1,5 +1,5 @@
 import { LemmyHttp, ListingType, SortType, CommunityId } from "lemmy-js-client"
-import { DEFAULT_INSTANCE } from "@/constants/settings";
+import { DEFAULT_INSTANCE, DEFAULT_POST_LIMIT } from "@/constants/settings";
 
 export const dynamic = "force-dynamic"
 
@@ -10,7 +10,7 @@ export async function GET(req: Request) {
         let params = new URL(req.url).searchParams;
         
         let type_ = params.get("type_") || "All";
-        let limit = params.get("limit") || 10;
+        let limit = params.get("limit") || DEFAULT_POST_LIMIT;
         let page = params.get("page") || 1;
         let sort = params.get("sort") || "Active";
         let community_id = params.get("community_id") || undefined;
@@ -25,7 +25,6 @@ export async function GET(req: Request) {
             type_: type_ as unknown as ListingType,
             sort: sort as unknown as SortType,
             page: page as unknown as number, 
-            limit: limit as unknown as number, 
             community_id: community_id as unknown as CommunityId,
             community_name: community_name as unknown as string,
             saved_only: saved_only as unknown as boolean,

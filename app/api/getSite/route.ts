@@ -1,3 +1,4 @@
+import { DEFAULT_INSTANCE } from "@/constants/settings";
 import { LemmyHttp} from "lemmy-js-client"
 
 export const dynamic = "force-dynamic"
@@ -13,7 +14,7 @@ export async function GET(req: Request) {
 
         if(!auth) throw new Error("auth is required");
 
-        let client: LemmyHttp = new LemmyHttp(baseUrl ? `https://${baseUrl}` : "https://lemmy.ml");
+        let client: LemmyHttp = new LemmyHttp(baseUrl ? `https://${baseUrl}` : DEFAULT_INSTANCE);
 
         let site = await client.getSite({ 
             auth: auth as unknown as string, 

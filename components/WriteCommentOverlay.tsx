@@ -13,6 +13,8 @@ import Username from "@/components/User/Username";
 import { useSession } from "@/hooks/auth";
 
 import styles from "@/styles/ui/WriteCommentOverlay.module.css"
+import Image from "next/image";
+import { DEFAULT_AVATAR } from "@/constants/settings";
 
 
 export default function WriteCommentOverlay({ 
@@ -32,7 +34,7 @@ export default function WriteCommentOverlay({
 
         setLoading(true);
 
-        if(!session.jwt) return;
+        if(!session.currentAccount) return;
         if(!post) return;
         if(!allComments) return;
         if(replyCommentText.length < 1) return alert("Comment cannot be empty");
@@ -41,7 +43,7 @@ export default function WriteCommentOverlay({
             content: replyCommentText,
             post_id: post?.post_view.post?.id,
             parent_id: comment?.comment?.id,
-            auth: session.jwt
+            auth: session.currentAccount.jwt
 
         });
 
@@ -89,7 +91,7 @@ export default function WriteCommentOverlay({
             <div className="flex flex-col overflow-y-auto mb-4">
             <div className="flex flex-row items-center">
                 <div className="flex flex-row items-center p-4 gap-2">
-                    <img src={post?.community_view?.community?.icon} alt="" className="h-10 w-10 rounded-full" />
+                    <Image height={40} width={40} src={post?.community_view?.community?.icon || DEFAULT_AVATAR} alt="" className="h-10 w-10 rounded-full" />
                     
                     {post?.post_view?.creator && 
                     <div className=" h-full">
@@ -101,7 +103,7 @@ export default function WriteCommentOverlay({
                 </div>
 
                 <div className="p-2">
-                   {(post?.post_view?.post?.thumbnail_url || post?.post_view?.post?.url) && <img src={post?.post_view.post?.thumbnail_url || post?.post_view.post?.url} className="rounded-lg w-20 h-20 object-contain"  alt="" />}
+                   {(post?.post_view?.post?.thumbnail_url || post?.post_view?.post?.url) && <Image height={80} width={80} src={post?.post_view.post?.thumbnail_url || post?.post_view.post?.url || ""} className="rounded-lg w-20 h-20 object-contain"  alt="" />}
                 </div>
             </div>
             <div className=" h-12 p-4"> {post?.post_view?.post?.body && <RenderMarkdown>{post?.post_view.post?.body}</RenderMarkdown>}</div>

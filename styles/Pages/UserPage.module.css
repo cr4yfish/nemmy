@@ -28,7 +28,14 @@
 }
 
 .userAvatar {
-    @apply overflow-hidden rounded-full h-20 w-20;
+    @apply h-20 w-20 relative;
+}
+
+.userAvatar img {
+    max-width: unset !important;
+    width: 80px; height: 80px;
+    object-fit: cover;
+    border-radius: 50%;
 }
 
 .banner img {

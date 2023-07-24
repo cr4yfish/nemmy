@@ -1,12 +1,14 @@
 // Server component
- 
-import React, { FormEvent, useEffect, useRef, useState } from "react";
+
 import { LemmyHttp, PostId } from "lemmy-js-client";
+import { cookies } from "next/dist/client/components/headers";
 
 import { DEFAULT_INSTANCE } from "@/constants/settings";
 
+import { getCurrentAccountServerSide } from "@/utils/authFunctions";
+
 import PostPage from "@/components/PageComponents/PostPage";
-import { cookies } from "next/dist/client/components/headers";
+
 
 async function getPostData (postId: string, jwt?: string, instance?: string) {
 
@@ -33,20 +35,17 @@ async function getPostData (postId: string, jwt?: string, instance?: string) {
 
 export default async function Post({ params: { slug } } : { params: { slug: string } }) {
     const cookieStore = cookies();
-    const jwt = cookieStore.get("jwt")?.value, instance = cookieStore.get("instance")?.value;
+    const currentAccount = getCurrentAccountServerSide(cookieStore);
 
-    const postData = await getPostData(slug, jwt, instance);
+    const postData = await getPostData(slug, currentAccount?.jwt, currentAccount?.instance);
     
     return (
         <>
-
         <PostPage 
             data={postData}
-            instance={instance}
-            jwt={jwt}
+            instance={currentAccount?.instance}
+            jwt={currentAccount?.jwt}
         />
-        
-
         </>
     )
 }

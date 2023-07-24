@@ -1,3 +1,4 @@
+"use client"
 import { useState, useRef, FormEvent, useEffect } from "react"
 import { ClipLoader, BounceLoader } from "react-spinners"
 import { CommentView, GetCommentsResponse, GetPostResponse } from "lemmy-js-client"
@@ -95,14 +96,14 @@ export default function Comments({
         if(session?.pendingAuth) return;
         if(!postData?.post_view?.post?.id) return;
 
+        console.log("loading more comments")
         setCommentsLoading(true);
+        
         const data = await getComments({
             post_id: postData.post_view.post.id,
             sort:"Hot",
-            limit:100,
-            max_depth: 8,
-            page:currentCommentsPage,
-            auth: session.jwt
+            page: currentCommentsPage,
+            auth: session.currentAccount?.jwt
         }, instance || DEFAULT_INSTANCE);
         if(data) { 
             setCommentsLoading(false)

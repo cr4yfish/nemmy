@@ -13,12 +13,13 @@ import RenderMarkdown from "@/components/ui/RenderMarkdown";
 import { DEFAULT_AVATAR } from "@/constants/settings";
 
 import styles from "@/styles/Pages/NewPost.module.css";
+import Image from "next/image";
 
 
 function CommunityCard({ community} : { community: CommunityView }) {
     return (
         <div className="flex flex-row gap-2 justify-start items-center h-full w-full transition-all duration-100 dark:hover:translate-y-1 max-md:hover:translate-y-0">
-            <img src={community?.community?.icon || DEFAULT_AVATAR} alt="" className="w-8 h-8 rounded-full overflow-hidden object-contain" />
+            <Image height={32} width={32} src={community?.community?.icon || DEFAULT_AVATAR} alt="" className="w-8 h-8 rounded-full overflow-hidden object-contain" />
             <div className="flex flex-col items-start h-full justify-center">
                 <span className="font-bold">c/{community?.community?.name}</span>
                 <span className="text-neutral-400 text-xs">{community?.counts?.subscribers} Subscribers</span>
@@ -67,26 +68,27 @@ export default function New() {
 
     // Check if user is logged in
     useEffect(() => {
-        if(session.jwt.length == 0 && !session.pendingAuth) {
+        if(session.currentAccount && !session.pendingAuth) {
             router.push("/auth");
         };
     }, [session])
 
     useEffect(() => {
-        if(navbar?.hidden) return;
+        if(navbar!.hidden) return;
 
         navbar && setNavbar({
             ...navbar,
             hidden: true
         })
-    }, [navbar])
+    }, [navbar, setNavbar])
 
     useEffect(() => {
-        listCommunities({ limit: 50, sort: "Hot", type_: "Subscribed", auth: session?.jwt, page: 0 }).then((res) => {
+        if(!session?.currentAccount) return;
+        listCommunities({ limit: 50, sort: "Hot", type_: "Subscribed", auth: session.currentAccount.jwt, page: 0 }).then((res) => {
             if(typeof res === "boolean") return console.error("Failed to fetch communities");
             setCommunities(res.communities)
         })
-    }, [session.jwt])
+    }, [session.currentAccount])
 
     // Adjust textarea height to content on user input
     useEffect(() => {
@@ -125,6 +127,8 @@ export default function New() {
 
     const handleStep2 = async (e: FormEvent) => {
         handleSubmit(e);
+        if(!session.currentAccount) return alert("You must be logged in to post");
+        
         const res = await createPost({
             name: form.name,
             community_id: form.community_id,
@@ -132,7 +136,7 @@ export default function New() {
             body: form.body,
             nsfw: form.nsfw,
             language_id: form.language_id,
-            auth: session.jwt
+            auth: session.currentAccount.jwt
         });
         
         if(typeof res == "boolean") return alert("Failed to create post");

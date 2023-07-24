@@ -15,6 +15,7 @@ import { DEFAULT_AVATAR } from "@/constants/settings";
 
 import styles from "@/styles/Pages/CommunityPage.module.css";
 import { ClipLoader } from "react-spinners";
+import Image from "next/image";
 
 export default function Community() {
     const { navbar, setNavbar } = useNavbar();
@@ -53,8 +54,8 @@ export default function Community() {
     const subscribe = async () => {
         if(subscribeLoading) return;
         setSubscribeLoading(true);
-        if(!session || !communityData.community_view.community.id) return;
-        const res = await subscribeToCommunity({ community_id: communityData.community_view.community.id, auth: session.jwt, follow: true });
+        if(!session || !session.currentAccount || !communityData.community_view.community.id) return;
+        const res = await subscribeToCommunity({ community_id: communityData.community_view.community.id, auth: session.currentAccount.jwt, follow: true });
         if(!res) {
             console.error("Could not follow community");
         } else {
@@ -66,10 +67,10 @@ export default function Community() {
     return (
         <>
         <div className={`${styles.bannerOverlay} mt-20`}></div>
-        <img src={communityData?.community_view?.community?.banner} alt="" className={`${styles.banner}`} />
+        <Image height={200} width={500} src={communityData?.community_view?.community?.banner || ""} alt="" className={`${styles.banner}`} />
         <div className={`${styles.headerWrapper}`}>
             <div className="flex flex-row gap-4 p-6 max-w-xl max-md:w-full items-center flex-wrap">
-                <img className={`${styles.icon} ${!communityData?.community_view?.community?.icon && "object-contain p-2"} `} src={communityData?.community_view?.community?.icon || DEFAULT_AVATAR} alt=""  />
+                <Image height={40} width={40} className={`${styles.icon} ${!communityData?.community_view?.community?.icon && "object-contain p-2"} `} src={communityData?.community_view?.community?.icon || DEFAULT_AVATAR} alt=""  />
                 <div className="flex flex-col h-full max-w-xl">
                     <h1 className=" text-3xl font-bold">c/{pathname}</h1>
                     <div className="flex flex-row flex-wrap gap-2 pt-2">

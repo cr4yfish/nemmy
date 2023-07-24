@@ -6,6 +6,8 @@ import RenderMarkdown from "@/components/ui/RenderMarkdown";
 import { DEFAULT_INSTANCE, DEFAULT_AVATAR } from "@/constants/settings";
 import RenderError from "@/components/ui/RenderError";
 
+import { getCurrentAccountServerSide } from "@/utils/authFunctions";
+
 import styles from "@/styles/chat.module.css";
 
 // Returns all messages from a specific user, sorted by newest message
@@ -54,8 +56,8 @@ function RenderDate({ date } : { date: string }) {
 export default async function UserChat({ params: { person } } : { params: { person: string } }) {
     try {
         const cookiesStore = cookies();
-        const auth = cookiesStore.get("jwt")?.value, instance = cookiesStore.get("instance")?.value;
-        if(!auth || !instance) return (
+        const currentAccount = getCurrentAccountServerSide(cookiesStore);
+        if(!currentAccount) return (
             <>
             <div className="flex flex-col gap-1 justify-center items-center w-full">
                 <h1>Not logged in</h1>
@@ -64,7 +66,7 @@ export default async function UserChat({ params: { person } } : { params: { pers
             </>
         );
 
-        const messages = await getMessages({ auth: auth, instance: instance, creator: person });
+        const messages = await getMessages({ auth: currentAccount.jwt, instance: currentAccount.instance, creator: person });
 
         let currentDate = getDayMonth(messages[0].private_message.published);
 
@@ -89,9 +91,9 @@ export default async function UserChat({ params: { person } } : { params: { pers
                 })}
 
             </div>
-            <div className="fixed bottom-0 left-0 h-20 w-full bg-neutral-50 border-t border-neutral-400 flex items-center">
-                <input className="bg-transparent w-full h-full p-4" type="text" name="" id="" />
-                <button className=" h-full bg-neutral-50 flex items-center z-10 w-10"><span className="material-symbols-outlined absolute right-5">send</span></button>
+            <div className="fixed bottom-0 left-0 h-20 w-full bg-neutral-50 dark:bg-neutral-800 border-t border-neutral-400 flex items-center">
+                <input className="bg-transparent w-full h-full p-4 outline-none" type="text" name="" id="" />
+                <button className=" h-full bg-neutral-50 dark:bg-neutral-800 flex items-center z-10 w-10"><span className="material-symbols-outlined absolute right-5">send</span></button>
             </div>
             </>
         )

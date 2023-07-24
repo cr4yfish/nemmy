@@ -1,11 +1,9 @@
 
 
 import { CommentReplyView } from "lemmy-js-client";
-import { useEffect } from "react";
 
 import Username from "@/components/User/Username";
 import RenderMarkdown from "@/components/ui/RenderMarkdown";
-import Link from "next/link";
 
 
 export default function InboxCard({ reply } : { reply: CommentReplyView }) {

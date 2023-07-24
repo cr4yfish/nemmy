@@ -12,6 +12,7 @@
 .userimage {
     @apply rounded-full w-5 h-5;
     overflow: hidden;
+    object-fit: cover;
 }
 
 .hovercatcher {

@@ -249,13 +249,13 @@
 }
 
 .userProfiles {
-    @apply flex flex-row gap-4 overflow-x-scroll overflow-y-hidden w-fit h-fit pb-3;
+    @apply flex flex-row gap-4 overflow-x-scroll overflow-y-hidden min-w-max h-fit pb-3;
     user-select: none;
 }
 
 .userProfile {
     @apply flex flex-col gap-2 items-start justify-between relative
-    w-40 h-52 rounded-lg p-4 bg-transparent
+    w-40 h-52 rounded-lg p-4 bg-transparent overflow-hidden
     border-2 
     border-fuchsia-300 dark:border-fuchsia-600
     

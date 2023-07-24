@@ -3,6 +3,8 @@ import { cookies } from "next/dist/client/components/headers";
 
 import { DEFAULT_INSTANCE } from "@/constants/settings";
 
+import { getCurrentAccountServerSide } from "@/utils/authFunctions";
+
 function Section({ children, title }: { children: any, title: string }) {
 
     return (
@@ -26,9 +28,7 @@ async function getUserData (username: string, jwt?: string, instance?: string): 
 
 export default async function Settings() {
     const cookieStore = cookies();
-    const jwt = cookieStore.get("jwt")?.value, instance = cookieStore.get("instance")?.value;
-
-    const userData = await getUserData("username", jwt, instance);
+    const currentAccount = getCurrentAccountServerSide(cookieStore);
 
     return (
         <>

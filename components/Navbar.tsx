@@ -4,7 +4,8 @@ import { FormEvent, useEffect, useState, useRef } from "react";
 import { CommunityView, ListingType, PostView, Search, SearchResponse, SortType } from "lemmy-js-client";
 import Link from "next/link";
 import { useRouter } from "next/navigation"; 
-import { ClipLoader } from "react-spinners";
+import Image from "next/image";
+
 import { DEFAULT_INSTANCE, DEFAULT_AVATAR} from "@/constants/settings";
 
 import { useSession } from "@/hooks/auth";
@@ -13,11 +14,12 @@ import { useNavbar, NavbarState } from "@/hooks/navbar";
 import { handleLogout } from "@/utils/authFunctions";
 import { getTrendingCommunities, getTrendingTopics, getUnreadCount } from "@/utils/lemmy";
 
-import Username from "@/components/User/Username";
-import RenderMarkdown from "@/components//ui/RenderMarkdown";
-import Input from "@/components/ui/Input";
+import UserMenu from "./Navbar/UserMenu";
+import LeftSideMenu from "./Navbar/LeftSideMenu";
+import SearchOverlay from "./Navbar/SearchOverlay";
 
 import styles from "@/styles/Navbar.module.css";
+
 const delay = (ms: number) => new Promise(res => setTimeout(res, ms));
 
 function SortButton({option, label, navbar, setNavbar, icon=undefined, replaceIcon=undefined, setSortOptions, sortOptions } : { option: SortType, label: string, navbar?: NavbarState, setNavbar?: any, icon?: string, replaceIcon?: React.ReactNode, setSortOptions: Function, sortOptions: boolean }) {
@@ -51,7 +53,7 @@ function FilterButton({ label, option, icon, navbar, setNavbar, setFilterClicked
     
     const handleFilterOverlayClose = async () => {
         if(option == "Subscribed") {
-            if(!session.user.my_user?.local_user_view.person.id) {
+            if(!session?.currentAccount?.user?.person.id) {
                 navbar && setNavbar({...navbar, overlayActive: false })
                 setFilterClicked(false);
                 router.push("/auth");
@@ -94,37 +96,6 @@ async function search({ searchParams } : { searchParams: Search }) {
     const data = await response.json();
     return data;
 }
-
-function TrendingCommunity({ community, closeSearch } : { community: CommunityView, closeSearch: Function }) {
-    return (
-    <Link href={`/c/${community.community.name}`} onClick={() => closeSearch()} className=" bg-neutral-50 dark:bg-neutral-950 p-4 flex flex-row justify-start items-center gap-2 rounded-xl border border-fuchsia-500 dark:border-fuchsia-800">
-        <img className="h-12 w-12 rounded-full" src={community.community.icon} alt="" />
-        <div className="flex flex-col gap-1">
-            <span className="font-bold">{community.community.name}</span>
-            <div className="flex flex-row gap-2 h-fit">
-                <div className="snack"><span className="material-symbols-outlined">communities</span>{community.counts.subscribers}</div>
-                <div className="snack"><span className="material-symbols-outlined">group</span>{community.counts.users_active_day} / Day</div>
-            </div>
-        </div>
-    </Link>
-)
-}
-
-function TrendingTopic({ post, closeSearch } : { post: PostView, closeSearch: Function }) {
-    return (
-        <Link href={`/post/${post.post.id}`} onClick={() => closeSearch()} className=" bg-neutral-50 dark:bg-neutral-950 p-4 flex flex-row justify-between rounded-xl border border-fuchsia-500 dark:border-fuchsia-800">
-            <div className="flex flex-row gap-1 w-9/12">
-                <span className="material-symbols-outlined" style={{ fontSize: "2rem" }}>chart_data</span>
-                <div className="flex flex-col">
-                    <span className="font-bold">{post?.post?.name}</span>
-                    <span className=" text-neutral-500 dark:text-neutral-300">c/{post?.community?.name}</span>
-                </div>
-            </div>
-            <img className="h-20 w-20 rounded-lg object-contain" src={post?.post?.thumbnail_url || post?.post?.url} alt="" />
-        </Link>
-    )
-}
-
 
 export default function Navbar() {
     const { session, setSession } = useSession();
@@ -182,13 +153,13 @@ export default function Navbar() {
     }, [searchOverlay])
 
     useEffect(() => {
-        if(session.pendingAuth) return;
-        getUnreadCount({ auth: session.jwt }, session.defaultInstance).then((data) => {
+        if(session.pendingAuth || !session?.currentAccount) return;
+        getUnreadCount({ auth: session.currentAccount.jwt }, session.currentAccount?.instance).then((data) => {
             if(!data) return;
             const total = data.replies + data.mentions;
             setUnreadCount(total);
         })
-    }, [session.pendingAuth])
+    }, [session.pendingAuth, session.currentAccount])
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
@@ -197,7 +168,7 @@ export default function Navbar() {
         const resp = await search({ searchParams: { 
             q: currentSearch, community_id: undefined, 
             community_name: undefined, creator_id: undefined, type_: "Posts", sort: undefined, 
-            listing_type: undefined, page: undefined, limit: undefined, auth: session?.jwt || undefined 
+            listing_type: undefined, page: undefined, limit: undefined, auth: session?.currentAccount?.jwt || undefined 
         }})
         setSearchLoading(false)
         setSearchResults(resp);
@@ -309,9 +280,9 @@ export default function Navbar() {
                 
                 { navbar?.showUser &&
                 <>
-                 {session.jwt.length > 0 ? 
+                 {session.currentAccount ? 
                     <button onClick={() => { handleFilterOverlayClose(); handleUserMenuOpen(); setNavbar({ ...navbar, overlayActive: true }) }}  className={`${styles.userWrapper} cursor-pointer select-none`}>
-                        <div className={styles.userImage}><img src={session.user.my_user?.local_user_view.person?.avatar || DEFAULT_AVATAR } alt={"Account"} /></div>
+                        <div className={styles.userImage}><Image width={40} height={40} src={session.currentAccount.user?.person?.avatar || DEFAULT_AVATAR } alt={"Account"} /></div>
                     </button>
                 :
                     <Link href="/auth">
@@ -328,208 +299,25 @@ export default function Navbar() {
             
         </nav>
 
-        {/* Search Overlay */}
-        <div id="search" className={`${styles.searchOverlay} ${searchOverlay && styles.searchActive}`}>
-                <div className={`${styles.searchInputWrapper}`}>
-                    <button onClick={() => handleCloseSearchOverlay()} ><span className="material-symbols-outlined text-neutral-400">arrow_back</span></button>
-                    <form onSubmit={handleSubmit} className="flex flex-row items-center w-full">
-                        <div onClick={() => searchInputRef?.current?.focus()} className={`${styles.searchInput}`}>
-                            <div className="flex flex-row gap-2 items-center w-full">
-                                <span className="material-symbols-outlined text-neutral-400 select-none">search</span>
-                                <input 
-                                    value={currentSearch} onChange={(e) => setCurrentSearch(e.currentTarget.value)} 
-                                    ref={searchInputRef}
-                                    type="text" placeholder="Search" className="w-full h-full bg-transparent appearance-none outline-none font-bold" />
-                            </div>
-                           
-                            { searchLoading ?
-                            <ClipLoader color={"#e6b0fa"} size={20} />
-                            :
-                            <button type="button" className="flex items-center justify-center" onClick={() => setCurrentSearch("")}><span className="material-symbols-outlined filled text-neutral-400 select-none">cancel</span></button>
-                            }
-                        </div>
-                        
-                    </form>
-                </div>
+        <SearchOverlay
+            active={searchOverlay} handleCloseSearchOverlay={handleCloseSearchOverlay} 
+            searchInputRef={searchInputRef} handleSubmit={handleSubmit} 
+            searchLoading={searchLoading} currentSearch={currentSearch} 
+            setCurrentSearch={setCurrentSearch} isSearching={isSearching} 
+            trendingTopics={trendingTopics} trendingCommunities={trendingCommunities} 
+            searchResults={searchResults}
+        />
 
-                {!isSearching &&
-                <div className={`${styles.searchOverlayTrending}`}>
+        <LeftSideMenu
+            menu={menu} handleMenuClose={handleMenuClose}
+            setCommunitySearch={setCommunitySearch} communitySearch={communitySearch}
+        />
 
-                    <div className="flex flex-col gap-2 w-full">
-                        <span className="font-bold text-xl">Popular</span>
-
-                        {trendingTopics?.map((post, index) => (
-                            <TrendingTopic key={index} post={post} closeSearch={handleCloseSearchOverlay} />
-                        ))}
-
-                    </div>
-
-                    <div className="flex flex-col gap-2">
-                        <span className="font-bold text-xl">Trending communities</span>
-
-                        {trendingCommunities?.map((community, index) => (
-                            <TrendingCommunity key={index} community={community} closeSearch={handleCloseSearchOverlay}  />
-                        ))}
-
-                    </div>
-
-                </div>
-                }
-
-                { isSearching &&
-                <div className="flex flex-col gap-0 w-full overflow-scroll h-full relative">
-                    {searchResults.posts?.map((result, index) => (
-                        <Link href={`/post/${result?.post?.id}`} target="_blank" key={index} className="flex flex-row p-4 items-center justify-between bg-neutral-50 dark:bg-neutral-950 border-b border-neutral-700">
-                            <div className="flex flex-col gap-3">
-
-                                <div className="flex flex-row items-center gap-2 ">
-                                    <img className="h-12 w-12 rounded-full" src={result?.community?.icon} alt="" />
-                                    <div className="flex flex-col gap-1">
-                                        <span>c/{result?.community?.name}</span>
-                                        <div className="flex flex-row">
-                                            {result.creator && <Username user={result.creator} baseUrl="" />}
-                                            <div className="dividerDot"></div>
-                                        </div>
-                                        
-                                    </div>
-                                </div>
-
-                                <div className="flex flex-col gap-1">
-                                    <span className="font-bold">{result?.post?.name}</span>
-                                   {!result?.post?.thumbnail_url && <span className=" text-neutral-500 dark:text-neutral-300 line-clamp-2"><RenderMarkdown>{result?.post?.body}</RenderMarkdown></span>}
-                                </div>
-
-                                <div className="flex flex-row gap-4 text-neutral-500 dark:text-neutral-300">
-                                    <div className="flex flex-row gap-2 items-center ">
-                                        <div className="flex items-center gap-1 ">
-                                            <span className="material-symbols-outlined">thumb_up</span>
-                                            <span className="">{result?.counts.upvotes}</span>
-                                        </div>
-                                        <div className="flex items-center gap-1">
-                                            <span className="material-symbols-outlined">thumb_down</span>
-                                            <span className="">{result?.counts?.downvotes}</span>
-                                        </div>
-                                    </div>
-
-                                    <div className="flex items-center gap-1">
-                                        <span className="material-symbols-outlined">chat_bubble</span>
-                                        <span className="">{result?.counts?.comments}</span>
-                                    </div>
-                                    
-                                </div>
-
-                            </div>
-                            {result?.post?.thumbnail_url && <img className="w-24 h-24 rounded-lg" src={result.post.thumbnail_url} alt="" /> }
-                        </Link>
-                    ))}
-                </div>
-                }
-
-        </div>
-
-        {/* Mobile Menu Left Side */}
-        { 
-        <div id="menu" className={`${styles.menu} ${menu && styles.menuActive} overflow-y-auto`}>
-            <div className={`flex flex-col h-fit gap-6 relative `}>
-                <button className={`${styles.currentInstance}`} onClick={() => alert("Soon you'll be able to see Instance Details here.")} >
-                    <div className="flex flex-col">
-                        <span className=" uppercase font-bold text-xs dark:text-fuchsia-300">Current Instance</span>
-                        <span className="font-bold ">{DEFAULT_INSTANCE}</span>
-                    </div>
-                    
-                    <span className="material-symbols-outlined">expand_content</span>
-                </button>
-
-                <div className={`${styles.menuLinks}`}>
-                    <Link onClick={() => handleMenuClose()} href={"/"}><button><span className="material-symbols-outlined">home</span>Home</button></Link>
-                </div>
-
-            </div>
-            <div className={`flex flex-col gap-2`}>
-                <div className="flex items-center gap-1 justify-between">
-                    <span className="font-bold">Communities</span>
-                    <span className="material-symbols-outlined">arrow_drop_down</span>
-                </div>
-               
-
-                <div className="flex">
-                    <Input 
-                    onChange={(e) => setCommunitySearch(e.currentTarget.value)}
-                    type="text" label="" name="searchCommunities" placeholder="Search Communities"
-                    
-                    />
-                </div>
-
-                <div className={`flex flex-col gap-4 overflow-y-auto relative`}>
-                    {session?.user?.my_user?.follows?.filter((c) => c.community.name.includes(communitySearch)).map((community, index) => (
-                        <div key={index}>
-                            <Link href={"/c/Nemmy"} onClick={() => handleMenuClose()} className={`${styles.menuCommunity}`}>
-                                <img className="w-10 h-10 overflow-hidden rounded-full" src={community?.community?.icon || "https://i.imgur.com/OzAB6Y0.png"} alt="" />
-                                <span className=" capitalize ">{community.community.name}</span>
-                            </Link>                 
-                        </div>
-                    ))}
-                </div>
-            </div>
-        </div>
-        }
-
-        {/* User Menu Right Side */}
-        { 
-        <div id="usermenu" className={`${styles.userMenu} ${userMenu && styles.userMenuActive}`}>
-            <div className={`${styles.userMenuTop}`}>
-
-                <div className={`${styles.userProfiles}`}>
-
-                    <div className={`${styles.userProfile}`}>
-                        <img className={`${styles.userProfileBanner}`} src={session!.user.my_user?.local_user_view.person.banner} alt="" />
-                        <div className={`${styles.userProfileBannerOverlay}`}></div>
-                        <img className={`${styles.userProfileAvatar}`} src={session!.user.my_user?.local_user_view.person.avatar} alt="" />
-                        <div className={`${styles.userProfileText}`}>
-                            <span className={`${styles.userProfileUsername}`}>u/{session!.user.my_user?.local_user_view.person.name}</span>
-                            <span className={`${styles.userProfileDisplayName}`}>{session!.user.my_user?.local_user_view.person.display_name}</span>
-                        </div>
-                    </div>
-
-                    <div className="flex justify-center items-center w-12 h-52 px-6">
-                        <button onClick={() => alert("Multiple Accounts are work in progress :)")}><span className="material-symbols-outlined">add</span></button>
-                    </div>
-                </div>
-
-                <div className={`${styles.userMenuInteractionsTop}`}>
-                    <Link onClick={() => handleUserMenuClose()} href={"/inbox"}>
-                        <button className="relative">
-                            <div className="relative h-full flex items-center justify-center w-fit">
-                                {unreadCount > 0 && 
-                                    <span 
-                                        className=" m-2 absolute left-1/3 top-0
-                                        bg-red-400 text-red-950 rounded-full px-1 text-xs font-bold
-                                        ">
-                                        {unreadCount}
-                                    </span>
-                                }
-                                <span className="material-symbols-outlined">notifications</span>
-                            </div>
-                            Notifications
-                        </button>
-                    </Link>
-                    <Link onClick={() => handleUserMenuClose()} href={`/u/${session?.user.my_user?.local_user_view?.person?.name}`}><button><span className="material-symbols-outlined">account_circle</span>My Profile</button></Link>
-                    <Link onClick={() => handleUserMenuClose()} href="/post/new"><button><span className="material-symbols-outlined">add_circle_outline</span>Create a Post</button></Link>
-                    <button className="text-neutral-400 dark:text-neutral-500 cursor-not-allowed"><span className="material-symbols-outlined">group_add</span>Create a Community</button>
-                    <button className="text-neutral-400 dark:text-neutral-500 cursor-not-allowed"><span className="material-symbols-outlined">bookmarks</span>Bookmarked</button>
-                    <Link onClick={() => handleCloseSearchOverlay()} href={"/chat"}><button><span className="material-symbols-outlined">chat</span>Chat</button></Link>
-                </div>
-
-
-            </div>
-
-            <div className={`${styles.userMenuInteractionsBottom}`}>
-                <button onClick={() => handleUserMenuClose()}><span className="material-symbols-outlined">close</span>Close</button>
-                <Link onClick={() => handleUserMenuClose()} href={"/settings"}><button><span className="material-symbols-outlined">settings</span>Settings</button></Link>
-                <button onClick={() => { handleUserMenuClose(); handleLogout({ session: session, setSession: setSession, router: router }) }} ><span className="material-symbols-outlined">logout</span>Log out</button>
-            </div>
-        </div>
-        }
+        <UserMenu
+            active={userMenu} handleUserMenuClose={handleUserMenuClose}
+            handleLogout={handleLogout} unreadCount={unreadCount}
+            handleCloseSearchOverlay={handleCloseSearchOverlay} setSession={setSession} router={router}
+        />
 
         {/* Filter Options */}
         <div className={`${styles.filterOptions} ${filterClicked && styles.filterActive}`}>

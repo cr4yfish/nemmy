@@ -1,10 +1,13 @@
+"use client"
 import { Person } from "lemmy-js-client";
-import { DEFAULT_INSTANCE, DEFAULT_AVATAR } from "@/constants/settings";
-
-import styles from "../../styles/User/SmallUser.module.css"
+import Image from "next/image";
 import { CSSProperties, useEffect, useState } from "react";
 import Link from "next/link";
 import { NumericFormat } from "react-number-format";
+
+import { DEFAULT_INSTANCE, DEFAULT_AVATAR } from "@/constants/settings";
+
+import styles from "../../styles/User/SmallUser.module.css"
 
 export default function SmallUser({ user, userHover, setUserHover, style, opensToTop=false } : { user: Person, baseUrl: string, userHover: boolean, setUserHover: Function, style?: CSSProperties, opensToTop?: boolean }) {
     const [userData, setUserData] = useState<Person>({} as Person);
@@ -39,7 +42,7 @@ export default function SmallUser({ user, userHover, setUserHover, style, opensT
     }
 
     useEffect(() => {
-        getUserData();
+        //getUserData();
     }, [user])
 
     return (
@@ -51,10 +54,12 @@ export default function SmallUser({ user, userHover, setUserHover, style, opensT
                 className={`${styles.wrapper} ${opensToTop ? "-translate-y-full" : "translate-y-1/4"} ${userHover && styles.active} ${userHover && opensToTop && styles.activeToTop}`}>
                 
                 <div className={`${styles.userImage}`}>
-                    <img 
+                    <Image 
                         className={`${styles.avatar} ${user.avatar ? "" : "object-contain p-1"}`} 
                         src={user.avatar || DEFAULT_AVATAR} 
                         alt="" 
+                        width={48}
+                        height={48}
                     />
                 </div>
             

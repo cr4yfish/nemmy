@@ -1,3 +1,4 @@
+"use client"
 import { CommentView, GetCommentsResponse } from "lemmy-js-client"
 import React, { useState, useEffect, Dispatch, SetStateAction, useRef } from "react"
 import RenderMarkdown from "./ui/RenderMarkdown"
@@ -49,10 +50,10 @@ export default function Comment({ commentView, allComments, depth=0, setReplyCom
     // Load children from api
     useEffect(() => {
         if(!childrenError) return;
-        if(session.pendingAuth) return;
-        
         (async () => {
-            const data = await fetch(`/api/getComments?post_id=${commentView.comment.post_id}&parent_id=${commentView.comment.id}&sort=Top&limit=100&page=0&max_depth=1&auth=${session.jwt}
+            if(session.pendingAuth) return;
+            console.log("Loading children")
+            const data = await fetch(`/api/getComments?post_id=${commentView.comment.post_id}&parent_id=${commentView.comment.id}&sort=Top&page=1&auth=${session.currentAccount?.jwt}
             `);
             const json = (await data.json());
             if(json.error) {
@@ -74,12 +75,12 @@ export default function Comment({ commentView, allComments, depth=0, setReplyCom
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        if(!session.jwt || session.pendingAuth) return;
+        if(!session.currentAccount || session.pendingAuth) return;
         if(!replyText) return;
         if(!commentView?.comment) return
 
         const response = await sendComment({
-            auth: session.jwt,
+            auth: session.currentAccount.jwt,
             content: replyText,
             parent_id: commentView.comment.id,
             post_id: commentView.comment.post_id,

@@ -1,18 +1,23 @@
 "use client"
 
-import { getCookies, setCookie } from "cookies-next";
-import { GetPersonDetailsResponse, GetSiteResponse, LemmyHttp, PersonView } from "lemmy-js-client"
-import { FormEvent, useState, useRef, useEffect } from "react";
-import { useSession } from "@/hooks/auth";
-import Logo from "@/components/Logo";
+import { GetSiteResponse, PersonView } from "lemmy-js-client"
+import { FormEvent, useState, useEffect } from "react";
 import { useRouter } from "next/navigation"; 
 import Link from "next/link";
-import { CircleLoader, ClipLoader } from "react-spinners";
-import { search } from "@/utils/lemmy";
+import { ClipLoader } from "react-spinners";
+
+import { useSession } from "@/hooks/auth";
+
+import Logo from "@/components/Logo";
+
+import { search, getUserDetails } from "@/utils/lemmy";
+import { saveAccount, getAccounts, handleLogin, Account, AccountWithSiteResponse } from "@/utils/authFunctions";
+
 import { DEFAULT_AVATAR } from "@/constants/settings";
 
 import styles from "@/styles/Pages/LoginPage.module.css";
-import { setCookies } from "@/utils/authFunctions";
+import Image from "next/image";
+
 
 export default function Login() {
     const { session, setSession } = useSession();
@@ -32,10 +37,12 @@ export default function Login() {
 
     useEffect(() => {
         if(!selectedUser?.person.name) return;
-        setForm({
-            ...form,
-            username: selectedUser.person.name,
-            instance: new URL(selectedUser.person.actor_id).hostname
+        setForm(prevState => {
+            return {
+                ...prevState,
+                username: selectedUser.person.name,
+                instance: new URL(selectedUser.person.actor_id).hostname
+            }
         })
     }, [selectedUser])
 
@@ -50,15 +57,14 @@ export default function Login() {
             let username: string = usernameEle.value;
             let password: string = passwordEle.value;
 
-            // first check if jwt in session storage
-            const sessionJwt = sessionStorage.getItem("jwt");
-            const sessionInstance = sessionStorage.getItem("instance");
-            const cookies = getCookies();
-            const cookiesjwt = cookies.jwt;
-            const cookiesinstance = cookies.instance;
+            const accounts = getAccounts();
+            // check if there's an account with the same username and instance
+            const hasAccount = accounts.find(account => account.username == username && account.instance == form.instance);
 
-            if (sessionJwt || cookiesjwt && (sessionInstance || cookiesinstance)) {
+            // if there's any pair of jwt and session, redirect to home since user is already logged in
+            if (hasAccount) {
                 setLoading(false);
+                alert("You already have this account saved");
                 router.push("/");
                 return;
             }
@@ -72,20 +78,29 @@ export default function Login() {
                 body: JSON.stringify({ username, password, instance: form.instance })
             }).then(res => res.json());
             
-            setCookies(jwt.jwt, form.instance);
-            
             // get user details
             const user = await getUserDetails(jwt.jwt, form.instance);
 
+            if(!user.my_user) throw new Error("User not found");
 
-            setSession({ ...session, jwt: jwt.jwt, user: user })
-            
-            // redirect to home
-            setLoading(false);
-            router.push("/");
+            const accountWithSite: AccountWithSiteResponse = {
+                username: form.username,
+                instance: form.instance,
+                jwt: jwt.jwt,
+                user: user.my_user.local_user_view,
+                site: user,
+            }
+
+            await handleLogin({
+                accountWithSite: accountWithSite,
+                session: session,
+                setSession: setSession,
+                router: router,
+            });
     
         } catch (e: any) {
             setLoading(false);
+            setLoginError(true);
             console.error(e.message);
         }
     }
@@ -125,8 +140,8 @@ export default function Login() {
                         {users?.length > 0 && !selectedUser &&
                         <div className="absolute bg-neutral-100/75 dark:bg-neutral-900/90 backdrop-blur-3xl p-4 flex flex-col gap-4 rounded-lg left-0 translate-y-full z-50 w-full border border-neutral-300 dark:border-neutral-700" style={{ bottom: "-10%" }}>
                             {users.map((user, i) => (
-                                <div onClick={() => setSelectedUser(user)} key={i} className="flex flex-row gap-2 items-center">
-                                    <img src={user.person.avatar || DEFAULT_AVATAR} className="w-10 h-10 rounded-full overflow-hidden object-contain" alt="" />
+                                <div onClick={() => setSelectedUser(user)} key={i} className="flex flex-row gap-3 items-center cursor-pointer dark:pb-4 dark:border-b border-neutral-700">
+                                    <Image height={40} width={40} src={user.person.avatar || DEFAULT_AVATAR} className="w-10 h-10 rounded-full overflow-hidden object-contain" alt="" />
                                     <div className="flex flex-col">
                                         <span className="font-bold">{user.person.display_name || user.person.name}</span>
                                         <span className="text-xs dark:text-neutral-300">@{new URL(user.person.actor_id).hostname}</span>

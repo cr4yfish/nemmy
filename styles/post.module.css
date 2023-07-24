@@ -90,7 +90,7 @@
 .user {
     @apply 
     flex
-    flex-row items-center
+    flex-row items-center gap-1
     max-md:text-xs max-md:flex-row
     max-sm:flex-wrap
     dark:text-neutral-400 text-neutral-500
@@ -171,8 +171,8 @@
     position: relative;
     border-radius: 9px;
     overflow: hidden;
-    max-width: 100%;
-    height: auto;
+    width: auto;
+    min-height: max-content;
     object-fit: cover;
     justify-self: center;
     align-self: center;

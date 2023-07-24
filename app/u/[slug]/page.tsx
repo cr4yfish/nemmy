@@ -2,24 +2,25 @@
 
 import { usePathname } from "next/navigation"; 
 import { useEffect, useState } from "react";
-import { GetPersonDetailsResponse, GetSiteResponse, PostView } from "lemmy-js-client";
-import { useNavbar } from "@/hooks/navbar";
+import { GetPersonDetailsResponse, PostView } from "lemmy-js-client";
 import InfiniteScroll from "react-infinite-scroller";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
+import { NumericFormat } from "react-number-format";
+
+import { useNavbar } from "@/hooks/navbar";
+
 import Loader from "@/components/ui/Loader";
 import Post from "@/components/Post";
-import Button from "@/components/ui/Button";
-import { deleteCookie } from "cookies-next";
-import { useSession } from "@/hooks/auth";
-import { useRouter } from "next/navigation";
 import RenderMarkdown from "@/components/ui/RenderMarkdown";
-import { NumericFormat } from "react-number-format";
 
 import postListStyles from "@/styles/postList.module.css"
 import styles from "@/styles/Pages/UserPage.module.css";
 
+import { DEFAULT_AVATAR } from "@/constants/settings";
+
 export default function User() {
     const { navbar, setNavbar } = useNavbar();
-    const { session, setSession } = useSession();
 
     const [userData, setUserData] = useState<GetPersonDetailsResponse>({} as GetPersonDetailsResponse);
     const [userDataError, setUserDataError] = useState(true);
@@ -85,13 +86,13 @@ export default function User() {
     return (
     <>
         <div className={`${styles.bannerOverlay} `}></div>
-        <img src={userData?.person_view?.person?.banner} alt="" className={`${styles.banner}`} />
+        {userData?.person_view?.person?.banner && <Image height={200} width={500} src={userData.person_view.person.banner} alt="" className={`${styles.banner}`} />}
         <div className="flex min-h-screen flex-col items-center overflow-x-hidden mt-20">
             <div className={`${styles.userDetailsWrapper} `}>
                     
                 <div className={`${styles.userDetails}`}>
                     <div className={`${styles.userAvatar}`}>
-                        <img src={userData?.person_view?.person?.avatar} alt=""  />
+                        <Image height={80} width={80} src={userData?.person_view?.person?.avatar || DEFAULT_AVATAR} alt=""  />
                     </div>
                     <div className="flex flex-col gap-2">
                         <div className="flex flex-col gap-0">
@@ -170,7 +171,7 @@ export default function User() {
                         pageStart={1}
                         loadMore={async () => await handleLoadMore()}
                         hasMore={morePages}
-                        loader={<Loader />}
+                        loader={<Loader key={"loader"} />}
                         className={postListStyles.postList}
                         >
                         {posts.map((post: PostView, index: number) => {

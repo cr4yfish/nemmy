@@ -1,20 +1,23 @@
 "use client" 
 
 import { useState, useEffect, FormEvent } from "react"
-import { useSession } from "@/hooks/auth"
-import Logo from "@/components/Logo"
 import { useRouter } from "next/navigation"
-import { useNavbar } from "@/hooks/navbar"
 import Link from "next/link"
-import { validateUsername, validatePassword, verifyASCII, validatePasswordStrong } from "@/utils/regex"
-import { getUserDetails, register, getCaptcha, getCuratedInstances } from "@/utils/lemmy"
-import { setCookie } from "cookies-next"
 import { motion, AnimatePresence } from "framer-motion"
-import { setCookies } from "@/utils/authFunctions"
+import { CaptchaResponse } from "lemmy-js-client"
+
+import { register, getCaptcha, getCuratedInstances } from "@/utils/lemmy"
+import { saveAccount, handleLogin, getUserData } from "@/utils/authFunctions"
+import { validateUsername, validatePassword, verifyASCII, validatePasswordStrong } from "@/utils/regex"
+
 import { DEFAULT_INSTANCE } from "@/constants/settings";
 
+import Logo from "@/components/Logo"
+
+import { useNavbar } from "@/hooks/navbar"
+import { useSession } from "@/hooks/auth"
+
 import styles from "@/styles/Pages/LoginPage.module.css"
-import { CaptchaResponse } from "lemmy-js-client"
 
 interface CuratedInstance {
     // Instance hostname
@@ -82,12 +85,9 @@ export default function Register() {
     const [hasVerficationEmail, setHasVerificationEmail] = useState<boolean>(false)
 
     useEffect(() => {
+        if(navbar?.hidden) return;
         setNavbar({ ...navbar!, hidden: true })
-    }, [])
-
-    useEffect(() => {
-
-    }, [])
+    }, [navbar, setNavbar])
 
     // check password strength
     useEffect(() => {
@@ -180,8 +180,10 @@ export default function Register() {
             captcha_answer: form.captcha
         }, form.instance);
 
+        // Not used right now => Always sets a cookie
         const saveLogin = form.saveLogin;
 
+        // Failed to register handling
         if(!res || !res.jwt) {
             const error = res as unknown as any
             error?.error && alert(error.error);
@@ -190,8 +192,24 @@ export default function Register() {
             return;
         }
 
-        setCookies(res.jwt, form.instance);
+        const user = (await getUserData(form.instance, res.jwt));
+
+        if(!user) {
+            alert("Could not get user data");
+            setLoading(false);
+            return;
+        }
+
+        // Add cookie
+        await handleLogin({
+            session: session,
+            setSession: setSession,
+            router: router,
+            accountWithSite: { username: form.username, 
+                instance: form.instance, jwt: res.jwt, user: user.my_user!.local_user_view, site: user }
+        })
         
+        // Not all instances send emails
         if(res.verify_email_sent) {
             setHasVerificationEmail(true);
         }

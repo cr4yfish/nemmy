@@ -1,6 +1,7 @@
 "use client"
 
-import { useEffect, useState, useRef } from "react";
+import { useState } from "react";
+import Image from "next/image";
 
 import { Person } from "lemmy-js-client";
 import SmallUser from "./SmallUser";
@@ -25,10 +26,12 @@ export default function Username({ user, baseUrl, opensToTop=false } : { user: P
                         >
                     </div>
                     <span>
-                        <img 
+                        <Image 
                             className={`${styles.userimage} ${user.avatar ? "" : "object-contain p-1/2"} `} 
                             src={user.avatar || DEFAULT_AVATAR} 
                             alt={user.name} 
+                            height={40}
+                            width={40}
                         />
                     </span>
                     <span className="font-medium" >{user.name}</span>

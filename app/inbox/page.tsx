@@ -5,6 +5,7 @@ import InboxCard from "@/components/ui/InboxCard";
 import InboxInfiniteScroller from "@/components/ui/InboxInfiniteScroller";
 
 import { DEFAULT_INSTANCE } from "@/constants/settings";
+import { getCurrentAccountServerSide } from "@/utils/authFunctions";
 
 async function getReplies({ 
         jwt, instance } : { 
@@ -22,11 +23,10 @@ async function getReplies({
 
 export default async function Inbox({ params: { page } } : { params: { page: number } }) {
     const cookieStore = cookies();
-    const jwt = cookieStore.get("jwt")?.value;
-    const instance = cookieStore.get("instance")?.value;
+    const currentAccount = getCurrentAccountServerSide(cookieStore);
 
 
-    const replies = await getReplies({ jwt: jwt, instance: instance });
+    const replies = await getReplies({ jwt: currentAccount?.jwt, instance: currentAccount?.instance });
 
     return (
         <>
@@ -34,7 +34,7 @@ export default async function Inbox({ params: { page } } : { params: { page: num
                 {replies.replies.map((reply, i) => (
                     <InboxCard key={i} reply={reply} />
                 ))}
-                {jwt && instance && <InboxInfiniteScroller initReplies={replies} auth={jwt} instance={instance} />}
+                {currentAccount && <InboxInfiniteScroller initReplies={replies} auth={currentAccount.jwt} instance={currentAccount.instance} />}
             </div>
         </>
     )

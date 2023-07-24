@@ -1,21 +1,19 @@
 import Image from "next/image";
-import { LemmyHttp, PostView } from "lemmy-js-client";
-import Username from "./User/Username";
-import { AutoMediaType, isImageType } from "@/utils/AutoMediaType";
-import Vote from "./Vote";
+import { PostView } from "lemmy-js-client";
 import Link from "next/link";
+
+import Username from "./User/Username";
+import Vote from "./Vote";
 import RenderMarkdown from "./ui/RenderMarkdown";
 
-import styles from "../styles/post.module.css"
-import { useEffect, useState } from "react";
-import { useSession } from "@/hooks/auth";
-import { animateValue } from "framer-motion";
 import { FormatDate } from "@/utils/formatDate";
+import { AutoMediaType, isImageType } from "@/utils/AutoMediaType";
 
+import styles from "../styles/post.module.css"
 import markdownStyle from "@/styles/util/markdown.module.css";
 
 export default function Post({ post } : { post: PostView }) {
-    const { session } = useSession();
+
 
     if(!post) throw new Error("Post is undefined");
 
@@ -43,7 +41,7 @@ export default function Post({ post } : { post: PostView }) {
                         <div className={`${styles.headerMetadata}`}>
                             <Link href={`/c/${post?.community?.name}`} target="_blank"  className={`${styles.communityImage}`}>
                                 {post?.community?.icon ?
-                                    <img src={post?.community?.icon} alt="" />
+                                    <Image src={post?.community?.icon} alt="" height={40} width={40} />
                                     :
                                     <div className={`${styles.communityIconFill}`}></div>
                                 }
@@ -56,6 +54,10 @@ export default function Post({ post } : { post: PostView }) {
                                     <Username user={post.creator} baseUrl={baseUrl} /> 
                                     <div className="dividerDot"></div>
                                     <div className={`${styles.date}`}><FormatDate date={new Date(post.post.published)} /></div>
+                                    <div className="dividerDot"></div>
+                                    <div className={`${styles.date}`}>{new URL(post.post.ap_id).host}</div>
+                                    <div className="dividerDot"></div>
+                                    {post.post.featured_local && <span className="material-symbols-outlined text-sm text-green-500">push_pin</span>}
                                 </div>
                             </div>
                             

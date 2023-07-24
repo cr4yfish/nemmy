@@ -45,7 +45,7 @@ export default function Vote({ horizontal=false, post, comment, isComment } : { 
         }
     }, [session, comment])
 
-    const vote = async (score: number, post_id: number, auth: string) => {
+    const vote = async (score: number, post_id: number, auth?: string) => {
         if(!score || !post_id || !auth) throw new Error("Missing parameters");
 
         const response = await fetch("/api/votePost", {
@@ -61,7 +61,7 @@ export default function Vote({ horizontal=false, post, comment, isComment } : { 
     }
 
     const handleLike = async () => {
-        if(liked || !session?.jwt) {return};
+        if(liked || !session?.currentAccount?.jwt) {return};
 
         disliked ? setScore(score + 2) : setScore(score + 1)
 
@@ -72,7 +72,7 @@ export default function Vote({ horizontal=false, post, comment, isComment } : { 
         if(!id) id = post? post.post.id : false;
         if(!id) throw new Error("No id found");
 
-        const response = await vote(1, id, session.jwt);
+        const response = await vote(1, id, session?.currentAccount?.jwt);
         const newVotes = response?.counts?.score;
         setScore(newVotes);
 
@@ -80,7 +80,7 @@ export default function Vote({ horizontal=false, post, comment, isComment } : { 
     }
 
     const handleDislike = async () => {
-        if(disliked || !session?.jwt) return;
+        if(disliked || !session?.currentAccount?.jwt) return;
 
         liked ? setScore(score-2) : setScore(score - 1);
         
@@ -91,7 +91,7 @@ export default function Vote({ horizontal=false, post, comment, isComment } : { 
         if(!id) id = post? post.post.id : false;
         if(!id) throw new Error("No id found");
 
-        const response = await vote(-1, id, session.jwt);
+        const response = await vote(-1, id, session.currentAccount.jwt);
         const newVotes = response?.counts?.score;
         setScore(newVotes);
 

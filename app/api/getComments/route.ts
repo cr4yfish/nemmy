@@ -31,9 +31,9 @@ export async function GET(req: Request) {
             // one of these is causing an error right now
             type_: type_ as unknown as ListingType,
             sort: sort as unknown as CommentSortType,
-            max_depth: max_depth as unknown as number,
+            //max_depth: 8 as unknown as number,
             page: page as unknown as number,
-            limit: limit as unknown as number,
+            //limit: limit as unknown as number,
             //community_id: community_id as unknown as CommunityId,
             //community_name: community_name as unknown as string,
             post_id: post_id as unknown as PostId,

@@ -1,11 +1,16 @@
-import { DEFAULT_AVATAR, DEFAULT_INSTANCE } from "@/constants/settings";
 import { LemmyHttp, PrivateMessagesResponse } from "lemmy-js-client";
 import { cookies } from "next/dist/client/components/headers";
 import Link from "next/link";
+import Image from "next/image";
+
+import { DEFAULT_AVATAR, DEFAULT_INSTANCE } from "@/constants/settings";
 
 import { FormatDate } from "@/utils/formatDate";
+
 import RenderMarkdown from "@/components/ui/RenderMarkdown";
 import RenderError from "@/components/ui/RenderError";
+import { getCurrentAccountServerSide } from "@/utils/authFunctions";
+
 
 async function getChats({ auth, instance} : { auth: string, instance: string }): Promise<PrivateMessagesResponse> {
     try {
@@ -31,7 +36,7 @@ function ChatPreview({creator, chats} : {creator: any, chats: PrivateMessagesRes
             <>
             <Link href={`/chat/${creator.name}`} key={creator.id} className="flex flex-row items-center gap-2 w-full bg-fuchsia-100 p-4 rounded-lg cursor-pointer">
                 <div className=" h-20 w-20 overflow-hidden rounded-full flex items-center justify-center">
-                    <img src={creator.avatar || DEFAULT_AVATAR} alt="" className="w-full h-full object-contain"  />
+                    <Image height={80} width={80} src={creator.avatar || DEFAULT_AVATAR} alt="" className="w-full h-full object-contain"  />
                 </div>
                 <div className="flex flex-col w-full">
                     <div className=" w-full flex justify-between">
@@ -40,7 +45,7 @@ function ChatPreview({creator, chats} : {creator: any, chats: PrivateMessagesRes
                     </div>
                     
                     {/* newest message by creator */}
-                    <div className=" text-ellipsis overflow-hidden overflow-clip line-clamp-1 font-light text-fuchsia-900 max-w-xs">
+                    <div className=" text-ellipsis overflow-clip line-clamp-1 font-light text-fuchsia-900 max-w-xs">
                         <RenderMarkdown>{lastMessage.content}</RenderMarkdown>
                     </div>
                 </div>
@@ -59,10 +64,9 @@ function ChatPreview({creator, chats} : {creator: any, chats: PrivateMessagesRes
 export default async function Chat() {
     try {
         const cookiesStore = cookies();
-        const auth = cookiesStore.get("jwt")?.value, 
-            instance = cookiesStore.get("instance")?.value;
+        const currentAccount = getCurrentAccountServerSide(cookiesStore);
         
-        if(!auth || !instance) return (
+        if(!currentAccount) return (
             <>
             <div className="flex flex-col gap-1 justify-center items-center w-full">
                 <h1>Not logged in</h1>
@@ -71,7 +75,7 @@ export default async function Chat() {
             </>
         );
 
-        let chats = await getChats({ auth: auth, instance: instance });
+        let chats = await getChats({ auth: currentAccount.jwt, instance: currentAccount.instance });
         const recipient = chats.private_messages[0].recipient;
 
         // filter out all messages that are from the recipient

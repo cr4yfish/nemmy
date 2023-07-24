@@ -43,12 +43,14 @@
     ;
     max-width: unset;
     position: relative;
+    object-fit: cover
 }
 
 .userImage {
     @apply w-full h-full;
     width: 48px;
     height: fit-content;
+    object-fit: cover;
 }
 
 .usernames {

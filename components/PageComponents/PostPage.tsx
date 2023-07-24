@@ -19,29 +19,17 @@ import Username from "@/components/User/Username";
 import Vote from "@/components/Vote";
 import RenderMarkdown from "@/components/ui/RenderMarkdown";
 import Comments from "../Comments";
+import Image from "next/image";
+import { DEFAULT_AVATAR } from "@/constants/settings";
 
 export default function PostPage({ data, instance, jwt } :  { data: GetPostResponse, instance?: string, jwt?: string }) {
     const { navbar, setNavbar } = useNavbar();
-
     const [postData, setPostData] = useState<GetPostResponse>(data);
-    const [baseUrl, setBaseUrl] = useState<string>("");
-
-    // post id
-    const pathname = usePathname().split("/")[2];
 
     useEffect(() => {
+        restoreScrollPos(data.post_view.post.id.toString());
         setNavbar({ ...navbar!, showSort: false, showFilter: false, showSearch: false, showback: false, hidden: false, titleOverride: "" })
     }, [])
-
-    useEffect(() => {
-        const ap_id = postData?.post_view?.post?.ap_id;
-        const domain = ap_id?.split("/")[2];
-        setBaseUrl(domain);
-        restoreScrollPos(pathname);
-
-    }, [postData]);
-
-
 
     return (
         <>
@@ -51,14 +39,16 @@ export default function PostPage({ data, instance, jwt } :  { data: GetPostRespo
                 <div className={`${styles.post}`}>
                     <div className={`${styles.postHeader}`}>
                         <div className={`${styles.postHeaderMetadata}`}>
-                            <div className={`${styles.communityImage}`}><img src={postData?.post_view?.community?.icon} /></div>
+                            <Link href={`/c/${data.community_view.community.name}`}><div className={`${styles.communityImage}`}><Image width={50} height={50} alt="" src={postData?.post_view?.community?.icon || DEFAULT_AVATAR} /></div></Link>
                             <div className={`${styles.postHeaderMetadataContent}`}>
-                                <span>c/{postData?.post_view?.community?.name}</span>
+                                <Link href={`/c/${data.community_view.community.name}`}><span>c/{postData?.post_view?.community?.name}</span></Link>
                                 <span className={`${styles.postHeaderMetadataContentUsername}`}>
                                     <span className="max-sm:hidden">Posted by</span>
                                     <Username user={postData?.post_view?.creator} baseUrl="" />
                                     <div className="dividerDot"></div>
                                     <span className="text-neutral-400 text-xs"><FormatDate date={new Date(postData?.post_view?.post?.published)} /></span>
+                                    <div className="dividerDot"></div>
+                                    <span className="text-neutral-400 text-xs">{new URL(postData.post_view.post.ap_id).host}</span>
                                 </span>
                             </div>
                         </div>
@@ -85,7 +75,7 @@ export default function PostPage({ data, instance, jwt } :  { data: GetPostRespo
                                     <div className={`${styles.postBodyEmbedDescription}`}>{postData?.post_view?.post?.embed_description}</div>
                                 </div>
                                 
-                                {postData?.post_view?.post?.thumbnail_url && <div className={`${styles.postBodyEmbedImage}`}><img src={postData?.post_view?.post?.thumbnail_url} alt="" /></div>}
+                                {postData?.post_view?.post?.thumbnail_url && <div className={`${styles.postBodyEmbedImage}`}><Image height={500} width={500} src={postData?.post_view?.post?.thumbnail_url} alt="" /></div>}
                                 
                                 {postData?.post_view?.post?.url && 
                                     <Link className="a" href={postData.post_view.post.url} target="_blank" rel="noreferrer">
