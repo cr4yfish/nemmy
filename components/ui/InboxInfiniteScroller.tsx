@@ -8,6 +8,7 @@ import { ClipLoader } from "react-spinners";
 import { getReplies } from "@/utils/lemmy";
 
 import InboxCard from "@/components/ui/InboxCard";
+import EndlessScrollingEnd from "./EndlessSrollingEnd";
 
 
 export default function InboxInfiniteScroller({ initReplies, auth, instance } : { initReplies: GetRepliesResponse, auth: string, instance: string }) {
@@ -42,12 +43,7 @@ export default function InboxInfiniteScroller({ initReplies, auth, instance } : 
             {replies.replies.map((reply, i) => (
                     <InboxCard key={i} reply={reply} />
             ))}
-            {!hasMore &&
-            <div key={"scrollerend"} className=" w-full flex flex-col items-center justify-center gap-2 mt-24 mb-24">
-                <span className="material-symbols-outlined text-blue-400">bedtime</span>
-                <span>Nothing more to explore here</span>
-            </div>
-            }
+            {!hasMore && <EndlessScrollingEnd /> }
         </InfiniteScroll>
         </>
     )
