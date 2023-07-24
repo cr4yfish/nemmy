@@ -65,8 +65,18 @@ export default function UserMenu( {
                         </SwiperSlide>
                     ))}
 
-                    <SwiperSlide className="flex justify-center items-center w-12 h-52 px-6">
-                        <Link href={"/auth"}><button onClick={() => handleUserMenuClose()}><span className="material-symbols-outlined">add</span></button></Link>
+                    <SwiperSlide className="flex justify-center items-center w-12 h-48 px-6">
+                        <Link href={"/auth"}>
+                            <button 
+                                onClick={() => handleUserMenuClose()} 
+                                className="flex justify-center items-center flex-col gap-2 h-full w-full
+                                     bg-fuchsia-200 border-2 border-transparent hover:border-fuchsia-700 
+                                     transition-all duration-100 ease-in-out p-6 rounded-lg"
+                            >
+                                <span className="material-symbols-outlined text-fuchsia-700">add</span>
+                                <span className=" text-fuchsia-700 font-medium">Add another Account</span>
+                            </button>
+                        </Link>
                     </SwiperSlide>
                 </Swiper>}
 

@@ -31,7 +31,7 @@
 
 .userProfile {
     @apply flex flex-col gap-2 items-start justify-between relative
-    w-40 h-52 rounded-lg p-4 bg-transparent overflow-hidden
+    w-40 h-48 rounded-lg p-4 bg-transparent overflow-hidden
     border-2 
     border-neutral-300 dark:border-neutral-600
     

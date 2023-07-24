@@ -144,8 +144,7 @@
 }
 
 .userImage {
-    @apply rounded-full w-10 h-10;
-    overflow: hidden;
+    @apply w-10 h-10;
 }
 
 .userWrapper {
@@ -242,7 +241,6 @@
 .menuCommunity {
     @apply flex flex-row gap-2 items-center
 }
-
 
 .userMenuTop {
     @apply flex flex-col gap-4
