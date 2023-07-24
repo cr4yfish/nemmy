@@ -18,6 +18,7 @@ import postListStyles from "@/styles/postList.module.css"
 import styles from "@/styles/Pages/UserPage.module.css";
 
 import { DEFAULT_AVATAR } from "@/constants/settings";
+import EndlessScrollingEnd from "@/components/ui/EndlessSrollingEnd";
 
 export default function User() {
     const { navbar, setNavbar } = useNavbar();
@@ -178,6 +179,7 @@ export default function User() {
                             return <Post post={post} key={post.post.id} />
                         })
                         }
+                        {!morePages && <EndlessScrollingEnd key={"end"} />}
                     </InfiniteScroll>
                 </div>
             </div>

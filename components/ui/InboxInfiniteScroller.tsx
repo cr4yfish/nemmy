@@ -43,7 +43,7 @@ export default function InboxInfiniteScroller({ initReplies, auth, instance } : 
             {replies.replies.map((reply, i) => (
                     <InboxCard key={i} reply={reply} />
             ))}
-            {!hasMore && <EndlessScrollingEnd /> }
+            {!hasMore && <EndlessScrollingEnd key={"end"} /> }
         </InfiniteScroll>
         </>
     )
