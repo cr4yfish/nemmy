@@ -273,8 +273,13 @@ export default function Navbar() {
                 { navbar?.showUser &&
                 <>
                  {session.currentAccount ? 
-                    <button onClick={() => { handleFilterOverlayClose(); handleUserMenuOpen(); setNavbar({ ...navbar, overlayActive: true }) }}  className={`${styles.userWrapper} cursor-pointer select-none`}>
-                        <div className={styles.userImage}><Image width={40} height={40} src={session.currentAccount.user?.person?.avatar || DEFAULT_AVATAR } alt={"Account"} /></div>
+                    <button 
+                        onClick={() => { handleFilterOverlayClose(); handleUserMenuOpen(); setNavbar({ ...navbar, overlayActive: true }) }}
+                        className={`${styles.userWrapper} cursor-pointer select-none`}
+                    >
+                        <div className={styles.userImage}>
+                            <Image width={40} height={40} className="overflow-hidden w-10 h-10 " style={{ borderRadius: "50%" }} src={session.currentAccount.user?.person?.avatar || DEFAULT_AVATAR } alt={"Account"} />
+                        </div>
                     </button>
                 :
                     <Link href="/auth">
