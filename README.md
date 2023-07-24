@@ -149,31 +149,6 @@ Ideas for Q4+
 * Improve PWA Experience until it feels like a native app
 * Think about making a native app
 
-## License 
-I'm going to keep it simple. These rules apply to this repo and all forks/clones.
-
-### What you can do
-* Fork this repo
-* Change whatever you want
-* Host it publicly (wether you made changes or not)
-* Host it privately
-
-### What you cannot do
-
-#### Obvious stuff
-* Pretend to be the original Nemmy Website
-* Pretend to be me
-* Add malicious code to your fork (like stealing User passwords)
-
-#### Greed
-* Charge money for features of Nemmy or Nemmy itself
-* Hide Nemmy behind a paywall when you're hosting it
-* Publish Nemmy (as a Native clone or PWA) on the IOS App Store, the Google Play Store, or any other App store
-* Add Tracking/Analytics Services that are not GDPR compliant
-* Try to sell or sell any User data
-* Add ads to your fork
-* Make a closed-source fork
-
 ## FOSS
 * Nemmy will always be 100% Open Source, no strings attached.
 * Nemmy will always be 100% free to use (I might start adding donation options if the Hosting Costs rise)
