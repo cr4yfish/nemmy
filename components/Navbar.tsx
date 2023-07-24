@@ -5,6 +5,7 @@ import { CommunityView, ListingType, PostView, Search, SearchResponse, SortType 
 import Link from "next/link";
 import { useRouter } from "next/navigation"; 
 import Image from "next/image";
+import { AnimatePresence } from "framer-motion";
 
 import { DEFAULT_INSTANCE, DEFAULT_AVATAR} from "@/constants/settings";
 
@@ -182,33 +183,22 @@ export default function Navbar() {
     }
 
     const handleUserMenuClose = async () => {
-    
-        document.getElementById("usermenu")?.style.setProperty("display", "none");
         navbar && setNavbar({...navbar, overlayActive: false})
-
-        await delay(100);
-        
         setUserMenu(false);
     }
 
     const handleUserMenuOpen = async() => {
         handleFilterOverlayClose();
-        document.getElementById("usermenu")?.style.setProperty("display", "flex");
         setUserMenu(true);
     }
 
     const handleMenuOpen = async() => {
         handleFilterOverlayClose();
-        document.getElementById("menu")?.style.setProperty("display", "flex");
         setMenu(true);
     }
 
     const handleMenuClose = async() => {
-        document.getElementById("menu")?.style.setProperty("display", "none");
         navbar && setNavbar({...navbar, overlayActive: false})
-        
-        await delay(100);
-
         setMenu(false);
     }
 
@@ -299,25 +289,38 @@ export default function Navbar() {
             
         </nav>
 
-        <SearchOverlay
-            active={searchOverlay} handleCloseSearchOverlay={handleCloseSearchOverlay} 
-            searchInputRef={searchInputRef} handleSubmit={handleSubmit} 
-            searchLoading={searchLoading} currentSearch={currentSearch} 
-            setCurrentSearch={setCurrentSearch} isSearching={isSearching} 
-            trendingTopics={trendingTopics} trendingCommunities={trendingCommunities} 
-            searchResults={searchResults}
-        />
+        <AnimatePresence>
+            { searchOverlay &&
+                <SearchOverlay
+                    handleCloseSearchOverlay={handleCloseSearchOverlay} 
+                    searchInputRef={searchInputRef} handleSubmit={handleSubmit} 
+                    searchLoading={searchLoading} currentSearch={currentSearch} 
+                    setCurrentSearch={setCurrentSearch} isSearching={isSearching} 
+                    trendingTopics={trendingTopics} trendingCommunities={trendingCommunities} 
+                    searchResults={searchResults}
+                />
+            }
+        </AnimatePresence>
+        
+        <AnimatePresence>
+            { menu &&
+                <LeftSideMenu
+                    handleMenuClose={handleMenuClose}
+                    setCommunitySearch={setCommunitySearch} communitySearch={communitySearch}
+                />
+            }
+        </AnimatePresence>
 
-        <LeftSideMenu
-            menu={menu} handleMenuClose={handleMenuClose}
-            setCommunitySearch={setCommunitySearch} communitySearch={communitySearch}
-        />
 
-        <UserMenu
-            active={userMenu} handleUserMenuClose={handleUserMenuClose}
-            handleLogout={handleLogout} unreadCount={unreadCount}
-            handleCloseSearchOverlay={handleCloseSearchOverlay} router={router}
-        />
+        <AnimatePresence>
+            {userMenu && 
+                <UserMenu
+                    handleUserMenuClose={handleUserMenuClose}
+                    handleLogout={handleLogout} unreadCount={unreadCount}
+                    router={router}
+                />
+            }
+        </AnimatePresence>
 
         {/* Filter Options */}
         <div className={`${styles.filterOptions} ${filterClicked && styles.filterActive}`}>
