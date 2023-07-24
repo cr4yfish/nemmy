@@ -4,7 +4,8 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import { GetSiteResponse} from 'lemmy-js-client';
 import { getAccounts, Account, getDefaultAccount, 
     setDefaultAccount, cleanDeprecatedSystem, 
-    getCurrentAccount } from '@/utils/authFunctions';
+    getCurrentAccount, getUserData } from '@/utils/authFunctions';
+import { DEFAULT_INSTANCE } from '@/constants/settings';
 
 export interface SessionState {
     pendingAuth: boolean,
@@ -66,13 +67,22 @@ export const SessionContextProvider = ({ children } : { children: any }) => {
                 setSession({ ...session, accounts: accounts, currentAccount: defaultAccount, pendingAuth: false })
                 return;
             } else {
-                setSession({ ...session, pendingAuth: false })
-                return;
+                // Has no accounts
+                throw new Error("No accounts found");
             }
         } catch (e) {
+            // Fallback, some error happened
             console.warn(e, "setting pending auth to false");
-            setSession({ ...session, pendingAuth: false })
-            return;
+
+            // get site data for current instance
+            getUserData(new URL(DEFAULT_INSTANCE).host).then(res => {
+                setSession({ ...session, pendingAuth: false, siteResponse: res })
+                return; 
+            }).catch(err => {
+                console.error(err);
+                setSession({ ...session, pendingAuth: false })
+                return;
+            });
         }
     }, [session])
 
