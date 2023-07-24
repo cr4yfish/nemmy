@@ -113,15 +113,16 @@ This means that there is no single huge "Lemmy Server" but many smaller "instanc
     - [ ] Creating Communities **<- Pre-Design phase**
     - [ ] Supporting *all* Lemmy Markdown Features **<- "Thinking about it" phase**
 - [ ] User Page
-    - [ ] User Settings **<- Being worked on**
-    - [ ] User Notifications **<- Almost done**
+    - [ ] Settings **<- Being worked on**
+    - [ ] Notifications **<- Almost done**
     - [X] User Profile
     - [X] User Posts
-    - [X] User Bookmarks
+    - [X] Bookmarks
     - [ ] User Comments
+    - [ ] Chat
 - [ ] Sidebar
     - [X] Subscribed Communities
-    - [ ] Instance Info
+    - [X] Instance Info
 - [ ] Moderation Tools
     - [ ] Delete Posts/Comments
     - [ ] Ban Users
