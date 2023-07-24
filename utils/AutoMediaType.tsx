@@ -1,5 +1,6 @@
 "use client"
 import { useState } from "react";
+import Image from "next/image";
 
 const imageExtensions = ["jpg", "jpeg", "png", "webp", "gif"];
 const videoExtensions = ["mp4", "webm", "ogg"];
@@ -29,16 +30,18 @@ export function AutoMediaType({ url, alt="", nsfw=false } : { url: string, alt?:
 
     // If it's an image, use next/image
     if(imageExtensions.includes(extension)) {
-        return <div className="relative">
-            <NSFWRBlurRender defaultState={nsfw} />
-            <img src={url} alt={alt} />
-            </div>
+        return (
+        <div className="relative"  style={{ }}>
+           {nsfw && <NSFWRBlurRender defaultState={nsfw} />}
+            <Image src={url} alt={alt} height={500} width={500} style={{ width: "100%", height: "auto" }} />
+        </div>
+        )
     } 
     
     // For video
     else if(videoExtensions.includes(extension)) {
         return <div className="relative">
-            <NSFWRBlurRender defaultState={nsfw} />
+            {nsfw && <NSFWRBlurRender defaultState={nsfw} />}
             <video src={url} aria-label={alt} controls></video>
             </div>
     }
