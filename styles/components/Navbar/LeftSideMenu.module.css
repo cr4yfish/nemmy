@@ -4,23 +4,17 @@
     max-sm:max-w-xs
     max-xs:w-72
 
-    transition-all ease-out duration-300
-
     bg-neutral-50/75 dark:bg-neutral-950/75
 
     backdrop-blur-xl;
     position: fixed;
     top: 0; left: 0;
     z-index: 51;
-    transform: translateX(-100%);
     pointer-events: all;
     overflow: hidden;
-    display: none;
+    display: flex;
 }
 
-.menuActive {
-    transform: translateX(0%);
-}
 
 .currentInstance {
     @apply flex flex-row justify-between gap-4 rounded-lg p-4 py-3 items-center

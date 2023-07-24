@@ -2,10 +2,9 @@
     @apply 
     flex-col gap-6 p-6 h-screen overflow-hidden justify-between
 
-    max-sm:max-w-xs
+    w-80
+    max-sm:w-80
     max-xs:w-72
-
-    transition-all ease-out duration-300
 
     bg-neutral-50/75 dark:bg-neutral-950/75
 
@@ -14,15 +13,11 @@
     position: fixed;
     top: 0; right: 0;
     z-index: 51;
-    transform: translateX(100%);
     pointer-events: all;
     overflow: hidden;
-    display: none;
+    overflow-y: auto;
+    display: flex;
     
-}
-
-.userMenuActive {
-    transform: translateX(0%);
 }
 
 .userMenuTop {

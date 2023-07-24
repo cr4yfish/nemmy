@@ -58,7 +58,7 @@
 
 .headerMetadataContent {
     @apply flex flex-row gap-2 h-full
-    max-md:flex-col max-md:gap-0 max-md:justify-between
+    max-md:flex-col max-md:gap-1 max-md:justify-between
     items-center
     max-md:items-start
     ;
@@ -179,9 +179,8 @@
 }
 
 .communityImage {
-    @apply rounded-full w-5 h-auto max-md:w-14 max-md:h-auto;
-    overflow: hidden;
-    object-fit: cover !important;
+    height: 50px;
+    width: 50px;
 }
 
 .communityIconFill {
