@@ -22,7 +22,6 @@ export default function UserMenu( {
 
 
     const handleSwitchAccount = (account: Account) => {
-        console.log("Switching account to", account);
         switchToAccount(account, setSession);
     }
 

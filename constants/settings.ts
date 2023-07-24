@@ -34,12 +34,10 @@ export const switchInstances = (instance: string) => {
  * Switches to the next instance in the list
  */
 export const nextInstance = () => {
-    console.log("Switching from", DEFAULT_INSTANCE)
     const index = BACKUP_INSTANCES.indexOf(DEFAULT_INSTANCE);
     if (index === BACKUP_INSTANCES.length - 1) {
         DEFAULT_INSTANCE = BACKUP_INSTANCES[0];
     } else {
         DEFAULT_INSTANCE = BACKUP_INSTANCES[index + 1];
     }
-    console.log("Switched to", DEFAULT_INSTANCE)
 }

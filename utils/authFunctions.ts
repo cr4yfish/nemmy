@@ -83,7 +83,6 @@ export const handleLogin = async ({
     setSession({ ...session, user: accountWithSite.user, account: account }); 
     
     // save the account
-    console.log("Saving account", accountWithSite)
     saveAccount(account);
 
     // set the account to the current account
