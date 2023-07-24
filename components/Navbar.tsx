@@ -184,6 +184,7 @@ export default function Navbar() {
 
     const handleUserMenuClose = async () => {
         navbar && setNavbar({...navbar, overlayActive: false})
+        await delay(100);
         setUserMenu(false);
     }
 
@@ -199,6 +200,7 @@ export default function Navbar() {
 
     const handleMenuClose = async() => {
         navbar && setNavbar({...navbar, overlayActive: false})
+        await delay(100);
         setMenu(false);
     }
 
