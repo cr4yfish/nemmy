@@ -102,10 +102,11 @@ export const handleLogin = async ({
 /**
  * Gets the user data from the instance
  * Will always fetch new data
+ * Can also handle getting SiteResponse without login
  * @param instance 
  * @param jwt 
  */
-export const getUserData = async (instance: string, jwt: string): Promise<GetSiteResponse | undefined> => {
+export const getUserData = async (instance: string, jwt?: string): Promise<GetSiteResponse | undefined> => {
     const client = new LemmyHttp(`https://${instance}`);
     const site = await client.getSite({ auth: jwt });
     return site ;
