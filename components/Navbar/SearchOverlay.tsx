@@ -13,7 +13,7 @@ import { DEFAULT_AVATAR } from "@/constants/settings"
 
 function TrendingCommunity({ community, closeSearch } : { community: CommunityView, closeSearch: Function }) {
     return (
-    <Link href={`/c/${community.community.name}`} onClick={() => closeSearch()} className=" bg-neutral-50 dark:bg-neutral-950 p-4 flex flex-row justify-start items-center gap-2 rounded-xl border border-fuchsia-500 dark:border-fuchsia-800">
+    <Link href={`/c/${community.community.name}@${new URL(community.community.actor_id).host}`} onClick={() => closeSearch()} className=" bg-neutral-50 dark:bg-neutral-950 p-4 flex flex-row justify-start items-center gap-2 rounded-xl border border-fuchsia-500 dark:border-fuchsia-800">
         <Image width={48} height={48} className="h-12 w-12 rounded-full" src={community.community.icon || DEFAULT_AVATAR} alt="" />
         <div className="flex flex-col gap-1">
             <span className="font-bold">{community.community.name}</span>

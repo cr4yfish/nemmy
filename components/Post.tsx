@@ -39,7 +39,7 @@ export default function Post({ post } : { post: PostView }) {
                 <div className={`${styles.header}`} >
                     <div className={`${styles.headerContent}`}>
                         <div className={`${styles.headerMetadata}`}>
-                            <Link href={`/c/${post?.community?.name}`} target="_blank"  className={`${styles.communityImage}`}>
+                            <Link href={`/c/${post?.community?.name}@${new URL(post.post.ap_id).host}`} target="_blank"  className={`${styles.communityImage}`}>
                                 {post?.community?.icon ?
                                     <Image 
                                         src={post?.community?.icon} alt="" height={40} width={40} 
@@ -51,7 +51,7 @@ export default function Post({ post } : { post: PostView }) {
                             </Link>
                             <div className={`${styles.headerMetadataContent}`}>
                                 <Link 
-                                    href={`/c/${post?.community?.name}`} 
+                                    href={`/c/${post?.community?.name}@${new URL(post.post.ap_id).host}`} 
                                     className={`${styles.sub}`}><span className="font-bold capitalize">{post.community.name}</span> <span className="font-light text-xs">@{new URL(post.post.ap_id).host}</span></Link>
                                 <span className={`${styles.dividerDot}`}></span>
                                 <div className={`${styles.user}`}> 

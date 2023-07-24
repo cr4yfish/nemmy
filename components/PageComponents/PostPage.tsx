@@ -39,9 +39,9 @@ export default function PostPage({ data, instance, jwt } :  { data: GetPostRespo
                 <div className={`${styles.post}`}>
                     <div className={`${styles.postHeader}`}>
                         <div className={`${styles.postHeaderMetadata}`}>
-                            <Link href={`/c/${data.community_view.community.name}`}><div className={`${styles.communityImage}`}><Image width={50} height={50} alt="" src={postData?.post_view?.community?.icon || DEFAULT_AVATAR} /></div></Link>
+                            <Link href={`/c/${data.community_view.community.name}@${new URL(data.community_view.community.actor_id).host}`}><div className={`${styles.communityImage}`}><Image width={50} height={50} alt="" src={postData?.post_view?.community?.icon || DEFAULT_AVATAR} /></div></Link>
                             <div className={`${styles.postHeaderMetadataContent}`}>
-                                <Link href={`/c/${data.community_view.community.name}`}><span>c/{postData?.post_view?.community?.name}</span></Link>
+                                <Link href={`/c/${data.community_view.community.name}@${new URL(data.community_view.community.actor_id).host}`}><span>c/{postData?.post_view?.community?.name}</span></Link>
                                 <span className={`${styles.postHeaderMetadataContentUsername}`}>
                                     <span className="max-sm:hidden">Posted by</span>
                                     <Username user={postData?.post_view?.creator} baseUrl="" />
