@@ -316,7 +316,7 @@ export default function Navbar() {
         <UserMenu
             active={userMenu} handleUserMenuClose={handleUserMenuClose}
             handleLogout={handleLogout} unreadCount={unreadCount}
-            handleCloseSearchOverlay={handleCloseSearchOverlay} setSession={setSession} router={router}
+            handleCloseSearchOverlay={handleCloseSearchOverlay} router={router}
         />
 
         {/* Filter Options */}
