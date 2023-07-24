@@ -7,6 +7,8 @@ import InfiniteScroll from "react-infinite-scroller";
 import { useSession } from "@/hooks/auth";
 import { useNavbar } from "@/hooks/navbar";
 
+import EndlessScrollingEnd from "./ui/EndlessSrollingEnd";
+
 import { DEFAULT_POST_LIMIT } from "@/constants/settings";
 
 import Post from "./Post";
@@ -121,8 +123,10 @@ export default function PostList({ fetchParams={ limit: DEFAULT_POST_LIMIT, page
                     >
                     {posts.map((post: PostView, index: number) => {
                         return <Post post={post} key={index} />
-                    })
-                    }
+                    })}
+                    
+                    {!morePages && posts.length > 0 && <EndlessScrollingEnd />}
+                    
                 </InfiniteScroll>
             </div>
         </div>
