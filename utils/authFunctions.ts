@@ -360,8 +360,11 @@ export const cleanDeprecatedSystem = () => {
 export const switchToAccount = (account: Account, setSession: Dispatch<SetStateAction<SessionState>>) => {
     setCurrentAccount(account.username);
 
+    // get site response
+    const accountWithSite = getUserDataFromLocalStorage(account);
+
     // set session to the account
     setSession(prevState => {
-        return { ...prevState, currentAccount: account }
+        return { ...prevState, currentAccount: account, siteResponse: accountWithSite?.site }
     });
 }
