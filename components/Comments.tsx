@@ -1,7 +1,7 @@
 "use client"
 import { useState, useRef, FormEvent, useEffect } from "react"
 import { ClipLoader, BounceLoader } from "react-spinners"
-import { CommentSortType, CommentView, GetCommentsResponse, GetPostResponse } from "lemmy-js-client"
+import { CommentSortType, CommentView, GetCommentsResponse, GetPostResponse, PostView } from "lemmy-js-client"
 import InfiniteScroll from "react-infinite-scroller"
 
 import RenderFormattingOptions from "./ui/RenderFormattingOptions"
@@ -31,7 +31,7 @@ export default function Comments({
     postId, jwt, instance, setPostData, postData
 } : { 
     postId: number, jwt?: string, instance?: string, 
-    setPostData: (postData: GetPostResponse) => void, postData: GetPostResponse
+    setPostData: (postData: PostView) => void, postData: PostView
 }) {
     const { session } = useSession();
 
@@ -91,7 +91,7 @@ export default function Comments({
         setCommentsData({ ...commentsData, comments: newComments });
 
         const oldPostData = postData;
-        const newPostData = { ...oldPostData, post_view: { ...oldPostData.post_view, post: { ...oldPostData.post_view.post, num_comments: oldPostData.post_view.counts.comments + 1 } } }
+        const newPostData = { ...oldPostData, post_view: { ...oldPostData, post: { ...oldPostData.post, num_comments: oldPostData.counts.comments + 1 } } }
         setPostData(newPostData);
 
         setReplyCommentText("");
@@ -106,20 +106,18 @@ export default function Comments({
 
     const handleLoadMoreComments = async () => {
         if(session?.pendingAuth) return;
-        if(!postData?.post_view?.post?.id) return;
+        if(!postData?.post?.id) return;
 
-        console.log("loading more comments")
         setCommentsLoading(true);
         
         const data = await getComments({
-            post_id: postData.post_view.post.id,
+            post_id: postData.post.id,
             sort: currentCommentSort,
             page: currentCommentsPage,
             auth: session.currentAccount?.jwt
         }, instance || DEFAULT_INSTANCE);
         if(data) { 
             setCommentsLoading(false)
-            console.log(data)
 
             if(data.comments.length == 0) return setHasMoreComments(false);
 
@@ -150,7 +148,7 @@ export default function Comments({
 
     return (
         <>
-        <div className={`flex flex-col items-center w-full gap-2`}>
+        <div id="comments" className={`flex flex-col items-center w-full gap-2`}>
 
             {/* desktop comments textarea */}
             <form onSubmit={(e) => handleSubmit(e)} className={`${styles.textarea} max-w-2xl max-md:w-full max-sm:p-2`}>
@@ -205,7 +203,7 @@ export default function Comments({
                     pageStart={1}
                     hasMore={hasMoreComments}
                     loadMore={async () => await handleLoadMoreComments()}
-                    loader={<Loader />}
+                    loader={<Loader key="loader" />}
                     >
                     {commentsData?.comments?.filter((c) => c.comment.path.split(".")[1] == c.comment.id.toString()).map((comment, index) => (
                         <Comment 
@@ -214,7 +212,7 @@ export default function Comments({
                             setReplyComment={setReplyCommet} setShowReply={setShowReply}
                             />
                     ))}
-                    {!hasMoreComments && commentsData?.comments?.length > 0 && <EndlessScrollingEnd />}
+                    {!hasMoreComments && commentsData?.comments?.length > 0 && <EndlessScrollingEnd key={"end"} />}
                 </InfiniteScroll>
 
 

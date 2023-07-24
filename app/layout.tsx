@@ -6,6 +6,7 @@ import 'material-symbols';
 import { Analytics } from '@vercel/analytics/react';
 import { SessionContextProvider } from '@/hooks/auth';
 import { NavbarContextProvider } from '@/hooks/navbar';
+import { PostContextProvider } from '@/hooks/post';
 const montserrat = Montserrat({ subsets: ['latin'] })
 
 export const metadata = {
@@ -29,10 +30,12 @@ export default function RootLayout({
       <body className={`${montserrat.className} overflow-x-hidden`}>
         <SessionContextProvider>
           <NavbarContextProvider>
-            <Navbar />
-            <main className={`overflow-x-hidden min-h-screen`}>
-              {children}
-            </main>
+            <PostContextProvider>
+              <Navbar />
+              <main className={`overflow-x-hidden min-h-screen`}>
+                {children}
+              </main>
+            </PostContextProvider>
           </NavbarContextProvider>
         </SessionContextProvider>
         <Analytics />

@@ -1,8 +1,10 @@
 import { LemmyHttp, PostView } from "lemmy-js-client"
-
-import PostList from "@/components/PostList"
 import { cookies } from "next/dist/client/components/headers";
-import { Account, cookieDefaultAccountName } from "@/utils/authFunctions";
+
+import FeedPage from "@/components/PageComponents/FeedPage";
+
+import { getCurrentAccountServerSide } from "@/utils/authFunctions";
+
 import { DEFAULT_INSTANCE, nextInstance } from "@/constants/settings";
 
 export const revalidate = 60 * 2; // 2 minutes
@@ -18,14 +20,13 @@ async function getInitialPosts({ instance } : {  instance: string }) {
 
 export default async function Home() {
   const cookiesStore = cookies();
-  const defaultAccountRaw = cookiesStore.get(cookieDefaultAccountName)?.value;
+  const currentAccount = getCurrentAccountServerSide(cookiesStore);
 
   let instance = DEFAULT_INSTANCE;
 
   // {} is the default value if the cookie is not set
-  if(defaultAccountRaw && defaultAccountRaw.length > 3) {
-    const defaultAccount: Account = JSON.parse(defaultAccountRaw);
-    instance = defaultAccount.instance;
+  if(currentAccount) {
+    instance = currentAccount.instance;
   }
 
   let posts: PostView[] = [];
@@ -47,12 +48,13 @@ export default async function Home() {
       }
     }
   }
-  
 
   return (
-    <div id="postpage" className={`flex min-h-screen flex-col items-center mt-24`}>
+    <div id="feed" className={`flex min-h-screen flex-col items-center mt-24`}>
 
-      <PostList initPosts={posts} fetchParams={{ page: 2 }} />
+      <FeedPage initPosts={posts} fetchParams={{ page: 2 }}
+        instance={instance} jwt={currentAccount?.jwt}
+      />
       
     </div>
   )

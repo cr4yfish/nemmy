@@ -3,9 +3,11 @@
 import { useState, useEffect } from "react";
 import { CommunityId, ListingType, PostView, SortType} from "lemmy-js-client";
 import InfiniteScroll from "react-infinite-scroller";
+import { motion } from "framer-motion";
 
 import { useSession } from "@/hooks/auth";
 import { useNavbar } from "@/hooks/navbar";
+import { usePost } from "@/hooks/post";
 
 import EndlessScrollingEnd from "./ui/EndlessSrollingEnd";
 
@@ -36,7 +38,7 @@ function Loader() {
 /**
  * PostList
  */
-export default function PostList({ fetchParams={ limit: DEFAULT_POST_LIMIT, page: 1 }, initPosts } : { 
+export default function PostList({ fetchParams={ limit: DEFAULT_POST_LIMIT, page: 1 }, initPosts, setCurrentPost=() => null } : { 
     fetchParams?: 
         {
             type_?: ListingType, sort?: SortType,
@@ -44,10 +46,13 @@ export default function PostList({ fetchParams={ limit: DEFAULT_POST_LIMIT, page
             community_id?: CommunityId, community_name?: string,
             saved_only?: boolean, auth?: string
         },
-        initPosts?: PostView[]
+    initPosts?: PostView[],
+    setCurrentPost?: Function
     }) {
     const { session } = useSession();
     const { navbar, setNavbar } = useNavbar();
+    const { post, setPost } = usePost();
+
     const [posts, setPosts] = useState<PostView[]>(initPosts || []);
     const [currentPage, setCurrentPage] = useState<number>(fetchParams.page || 1);
     const [morePages, setMorePages] = useState<boolean>(true);
@@ -110,7 +115,12 @@ export default function PostList({ fetchParams={ limit: DEFAULT_POST_LIMIT, page
     }
 
     return (
-        <div className="flex flex-col items-center w-full">
+        <motion.div
+            id="postList"
+            initial={{ opacity: 0, x: -1000 }}
+            animate={{ opacity: 1, x: 0, transition: { bounce: 0.1} }}
+            exit={{ opacity: 0, x: -1000 }}
+            className="flex flex-col items-center w-full">
             <div className="flex flex-col items-center justify-start pb-10 max-w-3xl max-md:w-full">
                 
                 <InfiniteScroll 
@@ -122,13 +132,13 @@ export default function PostList({ fetchParams={ limit: DEFAULT_POST_LIMIT, page
                     key={"postList"}
                     >
                     {posts.map((post: PostView, index: number) => {
-                        return <Post post={post} key={index} />
+                        return <Post onClick={() => setPost(post)}  post={post} key={index} />
                     })}
                     
-                    {!morePages && posts.length > 0 && <EndlessScrollingEnd />}
+                    {!morePages && posts.length > 0 && <EndlessScrollingEnd key={"end"} />}
                     
                 </InfiniteScroll>
             </div>
-        </div>
+        </motion.div>
     )
 }

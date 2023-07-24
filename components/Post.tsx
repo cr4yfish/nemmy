@@ -12,9 +12,7 @@ import { AutoMediaType, isImageType } from "@/utils/AutoMediaType";
 import styles from "../styles/post.module.css"
 import markdownStyle from "@/styles/util/markdown.module.css";
 
-export default function Post({ post } : { post: PostView }) {
-
-
+export default function Post({ post, onClick=() => null } : { post: PostView, onClick?: () => void }) {
     if(!post) throw new Error("Post is undefined");
 
     const hasMedia = post.post.embed_video_url || post.post.thumbnail_url;
@@ -24,12 +22,13 @@ export default function Post({ post } : { post: PostView }) {
     //
     //const postUrl = `https://${baseUrl}/post/${post.post.id}`;
 
-    const postUrl = `/post/${post.post.id}`;
+    const postUrl = `/post/${post.post.id}?preload=true`;
 
     return (
         <>
         <div 
             className={`${styles.wrapper}`} key={post.post.id} 
+            id={`${post.post.id.toString()}@${baseUrl}`}
             style={{ height: !hasMedia ? "fit-content" : "unset", cursor: hasMedia ? "unset" : "pointer" }}
         >
             <div className="max-md:hidden"><Vote post={post} /></div>
@@ -63,10 +62,16 @@ export default function Post({ post } : { post: PostView }) {
                             </div>
                             
                         </div>
-                        <Link href={postUrl} target="_blank"  className={`${styles.headerTitle}`}>
+                        
+                        <Link 
+                            onClick={onClick} href={postUrl} shallow
+                            className={`${styles.headerTitle}`}
+                        >
                             <h2 className={`${styles.title}`}>{post.post.name}</h2>
-                            {post?.post?.nsfw && <span className=" bg-red-400 text-red-950 rounded-full p-2 py-1 text-xs font-bold ">NSFW</span>}
                         </Link>
+                        
+
+                        {post?.post?.nsfw && <span className=" bg-red-400 text-red-950 rounded-full p-2 py-1 text-xs font-bold w-fit">NSFW</span>}
                         <span className={`${styles.headerLink}`}></span>
                     </div>
                 </div>

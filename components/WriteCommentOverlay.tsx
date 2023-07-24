@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
-import { CommentView, GetCommentsResponse, GetPostResponse } from "lemmy-js-client";
+import { CommentView, GetCommentsResponse, GetPostResponse, PostView } from "lemmy-js-client";
 import { useState, FormEvent } from "react";
 import { ClipLoader } from "react-spinners";
 
@@ -20,8 +20,8 @@ import { DEFAULT_AVATAR } from "@/constants/settings";
 export default function WriteCommentOverlay({ 
         post, comment, show, setShow, allComments, setPost, setComments
     } : { 
-        post?: GetPostResponse, comment?: CommentView, show: boolean, setShow: (show: boolean) => void,
-        allComments?: GetCommentsResponse, setPost: (postData: GetPostResponse) => void, setComments: (getCommentsResponse: React.SetStateAction<GetCommentsResponse>) => void
+        post?: PostView, comment?: CommentView, show: boolean, setShow: (show: boolean) => void,
+        allComments?: GetCommentsResponse, setPost: (postData: PostView) => void, setComments: (getCommentsResponse: React.SetStateAction<GetCommentsResponse>) => void
      }) {
 
     const [replyCommentText, setReplyCommentText] = useState("");
@@ -41,7 +41,7 @@ export default function WriteCommentOverlay({
 
         const response = await sendComment({
             content: replyCommentText,
-            post_id: post?.post_view.post?.id,
+            post_id: post.post?.id,
             parent_id: comment?.comment?.id,
             auth: session.currentAccount.jwt
 
@@ -54,7 +54,7 @@ export default function WriteCommentOverlay({
         setComments({ comments: newComments });
 
         const oldPostData = post;
-        const newPostData = { ...oldPostData, post_view: { ...oldPostData.post_view, counts: { ...oldPostData.post_view.counts, comments: oldPostData.post_view.counts.comments +1 }}};
+        const newPostData = { ...oldPostData, post_view: { ...oldPostData, counts: { ...oldPostData.counts, comments: oldPostData.counts.comments +1 }}};
         setPost(newPostData);
 
         setReplyCommentText("");
@@ -91,22 +91,22 @@ export default function WriteCommentOverlay({
             <div className="flex flex-col overflow-y-auto mb-4">
             <div className="flex flex-row items-center">
                 <div className="flex flex-row items-center p-4 gap-2">
-                    <Image height={40} width={40} src={post?.community_view?.community?.icon || DEFAULT_AVATAR} alt="" className="h-10 w-10 rounded-full" />
+                    <Image height={40} width={40} src={post?.community?.icon || DEFAULT_AVATAR} alt="" className="h-10 w-10 rounded-full" />
                     
-                    {post?.post_view?.creator && 
+                    {post?.creator && 
                     <div className=" h-full">
-                        <span className="font-bold">{post?.post_view.creator.name}</span>
-                        <Username user={post.post_view.creator} baseUrl="" />
+                        <span className="font-bold">{post.creator.name}</span>
+                        <Username user={post.creator} baseUrl="" />
                     </div>
                     }
 
                 </div>
 
                 <div className="p-2">
-                   {(post?.post_view?.post?.thumbnail_url || post?.post_view?.post?.url) && <Image height={80} width={80} src={post?.post_view.post?.thumbnail_url || post?.post_view.post?.url || ""} className="rounded-lg w-20 h-20 object-contain"  alt="" />}
+                   {(post?.post?.thumbnail_url || post?.post?.url) && <Image height={80} width={80} src={post.post?.thumbnail_url || post.post?.url || ""} className="rounded-lg w-20 h-20 object-contain"  alt="" />}
                 </div>
             </div>
-            <div className=" h-12 p-4"> {post?.post_view?.post?.body && <RenderMarkdown>{post?.post_view.post?.body}</RenderMarkdown>}</div>
+            <div className=" h-12 p-4"> {post?.post?.body && <RenderMarkdown>{post.post?.body}</RenderMarkdown>}</div>
             </div>
             }
 
