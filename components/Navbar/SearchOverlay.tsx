@@ -3,6 +3,7 @@ import Link from "next/link"
 import { ClipLoader } from "react-spinners"
 import { CommunityView, PostView, SearchResponse } from "lemmy-js-client"
 import Image from "next/image"
+import { motion } from "framer-motion"
 
 import Username from "../User/Username"
 import RenderMarkdown from "../ui/RenderMarkdown"
@@ -42,14 +43,19 @@ function TrendingTopic({ post, closeSearch } : { post: PostView, closeSearch: Fu
 
 
 export default function SearchOverlay({
-    active, handleCloseSearchOverlay, searchInputRef, handleSubmit, searchLoading, currentSearch, setCurrentSearch, isSearching, trendingTopics, trendingCommunities, searchResults
+    handleCloseSearchOverlay, searchInputRef, handleSubmit, searchLoading, currentSearch, setCurrentSearch, isSearching, trendingTopics, trendingCommunities, searchResults
 } : {
-    active: boolean, handleCloseSearchOverlay: Function, searchInputRef: any, handleSubmit: any, searchLoading: boolean, currentSearch: string, setCurrentSearch: Function, isSearching: boolean, trendingTopics: PostView[], trendingCommunities: CommunityView[], searchResults: SearchResponse
+    handleCloseSearchOverlay: Function, searchInputRef: any, handleSubmit: any, searchLoading: boolean, currentSearch: string, setCurrentSearch: Function, isSearching: boolean, trendingTopics: PostView[], trendingCommunities: CommunityView[], searchResults: SearchResponse
     }) {
 
     return (
         <>
-        <div id="search" className={`${styles.searchOverlay} ${active && styles.searchActive}`}>
+        <motion.div 
+            id="search" className={`${styles.searchOverlay} `}
+            initial={{ opacity: 0, y: 1000 }}
+            animate={{ opacity: 1, y: 0, transition: { bounce: 0 } }}
+            exit={{ opacity: 0, y: 1000 }}
+            >
                 <div className={`${styles.searchInputWrapper}`}>
                     <button onClick={() => handleCloseSearchOverlay()} ><span className="material-symbols-outlined text-neutral-400">arrow_back</span></button>
                     <form onSubmit={handleSubmit} className="flex flex-row items-center w-full">
@@ -145,7 +151,7 @@ export default function SearchOverlay({
                 </div>
                 }
 
-        </div>
+        </motion.div>
         </>
     )
 }
