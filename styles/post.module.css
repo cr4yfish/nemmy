@@ -102,7 +102,7 @@
 
 .title {
     @apply text-2xl font-bold text-neutral-900 dark:text-neutral-100
-    max-md:text-lg
+    max-md:text-lg text-left
 }
 
 .flair {
