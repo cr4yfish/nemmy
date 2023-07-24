@@ -1,9 +1,9 @@
-import { LemmyHttp } from "lemmy-js-client"
+import { LemmyHttp, PostView } from "lemmy-js-client"
 
 import PostList from "@/components/PostList"
 import { cookies } from "next/dist/client/components/headers";
 import { Account, cookieDefaultAccountName } from "@/utils/authFunctions";
-import { DEFAULT_INSTANCE } from "@/constants/settings";
+import { DEFAULT_INSTANCE, nextInstance } from "@/constants/settings";
 
 export const revalidate = 60 * 2; // 2 minutes
 
@@ -28,7 +28,26 @@ export default async function Home() {
     instance = defaultAccount.instance;
   }
 
-  const posts = await getInitialPosts({ instance: instance });
+  let posts: PostView[] = [];
+  try {
+    posts = await getInitialPosts({ instance: instance });
+  } catch (e) {
+    console.error("Instance not available, switching instances");
+
+    let isError = true;
+    while(isError) {
+      try {
+        // switch to next instance
+        nextInstance();
+        posts = await getInitialPosts({ instance: DEFAULT_INSTANCE });
+        isError = false; // stop loop
+      } catch (e) {
+        // continue in loop
+        console.error("Instance not available, switching instances");
+      }
+    }
+  }
+  
 
   return (
     <div id="postpage" className={`flex min-h-screen flex-col items-center mt-24`}>
