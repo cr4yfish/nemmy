@@ -41,22 +41,23 @@ export default function Post({ post } : { post: PostView }) {
                         <div className={`${styles.headerMetadata}`}>
                             <Link href={`/c/${post?.community?.name}`} target="_blank"  className={`${styles.communityImage}`}>
                                 {post?.community?.icon ?
-                                    <Image src={post?.community?.icon} alt="" height={40} width={40} />
+                                    <Image 
+                                        src={post?.community?.icon} alt="" height={40} width={40} 
+                                        className=" overflow-hidden object-cover w-full h-full"
+                                        style={{ borderRadius: "50%" }} />
                                     :
                                     <div className={`${styles.communityIconFill}`}></div>
                                 }
                             </Link>
                             <div className={`${styles.headerMetadataContent}`}>
-                                <Link href={`/c/${post?.community?.name}`}  className={`${styles.sub}`}>c/{post.community.name}</Link>
+                                <Link 
+                                    href={`/c/${post?.community?.name}`} 
+                                    className={`${styles.sub}`}><span className="font-bold capitalize">{post.community.name}</span> <span className="font-light text-xs">@{new URL(post.post.ap_id).host}</span></Link>
                                 <span className={`${styles.dividerDot}`}></span>
-                                <div className={`${styles.user}`}>
-                                    <div>Posted by</div> 
+                                <div className={`${styles.user}`}> 
                                     <Username user={post.creator} baseUrl={baseUrl} /> 
                                     <div className="dividerDot"></div>
                                     <div className={`${styles.date}`}><FormatDate date={new Date(post.post.published)} /></div>
-                                    <div className="dividerDot"></div>
-                                    <div className={`${styles.date}`}>{new URL(post.post.ap_id).host}</div>
-                                    <div className="dividerDot"></div>
                                     {post.post.featured_local && <span className="material-symbols-outlined text-sm text-green-500">push_pin</span>}
                                 </div>
                             </div>
