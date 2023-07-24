@@ -4,6 +4,7 @@ import Link from "next/link"
 import Logo from "@/components/Logo"
 import { useNavbar } from "@/hooks/navbar"
 import { useEffect } from "react"
+import { motion } from "framer-motion"
 
 import styles from "@/styles/Pages/AuthPage.module.css"
 
@@ -15,7 +16,12 @@ export default function Auth() {
     }, [])
 
     return (
-        <div className="flex flex-col items-center justify-between h-96 pt-16 gap-24">
+        <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            className="flex flex-col items-center justify-between h-96 pt-16 gap-24"
+        >
             <Logo />
 
             <div className="flex flex-col gap-12 items-center">
@@ -42,6 +48,6 @@ export default function Auth() {
 
             
             
-        </div>
+        </motion.div>
     )
 }
