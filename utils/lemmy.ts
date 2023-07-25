@@ -1,7 +1,13 @@
 
-import { CommentResponse, CommentView, CreateComment, CreatePost, FollowCommunity, GetComments, GetCommentsResponse, 
-    GetPostResponse, GetSiteResponse, ListCommunities, ListCommunitiesResponse, PostResponse, Register, Search, SearchResponse, 
-    LoginResponse, GetCaptcha, GetFederatedInstances, GetFederatedInstancesResponse, GetCaptchaResponse, GetPosts, GetPostsResponse, GetReplies, GetRepliesResponse, GetUnreadCount, GetUnreadCountResponse } from "lemmy-js-client"
+import { CommentResponse, CommentView, CreateComment, CreatePost, FollowCommunity, 
+    GetComments, GetCommentsResponse, 
+    GetPostResponse, GetSiteResponse, ListCommunities, ListCommunitiesResponse, 
+    PostResponse, Register, Search, SearchResponse, 
+    LoginResponse, GetCaptcha, GetFederatedInstances, GetFederatedInstancesResponse, 
+    GetCaptchaResponse, GetPosts, GetPostsResponse, 
+    GetReplies, GetRepliesResponse, GetUnreadCount, GetUnreadCountResponse, 
+    CreateCommunity, CommunityResponse, Community, SaveUserSettings } from "lemmy-js-client"
+import { AccountWithSiteResponse } from "./authFunctions";
 
 export const getUserDetails = async (jwt: string, baseUrl: string) :  Promise<(GetSiteResponse)> => {
     const user: GetSiteResponse = await fetch(`/api/getSite?auth=${jwt}&baseUrl=${baseUrl}`).then(res => res.json());
@@ -61,6 +67,23 @@ export const createPost = async (params: CreatePost) : Promise<(boolean | PostRe
         return false;
     }
     return response as PostResponse;
+}
+
+export const createCommunity = async (params: CreateCommunity, instance: string) : Promise<(boolean | CommunityResponse)> => {
+    const response = await fetch("/api/createCommunity", {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            params, instance
+        })
+    }).then(res => res.json());
+    if(!response?.community_view.community?.id) {
+        console.warn("Could not create community");
+        return false;
+    }
+    return response as CommunityResponse;
 }
 
 export const sendComment = async (params: CreateComment) => {
@@ -157,4 +180,44 @@ export const getReplies = async (params: GetReplies, instance: string) : Promise
 export const getUnreadCount = async (params: GetUnreadCount, instance?: string) : Promise<(void | GetUnreadCountResponse)> => {
     const data = await fetch(`/api/getUnreadCount?auth=${params.auth}&instance=${instance}`).then(res => res.json());
     return data;
+}
+
+export const saveUserSettings = async(params: SaveUserSettings, instance: string) : Promise<(void | LoginResponse)> => {
+    const data = await fetch("/api/saveUserSettings", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({...params, instance})
+    }).then(res => res.json());
+    return data;
+}
+
+export const getUserSettings = (accountWithSite: AccountWithSiteResponse) => {
+    const localUser = accountWithSite.site.my_user?.local_user_view.local_user;
+    const person = accountWithSite.user.person;
+    const settings: SaveUserSettings = {
+        show_nsfw: localUser?.show_nsfw,
+        show_scores: localUser?.show_scores,
+        theme: localUser?.theme,
+        default_sort_type: localUser?.default_sort_type,
+        default_listing_type: localUser?.default_listing_type,
+        interface_language: localUser?.interface_language,
+        avatar: person?.avatar,
+        banner: person?.banner,
+        display_name: person?.display_name,
+        email: localUser?.email,
+        bio: person?.bio,
+        matrix_user_id: person?.matrix_user_id,
+        show_avatars: localUser?.show_avatars,
+        send_notifications_to_email: localUser?.send_notifications_to_email,
+        bot_account: person?.bot_account,
+        show_bot_accounts: localUser?.show_bot_accounts,
+        show_read_posts: localUser?.show_read_posts,
+        show_new_post_notifs: localUser?.show_new_post_notifs,
+        discussion_languages: [],
+        generate_totp_2fa: false, // not recommended currently
+        auth: accountWithSite.jwt
+    }
+    return settings;
 }

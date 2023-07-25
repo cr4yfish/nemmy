@@ -4,7 +4,6 @@
 
 .inputWrapper input {
     @apply 
-    border
 
     transition-all duration-200
     
@@ -14,7 +13,8 @@
 
 .input {
     @apply     
-    border-transparent
+    border-transparent overflow-hidden
+    rounded-lg
     bg-neutral-200 text-neutral-950
     dark:bg-transparent dark:text-neutral-100
     dark:border-neutral-500 dark:border
