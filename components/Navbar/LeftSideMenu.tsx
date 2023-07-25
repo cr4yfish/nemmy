@@ -60,7 +60,7 @@ export default function LeftSideMenu(
                 <>
                 <div className="flex">
                     <Input 
-                    onChange={(e) => setCommunitySearch(e.currentTarget.value)}
+                    onChange={(e: any) => setCommunitySearch(e.currentTarget.value)}
                     type="text" label="" name="searchCommunities" placeholder="Search Communities"
                     
                     />
