@@ -51,7 +51,7 @@ export default function SettingsPage({ currentAccount } : { currentAccount: Acco
         );
 
         // remove the blob from memory
-        URL.revokeObjectURL(url);
+        //URL.revokeObjectURL(url);
 
         console.log(response);
         setLoading(false);
