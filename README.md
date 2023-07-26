@@ -100,7 +100,7 @@ This means that there is no single huge "Lemmy Server" but many smaller "instanc
 - [ ] Sort/Filter/Search
     - [X] Search
     - [ ] Filter **<- Almost done**
-    - [ ] Sorting  **-- Same as Filter**
+    - [X] Sorting 
     - [X] Explore Section
 - [X] Authentication
     - [X] Login
@@ -119,7 +119,7 @@ This means that there is no single huge "Lemmy Server" but many smaller "instanc
     - [X] User Posts
     - [X] Bookmarks
     - [ ] User Comments
-    - [ ] Chat
+    - [ ] Chat **<- Being worked on**
 - [ ] Sidebar
     - [X] Subscribed Communities
     - [X] Instance Info
