@@ -16,9 +16,9 @@ export async function GET(req: Request) {
         let limit = params.get("limit") || 10;
         let page = params.get("page") || 1;
         let auth = params.get("auth") || undefined;
-        let base = params.get("baseUrl") || undefined;
+        let instance = params.get("instance") || undefined;
 
-        let client: LemmyHttp = new LemmyHttp(DEFAULT_INSTANCE);
+        let client: LemmyHttp = new LemmyHttp((instance && instance.length > 1 && instance !== "undefined") ? `https://${instance}` : DEFAULT_INSTANCE);
         let person = await client.getPersonDetails({ 
             person_id: id as unknown as number,
             username: username as unknown as string,
