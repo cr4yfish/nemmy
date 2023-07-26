@@ -172,6 +172,24 @@ export const getUserDataFromLocalStorage = (account: Account): AccountWithSiteRe
 }
 
 /**
+ * Returns all accounts with site response
+ * 
+ * **Note: This only works in *client side* components**
+ * @returns an array of all accounts with site response
+ */
+export const getAllUserDataFromLocalStorage = (): AccountWithSiteResponse[] => {
+    const accounts = getAccounts();
+    const accountsWithSite: AccountWithSiteResponse[] = [];
+    accounts.forEach(account => {
+        const accountWithSite = getUserDataFromLocalStorage(account);
+        if(accountWithSite) {
+            accountsWithSite.push(accountWithSite);
+        }
+    });
+    return accountsWithSite;
+}
+
+/**
  * Sets a single account as a cookie
  * @param jwt 
  * @param instance 
