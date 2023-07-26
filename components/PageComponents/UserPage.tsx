@@ -6,9 +6,9 @@ import { CommentSortType, CommentView, GetPersonDetailsResponse, PostView, SortT
 import InfiniteScroll from "react-infinite-scroller";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { NumericFormat } from "react-number-format";
 
 import { useNavbar } from "@/hooks/navbar";
+import { useSession } from "@/hooks/auth";
 
 import Loader from "@/components/ui/Loader";
 import Post from "@/components/Post";
@@ -18,16 +18,16 @@ import SortButton from "../ui/SortButton";
 import FilterButton, { FilterType } from "../ui/FilterButton";
 import CommentSingle from "../ui/CommentSingle";
 
-import { getComments as getCommentsAPI } from "@/utils/lemmy";
+import { FormatNumber } from "@/utils/helpers";
 
 import postListStyles from "@/styles/postList.module.css"
 import styles from "@/styles/Pages/UserPage.module.css";
 
 import { DEFAULT_AVATAR, DEFAULT_SORT_TYPE } from "@/constants/settings";
 
-
 export default function UserPage({ initialUser, userInstance } : {  initialUser: GetPersonDetailsResponse, userInstance: string }) {
     const { navbar, setNavbar } = useNavbar();
+    const { session } = useSession();
 
     const [userData, setUserData] = useState<GetPersonDetailsResponse>(initialUser);
     const [userDataError, setUserDataError] = useState(true);
@@ -66,7 +66,7 @@ export default function UserPage({ initialUser, userInstance } : {  initialUser:
     useEffect(() => {
         if(!userDataError) return;
         (async () => {
-            const data = await fetch(`/api/getUser?username=${pathname}`);
+            const data = await fetch(`/api/getUser?username=${pathname}&instance=${session.currentAccount?.instance}`);
             const json = (await data.json());
             if(json.error) { 
                 console.error(json.error)
@@ -81,7 +81,7 @@ export default function UserPage({ initialUser, userInstance } : {  initialUser:
     }, [pathname, userDataError]);
 
     const getData = async ({ page=1 } : { page?: number }) => {
-        const data = await fetch(`/api/getUser?limit=${pageLimit}&page=${page}&username=${pathname}&sort=${sort}`);
+        const data = await fetch(`/api/getUser?limit=${pageLimit}&page=${page}&username=${pathname}&sort=${sort}&instance=${session.currentAccount?.instance}`);
         const json = (await data.json());
         const posts = json.posts;
         const comments = json.comments;
@@ -152,7 +152,7 @@ export default function UserPage({ initialUser, userInstance } : {  initialUser:
                         <div className={"flex flex-row flex-wrap gap-4"}>
                             <div className={`snack`}>
                                 <span className="material-icons">auto_awesome</span>
-                                <NumericFormat displayType="text" className="flex bg-transparent w-full appearance-none " value={karma} thousandSeparator />
+                                <span>{FormatNumber(karma, true)}</span>
                                 <span>Points</span>
                                     
                             </div>

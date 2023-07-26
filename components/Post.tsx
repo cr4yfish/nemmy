@@ -7,6 +7,7 @@ import Vote from "./Vote";
 import RenderMarkdown from "./ui/RenderMarkdown";
 
 import { FormatDate } from "@/utils/formatDate";
+import { FormatNumber } from "@/utils/helpers";
 import { AutoMediaType, isImageType } from "@/utils/AutoMediaType";
 
 import styles from "../styles/post.module.css"
@@ -127,7 +128,7 @@ export default function Post({ post, onClick=() => null } : { post: PostView, on
                 <div className={styles.footer}>
                     <div className="hidden max-md:flex"><Vote post={post} horizontal /></div> 
                     <div className={`${styles.footerInteractions}`}>
-                        <button>{post?.counts?.comments > 0 && post?.counts?.comments}<span className="material-icons-outlined">chat_bubble_outline</span></button>
+                        <button>{post?.counts?.comments > 0 && FormatNumber(post?.counts?.comments, true)}<span className="material-icons-outlined">chat_bubble_outline</span></button>
                         <button><span className="material-icons">bookmark_border</span></button>
                         <button><span className="material-icons-outlined">more_horiz</span></button>
                     </div>

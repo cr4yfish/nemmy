@@ -28,7 +28,15 @@ export function getBlobFromFile(file: File): Promise<Blob> {
     });
 }
 
-export function FormatNumber(number: number, eloquent: boolean = false) {
+/**
+ * Formats numbers to be more eloquent.
+ * 
+ * Can be even more eloquent if you pass the eloquent parameter as true.
+ * @param number 
+ * @param eloquent 
+ * @returns 
+ */
+export function FormatNumber(number: number, eloquent: boolean = false): string | number {
     if(eloquent) {
         
         if(number < 1000) return number;
@@ -37,7 +45,9 @@ export function FormatNumber(number: number, eloquent: boolean = false) {
 
 
     } else {
-        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        return parseInt(number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
     }
+
+    return number;
     
 }
