@@ -97,7 +97,7 @@ This means that there is no single huge "Lemmy Server" but many smaller "instanc
     - [X] Voting on Comments
 - [x] PWA
 - [X] Community Page
-- [ ] Sort/Filter/Search
+- [X] Sort/Filter/Search
     - [X] Search
     - [X] Filter
     - [X] Sorting 
