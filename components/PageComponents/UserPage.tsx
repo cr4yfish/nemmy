@@ -67,7 +67,7 @@ export default function UserPage({ initialUser, userInstance } : {  initialUser:
     }, [pathname, userDataError]);
 
     const getPosts = async ({ page=1 } : { page?: number }) => {
-        const data = await fetch(`/api/getUser?limit=${pageLimit}&page=${page}&username=${pathname}`);
+        const data = await fetch(`/api/getUser?limit=${pageLimit}&page=${page}&username=${pathname}&sort=${sort}`);
         const json = (await data.json()).posts;
         if(json.length === 0) {
             setMorePages(false);
