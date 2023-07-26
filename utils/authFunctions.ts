@@ -375,7 +375,13 @@ export const cleanDeprecatedSystem = () => {
     deleteCookie("instance");
 }
 
-export const switchToAccount = (account: Account, setSession: Dispatch<SetStateAction<SessionState>>) => {
+/**
+ * Switches to the account
+ * 
+ * => Sets current account and site response
+ * 
+ */
+export const switchToAccount = (account: Account, setSession: Dispatch<SetStateAction<SessionState>>, session: SessionState) => {
     setCurrentAccount(account.username);
 
     // get site response
@@ -385,4 +391,27 @@ export const switchToAccount = (account: Account, setSession: Dispatch<SetStateA
     setSession(prevState => {
         return { ...prevState, currentAccount: account, siteResponse: accountWithSite?.site }
     });
+}
+
+/**
+ * Sorts Accounts in state, so that "account" is first
+ * @param account 
+ * @param session 
+ * @param setSession 
+ */
+export const sortAccounts = (account: Account, session: SessionState, setSession: Dispatch<SetStateAction<SessionState>>) => {
+    const accounts = session.accounts;
+
+    // Sort accounts, so that account is first
+    const newAccounts = accounts.filter(acc => acc.username != account.username); // Remove account
+    newAccounts.unshift(account); // Add account as first element
+
+    setSession(prevState => { return { ...prevState, accounts: newAccounts }});
+}
+
+export const sortCurrentAccount = (session: SessionState, setSession: Dispatch<SetStateAction<SessionState>>) => {
+    const currentAccount = getCurrentAccount();
+    if(currentAccount && session) {
+        sortAccounts(currentAccount, session, setSession);
+    }
 }

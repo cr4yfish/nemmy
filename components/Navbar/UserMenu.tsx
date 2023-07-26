@@ -12,7 +12,8 @@ import { DEFAULT_AVATAR } from "@/constants/settings";
 import { useSession } from "@/hooks/auth";
 
 import styles from "@/styles/components/Navbar/UserMenu.module.css";
-import { Account, switchToAccount } from "@/utils/authFunctions";
+import { Account, switchToAccount, sortCurrentAccount } from "@/utils/authFunctions";
+import { useEffect } from "react";
 
 export default function UserMenu( {
     handleUserMenuClose, handleLogout, unreadCount, router
@@ -20,9 +21,19 @@ export default function UserMenu( {
     handleUserMenuClose: any, handleLogout: any, unreadCount: any, router: any }) {
     const { session, setSession } = useSession();
 
+    // Only sort accounts on first render
+    // So they dont get switched around when switching accounts
+    useEffect(() => {
+        sortCurrentAccount(session, setSession);
+    }, [])
 
     const handleSwitchAccount = (account: Account) => {
-        switchToAccount(account, setSession);
+        switchToAccount(account, setSession, session);
+    }
+
+    const handleClose = () => {
+        sortCurrentAccount(session, setSession);
+        handleUserMenuClose();
     }
 
     return (
@@ -68,7 +79,7 @@ export default function UserMenu( {
                     <SwiperSlide className="flex justify-center items-center w-12 h-48 px-6">
                         <Link href={"/auth"}>
                             <button 
-                                onClick={() => handleUserMenuClose()} 
+                                onClick={() => handleClose()} 
                                 className="flex justify-center items-center flex-col gap-2 h-full w-full
                                      bg-fuchsia-200 border-2 border-transparent hover:border-fuchsia-700 
                                      transition-all duration-100 ease-in-out p-6 rounded-lg"
@@ -81,7 +92,7 @@ export default function UserMenu( {
                 </Swiper>}
 
                 <div className={`${styles.userMenuInteractionsTop}`}>
-                    <Link onClick={() => handleUserMenuClose()} href={"/inbox"}>
+                    <Link onClick={() => handleClose()} href={"/inbox"}>
                         <button className="relative">
                             <div className="relative h-full flex items-center justify-center w-fit">
                                 {unreadCount > 0 && 
@@ -97,20 +108,20 @@ export default function UserMenu( {
                             Notifications
                         </button>
                     </Link>
-                    <Link onClick={() => handleUserMenuClose()} href={`/u/${session.currentAccount?.user?.person?.name}@${session.currentAccount?.instance}`}><button><span className="material-symbols-outlined">account_circle</span>My Profile</button></Link>
-                    <Link onClick={() => handleUserMenuClose()} href="/post/new"><button><span className="material-symbols-outlined">add_circle_outline</span>Create a Post</button></Link>
-                    <Link onClick={() => handleUserMenuClose()} href={"/c/new"}><button><span className="material-symbols-outlined">group_add</span>Create a Community</button></Link>
+                    <Link onClick={() => handleClose()} href={`/u/${session.currentAccount?.user?.person?.name}@${session.currentAccount?.instance}`}><button><span className="material-symbols-outlined">account_circle</span>My Profile</button></Link>
+                    <Link onClick={() => handleClose()} href="/post/new"><button><span className="material-symbols-outlined">add_circle_outline</span>Create a Post</button></Link>
+                    <Link onClick={() => handleClose()} href={"/c/new"}><button><span className="material-symbols-outlined">group_add</span>Create a Community</button></Link>
                     <button className="text-neutral-400 dark:text-neutral-500 cursor-not-allowed"><span className="material-symbols-outlined">bookmarks</span>Bookmarked</button>
-                    <Link onClick={() => handleUserMenuClose()} href={"/chat"}><button><span className="material-symbols-outlined">chat</span>Chat</button></Link>
+                    <Link onClick={() => handleClose()} href={"/chat"}><button><span className="material-symbols-outlined">chat</span>Chat</button></Link>
                 </div>
 
 
             </div>
 
             <div className={`${styles.userMenuInteractionsBottom}`}>
-                <button onClick={() => handleUserMenuClose()}><span className="material-symbols-outlined">close</span>Close</button>
-                <Link onClick={() => handleUserMenuClose()} href={"/settings"}><button><span className="material-symbols-outlined">settings</span>Settings</button></Link>
-                <button onClick={() => { handleUserMenuClose(); handleLogout({ session: session, setSession: setSession, router: router, account: session.currentAccount }) }} ><span className="material-symbols-outlined">logout</span>Log out</button>
+                <button onClick={() => handleClose()}><span className="material-symbols-outlined">close</span>Close</button>
+                <Link onClick={() => handleClose()} href={"/settings"}><button><span className="material-symbols-outlined">settings</span>Settings</button></Link>
+                <button onClick={() => { handleClose(); handleLogout({ session: session, setSession: setSession, router: router, account: session.currentAccount }) }} ><span className="material-symbols-outlined">logout</span>Log out</button>
             </div>
         </motion.div>
         </>
