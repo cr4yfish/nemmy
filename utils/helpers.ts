@@ -27,3 +27,17 @@ export function getBlobFromFile(file: File): Promise<Blob> {
         reader.readAsArrayBuffer(file);
     });
 }
+
+export function FormatNumber(number: number, eloquent: boolean = false) {
+    if(eloquent) {
+        
+        if(number < 1000) return number;
+        if(number >= 1000 && number < 1000000) return (number / 1000).toFixed(1) + "k";
+        if(number >= 1000000 && number < 1000000000) return (number / 1000000).toFixed(1) + "m";
+
+
+    } else {
+        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+    
+}
