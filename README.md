@@ -99,7 +99,7 @@ This means that there is no single huge "Lemmy Server" but many smaller "instanc
 - [X] Community Page
 - [ ] Sort/Filter/Search
     - [X] Search
-    - [ ] Filter **<- Almost done**
+    - [X] Filter
     - [X] Sorting 
     - [X] Explore Section
 - [X] Authentication
