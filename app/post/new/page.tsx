@@ -5,11 +5,13 @@ import { CommunityView, CreatePost } from "lemmy-js-client";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import InfiniteScroll from "react-infinite-scroller";
 
 import RenderFormattingOptions from "@/components/ui/RenderFormattingOptions";
 import RenderMarkdown from "@/components/ui/RenderMarkdown";
 
 import { listCommunities, createPost } from "@/utils/lemmy";
+import { FormatNumber } from "@/utils/helpers";
 
 import { useNavbar } from "@/hooks/navbar"
 import { useSession } from "@/hooks/auth";
@@ -17,6 +19,7 @@ import { useSession } from "@/hooks/auth";
 import { DEFAULT_AVATAR } from "@/constants/settings";
 
 import styles from "@/styles/Pages/NewPost.module.css";
+import EndlessScrollingEnd from "@/components/ui/EndlessSrollingEnd";
 
 
 
@@ -26,7 +29,12 @@ function CommunityCard({ community} : { community: CommunityView }) {
             <Image height={32} width={32} src={community?.community?.icon || DEFAULT_AVATAR} alt="" className="w-8 h-8 rounded-full overflow-hidden object-contain" />
             <div className="flex flex-col items-start h-full justify-center">
                 <span className="font-bold">c/{community?.community?.name}</span>
-                <span className="text-neutral-400 text-xs">{community?.counts?.subscribers} Subscribers</span>
+                <div className="flex flex-row items-center">
+                    <span className="text-neutral-400 text-xs">{FormatNumber(community?.counts?.subscribers, true)} Subscribers</span>
+                    <div className="dividerDot"></div>
+                    <span className="text-neutral-400 text-xs">{new URL(community?.community?.actor_id)?.host}</span>
+                </div>
+                
             </div>
         </div>
     )
@@ -66,13 +74,16 @@ export default function New() {
     const router = useRouter();
 
     const [communities, setCommunities] = useState<CommunityView[]>([]);
+    const [currentCommunityPage, setCurrentCommunityPage] = useState<number>(1);
+    const [hasMoreCommunities, setHasMoreCommunities] = useState<boolean>(true);
     const [communitySearch, setCommunitySearch] = useState<string>("");
     const [selectedCommunity, setSelectedCommunity] = useState<CommunityView>({} as CommunityView);
     const [communityRulesPopup, setCommunityRulesPopup] = useState<boolean>(false);
 
     // Check if user is logged in
     useEffect(() => {
-        if(session.currentAccount && !session.pendingAuth) {
+        if(session.pendingAuth) return;
+        if(!session.currentAccount?.jwt) {
             router.push("/auth");
         };
     }, [session])
@@ -86,12 +97,29 @@ export default function New() {
         })
     }, [navbar, setNavbar])
 
+    const loadMoreCommunities = async (page=1) => {
+        if(!session.currentAccount?.jwt) return;
+        const newCommunities = await listCommunities(
+            { 
+                sort: "Hot", 
+                type_: "Subscribed", 
+                page: page,
+                auth: session.currentAccount.jwt 
+            }, 
+            session.currentAccount.instance
+        );
+        if(typeof newCommunities === "boolean") return console.error("Failed to fetch communities");
+        if(newCommunities.communities.length == 0) return setHasMoreCommunities(false);
+
+        // de-dupe communities
+        let uniqueCommunities = newCommunities.communities.filter((c) => !communities.find((c2) => c2.community.id == c.community.id));
+
+        setCommunities([...communities, ...uniqueCommunities]);
+        setCurrentCommunityPage(page + 1);
+    }
+
     useEffect(() => {
-        if(!session?.currentAccount) return;
-        listCommunities({ limit: 50, sort: "Hot", type_: "Subscribed", auth: session.currentAccount.jwt, page: 0 }).then((res) => {
-            if(typeof res === "boolean") return console.error("Failed to fetch communities");
-            setCommunities(res.communities)
-        })
+        loadMoreCommunities();
     }, [session.currentAccount])
 
     // Adjust textarea height to content on user input
@@ -177,7 +205,7 @@ export default function New() {
 
                     <button onClick={() => setStep(0)} className="flex items-center justify-center"><span className="material-symbols-outlined">arrow_back</span></button>
 
-                    <span className="font-bold text-neutral-950 dark:text-neutral-100 text-xl">Select a Community to post in</span>
+                    <span className="font-bold text-neutral-950 dark:text-neutral-100 text-xl max-sm:text-xs">Select a Community to post in</span>
 
                 </motion.div>
             </AnimatePresence>
@@ -201,13 +229,16 @@ export default function New() {
             {step == 0 && 
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0, x: "-500%" }} className="p-4 flex flex-col gap-4 mt-16 w-full  h-full max-w-3xl max-sm:w-full">
                     <form id="stepzero" onSubmit={(e) => handleStep0(e)} className="flex flex-col gap-2 w-full">
+
+                        
+                        <div className="mt-4 w-full">
+                            <input required value={form.name || ""} onChange={(e) => setForm({ ...form, name: e.currentTarget.value })} type="text" placeholder="An interesting title" className={`${styles.input}`} />
+                        </div>
+
                         <div className="flex flex-row gap-2 pb-2 w-full border-b border-neutral-300 overflow-x-auto max-sm:pb-4">
                             <RenderFormattingOptions />
                         </div>
-                        
-                        <div className="mt-4 w-full">
-                            <input required value={form.name} onChange={(e) => setForm({ ...form, name: e.currentTarget.value })} type="text" placeholder="An interesting title" className={`${styles.input}`} />
-                        </div>
+
                         <div className={`w-full border border-transparent p-2 rounded-lg dark:bg-neutral-900`}>
                             <textarea 
                                 ref={textareaRef}
@@ -245,10 +276,29 @@ export default function New() {
                         initial="hidden"
                         animate="visible"
                         variants={list}
-                        className="flex flex-col gap-4 w-full">
-                       {communities.filter((c) => c?.community?.name?.includes(communitySearch.toLocaleLowerCase())).map((community) => (
-                           <motion.li  variants={item} key={community?.community?.id}><button className="w-full" onClick={() => handleStep1(community)} type="button"><CommunityCard community={community} /></button></motion.li>
-                          ))}
+                        className="flex flex-col gap-4 w-full"
+                    >
+                        <InfiniteScroll
+                            pageStart={2}
+                            loadMore={loadMoreCommunities}
+                            hasMore={hasMoreCommunities}
+                            className="flex flex-col gap-4 w-full"
+
+                        >
+                            {communities.filter((c) => c?.community?.name?.includes(communitySearch.toLocaleLowerCase())).map((community) => (
+                                <motion.div  variants={item} key={community?.community?.id} className="dark:border-b pb-4 border-neutral-700">
+                                        <button 
+                                            className="w-full" 
+                                            onClick={() => handleStep1(community)} 
+                                            type="button"
+                                            >
+                                                <CommunityCard community={community} />
+                                        </button>
+                                    </motion.div>
+                            ))}
+                            <EndlessScrollingEnd />
+
+                        </InfiniteScroll>
                     </motion.ul>
 
                 </motion.div>
@@ -257,7 +307,12 @@ export default function New() {
 
         <AnimatePresence mode="popLayout"  >
             { step == 2 &&
-                <motion.form id="steptwo" onSubmit={(e) => handleStep2(e)} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ x: "-500%" }} className="p-4 flex flex-col gap-4 mt-16 h-full max-w-3xl  max-sm:w-full">
+                <motion.form 
+                    id="steptwo" onSubmit={(e) => handleStep2(e)} 
+                    initial={{ opacity: 0 }} 
+                    animate={{ opacity: 1 }} 
+                    exit={{ x: "-500%" }} 
+                    className="p-4 flex flex-col gap-4 mt-16 h-full max-w-3xl  max-sm:w-full">
                     <div className="flex flex-col w-full justify-between items-start gap-4 ">
                         <button type="button" onClick={() => setStep(1)} className="flex flex-row gap-2 h-fit overflow-visible">
                             <CommunityCard community={selectedCommunity} />

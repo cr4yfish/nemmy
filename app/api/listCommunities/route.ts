@@ -13,14 +13,14 @@ export async function GET(req: Request) {
         let page = params.get("page") || undefined;
         let limit = params.get("limit") || undefined;
         let auth = params.get("auth") || undefined;
+        let instance = params.get("instance") || undefined;
         
-        let client: LemmyHttp = new LemmyHttp(DEFAULT_INSTANCE);
+        let client: LemmyHttp = new LemmyHttp(instance ? `https://${instance}` : DEFAULT_INSTANCE);
         let communities = await client.listCommunities({ 
             type_: type_ as unknown as ListingType,
             auth: auth as unknown as string,
             sort: sort as unknown as SortType,
             page: page as unknown as number,
-            limit: limit as unknown as number
         });
 
         return new Response(JSON.stringify(communities), { status: 200, headers: { 'Content-Type': 'application/json' } })

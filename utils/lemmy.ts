@@ -14,8 +14,8 @@ export const getUserDetails = async (jwt: string, baseUrl: string) :  Promise<(G
     return user as GetSiteResponse;
 }
 
-export const listCommunities = async (params : ListCommunities) :  Promise<(boolean | ListCommunitiesResponse)> => {
-    const communities: ListCommunitiesResponse = await fetch(`/api/listCommunities?auth=${params.auth}&type_=${params.type_}&sort=${params.sort}&page=${params.page}&limit=${params.limit}`).then(res => res.json());
+export const listCommunities = async (params : ListCommunities, instance: string) :  Promise<(boolean | ListCommunitiesResponse)> => {
+    const communities: ListCommunitiesResponse = await fetch(`/api/listCommunities?auth=${params.auth}&type_=${params.type_}&sort=${params.sort}&page=${params.page}&limit=${params.limit}&instance=${instance}`).then(res => res.json());
     if(!communities.communities) {
         console.warn("Could not retrieve communities");
         return false;
@@ -32,13 +32,13 @@ export const getPosts = async (params: GetPosts) : Promise<(boolean | GetPostsRe
     return posts;
 }
 
-export const getTrendingCommunities = async () : Promise<(boolean | ListCommunitiesResponse)> => {
+export const getTrendingCommunities = async (instance: string) : Promise<(boolean | ListCommunitiesResponse)> => {
     const data = await listCommunities({
         type_: "All",
         sort: "TopTwelveHour",
         page: 1,
         limit: 3
-    });
+    }, instance);
     if(!data) return false;
     return data;
 }
