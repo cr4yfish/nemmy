@@ -76,7 +76,7 @@ export const createCommunity = async (params: CreateCommunity, instance: string)
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            params, instance
+            ...params, instance
         })
     }).then(res => res.json());
     if(!response?.community_view.community?.id) {
