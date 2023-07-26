@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 
 import { Person } from "lemmy-js-client";
@@ -19,6 +19,7 @@ export default function Username({ user, baseUrl, opensToTop=false } : { user: P
                 className={`${styles.wrapper}`}
                 onMouseOver={() => setUserHover(true)}
                 onMouseOut={() => setUserHover(false)}
+                onClick={() => setUserHover(true)}
                 >
                     <div 
                         className={`${styles.hovercatcher}`} 

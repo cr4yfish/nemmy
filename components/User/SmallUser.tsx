@@ -3,14 +3,21 @@ import { Person } from "lemmy-js-client";
 import Image from "next/image";
 import { CSSProperties, useEffect, useState } from "react";
 import Link from "next/link";
-import { NumericFormat } from "react-number-format";
+import { ClipLoader } from "react-spinners";
+
+import { useSession } from "@/hooks/auth";
+
+import { FormatNumber } from "@/utils/helpers";
 
 import { DEFAULT_INSTANCE, DEFAULT_AVATAR } from "@/constants/settings";
 
 import styles from "../../styles/User/SmallUser.module.css"
 
 export default function SmallUser({ user, userHover, setUserHover, style, opensToTop=false } : { user: Person, baseUrl: string, userHover: boolean, setUserHover: Function, style?: CSSProperties, opensToTop?: boolean }) {
+    const { session } = useSession();
     const [userData, setUserData] = useState<Person>({} as Person);
+    const [loading, setLoading] = useState<boolean>(false);
+    const [loaded, setLoaded] = useState<boolean>(false);
     const [karma, setKarma] = useState<number>(0);
 
     if(!user) throw new Error("Passed User to SmallUser is undefined");
@@ -20,9 +27,12 @@ export default function SmallUser({ user, userHover, setUserHover, style, opensT
     const baseUrl = actor_id.hostname;
     
     const getUserData = async () => {
-        if(baseUrl !== DEFAULT_INSTANCE.replace("https://", "")) return;
+        if(loading) return;
+        setLoading(true);
 
-        const data = await fetch(`/api/getUser?username=${user.name}&baseUrl=${baseUrl}`);
+        const userUrl = `${user.name}@${new URL(user.actor_id).host}`;
+
+        const data = await fetch(`/api/getUser?username=${userUrl}&instance=${session.currentAccount?.instance}`);
         const json = (await data.json());
         if(json.error) {
             console.error(json.error)
@@ -39,11 +49,16 @@ export default function SmallUser({ user, userHover, setUserHover, style, opensT
     
         let tmp = Math.ceil(((post_score*0.9 + comment_score*0.5) + (comment_amount*0.5 + post_amount*0.9)) / (post_count*0.75 + comment_count*0.25)*20)
         setKarma(tmp);
+        setLoading(false);
     }
 
+    // Will only run once when opening, after that is cached
     useEffect(() => {
-        //getUserData();
-    }, [user])
+        if(userHover && !loaded) {
+            setLoaded(true)
+            getUserData()
+        };
+    }, [user, userHover])
 
     return (
         <>
@@ -70,7 +85,12 @@ export default function SmallUser({ user, userHover, setUserHover, style, opensT
                         <span className={`${styles.name}`}><span className=" select-all ">@{user.name}</span> {!user.local && !user.display_name && `on ${baseUrl}`}</span>
                     </div>
                 </div>
-                {karma > 0 && <span className="snack"><NumericFormat displayType="text" className="flex bg-transparent w-full appearance-none " value={karma} thousandSeparator /> Points</span>}
+                {loading && <span className="snack"><ClipLoader color="#78350f" size={10} /></span>}
+                {karma > 0 &&
+                    <span className="snack">
+                        <span>{FormatNumber(karma, true)}</span>
+                        Points
+                    </span>}
                 <Link className="flex h-full" href={`/u/${user.name}@${baseUrl}`} target="_blank"><span className="material-icons">open_in_new</span></Link>
             </div>
         </>
