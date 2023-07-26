@@ -1,19 +1,23 @@
 "use client"
 
-import { useNavbar } from "@/hooks/navbar"
 import { FormEvent, useEffect, useState, useRef } from "react";
+import { CommunityView, CreatePost } from "lemmy-js-client";
+import { AnimatePresence, motion } from "framer-motion";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 import RenderFormattingOptions from "@/components/ui/RenderFormattingOptions";
-import { CommunityView, CreatePost, PostResponse } from "lemmy-js-client";
-import { AnimatePresence, motion, stagger } from "framer-motion";
-import { listCommunities, createPost } from "@/utils/lemmy";
-import { useSession } from "@/hooks/auth";
-import { useRouter } from "next/navigation";
 import RenderMarkdown from "@/components/ui/RenderMarkdown";
+
+import { listCommunities, createPost } from "@/utils/lemmy";
+
+import { useNavbar } from "@/hooks/navbar"
+import { useSession } from "@/hooks/auth";
+
 import { DEFAULT_AVATAR } from "@/constants/settings";
 
 import styles from "@/styles/Pages/NewPost.module.css";
-import Image from "next/image";
+
 
 
 function CommunityCard({ community} : { community: CommunityView }) {
