@@ -5,7 +5,7 @@ import styles from "@/styles/ui/Input.module.css"
 
 export default function Input({
     className="", onChange, value, placeholder="", type="text", name="", id="", label, isError=false, errorText="Error",
-    checked=false, left, right, readonly=false, isLoading=false
+    checked=false, left, right, readonly=false, isLoading=false, required=false
 } : {
     className?: string,
     onChange: Function,
@@ -20,7 +20,8 @@ export default function Input({
     checked? : boolean,
     left?: any, right?: any,
     readonly?: boolean,
-    isLoading?: boolean
+    isLoading?: boolean,
+    required?: boolean
 }) {
     const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -42,7 +43,7 @@ export default function Input({
                             placeholder={placeholder} className={`${isError ? styles.inputError : styles.input} `} 
                             type="checkbox" id={id} name={name}
                             checked={checked} onChange={() => null}
-                            readOnly={readonly}
+                            readOnly={readonly} required={required}
                         />
                     </div>
                     {<span className="text-xs text-red-500 font-bold">{isError && errorText}</span>}
@@ -69,6 +70,7 @@ export default function Input({
                             readOnly={readonly}
                             accept="image/png, image/jpeg"
                             ref={fileInputRef}
+                            required={required}
                         />
 
                         <button 
@@ -101,6 +103,7 @@ export default function Input({
                             onChange={onChange as (e: React.ChangeEvent<HTMLInputElement>) => void}
                             value={value}
                             readOnly={readonly}
+                            required={required}
                         />
                         {right && <div className="pr-3 select-none">{right}</div>}
                     </div>
