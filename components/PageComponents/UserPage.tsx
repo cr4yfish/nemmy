@@ -67,7 +67,6 @@ export default function UserPage({ initialUser, userInstance } : {  initialUser:
     }, [pathname, userDataError]);
 
     const getPosts = async ({ page=1 } : { page?: number }) => {
-        console.log("Getting user posts")
         const data = await fetch(`/api/getUser?limit=${pageLimit}&page=${page}&username=${pathname}`);
         const json = (await data.json()).posts;
         if(json.length === 0) {
