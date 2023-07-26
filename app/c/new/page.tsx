@@ -19,19 +19,23 @@ import Input from "@/components/ui/Input";
 import { DEFAULT_AVATAR } from "@/constants/settings";
 
 import styles from "@/styles/Pages/NewPost.module.css";
-import { getAllUserDataFromLocalStorage } from "@/utils/authFunctions";
+import { Account, getAllUserDataFromLocalStorage } from "@/utils/authFunctions";
 import { File } from "buffer";
 
 
 
-function InstanceCard({ siteResponse } : { siteResponse: GetSiteResponse }) {
+function InstanceCard({ siteResponse, via } : { siteResponse: GetSiteResponse, via?: string }) {
     if(!siteResponse?.site_view?.site) return null;
     return (
         <div className="flex flex-row gap-2 justify-start items-center h-full w-full transition-all duration-100 dark:hover:translate-y-1 max-md:hover:translate-y-0">
             <Image height={32} width={32} src={siteResponse.site_view.site.icon|| DEFAULT_AVATAR} alt="" className="w-8 h-8 rounded-full overflow-hidden object-contain" />
             <div className="flex flex-col items-start h-full justify-center">
-                <span className="font-bold">{siteResponse.site_view.site.name}</span>
-                <div className="flex flex-row gap-0 items-center flex-wrap">
+                <div className="flex flex-row gap-1 items-center">
+                    <span className="font-bold">{siteResponse.site_view.site.name}</span>
+                    {via && <span className="text-xs text-neutral-400">via @{via}</span>}
+                </div>
+                
+                <div className="flex flex-row items-center flex-wrap">
                     <span className="text-neutral-400 text-xs">{siteResponse.site_view.counts.users} Users</span>  
                     <div className="dividerDot"></div>
                     <span className="text-neutral-400 text-xs">{siteResponse.site_view.counts.communities} Communities</span>  
@@ -93,6 +97,9 @@ export default function New() {
     const [instances, setInstances] = useState<GetSiteResponse[]>([]);
     const [instance, setInstance] = useState<GetSiteResponse>({} as GetSiteResponse)
     const [instanceSearch, setInstanceSearch] = useState<string>("");
+
+    const [accountToUse, setAccountToUse] = useState<Account>({} as Account);
+    const [choosingAccount, setChoosingAccount] = useState<boolean>(false);
 
     // Check if user is logged in
     useEffect(() => {
@@ -160,13 +167,22 @@ export default function New() {
     // Step 3: Select Instance
     const handleStep3 = async (instance: GetSiteResponse) => {
         setInstance(instance);
+        setChoosingAccount(true);
+    }
+
+    // Choose Account to use for instance
+    const handleChooseAccount = async (account: Account) => {
+        setAccountToUse(account);
+        setChoosingAccount(false);
         setStep(4);
     }
 
     // Step 4: Final Step
     const handleStep4 = async (e: FormEvent) => {
         e.preventDefault();
-        if(!session.currentAccount) return alert("You must be logged in to create a Community");
+        if(!accountToUse.jwt) return alert("You must be logged in to create a Community");
+
+        // Get the account from the instance
 
         const res = await createCommunity({
             name: form.name,
@@ -177,7 +193,7 @@ export default function New() {
             nsfw: form.nsfw,
             posting_restricted_to_mods: form.posting_restricted_to_mods,
             discussion_languages: form.discussion_languages,
-            auth: session.currentAccount.jwt,
+            auth: accountToUse.jwt,
         }, new URL(instance.site_view.site.actor_id).host);
         
         if(typeof res == "boolean") return alert("Failed to create post");
@@ -415,6 +431,40 @@ export default function New() {
                         ))}
                     </motion.ul>
 
+                    { choosingAccount &&
+                    <motion.div 
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: .25 }}
+                        className=" absolute top-0 left-0 w-full h-full p-5 pt-10 bg-neutral-50/60 backdrop-blur-xl"
+                    >
+                        <div className="flex flex-col justify-center items-center">
+                            <span className="text-xs">You have multiple Accounts linked to this intance</span>
+                            <span className="font-bold text-xs">Please choose the Account to use</span>  
+                        </div>
+                        
+                        <div className="flex flex-col gap-2">
+                            {session.accounts.map((account) => (
+                                <div 
+                                    key={account.username} 
+                                    onClick={() => handleChooseAccount(account)}
+                                    className={`${styles.wrapper} cursor-pointer flex-wrap relative overflow-hidden items-center border-b border-neutral-300 pb-2 `} >
+                                    <div className="absolute top-0 left-0 w-full h-full bg-neutral-950/10 backdrop-blur-xl z-20"></div>
+                                    <div id="bgBanner" className="absolute top-0 left-0 w-full h-full z-10" >
+                                        <img src={account.user.person.banner || ""} />
+                                    </div>
+                                    <img src={account.user.person.avatar || DEFAULT_AVATAR } className=" overflow-hidden w-16 h-16 object-cover relative z-30" style={{ borderRadius: "50%" }} alt="" />
+                                    <div className="flex flex-col relative w-fit h-full z-30">
+                                        <span className="text-xl text-neutral-50">{account.user.person.display_name}</span>
+                                        <span className="text-xs text-neutral-200">@{account.username}</span>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+
+                    </motion.div>
+                    }
+
                 </motion.div>
             }
         </AnimatePresence>
@@ -461,7 +511,7 @@ export default function New() {
 
                     <div className={`${styles.wrapper} `}>
                         <button type="button" onClick={() => setStep(3)} className="flex flex-row gap-2 h-fit overflow-visible">
-                            <InstanceCard siteResponse={instance} />
+                            <InstanceCard siteResponse={instance} via={accountToUse.username} />
                         </button>
                     </div>
 
