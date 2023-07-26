@@ -1,6 +1,6 @@
 .searchOverlay {
     @apply fixed top-0 left-0 w-full h-full flex items-center flex-col
-    bg-neutral-50/10 dark:bg-neutral-950/90
+    bg-neutral-50/80 dark:bg-neutral-950/90
     backdrop-blur-3xl
     ;
     z-index: 99;
