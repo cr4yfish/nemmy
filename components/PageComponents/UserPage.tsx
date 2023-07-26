@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation"; 
 import { useEffect, useState } from "react";
-import { GetPersonDetailsResponse, PostView, SortType } from "lemmy-js-client";
+import { CommentSortType, CommentView, GetPersonDetailsResponse, PostView, SortType } from "lemmy-js-client";
 import InfiniteScroll from "react-infinite-scroller";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
@@ -15,6 +15,10 @@ import Post from "@/components/Post";
 import RenderMarkdown from "@/components/ui/RenderMarkdown";
 import EndlessScrollingEnd from "@/components/ui/EndlessSrollingEnd";
 import SortButton from "../ui/SortButton";
+import FilterButton, { FilterType } from "../ui/FilterButton";
+import CommentSingle from "../ui/CommentSingle";
+
+import { getComments as getCommentsAPI } from "@/utils/lemmy";
 
 import postListStyles from "@/styles/postList.module.css"
 import styles from "@/styles/Pages/UserPage.module.css";
@@ -30,10 +34,13 @@ export default function UserPage({ initialUser, userInstance } : {  initialUser:
 
     // posts stuff
     const [posts, setPosts] = useState<PostView[]>([]);
+    const [comments, setComments] = useState<CommentView[]>([]);
+
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [pageLimit, setPageLimit] = useState<number>(10);
     const [morePages, setMorePages] = useState<boolean>(true);
-    const [sort, setSort] = useState<SortType>(DEFAULT_SORT_TYPE);
+    const [sort, setSort] = useState<SortType | CommentSortType>(DEFAULT_SORT_TYPE);
+    const [filter, setFilter] = useState<FilterType>("Posts");
 
     const router = useRouter();
 
@@ -46,8 +53,15 @@ export default function UserPage({ initialUser, userInstance } : {  initialUser:
 
     useEffect(() => {
         setPosts([]);
+        setComments([]);
         setCurrentPage(1);
     }, [sort])
+
+    useEffect(() => {
+        setPosts([]);
+        setComments([]);
+        setCurrentPage(1);
+    }, [filter])
     
     useEffect(() => {
         if(!userDataError) return;
@@ -66,19 +80,31 @@ export default function UserPage({ initialUser, userInstance } : {  initialUser:
 
     }, [pathname, userDataError]);
 
-    const getPosts = async ({ page=1 } : { page?: number }) => {
+    const getData = async ({ page=1 } : { page?: number }) => {
         const data = await fetch(`/api/getUser?limit=${pageLimit}&page=${page}&username=${pathname}&sort=${sort}`);
-        const json = (await data.json()).posts;
-        if(json.length === 0) {
-            setMorePages(false);
-        }
+        const json = (await data.json());
+        const posts = json.posts;
+        const comments = json.comments;
 
-        return json as PostView[];
+        if(filter === "Comments") {
+            if(comments.length === 0) setMorePages(false)
+            return comments as CommentView[];
+        } else {
+            if(posts.length === 0) setMorePages(false)
+            return posts as PostView[];
+        }
     }
 
     const handleLoadMore = async () => {
-        const data = await getPosts({ page: currentPage });
-        setPosts([...posts, ...data]);
+        const data = await getData({ page: currentPage });
+
+        if(filter == "Comments") {
+            setComments([...comments, ...data as CommentView[]])
+        }
+        else {
+            setPosts([...posts, ...data as PostView[]])
+        }
+
         setCurrentPage(currentPage + 1);
     }
 
@@ -145,19 +171,12 @@ export default function UserPage({ initialUser, userInstance } : {  initialUser:
 
                 <div className={`${styles.sortsWrapper}`}>
 
-                    <div className="flex flex-row gap-4 items-center relative">
+                    <div className="flex flex-row gap-4 flex-wrap items-center relative">
 
                         <SortButton onChange={(newSort: SortType) => setSort(newSort)} />
 
-                        <div className={`${styles.sort}`}>
-                            <div className="flex flex-row items-center gap-2">
-                                <span className="material-icons-outlined">auto_awesome_motion</span>
-                                <span>Posts</span>
-                            </div>
-                            
-                            <span className="material-icons">expand_more</span>
-                        </div>
-
+                        <FilterButton onChange={((newFilter: FilterType) => setFilter(newFilter))} />
+ 
                     </div>
                     
 
@@ -179,8 +198,12 @@ export default function UserPage({ initialUser, userInstance } : {  initialUser:
                         >
                         {posts.map((post: PostView, index: number) => {
                             return <Post post={post} key={post.post.id} />
-                        })
-                        }
+                        })}
+
+                        {comments.map((comment: CommentView, index: number) => {
+                            return <CommentSingle comment={comment} key={comment.comment.id} />
+                        })}
+                        
                         {!morePages && <EndlessScrollingEnd key={"end"} />}
                     </InfiniteScroll>
                 </div>

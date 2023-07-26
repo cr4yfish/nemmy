@@ -3,20 +3,20 @@ import { AnimatePresence, motion } from "framer-motion"
 
 import { useState } from "react"
 
+export type FilterType = "Posts" | "Comments"
+
 const iconMap = {
-    Active: <span className="active m-2"></span>,
-    Hot: <span className="material-symbols-outlined">whatshot</span>,
-    New: <span className="material-symbols-outlined">history</span>,
-    MostComments: <span className="material-symbols-outlined">arrows_more_up</span>
+    Posts: <span className="material-symbols-outlined">auto_awesome_motion</span>,
+    Comments: <span className="material-symbols-outlined">comment</span>,
 }
 
 function Button({
     option, label, icon=undefined, 
     replaceIcon=undefined, current, onChange
     } : { 
-    option: SortType, label: string, icon?: string, 
-    replaceIcon?: React.ReactNode, current: SortType,
-    onChange?: (newOption: SortType) => void
+    option: FilterType, label: string, icon?: string, 
+    replaceIcon?: React.ReactNode, current: FilterType,
+    onChange?: (newOption: FilterType) => void
 }) {
     if(!option || !label) {
         console.error("SortButton: option or label not provided", option, label, icon, replaceIcon )
@@ -38,11 +38,16 @@ function Button({
     )
 }
 
-export default function SortButton({ onChange }: { onChange: (newOption: SortType) => void }) {
-    const [currentOption, setCurrentOption] = useState<SortType>("Active")
+/**
+ * Filter between Posts and Comments
+ * @param param0 
+ * @returns 
+ */
+export default function FilterButton({ onChange }: { onChange: (newOption: FilterType) => void }) {
+    const [currentOption, setCurrentOption] = useState<FilterType>("Posts")
     const [open, setOpen] = useState(false)
 
-    const onClick = (newOption: SortType) => {
+    const onClick = (newOption: FilterType) => {
         setCurrentOption(newOption)
         onChange(newOption)
         setOpen(false)
@@ -53,8 +58,8 @@ export default function SortButton({ onChange }: { onChange: (newOption: SortTyp
 
         <button onBlur={() => setOpen(false)} onClick={() => setOpen(!open)} className={`flex flex-row gap-1`}>
             <div className="flex flex-row items-center gap-1">
-                {iconMap[(currentOption as unknown as "Active" | "Hot" | "New" | "MostComments")]}
-                <span>{currentOption}</span>
+                {iconMap[(currentOption as unknown as FilterType )]}
+                <span className=" max-xs:hidden">{currentOption}</span>
             </div>
             <span className="material-icons">expand_more</span>
         </button>
@@ -67,27 +72,22 @@ export default function SortButton({ onChange }: { onChange: (newOption: SortTyp
                     exit={{ opacity: 0, y: 10 }}
                     onMouseOver={() => setOpen(true)}
                     onMouseLeave={() => setOpen(false)}
+                    onBlur={() => setOpen(false)}
+                    onFocus={() => setOpen(true)}
                     className=" 
                         absolute top-full z-50 backdrop-blur-xl p-2 rounded-lg
                         bg-neutral-50/70 dark:bg-zinc-800 border border-fuchsia-500 dark:border-fuchsia-300
                         shadow-lg dark:shadow-none
                         flex flex-col gap-2
                     ">
-                    <Button label="Active" option="Active" replaceIcon={<span className="active m-2"></span>}
+                    <Button label="Posts" option="Posts" icon="auto_awesome_motion"
                             current={currentOption} onChange={onClick}
                     />
 
-                    <Button label="Hot" option="Hot" icon="whatshot" 
+                    <Button label="Comments" option="Comments" icon="comment" 
                             current={currentOption} onChange={onClick}
                     />
 
-                    <Button label="New" option="New" icon="history"
-                            current={currentOption} onChange={onClick}
-                    />
-
-                    <Button label="Most Comments" option="MostComments" icon="arrows_more_up" 
-                            current={currentOption} onChange={onClick}
-                    />
                 </motion.div>
             }
         </AnimatePresence>
