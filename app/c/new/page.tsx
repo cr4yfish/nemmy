@@ -290,14 +290,19 @@ export default function New() {
         <AnimatePresence  mode="popLayout" >
             {step == 0 && 
                 <motion.div 
-                    initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0, x: "-500%" }} 
+                    initial={{ opacity: 0, x: "100%" }} 
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: "-100%" }}  
+                    transition={{ bounce: 0.5}}
                     className="p-4 flex flex-col gap-4 mt-16 w-full  h-full max-w-3xl max-sm:w-full"
                 >
                     <form id="stepzero" onSubmit={(e) => handleStep0(e)} className="flex flex-col gap-2 w-full">
                         
+                        <span className=" text-xl font-bold">Add basic info</span>
                         <div className="w-full flex flex-col">
                             <Input
                                 value={form.name || ""}
+                                required
                                 placeholder="CommunityID"
                                 onChange={(e: any) => setForm({ ...form, name: e.currentTarget.value })}
                                 left={<span className=" text-neutral-500 text-xs font-light ">https://instance.lemmy/c/</span>}
@@ -307,6 +312,7 @@ export default function New() {
 
                         <Input 
                             value={form.title || ""}
+                            required
                             placeholder="Community Display Name"
                             onChange={(e: any) => setForm({ ...form, title: e.currentTarget.value })}
                         />
@@ -334,9 +340,13 @@ export default function New() {
         <AnimatePresence  mode="popLayout" >
             {step == 1 && 
                 <motion.div 
-                    initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0, x: "-500%" }} 
+                    initial={{ opacity: 0, x: "100%" }} 
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: "-100%" }} 
+                    transition={{ bounce: 0.2}}
                     className="p-4 flex flex-col gap-4 mt-16 w-full  h-full max-w-3xl max-sm:w-full"
                 >
+                    <span className=" text-xl font-bold">Add a description</span>
                     <span className="text-xs">This step is optional</span>
 
                     <form id="stepone" onSubmit={(e) => handleStep1(e)} className="flex flex-col gap-2 w-full">
@@ -362,11 +372,15 @@ export default function New() {
         <AnimatePresence  mode="popLayout" >
             {step == 2 && 
                 <motion.div 
-                    initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0, x: "-500%" }} 
+                    initial={{ opacity: 0, x: "100%" }} 
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: "-100%" }}  
+                    transition={{ bounce: 0.2}}
                     className="p-4 flex flex-col gap-4 mt-16 w-full  h-full max-w-3xl max-sm:w-full"
                 >
                     <form id="steptwo" onSubmit={(e) => handleStep2(e)} className="flex flex-col gap-2 w-full">
                         
+                        <span className=" text-xl font-bold">Add Images</span>
                         <span className="text-xs">This step is optional</span>
 
                         <div className="flex flex-col gap-1 dark:bg-neutral-800 p-3 rounded-lg">
@@ -401,9 +415,10 @@ export default function New() {
             { step == 3 && 
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.15 }} className="flex flex-col gap-4 p-4 mt-16 h-full max-w-3xl max-sm:w-full" >
                     <motion.div 
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: .25 }}
+                    initial={{ opacity: 0, x: "100%" }} 
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: "-100%" }}  
+                    transition={{ bounce: 0.2}}
                     className=" w-full bg-neutral-200 dark:bg-neutral-800 rounded-lg p-4 flex flex-row gap-2 items-center " >
                         <motion.span className="material-symbols-outlined dark:text-neutral-400">search</motion.span>
                         <motion.input 
@@ -435,26 +450,48 @@ export default function New() {
                     <motion.div 
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        transition={{ duration: .25 }}
-                        className=" absolute top-0 left-0 w-full h-full p-5 pt-10 bg-neutral-50/60 backdrop-blur-xl"
+                        className=" absolute top-0 left-0 w-full h-full p-5 pt-10 gap-4 flex flex-col items-center
+                            bg-neutral-50/60 dark:bg-neutral-950/40 backdrop-blur-lg"
                     >
-                        <div className="flex flex-col justify-center items-center">
-                            <span className="text-xs">You have multiple Accounts linked to this intance</span>
-                            <span className="font-bold text-xs">Please choose the Account to use</span>  
+                        <div className="flex flex-col justify-center items-center gap-2">
+                            <button onClick={() => setChoosingAccount(false)} 
+                                className="flex flex-row gap-1 items-center dark:bg-neutral-800 dark:text-neutral-300 py-2 px-4 rounded-xl">
+                                <span className="material-symbols-outlined">close</span>
+                                <span>Close</span>
+                            </button>
+                            <div className="flex flex-col items-center justify-center">
+                                <span className="text-xs">You have multiple Accounts linked to this intance</span>
+                                <span className="font-bold text-xs">Please choose the Account to use</span>                                
+                            </div>
+  
                         </div>
                         
-                        <div className="flex flex-col gap-2">
+                        <div className="flex flex-col gap-2 w-full items-center">
                             {session.accounts.map((account) => (
                                 <div 
                                     key={account.username} 
                                     onClick={() => handleChooseAccount(account)}
-                                    className={`${styles.wrapper} cursor-pointer flex-wrap relative overflow-hidden items-center border-b border-neutral-300 pb-2 `} >
+                                    className={`${styles.wrapper} max-w-3xl
+                                        cursor-pointer 
+                                        flex-wrap relative overflow-hidden items-center
+                                        border-b border-neutral-300 pb-2 
+                                    `}>
                                     <div className="absolute top-0 left-0 w-full h-full bg-neutral-950/10 backdrop-blur-xl z-20"></div>
                                     <div id="bgBanner" className="absolute top-0 left-0 w-full h-full z-10" >
-                                        <img src={account.user.person.banner || ""} />
+                                        <Image
+                                            fill 
+                                            src={account.user.person.banner || ""} 
+                                            alt=""
+                                        />
                                     </div>
-                                    <img src={account.user.person.avatar || DEFAULT_AVATAR } className=" overflow-hidden w-16 h-16 object-cover relative z-30" style={{ borderRadius: "50%" }} alt="" />
-                                    <div className="flex flex-col relative w-fit h-full z-30">
+                                    <Image 
+                                        src={account.user.person.avatar || DEFAULT_AVATAR } 
+                                        width={64} height={64}
+                                        className=" overflow-hidden w-16 h-16 object-cover relative z-30" 
+                                        style={{ borderRadius: "50%" }} 
+                                        alt="" 
+                                    />
+                                    <div className="flex flex-col relative w-fit z-30">
                                         <span className="text-xl text-neutral-50">{account.user.person.display_name}</span>
                                         <span className="text-xs text-neutral-200">@{account.username}</span>
                                     </div>
@@ -475,48 +512,53 @@ export default function New() {
             { step == 4 &&
                 <motion.form 
                     id="stepthree" onSubmit={(e) => handleStep4(e)} 
-                    initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ x: "-500%" }} 
-                    className="p-4 flex flex-col gap-2 mt-16 h-full max-w-3xl  max-sm:w-full"
+                    initial={{ opacity: 0, x: "100%" }} 
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: "-100%" }}  
+                    transition={{ bounce: 0.2}}
+                    className="p-4 flex flex-col gap-4 mt-16 w-full  h-full max-w-3xl max-sm:w-full"
                 >
-
-                    <div className={`${styles.wrapper} flex-wrap relative overflow-hidden items-center `} >
-                        <div className="absolute top-0 left-0 w-full h-full bg-neutral-950/10 backdrop-blur-xl z-20"></div>
-                        <div id="bgBanner" className="absolute top-0 left-0 w-full h-full z-10" >
-                            <img src={form.banner || ""} />
+                    <div className=" w-full flex flex-col gap-2">
+                        <div className={`${styles.wrapper} flex-wrap relative overflow-hidden items-center w-full `} >
+                            <div className="absolute top-0 left-0 w-full h-full bg-neutral-950/10 backdrop-blur-xl z-20"></div>
+                            <div id="bgBanner" className="absolute top-0 left-0 w-full h-full z-10" >
+                                <img src={form.banner || ""} />
+                            </div>
+                            <img src={form.icon || DEFAULT_AVATAR } className=" overflow-hidden w-16 h-16 object-cover relative z-30" style={{ borderRadius: "50%" }} alt="" />
+                            <div className="flex flex-col relative w-fit h-full z-30">
+                                <span className="text-xl text-neutral-50">{form.title}</span>
+                                <span className="text-xs text-neutral-200">{form.name}</span>
+                            </div>
                         </div>
-                        <img src={form.icon || DEFAULT_AVATAR } className=" overflow-hidden w-16 h-16 object-cover relative z-30" style={{ borderRadius: "50%" }} alt="" />
-                        <div className="flex flex-col relative w-fit h-full z-30">
-                            <span className="text-xl text-neutral-50">{form.title}</span>
-                            <span className="text-xs text-neutral-200">{form.name}</span>
+                        
+                        {form.description &&
+                            <div className={`${styles.wrapper}`}>
+                               <RenderMarkdown content={form.description} />
+                            </div>
+                        }
+                        
+                        <Input
+                            type="checkbox" label="18+ Community"
+                            onChange={() => null}
+                            checked={form.nsfw}
+                            readonly
+                        />
+
+                        <Input
+                            type="checkbox" label="Restrict Posting to Mods"
+                            onChange={() => null}
+                            checked={form.posting_restricted_to_mods}
+                            readonly
+                        />
+
+                        <div className={`${styles.wrapper} `}>
+                            <button type="button" onClick={() => setStep(3)} className="flex flex-row gap-2 h-fit overflow-visible">
+                                <InstanceCard siteResponse={instance} via={accountToUse.username} />
+                            </button>
                         </div>
+
+                        <button className=" w-full rounded-3xl bg-fuchsia-200 text-fuchsia-900 py-4">Create Community</button>
                     </div>
-                    
-                    <div className={`${styles.wrapper}`}>
-                        {form.description && <RenderMarkdown content={form.description} />}
-                    </div>
-                    
-                    <Input
-                        type="checkbox" label="18+ Community"
-                        onChange={() => null}
-                        checked={form.nsfw}
-                        readonly
-                    />
-
-                    <Input
-                        type="checkbox" label="Restrict Posting to Mods"
-                        onChange={() => null}
-                        checked={form.posting_restricted_to_mods}
-                        readonly
-                    />
-
-                    <div className={`${styles.wrapper} `}>
-                        <button type="button" onClick={() => setStep(3)} className="flex flex-row gap-2 h-fit overflow-visible">
-                            <InstanceCard siteResponse={instance} via={accountToUse.username} />
-                        </button>
-                    </div>
-
-                    <button className=" w-full rounded-3xl bg-fuchsia-200 text-fuchsia-900 py-4">Create Community</button>
-
                 </motion.form>
             }
         </AnimatePresence>
