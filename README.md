@@ -110,7 +110,7 @@ This means that there is no single huge "Lemmy Server" but many smaller "instanc
 - [ ] Creating Content 
     - [X] Creating Comments
     - [X] Creating Posts
-    - [ ] Creating Communities **<- Pre-Design phase**
+    - [X] Creating Communities 
     - [ ] Supporting *all* Lemmy Markdown Features **<- "Thinking about it" phase**
 - [ ] User Page
     - [ ] Settings **<- Being worked on**
