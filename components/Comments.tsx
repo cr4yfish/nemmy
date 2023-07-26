@@ -222,11 +222,6 @@ export default function Comments({
                 </div>
                 }
 
-                {commentsData?.comments?.length > 1 && !commentsLoading && hasMoreComments &&
-                    <div className="flex justify-center items-center w-full mb-10">
-                    <button onClick={() => handleLoadMoreComments()}><span className="material-symbols-outlined">expand_circle_down</span></button>
-                </div>
-                }
 
             </div>
         </div>

@@ -2,20 +2,23 @@
 
 import { usePathname } from "next/navigation"; 
 import { useEffect, useState } from "react";
-import { GetCommentsResponse, GetPostResponse, GetCommunityResponse } from "lemmy-js-client";
+import { GetCommunityResponse } from "lemmy-js-client";
+import { ClipLoader } from "react-spinners";
+import Image from "next/image";
+
 import { useNavbar } from "@/hooks/navbar";
-import { AutoMediaType } from "@/utils/AutoMediaType";
+import { useSession } from "@/hooks/auth";
+
 import Username from "@/components/User/Username";
-import Comment from "@/components/Comment";
 import PostList from "@/components/PostList";
 import RenderMarkdown from "@/components/ui/RenderMarkdown";
-import { useSession } from "@/hooks/auth";
+
 import { subscribeToCommunity } from "@/utils/lemmy";
+
 import { DEFAULT_AVATAR } from "@/constants/settings";
 
 import styles from "@/styles/Pages/CommunityPage.module.css";
-import { ClipLoader } from "react-spinners";
-import Image from "next/image";
+
 
 export default function Community() {
     const { navbar, setNavbar } = useNavbar();
