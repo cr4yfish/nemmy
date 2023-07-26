@@ -20,6 +20,7 @@ export const BACKUP_INSTANCES = [
 export let DEFAULT_INSTANCE = BACKUP_INSTANCES[0];
 export const DEFAULT_AVATAR = "https://i.imgur.com/IN6ZY30.png";
 export const DEFAULT_POST_LIMIT = 2
+export const DEFAULT_SORT_TYPE = "Active"
 
 
 /**

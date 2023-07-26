@@ -17,10 +17,11 @@ export async function GET(req: Request) {
         let community_name = params.get("community_name") || undefined;
         let saved_only = params.get("saved_only") || undefined;
         let auth = params.get("auth") || undefined;
+        const instance = params.get("instance") || undefined;
 
         if(community_name == "undefined") community_name = undefined;
         
-        let client: LemmyHttp = new LemmyHttp(DEFAULT_INSTANCE);
+        let client: LemmyHttp = new LemmyHttp((instance && instance.length > 1 && instance !== "undefined") ? `https://${instance}` : DEFAULT_INSTANCE);
         let posts = await client.getPosts({ 
             type_: type_ as unknown as ListingType,
             sort: sort as unknown as SortType,

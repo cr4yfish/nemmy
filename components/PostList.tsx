@@ -47,7 +47,7 @@ export default function PostList({ fetchParams={ limit: DEFAULT_POST_LIMIT, page
             saved_only?: boolean, auth?: string
         },
     initPosts?: PostView[],
-    setCurrentPost?: Function
+    setCurrentPost?: Function,
     }) {
     const { session } = useSession();
     const { navbar, setNavbar } = useNavbar();
@@ -69,12 +69,17 @@ export default function PostList({ fetchParams={ limit: DEFAULT_POST_LIMIT, page
     }, [])
 
     useEffect(() => {
-        if (navbar?.currentSort && navbar.currentSort !== currentSort) {
+        if(fetchParams.sort && fetchParams.sort !== currentSort) {
+            setCurrentSort(fetchParams.sort);
+            setPosts([]);
+            setCurrentPage(1);
+        } 
+        else if (navbar?.currentSort && navbar.currentSort !== currentSort) {
             setCurrentSort(navbar.currentSort);
             setPosts([]);
             setCurrentPage(1);
         }
-    }, [navbar?.currentSort])
+    }, [navbar?.currentSort, fetchParams?.sort])
     
     useEffect(() => {
         if (navbar?.currentType && navbar.currentType !== currentType) {
@@ -85,7 +90,7 @@ export default function PostList({ fetchParams={ limit: DEFAULT_POST_LIMIT, page
     }, [navbar?.currentType])
 
     const getPosts = async ({ page=1 } : { page?: number }) => {
-        const data = await fetch(`/api/getPosts?page=${page}&community_name=${fetchParams.community_name}&auth=${session?.currentAccount?.jwt}&sort=${currentSort}&type_=${currentType}`);
+        const data = await fetch(`/api/getPosts?page=${page}&community_name=${fetchParams.community_name}&auth=${session?.currentAccount?.jwt}&sort=${currentSort}&type_=${currentType}&instance=${session.currentAccount?.instance}`);
         const json = (await data.json()).posts;
         if(json?.length === 0) {
             setMorePages(false);
