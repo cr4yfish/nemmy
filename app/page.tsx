@@ -9,12 +9,13 @@ import { DEFAULT_INSTANCE, nextInstance } from "@/constants/settings";
 
 export const revalidate = 60 * 2; // 2 minutes
 
-async function getInitialPosts({ instance } : {  instance: string }) {
-  const client = new LemmyHttp( false ? `https://${instance}` : DEFAULT_INSTANCE );
+async function getInitialPosts({ instance, auth } : {  instance: string, auth?: string }) {
+  const client = new LemmyHttp( instance ? `https://${instance}` : DEFAULT_INSTANCE );
   return (await client.getPosts({
     type_: "All",
     sort: "Active",
     page: 1,
+    auth: auth
   })).posts;
 }
 
@@ -31,7 +32,7 @@ export default async function Home() {
 
   let posts: PostView[] = [];
   try {
-    posts = await getInitialPosts({ instance: instance });
+    posts = await getInitialPosts({ instance: instance, auth: currentAccount?.jwt });
   } catch (e) {
     console.error("Instance not available, switching instances");
 
