@@ -6,7 +6,7 @@ import { CommentResponse, CommentView, CreateComment, CreatePost, FollowCommunit
     LoginResponse, GetCaptcha, GetFederatedInstances, GetFederatedInstancesResponse, 
     GetCaptchaResponse, GetPosts, GetPostsResponse, 
     GetReplies, GetRepliesResponse, GetUnreadCount, GetUnreadCountResponse, 
-    CreateCommunity, CommunityResponse, Community, SaveUserSettings } from "lemmy-js-client"
+    CreateCommunity, CommunityResponse, Community, SaveUserSettings, SavePost, SaveComment } from "lemmy-js-client"
 import { AccountWithSiteResponse } from "./authFunctions";
 
 export const getUserDetails = async (jwt: string, baseUrl: string) :  Promise<(GetSiteResponse)> => {
@@ -220,4 +220,38 @@ export const getUserSettings = (accountWithSite: AccountWithSiteResponse) => {
         auth: accountWithSite.jwt
     }
     return settings;
+}
+
+/**
+ * Saves a post
+ * @param params 
+ * @param instance 
+ * @returns 
+ */
+export async function savePost(params: SavePost, instance: string) {
+    const data = await fetch("/api/savePost", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({...params, instance})
+    }).then(res => res.json());
+    return data as PostResponse;
+}
+
+/**
+ * Saves a comment
+ * @param params 
+ * @param instance 
+ * @returns 
+ */
+export async function saveComment(params: SaveComment, instance?: string) {
+    const data = await fetch("/api/saveComment", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({...params, instance})
+    }).then(res => res.json());
+    return data as CommentResponse;
 }
