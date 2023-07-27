@@ -1,4 +1,4 @@
-export const getStorage = () => sessionStorage
+export const getStorage = () => localStorage
 
 export const saveScrollPos = (asPath: string) => {
   try {
