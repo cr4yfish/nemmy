@@ -4,8 +4,8 @@
  * but all instances will be tried out before giving up.
  */
 export const BACKUP_INSTANCES = [
-    "https://lemmy.ml",
     "https://lemmy.world",
+    "https://lemmy.ml",
     "https://sh.itjust.works",
     "https://lemmy.dbzer0.com",
     "https://lemmy.blahaj.zone",
