@@ -1,13 +1,12 @@
 "use client"
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, cache } from "react";
 import { CommunityId, ListingType, PostView, SortType} from "lemmy-js-client";
 import InfiniteScroll from "react-infinite-scroller";
 import { motion } from "framer-motion";
 
 import { useSession } from "@/hooks/auth";
 import { useNavbar } from "@/hooks/navbar";
-import { usePost } from "@/hooks/post";
 
 import EndlessScrollingEnd from "./ui/EndlessSrollingEnd";
 import Loader from "./ui/Loader";
@@ -35,7 +34,6 @@ export default function PostList({ fetchParams={ limit: DEFAULT_POST_LIMIT, page
     }) {
     const { session } = useSession();
     const { navbar, setNavbar } = useNavbar();
-    const { post, setPost } = usePost();
 
     const [posts, setPosts] = useState<PostView[]>(initPosts || []);
     const [currentPage, setCurrentPage] = useState<number>(fetchParams.page || 1);
@@ -72,13 +70,17 @@ export default function PostList({ fetchParams={ limit: DEFAULT_POST_LIMIT, page
         }
     }, [navbar?.currentType])
 
-    const getPosts = async ({ page=1 } : { page?: number }) => {
+    const getPosts = cache(async ({ page=1 } : { page?: number }) => {
         const data = await fetch(`/api/getPosts?page=${page}&community_name=${fetchParams.community_name}&auth=${session?.currentAccount?.jwt}&sort=${currentSort}&type_=${currentType}&instance=${session.currentAccount?.instance}`);
         const json = (await data.json()).posts;
         if(json?.length === 0) {
             setMorePages(false);
         }
         return json as PostView[];
+    })
+    
+    const handleClickPost = (currenPost: PostView) => {
+        localStorage.setItem("currentPost", JSON.stringify(currenPost));
     }
 
     const handleLoadMore = async () => {
@@ -122,7 +124,7 @@ export default function PostList({ fetchParams={ limit: DEFAULT_POST_LIMIT, page
                     {posts.map((post: PostView, index: number) => {
                         return (
                             <Post 
-                                onClick={() => setPost(post)} 
+                                onClick={() => handleClickPost(post)} 
                                 post={post} 
                                 instance={session.currentAccount?.instance}
                                 auth={session.currentAccount?.jwt} 
