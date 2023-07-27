@@ -68,8 +68,27 @@ export default function Comments({
         return () => {
             textarea?.removeEventListener("input", adjustHeight);
         }
-
     }, [])
+
+    // Try to get comments from localStorage
+    useEffect(() => {
+        const localStorageComments = localStorage.getItem("comments");
+        if(localStorageComments) {
+            const parsed = JSON.parse(localStorageComments);
+            if(parsed.postId == postId) {
+                setCommentsData({ comments: parsed.comments });
+            }
+        }
+    }, [])
+    
+    // Save comments to localStorage every 500ms when loaded new Comments
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            if(!commentsData?.comments) return;
+            localStorage.setItem("comments", JSON.stringify({ postId: postData?.post?.id, comments: commentsData?.comments}));
+        }, 500)
+        return () => clearTimeout(timer);
+    }, [commentsData])
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();

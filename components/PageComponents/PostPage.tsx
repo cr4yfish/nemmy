@@ -6,7 +6,6 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 
 import { useNavbar } from "@/hooks/navbar";
-import { usePost } from "@/hooks/post";
 
 import { AutoMediaType } from "@/utils/AutoMediaType";
 import { restoreScrollPos } from "@/utils/scrollPosition";
@@ -25,23 +24,23 @@ import { DEFAULT_AVATAR } from "@/constants/settings";
 
 export default function PostPage({ data, instance, jwt, shallow } :  { data?: PostView, instance?: string, jwt?: string, shallow?: boolean }) {
     const { navbar, setNavbar } = useNavbar();
-    const { post } = usePost();
 
-    if(!post && !data) throw new Error("Neither post nor data is defined");
-
-    const [postData, setPostData] = useState<PostView>(data || post!);
+    const [postData, setPostData] = useState<PostView>(data || {} as PostView);
 
     useEffect(() => {
-        restoreScrollPos(postData.post.id.toString());
-        setNavbar({ ...navbar!, showSort: false, showFilter: false, showSearch: false, showback: false, hidden: false, titleOverride: "" })
+        const localStoragePost = localStorage.getItem("currentPost");
 
-        if(post) {
+        if(localStoragePost) {
+            setPostData(JSON.parse(localStoragePost));
+
             // pathname is like /post/id?preload=true
             // we want to remove the ?preload=true part
             const pathname = window.location.pathname.split("?")[0];
             history.replaceState({}, "", pathname);
         }
-
+        setNavbar({ ...navbar!, showSort: false, showFilter: false, 
+            showSearch: false, showback: false, hidden: false, titleOverride: "" 
+        })
     }, [])
 
     return (
@@ -59,9 +58,9 @@ export default function PostPage({ data, instance, jwt, shallow } :  { data?: Po
                         <div className={`${styles.postHeaderMetadata}`}>
 
                             { postData?.community?.actor_id &&
-                            <Link href={`/c/${postData.community.name}@${new URL(postData.community.actor_id).host}`}>
+                            <Link href={`/c/${postData?.community?.name}@${new URL(postData?.community.actor_id).host}`}>
                                 <div className={`${styles.communityImage}`}>
-                                    <Image width={50} height={50} alt="" src={postData.community.icon || DEFAULT_AVATAR} />
+                                    <Image width={50} height={50} alt="" src={postData?.community.icon || DEFAULT_AVATAR} />
                                 </div>
                             </Link>
                             }
@@ -80,7 +79,7 @@ export default function PostPage({ data, instance, jwt, shallow } :  { data?: Po
                                     <div className="dividerDot"></div>
                                     <span className="text-neutral-400 text-xs"><FormatDate date={new Date(postData?.post?.published)} /></span>
                                     <div className="dividerDot"></div>
-                                    <span className="text-neutral-400 text-xs">{new URL(postData.post.ap_id).host}</span>
+                                    <span className="text-neutral-400 text-xs">{postData?.post?.ap_id && new URL(postData.post.ap_id).host}</span>
                                 </span>
                             </div>
 
@@ -124,7 +123,7 @@ export default function PostPage({ data, instance, jwt, shallow } :  { data?: Po
                     </div>
 
                     <div className={`${styles.postInteractions}`}>
-                        <Vote post={postData} horizontal />
+                        {postData?.counts && <Vote post={postData} horizontal />}
                         <div className={`${styles.interaction}`}><span className="material-icons">chat_bubble_outline</span>{postData?.counts?.comments}</div>
                         <div className={`${styles.interaction}`}><span className="material-icons">more_vert</span></div>
                     </div>
@@ -136,11 +135,13 @@ export default function PostPage({ data, instance, jwt, shallow } :  { data?: Po
 
         </motion.div>
 
-        <Comments 
-            postId={postData?.post?.id}
-            instance={instance} jwt={jwt}
-            postData={postData} setPostData={setPostData}
-        />
+        { postData?.post?.id &&
+            <Comments 
+                postId={postData?.post?.id}
+                instance={instance} jwt={jwt}
+                postData={postData} setPostData={setPostData}
+            />
+        }
 
         </>
     )
