@@ -96,7 +96,7 @@ This means that there is no single huge "Lemmy Server" but many smaller "instanc
     - [X] Voting on Posts
     - [X] Voting on Comments
     - [X] Bookmarking Posts & Comments 
-- [x] PWA
+- [x] PWA installable
 - [X] Community Page
 - [X] Sort/Filter/Search
     - [X] Search
@@ -118,12 +118,15 @@ This means that there is no single huge "Lemmy Server" but many smaller "instanc
     - [ ] Notifications **<- Almost done**
     - [X] User Profile
     - [X] User Posts
-    - [ ] Bookmarks
-    - [ ] User Comments
+    - [ ] Bookmarks **<- Design phase**
+    - [X] User Comments
     - [ ] Chat **<- Being worked on**
-- [ ] Sidebar
+- [X] Sidebar
     - [X] Subscribed Communities
     - [X] Instance Info
+- [ ] Edit tools
+  - [ ] Edit Comments
+  - [ ] Edit Posts
 - [ ] Moderation Tools
     - [ ] Delete Posts/Comments
     - [ ] Ban Users
@@ -132,8 +135,10 @@ This means that there is no single huge "Lemmy Server" but many smaller "instanc
 - [ ] Offline Features **<- Is being worked on on another branch**
     - [ ] Content Cache 
     - [ ] Upload when online
+    - [ ] Show UI without connection
 - [ ] Customization
     - [ ] User Themes
+    - [ ] Dark/Light mode per User choice
     - [ ] Compact Style (Like compact.reddit) **<- Design phase**
     - [ ] Classic Style (Like old.reddit)
 - [ ] QoL Features
@@ -142,6 +147,10 @@ This means that there is no single huge "Lemmy Server" but many smaller "instanc
     - [ ] Bulk Block/Hide Communities with the same or similar Name
     - [ ] Subscribe/Unsubscribe from Communities while in Search mode (So you don't need to leave the Search page just to unsubscribe/subscribe)
     - [ ] Improved Sorting
+- [ ] *Instanceless* features
+    - [X] Create Communities regardless of instance
+    - [ ] Create Posts regardless of instance
+    - [ ] Unified Account cross-instances
 
 Ideas for Q4+
 * Use GPT3.5 to sum up large text bodies
