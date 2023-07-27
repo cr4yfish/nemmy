@@ -143,7 +143,7 @@ export default function Navbar() {
 
     useEffect(() => {
         if(!searchOverlay) return;
-        getTrendingCommunities().then((data) => {
+        getTrendingCommunities(session.currentAccount?.instance).then((data) => {
             if(typeof data === "boolean") return;
             setTrendingCommunities(data.communities);
         })
