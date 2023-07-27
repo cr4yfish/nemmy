@@ -12,8 +12,13 @@ import { AutoMediaType, isImageType } from "@/utils/AutoMediaType";
 
 import styles from "../styles/post.module.css"
 import markdownStyle from "@/styles/util/markdown.module.css";
+import BookmarkButton from "./ui/BookmarkButton";
 
-export default function Post({ post, onClick=() => null } : { post: PostView, onClick?: () => void }) {
+export default function Post({ 
+    post, onClick=() => null, instance, auth
+    } : { 
+    post: PostView, onClick?: () => void, instance?: string, auth?: string
+    }) {
     if(!post) throw new Error("Post is undefined");
 
     const hasMedia = post.post.embed_video_url || post.post.thumbnail_url;
@@ -52,7 +57,10 @@ export default function Post({ post, onClick=() => null } : { post: PostView, on
                             <div className={`${styles.headerMetadataContent}`}>
                                 <Link 
                                     href={`/c/${post?.community?.name}@${new URL(post.post.ap_id).host}`} 
-                                    className={`${styles.sub}`}><span className="font-bold capitalize">{post.community.name}</span> <span className="font-light text-xs">@{new URL(post.post.ap_id).host}</span></Link>
+                                    className={`${styles.sub} flex flex-row flex-wrap gap-1`}>
+                                        <span className="font-bold capitalize">{post.community.name}</span>
+                                        <span className="font-light text-xs">@ {new URL(post.post.ap_id).host}</span>
+                                </Link>
                                 <span className={`${styles.dividerDot}`}></span>
                                 <div className={`${styles.user}`}> 
                                     <Username user={post.creator} baseUrl={baseUrl} /> 
@@ -129,7 +137,18 @@ export default function Post({ post, onClick=() => null } : { post: PostView, on
                     <div className="hidden max-md:flex"><Vote post={post} horizontal /></div> 
                     <div className={`${styles.footerInteractions}`}>
                         <button>{post?.counts?.comments > 0 && FormatNumber(post?.counts?.comments, true)}<span className="material-icons-outlined">chat_bubble_outline</span></button>
-                        <button><span className="material-icons">bookmark_border</span></button>
+                        
+                        { auth && instance && post.post.id &&
+                            <BookmarkButton 
+                                id={post.post.id} 
+                                auth={auth} 
+                                instance={instance} 
+                                initState={post.saved}
+                                onChange={(newState) => post.saved = newState}
+                                type="post"
+                            />
+                        }
+
                         <button><span className="material-icons-outlined">more_horiz</span></button>
                     </div>
                     

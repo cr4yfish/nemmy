@@ -120,7 +120,15 @@ export default function PostList({ fetchParams={ limit: DEFAULT_POST_LIMIT, page
                     key={"postList"}
                     >
                     {posts.map((post: PostView, index: number) => {
-                        return <Post onClick={() => setPost(post)}  post={post} key={index} />
+                        return (
+                            <Post 
+                                onClick={() => setPost(post)} 
+                                post={post} 
+                                instance={session.currentAccount?.instance}
+                                auth={session.currentAccount?.jwt} 
+                                key={index} 
+                            />
+                        )
                     })}
                     
                     {!morePages && posts.length > 0 && <EndlessScrollingEnd key={"end"} />}

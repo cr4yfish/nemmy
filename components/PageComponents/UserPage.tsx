@@ -197,7 +197,14 @@ export default function UserPage({ initialUser, userInstance } : {  initialUser:
                         className={`${postListStyles.postList} `}
                         >
                         {posts.map((post: PostView, index: number) => {
-                            return <Post post={post} key={post.post.id} />
+                            return (
+                                <Post 
+                                    post={post} 
+                                    key={post.post.id} 
+                                    instance={session.currentAccount?.instance}
+                                    auth={session.currentAccount?.jwt}
+                                />
+                            )
                         })}
 
                         {comments.map((comment: CommentView, index: number) => {
