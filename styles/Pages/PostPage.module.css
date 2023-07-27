@@ -9,14 +9,15 @@
 .wrapper {
     @apply flex flex-col items-center 
     gap-6 justify-center pb-4
-    max-w-2xl
-    max-md:w-full
-    max-sm:p-2
+    w-full
+    max-w-3xl
+    max-md:w-full max-md:p-4
+    max-sm:p-4
     ;
 }
 
 .post {
-    @apply flex flex-col items-center gap-2 justify-center max-w-xl max-md:w-full;
+    @apply flex flex-col items-center gap-2 justify-center w-full;
 }
 
 .postHeader {
@@ -43,7 +44,7 @@
 }
 
 .postHeaderMetadataContentUsername {
-    @apply flex flex-row gap-1 items-center;
+    @apply flex flex-row items-center;
 }
 
 .postHeaderTitle {
@@ -53,7 +54,7 @@
 }
 
 .postContent {
-    @apply max-w-xl  max-md:w-full;
+    @apply w-full;
     overflow: hidden;
     overflow-wrap: break-word;
     word-wrap: break-word;
