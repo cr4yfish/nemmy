@@ -16,7 +16,6 @@ export default function BookmarkButton({
     const [bookmarked, setBookmarked] = useState<boolean>(initState);
 
     const handleBookmark = async () => {
-        console.log("Save " + type);
         if(type === "post") {
             await savePost({
                 post_id: id as unknown as PostId,
@@ -35,7 +34,7 @@ export default function BookmarkButton({
     }
     return (
         <>
-        <button onClick={() => handleBookmark()}>
+        <button onClick={() => handleBookmark()} className="flex justify-center items-center">
             {bookmarked ? 
             <span className="material-symbols-outlined filled">bookmark</span>
             :<span className="material-symbols-outlined">bookmark_add</span>}

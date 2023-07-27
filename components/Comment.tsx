@@ -1,12 +1,18 @@
 "use client"
 import { CommentView, GetCommentsResponse } from "lemmy-js-client"
 import React, { useState, useEffect, Dispatch, SetStateAction, useRef } from "react"
+
+
 import RenderMarkdown from "./ui/RenderMarkdown"
 import Vote from "./Vote"
 import Username from "./User/Username"
+import BookmarkButton from "./ui/BookmarkButton"
+
 import { useSession } from "@/hooks/auth"
+
 import { FormatDate } from "@/utils/formatDate"
 import { sendComment } from "@/utils/lemmy"
+
 
 // Tailwind colors for comment chain colors
 const colors = ["bg-red-300", "bg-orange-300", "bg-amber-300", "bg-yellow-300", "bg-lime-300", "bg-green-300", 
@@ -123,8 +129,17 @@ export default function Comment({ commentView, allComments, depth=0, setReplyCom
                         </div>
                         <div className={`${styles.commentInteractions}`}>
                             <Vote comment={commentView} isComment horizontal />
-                            <div className="flex flex-row gap-4">
+                            <div className="flex flex-row gap-4 items-center">
                                 <button onClick={() => handleReply()} className={`${styles.interaction}`}><span className="material-icons">chat_bubble_outline</span>Reply</button>
+                                {session?.currentAccount?.jwt &&
+                                    <BookmarkButton 
+                                        type="comment"
+                                        id={commentView.comment.id}
+                                        auth={session.currentAccount.jwt}
+                                        instance={session.currentAccount.instance}
+                                        initState={commentView.saved}
+                                    />
+                                }
                                 <div className={`${styles.interaction}`}><span className="material-icons">more_vert</span></div>
                             </div>
                             
@@ -151,6 +166,7 @@ export default function Comment({ commentView, allComments, depth=0, setReplyCom
                             <span>Reply</span>
                             <span className="material-symbols-outlined">send</span>
                         </button>
+
                     </form>
                     }
 
