@@ -8,7 +8,6 @@ import { DEFAULT_AVATAR } from "@/constants/settings"
 import { FormatDate } from "@/utils/formatDate"
 
 export default function CommentSingle({ comment } : { comment: CommentView }) {
-    console.log(comment)
     return (
         <>
         <div className="flex flex-col gap-1 px-4 pb-4 border-b border-neutral-300">

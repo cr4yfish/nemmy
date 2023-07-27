@@ -11,8 +11,6 @@ export async function POST(req: Request) {
         let auth = body.auth || undefined;
         let instance = body.instance || undefined;
 
-        console.log("savePost", post_id, save, auth, instance)
-
         if(!post_id || !auth) throw new Error("missing parameters");
 
         let client: LemmyHttp = new LemmyHttp(instance ? `https://${instance}` : DEFAULT_INSTANCE);

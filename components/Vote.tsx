@@ -3,10 +3,10 @@
 import { useEffect, useState } from "react";
 import AnimatedNumber from "react-awesome-animated-number";
 import "react-awesome-animated-number/dist/index.css";
+import { CommentView, PostView } from "lemmy-js-client";
 import { useSession } from "@/hooks/auth";
 
 import styles from "../styles/votes.module.css"
-import { CommentView, PostView } from "lemmy-js-client";
 
 export default function Vote({ horizontal=false, post, comment, isComment } : { horizontal?: boolean, post?: PostView, comment?: CommentView, isComment?: boolean }) {
     const [score, setScore] = useState((post?.counts?.score || comment?.counts?.score) || 0);
