@@ -13,7 +13,7 @@ import PostPage from "@/components/PageComponents/PostPage";
 async function getPostData (postId: string, jwt?: string, instance?: string) {
 
     try {
-        let client: LemmyHttp = new LemmyHttp(instance ? `https://${instance}` : DEFAULT_INSTANCE);
+        let client: LemmyHttp = new LemmyHttp(instance ? `${instance}` : DEFAULT_INSTANCE);
 
         let posts = await client.getPost({ 
             id: postId as unknown as PostId, 
