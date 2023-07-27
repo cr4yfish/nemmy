@@ -10,7 +10,7 @@ import { DEFAULT_INSTANCE, nextInstance } from "@/constants/settings";
 export const revalidate = 60 * 2; // 2 minutes
 
 async function getInitialPosts({ instance, auth } : {  instance: string, auth?: string }) {
-  const client = new LemmyHttp( instance ? `https://${instance}` : DEFAULT_INSTANCE );
+  const client = new LemmyHttp( instance || DEFAULT_INSTANCE );
   return (await client.getPosts({
     type_: "All",
     sort: "Active",
@@ -37,7 +37,8 @@ export default async function Home() {
     console.error("Instance not available, switching instances");
 
     let isError = true;
-    while(isError) {
+    let step = 0;
+    while(isError && step < 9) {
       try {
         // switch to next instance
         nextInstance();
@@ -45,7 +46,8 @@ export default async function Home() {
         isError = false; // stop loop
       } catch (e) {
         // continue in loop
-        console.error("Instance not available, switching instances");
+        step += 1;
+        console.error("Instance not available, switching instances. Step:", step);
       }
     }
   }
