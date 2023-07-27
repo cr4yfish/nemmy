@@ -73,7 +73,7 @@ export default function Post({
                         </div>
                         
                         <Link 
-                            onClick={onClick} href={postUrl} shallow
+                            onClick={onClick} href={postUrl} target="_blank" shallow
                             className={`${styles.headerTitle}`}
                         >
                             <h2 className={`${styles.title}`}>{post.post.name}</h2>
