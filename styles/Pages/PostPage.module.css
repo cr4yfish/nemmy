@@ -29,7 +29,7 @@
 }
 
 .communityImage {
-    @apply rounded-full;
+    @apply rounded-full object-cover;
     overflow: hidden;
     height: 50px;
     width: 50px;
@@ -48,8 +48,8 @@
 }
 
 .postHeaderTitle {
-    @apply text-3xl font-bold
-    max-md:text-xl
+    @apply text-xl font-bold
+    max-md:text-lg
     ;
 }
 

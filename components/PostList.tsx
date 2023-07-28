@@ -107,18 +107,19 @@ export default function PostList({ fetchParams={ limit: DEFAULT_POST_LIMIT, page
     return (
         <motion.div
             id="postList"
-            initial={{ opacity: 0, x: -1000 }}
-            animate={{ opacity: 1, x: 0, transition: { bounce: 0.1} }}
-            exit={{ opacity: 0, x: -1000 }}
-            className="flex flex-col items-center w-full">
-            <div className="flex flex-col items-center justify-start pb-10 max-w-3xl max-md:w-full">
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1, transition: { bounce: 0.1} }}
+            exit={{ opacity: 0 }}
+            className="w-fit max-w-2xl max-md:w-full px-4">
+
+            <div className=" w-full flex justify-center">
                 
                 <InfiniteScroll 
                     pageStart={1}
                     loadMore={async () => await handleLoadMore()}
                     hasMore={morePages}
                     loader={<Loader key={"loaderCard"} />}
-                    className={`${styles.postList} pb-10`}
+                    className={`${styles.postList} w-fit pb-10`}
                     key={"postList"}
                     >
                     {posts.map((post: PostView, index: number) => {

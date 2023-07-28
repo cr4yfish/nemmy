@@ -102,16 +102,16 @@ export default function Vote({ horizontal=false, post, comment, isComment } : { 
     return (
         <>
         <div className={`${horizontal ? styles.votesMobile : styles.votesDesktop}`}>
-            <span onClick={() => handleLike()}  className={`material-icons ${styles.upvote} ${liked && "text-fuchsia-400"}`}>arrow_upward</span>
+            <span onClick={() => handleLike()}  className={`material-symbols-outlined ${styles.upvote} ${liked && "text-fuchsia-400 filled"}`}>shift</span>
             <span className={`${styles.votesCount}`}>
                 <AnimatedNumber 
                     value={score}
                     hasComma={false}
-                    size={20}
+                    size={15}
                     duration={500}
                 />
             </span>
-            <span onClick={() => handleDislike()} className={`material-icons ${styles.downvote} ${disliked && "text-blue-400"}`}>arrow_downward</span>
+            <span onClick={() => handleDislike()} className={`material-symbols-outlined rotate-180 ${styles.downvote} ${disliked && "text-blue-400 filled"}`}>shift</span>
         </div>
         </>
     )

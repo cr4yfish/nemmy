@@ -1,8 +1,11 @@
 .wrapper {
     @apply 
     bg-neutral-50 text-slate-100 border-b border-neutral-300 rounded-none
-    dark:bg-neutral-900 dark:rounded-lg dark:border-0
-    max-w-3xl
+    dark:bg-neutral-900 dark:rounded-lg dark:border dark:border-neutral-800
+    hover:dark:border-neutral-700
+    max-md:hover:border-neutral-800
+    transition-all duration-100
+    max-w-2xl
     max-md:w-full
     ;
     padding: 1rem;
@@ -12,15 +15,12 @@
     align-items: flex-start;
     gap: 15px;
     overflow: hidden;
-    width: 100%;
+    width: 100%;;
 }
 
 
 .rightSide {
-    display: flex;
-    flex-direction: column;
-    gap: .75rem;
-    width: 100%;
+    @apply flex flex-col gap-1 w-full;
 }
 
 .header {
@@ -101,8 +101,8 @@
 
 
 .title {
-    @apply text-2xl font-bold text-neutral-900 dark:text-neutral-100
-    max-md:text-lg text-left
+    @apply text-xl font-bold text-neutral-900 dark:text-neutral-100
+    max-md:text-sm text-left
 }
 
 .flair {
@@ -123,13 +123,7 @@
 }
 
 .body {
-    @apply text-neutral-700 dark:text-neutral-300 w-full;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    line-clamp: 1;
-    text-overflow: ellipsis;
-    overflow: hidden;
+    @apply text-neutral-700 dark:text-neutral-300 w-full line-clamp-5 text-sm;
 }
 
 .postBodyEmbed {
@@ -144,15 +138,16 @@
     @apply text-xs;
     text-overflow: ellipsis;
     overflow: hidden;
+    font-size: 9px
 }
 
 .postBodyEmbedTitle {
-    @apply text-sm font-bold
+    @apply text-xs font-bold
     ;
 }
 
 .postBodyEmbedDescription {
-    @apply text-sm max-sm:text-xs font-light;
+    @apply text-xs font-light;
 }
 
 

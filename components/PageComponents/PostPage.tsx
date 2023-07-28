@@ -63,9 +63,11 @@ export default function PostPage({
 
                             { postData?.community?.actor_id &&
                             <Link href={`/c/${postData?.community?.name}@${new URL(postData?.community.actor_id).host}`}>
-                                <div className={`${styles.communityImage}`}>
-                                    <Image width={50} height={50} alt="" src={postData?.community.icon || DEFAULT_AVATAR} />
-                                </div>
+                                <Image 
+                                    className={`${styles.communityImage}`} 
+                                    width={50} height={50} alt="" 
+                                    src={postData?.community.icon || DEFAULT_AVATAR} 
+                                />
                             </Link>
                             }
 
@@ -73,13 +75,16 @@ export default function PostPage({
 
                                 { postData?.community?.actor_id &&
                                 <Link href={`/c/${postData?.community?.name}@${new URL(postData?.community?.actor_id).host}`}>
-                                    <span>c/{postData?.community?.name}</span>
+                                    <span className="text-xs ">{postData?.community?.name}</span>
                                 </Link>
                                 }
                                 
-                                <span className={`${styles.postHeaderMetadataContentUsername}`}>
-                                    <span className="max-sm:hidden">Posted by</span>
-                                    <Username user={postData?.creator} baseUrl="" />
+                                <span className={`${styles.postHeaderMetadataContentUsername} text-xs`}>
+                                    <div className=" flex flex-row gap-1 items-center">
+                                        <span className="max-sm:hidden">Posted by</span>
+                                        <Username user={postData?.creator} baseUrl="" />
+                                    </div>
+
                                     <div className="dividerDot"></div>
                                     <span className="text-neutral-400 text-xs"><FormatDate date={new Date(postData?.post?.published)} /></span>
                                     <div className="dividerDot"></div>
@@ -96,12 +101,18 @@ export default function PostPage({
                     <div className={`${styles.postContent}`}>
 
                         {/* Display Media e.g. Image, Video, Gif */ }
-                        { (postData?.post?.url || postData?.post?.embed_video_url) && !postData?.post?.url?.endsWith(".html") &&
-                        <div className={`${styles.postBodyMedia}`}>
-                            {postData?.post?.url && <AutoMediaType url={postData?.post?.url} />}
-                            {postData?.post?.embed_video_url && <AutoMediaType url={postData?.post?.embed_video_url} />}
-                        </div>
-                        }
+                            { (postData?.post?.url && postData?.post?.url?.endsWith(".html")) &&
+                                <div id="image" className={`${styles.postBodyMedia}`}>
+                                    <span>{postData.post.url}</span>
+                                    {postData?.post?.url && <AutoMediaType url={postData?.post?.url} />}
+                                </div>
+                            }
+
+                            { postData?.post?.embed_video_url &&
+                                <div id="video" className={`${styles.postBodyMedia}`}>
+                                    {postData?.post?.embed_video_url && <AutoMediaType url={postData?.post?.embed_video_url} />}
+                                </div>
+                            }
 
                         {/* Display Embed thumbnail with Link e.g. Article */ }
                         { (postData?.post?.embed_title || postData?.post?.url?.endsWith(".html")) &&
