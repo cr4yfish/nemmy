@@ -34,6 +34,7 @@ export default function Comment({ commentView, allComments, depth=0, setReplyCom
     const [showDesktopReply, setShowDesktopReply] = useState(false);
     const [replyText, setReplyText] = useState("");
     const textareaRef = useRef<HTMLTextAreaElement>(null);
+    const [loading, setLoading] = useState<boolean>(false);
 
     // Adjust textarea height to content on user input
     useEffect(() => {
@@ -59,22 +60,31 @@ export default function Comment({ commentView, allComments, depth=0, setReplyCom
     // Load children from api
     useEffect(() => {
         if(!childrenError) return;
+        if(children.length > 0) return;
+        if(loading) return;
+        if(depth > 10) return;
+
         (async () => {
             if(session.pendingAuth) return;
+            setLoading(true)
             try {
+                console.log("fetching children")
                 const data = await fetch(`/api/getComments?post_id=${commentView.comment.post_id}&parent_id=${commentView.comment.id}&sort=Top&page=1&auth=${session.currentAccount?.jwt}
                 `);
                 const json = (await data.json());
                 if(json.error) {
                     console.error(json.error)
                     setChildrenError(true);
+                    setLoading(false)
                     return;
                 } else {
                     setChildrenError(false);
                     const comments = json as GetCommentsResponse;
                     setChildren(comments.comments.filter(c => c.comment.id !== commentView.comment.id));
+                    setLoading(false)
                 }
             } catch(e) {
+                setLoading(false)
                 console.error(e);
             }  
         })()
