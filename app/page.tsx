@@ -1,4 +1,4 @@
-import { LemmyHttp, PostView } from "lemmy-js-client"
+import { GetSiteResponse, LemmyHttp, PostView } from "lemmy-js-client"
 import { cookies } from "next/dist/client/components/headers";
 
 import FeedPage from "@/components/PageComponents/FeedPage";
@@ -19,6 +19,11 @@ async function getInitialPosts({ instance, auth } : {  instance: string, auth?: 
   })).posts;
 }
 
+async function getInitialSiteResponse(instance: string) {
+  const client = new LemmyHttp( instance ? `https://${instance}` : DEFAULT_INSTANCE );
+  return await client.getSite();
+}
+
 export default async function Home() {
   const cookiesStore = cookies();
   const currentAccount = getCurrentAccountServerSide(cookiesStore);
@@ -31,8 +36,10 @@ export default async function Home() {
   }
 
   let posts: PostView[] = [];
+  let siteResponse: GetSiteResponse | null = null;
   try {
     posts = await getInitialPosts({ instance: instance, auth: currentAccount?.jwt });
+    siteResponse = await getInitialSiteResponse(instance);
   } catch (e) {
     console.error("Instance not available, switching instances");
 
@@ -43,6 +50,7 @@ export default async function Home() {
         // switch to next instance
         nextInstance();
         posts = await getInitialPosts({ instance: DEFAULT_INSTANCE });
+        siteResponse = await getInitialSiteResponse(DEFAULT_INSTANCE);
         isError = false; // stop loop
       } catch (e) {
         // continue in loop
@@ -57,6 +65,7 @@ export default async function Home() {
 
       <FeedPage initPosts={posts} fetchParams={{ page: 2 }}
         instance={instance} jwt={currentAccount?.jwt}
+        siteResponse={siteResponse}
       />
       
     </div>

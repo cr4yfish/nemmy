@@ -1,9 +1,12 @@
-import { ListingType, SortType, CommunityId, PostView, GetPostResponse } from "lemmy-js-client"
+import { ListingType, SortType, GetSiteResponse, 
+    CommunityId, PostView } from "lemmy-js-client"
 
 import PostList from "../PostList"
+import RenderMarkdown from "../ui/RenderMarkdown"
+import SiteInfoCard from "../SiteInfoCard"
 
 export default function FeedPage({
-    fetchParams, initPosts, instance, jwt
+    fetchParams, initPosts, instance, jwt, siteResponse
 } : {
     fetchParams?: 
         {
@@ -15,14 +18,20 @@ export default function FeedPage({
     initPosts?: PostView[],
     instance: string,
     jwt?: string
+    siteResponse: GetSiteResponse | null
 }) {
 
+
     return (
-        <>
-        <PostList 
-            fetchParams={fetchParams}
-            initPosts={initPosts}
-        />
-        </>
+        <div className="flex flex-row justify-center gap-2">
+
+            <PostList 
+                fetchParams={fetchParams}
+                initPosts={initPosts}
+            />
+
+            <SiteInfoCard siteResponse={siteResponse} />
+
+        </div>
     )
 }
