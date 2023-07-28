@@ -21,9 +21,12 @@ const colors = ["bg-red-300", "bg-orange-300", "bg-amber-300", "bg-yellow-300", 
 import styles from "@/styles/Comment.module.css"
 import RenderFormattingOptions from "./ui/RenderFormattingOptions"
 
-export default function Comment({ commentView, allComments, depth=0, setReplyComment, setShowReply }: { 
+export default function Comment({ commentView, allComments, depth=0, setReplyComment, setShowReply, commentReplyMode=false }: { 
     commentView: CommentView, allComments: CommentView[], 
-    depth?: number, setReplyComment: Dispatch<SetStateAction<CommentView>>, setShowReply: React.Dispatch<React.SetStateAction<boolean>> }) {
+    depth?: number, setReplyComment: Dispatch<SetStateAction<CommentView>>, 
+    setShowReply: React.Dispatch<React.SetStateAction<boolean>>,
+    commentReplyMode?: boolean
+    }) {
     const { session } = useSession();
     const [children, setChildren] = useState<CommentView[]>([]);
     const [childrenHidden, setChildrenHidden] = useState(false);
@@ -58,19 +61,22 @@ export default function Comment({ commentView, allComments, depth=0, setReplyCom
         if(!childrenError) return;
         (async () => {
             if(session.pendingAuth) return;
-            const data = await fetch(`/api/getComments?post_id=${commentView.comment.post_id}&parent_id=${commentView.comment.id}&sort=Top&page=1&auth=${session.currentAccount?.jwt}
-            `);
-            const json = (await data.json());
-            if(json.error) {
-                console.error(json.error)
-                setChildrenError(true);
-                return;
-            } else {
-                setChildrenError(false);
-                const comments = json as GetCommentsResponse;
-                setChildren(comments.comments.filter(c => c.comment.id !== commentView.comment.id));
-            }
-
+            try {
+                const data = await fetch(`/api/getComments?post_id=${commentView.comment.post_id}&parent_id=${commentView.comment.id}&sort=Top&page=1&auth=${session.currentAccount?.jwt}
+                `);
+                const json = (await data.json());
+                if(json.error) {
+                    console.error(json.error)
+                    setChildrenError(true);
+                    return;
+                } else {
+                    setChildrenError(false);
+                    const comments = json as GetCommentsResponse;
+                    setChildren(comments.comments.filter(c => c.comment.id !== commentView.comment.id));
+                }
+            } catch(e) {
+                console.error(e);
+            }  
         })()
     }, [commentView, allComments, childrenError])
 
@@ -110,6 +116,7 @@ export default function Comment({ commentView, allComments, depth=0, setReplyCom
     return (
         <>
         <div className={`${styles.wrapper}`}>
+
 
             <div className={`${styles.header}`}>
                 <div className={`${styles.username}`}><Username user={commentView?.creator} baseUrl="" /></div>

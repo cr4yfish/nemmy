@@ -1,14 +1,13 @@
 "use client"
 
 import React, {  useEffect, useState } from "react";
-import { GetPostResponse, PostView } from "lemmy-js-client";
+import { CommentResponse, PostView } from "lemmy-js-client";
 import Link from "next/link";
 import { motion } from "framer-motion";
 
 import { useNavbar } from "@/hooks/navbar";
 
 import { AutoMediaType } from "@/utils/AutoMediaType";
-import { restoreScrollPos } from "@/utils/scrollPosition";
 
 import styles from "@/styles/Pages/PostPage.module.css";
 import markdownStyle from "@/styles/util/markdown.module.css";
@@ -22,7 +21,11 @@ import Comments from "../Comments";
 import Image from "next/image";
 import { DEFAULT_AVATAR } from "@/constants/settings";
 
-export default function PostPage({ data, instance, jwt, shallow } :  { data?: PostView, instance?: string, jwt?: string, shallow?: boolean }) {
+export default function PostPage({ 
+    data, instance, jwt, shallow, postId, commentResponse } :  { 
+        data?: PostView, instance?: string, jwt?: string, 
+        shallow?: boolean, postId: number, commentResponse?: CommentResponse
+    }) {
     const { navbar, setNavbar } = useNavbar();
 
     const [postData, setPostData] = useState<PostView>(data || {} as PostView);
@@ -31,7 +34,8 @@ export default function PostPage({ data, instance, jwt, shallow } :  { data?: Po
         const localStoragePost = localStorage.getItem("currentPost");
 
         if(localStoragePost) {
-            setPostData(JSON.parse(localStoragePost));
+            const parsed = JSON.parse(localStoragePost) as PostView;
+            (parsed?.post?.id == postId) && setPostData(parsed);
 
             // pathname is like /post/id?preload=true
             // we want to remove the ?preload=true part
@@ -118,7 +122,12 @@ export default function PostPage({ data, instance, jwt, shallow } :  { data?: Po
                         }
 
                         {/* The Text Body rendered in Markdown */ }
-                        {postData?.post?.body && <div className={`${styles.postContentText} ${markdownStyle.markdown}`}><RenderMarkdown>{postData?.post?.body}</RenderMarkdown></div>}
+                        {postData?.post?.body && 
+                            <div 
+                                className={`${styles.postContentText} ${markdownStyle.markdown}`}>
+                                    <RenderMarkdown>{postData?.post?.body}</RenderMarkdown>
+                            </div>
+                        }
                         
                     </div>
 
@@ -140,6 +149,7 @@ export default function PostPage({ data, instance, jwt, shallow } :  { data?: Po
                 postId={postData?.post?.id}
                 instance={instance} jwt={jwt}
                 postData={postData} setPostData={setPostData}
+                commentResponse={commentResponse}
             />
         }
 

@@ -101,11 +101,27 @@ export const sendComment = async (params: CreateComment) => {
 }
 
 export const getComments = async (params: GetComments, baseUrl: string) : Promise<(void | GetCommentsResponse)> => {
-    const data = await fetch(`/api/getComments?post_id=${params.post_id}&sort=${params.sort}&limit=${params.limit}&page=${params.page}&max_depth=${params.max_depth}&baseUrl=${baseUrl}&type_=All&auth=${params.auth}`).then(res => res.json());
-    if(!data?.comments) {
-        return console.warn("Something went wrong getting the comments");
+    try {
+        const data = await fetch(`/api/getComments?post_id=${params.post_id}&sort=${params.sort}&limit=${params.limit}&page=${params.page}&max_depth=${params.max_depth}&parent_id=${params.parent_id}&baseUrl=${baseUrl}&type_=All&auth=${params.auth}`).then(res => res.json());
+        if(!data?.comments) {
+            return console.warn("Something went wrong getting the comments");
+        }
+        return data;  
+    } catch(err) {
+        console.warn(err);
     }
-    return data;
+}
+
+export const getCommentChildren = async (params: GetComments, baseUrl: string) : Promise<(void | GetCommentsResponse)> => {
+    try {
+        const data = await fetch(`/api/getComments?post_id=${params.post_id}&parent_id=${params.parent_id}&sort=Top&page=1&auth=${params.auth}`).then(res => res.json());
+        if(!data?.comments) {
+            return console.warn("Something went wrong getting the comments");
+        }
+        return data;  
+    } catch(err) {
+        console.warn(err);
+    }
 }
 
 export const subscribeToCommunity = async (params: FollowCommunity) : Promise<CommentResponse> => {

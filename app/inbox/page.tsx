@@ -1,4 +1,4 @@
-import { LemmyHttp, GetPersonMentions, GetPersonMentionsResponse, GetRepliesResponse } from "lemmy-js-client";
+import { LemmyHttp, GetRepliesResponse, GetPersonDetailsResponse } from "lemmy-js-client";
 import { cookies } from "next/dist/client/components/headers";
 
 import InboxCard from "@/components/ui/InboxCard";
@@ -21,21 +21,27 @@ async function getReplies({
     return replies;
 }
 
+
 export default async function Inbox({ params: { page } } : { params: { page: number } }) {
     const cookieStore = cookies();
     const currentAccount = getCurrentAccountServerSide(cookieStore);
 
+    if(!currentAccount) return (<></>);
 
     const replies = await getReplies({ jwt: currentAccount?.jwt, instance: currentAccount?.instance });
-
     return (
         <>
             <div className="flex flex-col gap-4 dark:gap-0 max-w-3xl h-full overflow-y-hidden">
                 {replies.replies.map((reply, i) => (
-                    <InboxCard key={i} reply={reply} />
+                    <InboxCard key={i} reply={reply} auth={currentAccount?.jwt} instance={currentAccount?.instance} />
                 ))}
-                {currentAccount && <InboxInfiniteScroller initReplies={replies} auth={currentAccount.jwt} instance={currentAccount.instance} />}
-            </div>
+                {currentAccount && 
+                    <InboxInfiniteScroller 
+                        initReplies={replies} auth={currentAccount.jwt} 
+                        instance={currentAccount.instance} 
+                    />
+                }
+            </div> 
         </>
     )
 

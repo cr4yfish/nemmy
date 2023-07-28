@@ -1,8 +1,9 @@
 "use client"
 import { useState, useRef, FormEvent, useEffect } from "react"
 import { ClipLoader, BounceLoader } from "react-spinners"
-import { CommentSortType, CommentView, GetCommentsResponse, GetPostResponse, PostView } from "lemmy-js-client"
+import { CommentResponse, CommentSortType, CommentView, GetCommentsResponse, GetPostResponse, PostView } from "lemmy-js-client"
 import InfiniteScroll from "react-infinite-scroller"
+import Link from "next/link"
 
 import RenderFormattingOptions from "./ui/RenderFormattingOptions"
 
@@ -19,6 +20,7 @@ import styles from "@/styles/Pages/PostPage.module.css"
 import EndlessScrollingEnd from "./ui/EndlessSrollingEnd"
 
 
+
 function Loader() {
     return (
         <div className="flex justify-center items-center w-full mb-10">
@@ -28,10 +30,11 @@ function Loader() {
 }
 
 export default function Comments({
-    postId, jwt, instance, setPostData, postData
+    postId, jwt, instance, setPostData, postData, commentResponse
 } : { 
     postId: number, jwt?: string, instance?: string, 
-    setPostData: (postData: PostView) => void, postData: PostView
+    setPostData: (postData: PostView) => void, postData: PostView,
+    commentResponse?: CommentResponse
 }) {
     const { session } = useSession();
 
@@ -50,6 +53,9 @@ export default function Comments({
     const [forceCommentUpdate, setForceCommentUpdate] = useState<number>(0);
     const [commentsLoading, setCommentsLoading] = useState<boolean>(true);
     const [hasMoreComments, setHasMoreComments] = useState<boolean>(true);
+
+    // commentReplyMode
+    const [parentId, setParentId] = useState<number | undefined>(undefined);
 
     // Adjust textarea height to content on user input
     useEffect(() => {
@@ -72,6 +78,7 @@ export default function Comments({
 
     // Try to get comments from localStorage
     useEffect(() => {
+        if(commentResponse) return;
         const localStorageComments = localStorage.getItem("comments");
         if(localStorageComments) {
             const parsed = JSON.parse(localStorageComments);
@@ -83,6 +90,7 @@ export default function Comments({
     
     // Save comments to localStorage every 500ms when loaded new Comments
     useEffect(() => {
+        if(commentResponse) return;
         const timer = setTimeout(() => {
             if(!commentsData?.comments) return;
             localStorage.setItem("comments", JSON.stringify({ postId: postData?.post?.id, comments: commentsData?.comments}));
@@ -120,12 +128,30 @@ export default function Comments({
     }
 
     useEffect(() => {
+        if(commentResponse) {
+            console.log("Comment response mode", commentResponse)
+            setReplyCommet(commentResponse.comment_view);
+            setCommentsData({ comments: [commentResponse.comment_view] });
+            return;
+        }
         handleLoadMoreComments();
     }, [forceCommentUpdate, instance, session.pendingAuth]);
+
+    useEffect(() => {
+        // load parent comment if reply is set
+        const path = commentResponse?.comment_view?.comment?.path.split(".");
+        if(path) {
+            const parentId = path[path.length - 2];
+            setParentId(parseInt(parentId));
+        }
+        
+    }, [commentResponse])
 
     const handleLoadMoreComments = async () => {
         if(session?.pendingAuth) return;
         if(!postData?.post?.id) return;
+        if(!hasMoreComments) return;
+        if(commentResponse) return;
 
         setCommentsLoading(true);
         
@@ -170,7 +196,7 @@ export default function Comments({
         <div id="comments" className={`flex flex-col items-center w-full gap-2`}>
 
             {/* desktop comments textarea */}
-            <form onSubmit={(e) => handleSubmit(e)} className={`${styles.textarea} max-w-2xl max-md:w-full max-sm:p-2`}>
+            <form onSubmit={(e) => handleSubmit(e)} className={`${styles.textarea} max-w-3xl max-md:w-full max-sm:p-2`}>
                 <div className="flex flex-row gap-2 dark:text-neutral-400 border-b dark:border-neutral-700 pb-2 mb-1 w-full">
                     <RenderFormattingOptions />
                 </div>
@@ -205,7 +231,7 @@ export default function Comments({
                 allComments={commentsData} setPost={setPostData} setComments={setCommentsData}
             />
 
-            <div className={`${styles.comments} max-w-2xl max-md:w-full max-sm:p-2 mb-24`}>
+            <div className={`${styles.comments} max-w-3xl max-md:w-full max-sm:p-2 mb-24`}>
 
                 {commentsData?.comments?.length > 0 && 
                 <div className={`${styles.commentsInteractions}`}>
@@ -217,22 +243,43 @@ export default function Comments({
                 }
 
                 {/* Comments  */}
-                <InfiniteScroll 
-                    className={`${styles.commentsList}`}
-                    pageStart={1}
-                    hasMore={hasMoreComments}
-                    loadMore={async () => await handleLoadMoreComments()}
-                    loader={<Loader key="loader" />}
-                    >
-                    {commentsData?.comments?.filter((c) => c.comment.path.split(".")[1] == c.comment.id.toString()).map((comment, index) => (
-                        <Comment 
-                            commentView={comment} allComments={commentsData.comments}
-                            key={index} 
-                            setReplyComment={setReplyCommet} setShowReply={setShowReply}
+                { commentResponse 
+                ?
+                    <div className={`${styles.commentsList}`}>
+                        <Link href={`/post/${postData?.post?.id}/comment/${parentId}`} shallow className="a">
+                            <button className="flex items-center gap-1">
+                                <span className="material-symbols-outlined">read_more</span>
+                                <span>Load Context</span>
+                            </button>
+                        </Link>
+                        {commentsData?.comments?.map((comment, index) => (
+                            <Comment
+                                commentView={comment} allComments={commentsData.comments}
+                                key={index} commentReplyMode
+                                setReplyComment={setReplyCommet} setShowReply={setShowReply}
                             />
-                    ))}
-                    {!hasMoreComments && commentsData?.comments?.length > 0 && <EndlessScrollingEnd key={"end"} />}
-                </InfiniteScroll>
+                        ))}
+                    </div>
+                :
+                    <>
+                    <InfiniteScroll 
+                        className={`${styles.commentsList}`}
+                        pageStart={1}
+                        hasMore={hasMoreComments}
+                        loadMore={async () => await handleLoadMoreComments()}
+                        loader={<Loader key="loader" />}
+                        >
+                        {commentsData?.comments?.filter((c) => c.comment.path.split(".")[1] == c.comment.id.toString()).map((comment, index) => (
+                            <Comment 
+                                commentView={comment} allComments={commentsData.comments}
+                                key={index} 
+                                setReplyComment={setReplyCommet} setShowReply={setShowReply}
+                                />
+                        ))}
+                        {!hasMoreComments && commentsData?.comments?.length > 0 && <EndlessScrollingEnd key={"end"} />}
+                    </InfiniteScroll>
+                    </>
+                }
 
 
                 { commentsData?.comments?.length == 0 && !commentsLoading &&

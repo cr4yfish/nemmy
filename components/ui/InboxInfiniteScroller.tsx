@@ -1,6 +1,6 @@
 "use client"
 
-import { GetRepliesResponse } from "lemmy-js-client";
+import { GetPersonDetailsResponse, GetRepliesResponse } from "lemmy-js-client";
 import InfiniteScroll from "react-infinite-scroller";
 import { useState } from "react";
 import { ClipLoader } from "react-spinners";
@@ -11,7 +11,8 @@ import InboxCard from "@/components/ui/InboxCard";
 import EndlessScrollingEnd from "./EndlessSrollingEnd";
 
 
-export default function InboxInfiniteScroller({ initReplies, auth, instance } : { initReplies: GetRepliesResponse, auth: string, instance: string }) {
+export default function InboxInfiniteScroller({ 
+    initReplies, auth, instance } : { initReplies: GetRepliesResponse, auth: string, instance: string }) {
 
     const [replies, setReplies] = useState<GetRepliesResponse>(initReplies);
     const [currentPage, setCurrentPage] = useState<number>(2);
@@ -41,7 +42,7 @@ export default function InboxInfiniteScroller({ initReplies, auth, instance } : 
             loader={<div key={"loader"} className=" w-full py-6 flex justify-center items-center"><ClipLoader color={"#e6b0fa"} size={20} /></div>}
         >
             {replies.replies.map((reply, i) => (
-                    <InboxCard key={i} reply={reply} />
+                    <InboxCard key={i} reply={reply} auth={auth} instance={instance} />
             ))}
             {!hasMore && <EndlessScrollingEnd key={"end"} /> }
         </InfiniteScroll>

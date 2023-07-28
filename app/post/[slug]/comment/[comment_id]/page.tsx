@@ -1,6 +1,6 @@
 // Server component
 
-import { LemmyHttp, PostId } from "lemmy-js-client";
+import { CommentResponse, LemmyHttp, PostId } from "lemmy-js-client";
 import { cookies } from "next/dist/client/components/headers";
 
 import { DEFAULT_INSTANCE } from "@/constants/settings";
@@ -33,31 +33,45 @@ async function getPostData (postId: number, jwt?: string, instance?: string) {
     }
 }
 
-export default async function Post({ params: { slug }, searchParams: { preload } } : { params: { slug: number }, searchParams: { preload: boolean } }) {
+async function getCommmentData(commentId: number, jwt?: string, instance?: string): Promise<CommentResponse | void> {
+    try {
+        let client: LemmyHttp = new LemmyHttp(instance ? `https://${instance}` : DEFAULT_INSTANCE);
+
+        let comment = await client.getComment({
+            id: commentId,
+            auth: jwt as unknown as string,
+        });
+
+        return comment;
+    } catch (e) {
+        console.error(e);
+        return;
+    }
+}
+
+export default async function Comment({ params: { slug, comment_id }, searchParams: { preload } } : { params: { slug: number, comment_id: number }, searchParams: { preload: boolean } }) {
     const cookieStore = cookies();
     const currentAccount = getCurrentAccountServerSide(cookieStore);
 
-    // Data has been preloaded, so we don't need to fetch it again
-    if(preload) {
+    const postData = (await getPostData(slug, currentAccount?.jwt, currentAccount?.instance)).post_view;
+    const commentData = await getCommmentData(comment_id, currentAccount?.jwt, currentAccount?.instance)
+
+    if(!postData || !commentData) {
         return (
-            <>
-            <PostPage 
-                instance={currentAccount?.instance}
-                jwt={currentAccount?.jwt}
-                shallow postId={slug}
-            />
-            </>
+            <div>
+                <h1>Cant find the data</h1>
+            </div>
         )
     }
 
-    const postData = (await getPostData(slug, currentAccount?.jwt, currentAccount?.instance)).post_view;
-    
     return (
         <>
         <PostPage 
             data={postData}
             instance={currentAccount?.instance}
-            jwt={currentAccount?.jwt} postId={slug}
+            jwt={currentAccount?.jwt}
+            postId={slug}
+            commentResponse={commentData}
         />
         </>
     )
