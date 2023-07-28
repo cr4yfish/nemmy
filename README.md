@@ -115,7 +115,7 @@ This means that there is no single huge "Lemmy Server" but many smaller "instanc
     - [ ] Supporting *all* Lemmy Markdown Features **<- "Thinking about it" phase**
 - [ ] User Page
     - [ ] Settings **<- Being worked on**
-    - [ ] Notifications **<- Almost done**
+    - [X] Notifications
     - [X] User Profile
     - [X] User Posts
     - [ ] Bookmarks **<- Design phase**
