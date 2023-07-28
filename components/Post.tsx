@@ -78,10 +78,8 @@ export default function Post({
                         >
                             <h2 className={`${styles.title}`}>{post.post.name}</h2>
                         </Link>
-                        
-
+                
                         {post?.post?.nsfw && <span className=" bg-red-400 text-red-950 rounded-full p-2 py-1 text-xs font-bold w-fit">NSFW</span>}
-                        <span className={`${styles.headerLink}`}></span>
                     </div>
                 </div>
                 <div className={`${styles.content}`}>
@@ -102,10 +100,10 @@ export default function Post({
                         <div className={`${styles.postBodyEmbed}`}>
                             <div className="flex flex-col gap-1">
                                 <div className={`${styles.postBodyEmbedTitle}`}>{post?.post?.embed_title}</div>
-                                <div className={`${styles.postBodyEmbedDescription}`}>{post?.post?.embed_description}</div>
+                                <RenderMarkdown className={`${styles.postBodyEmbedDescription}`}>{post?.post?.embed_description}</RenderMarkdown>
                             </div>
                            <div className={`${styles.link} flex justify-start items-start w-full p-1 pl-0`}>
-                                <a className="a text-xs" href={post.post.url} target="_blank">{post.post.url}</a>
+                                {post.post.url && <a className="a text-xs" href={post.post.url} target="_blank">{new URL(post.post.url).hostname}</a>}
                             </div>
                             {/* Display Thumbnail */}
                             {post.post.thumbnail_url &&
