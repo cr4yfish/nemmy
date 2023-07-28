@@ -37,7 +37,7 @@ export async function GET(req: Request) {
             //community_id: community_id as unknown as CommunityId,
             //community_name: community_name as unknown as string,
             post_id: post_id as unknown as PostId,
-            parent_id: parent_id as unknown as CommentId,
+            //parent_id: parent_id as unknown as CommentId,
             //saved_only: saved_only as unknown as boolean,
             auth: auth as unknown as string,
         })
