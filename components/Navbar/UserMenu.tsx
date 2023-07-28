@@ -111,7 +111,6 @@ export default function UserMenu( {
                     <Link onClick={() => handleClose()} href={`/u/${session.currentAccount?.user?.person?.name}@${session.currentAccount?.instance}`}><button><span className="material-symbols-outlined">account_circle</span>My Profile</button></Link>
                     <Link onClick={() => handleClose()} href="/post/new"><button><span className="material-symbols-outlined">add_circle_outline</span>Create a Post</button></Link>
                     <Link onClick={() => handleClose()} href={"/c/new"}><button><span className="material-symbols-outlined">group_add</span>Create a Community</button></Link>
-                    <button className="text-neutral-400 dark:text-neutral-500 cursor-not-allowed"><span className="material-symbols-outlined">bookmarks</span>Bookmarked</button>
                     <Link onClick={() => handleClose()} href={"/chat"}><button><span className="material-symbols-outlined">chat</span>Chat</button></Link>
                 </div>
 
