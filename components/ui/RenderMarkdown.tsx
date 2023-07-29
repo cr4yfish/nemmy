@@ -11,8 +11,8 @@ export default function RenderMarkdown({
 
     return (
         <>
-        { children || content &&
-            <ReactMarkdown className={`${styles.markdown} ${className}`}>
+        { (children || content) &&
+        <ReactMarkdown className={`${styles.markdown} ${className}`}>
             {`${children || content}`}
         </ReactMarkdown>
         }
