@@ -1,9 +1,20 @@
 import { GetSiteResponse } from "lemmy-js-client";
 import { motion } from "framer-motion";
+import { disablePageScroll, enablePageScroll } from "scroll-lock";
 
 import RenderMarkdown from "../ui/RenderMarkdown";
+import { useEffect } from "react";
 
 export default function SiteInfo({ siteResponse, close} : { siteResponse: GetSiteResponse, close: Function }) {
+
+    useEffect(() => {
+        disablePageScroll();
+    }, [])
+
+    const handleClose = () => {
+        enablePageScroll();
+        close();
+    }
 
     return (
         <>
@@ -17,7 +28,7 @@ export default function SiteInfo({ siteResponse, close} : { siteResponse: GetSit
              dark:bg-neutral-950/50 "
             style={{ zIndex: 1000 }}
             >
-            <button onClick={() => close()}><span className="material-symbols-outlined">close</span></button>
+            <button onClick={() => handleClose()}><span className="material-symbols-outlined">close</span></button>
             <div className="flex flex-col gap-0 dark:bg-neutral-900 p-4 rounded-lg w-fit" >
                 <span className="font-bold text-xs">Your Instance</span>
                 <span>{new URL(siteResponse.site_view.site.actor_id).host}</span>

@@ -10,6 +10,8 @@ import RenderMarkdown from "../ui/RenderMarkdown"
 
 import styles from "@/styles/components/Navbar/SearchOverlay.module.css"
 import { DEFAULT_AVATAR } from "@/constants/settings"
+import { useEffect } from "react"
+import { disablePageScroll, enablePageScroll } from "scroll-lock"
 
 function TrendingCommunity({ community, closeSearch } : { community: CommunityView, closeSearch: Function }) {
     return (
@@ -48,6 +50,15 @@ export default function SearchOverlay({
     handleCloseSearchOverlay: Function, searchInputRef: any, handleSubmit: any, searchLoading: boolean, currentSearch: string, setCurrentSearch: Function, isSearching: boolean, trendingTopics: PostView[], trendingCommunities: CommunityView[], searchResults: SearchResponse
     }) {
 
+    useEffect(() => {
+        disablePageScroll();
+    }, [])
+
+    const handleClose = () => {
+        enablePageScroll();
+        handleCloseSearchOverlay();
+    }
+
     return (
         <>
         <motion.div 
@@ -57,7 +68,7 @@ export default function SearchOverlay({
             exit={{ opacity: 0, y: 1000 }}
             >
                 <div className={`${styles.searchInputWrapper}`}>
-                    <button onClick={() => handleCloseSearchOverlay()} ><span className="material-symbols-outlined text-neutral-400">arrow_back</span></button>
+                    <button onClick={() => handleClose()} ><span className="material-symbols-outlined text-neutral-400">arrow_back</span></button>
                     <form onSubmit={handleSubmit} className="flex flex-row items-center w-full">
                         <div onClick={() => searchInputRef?.current?.focus()} className={`${styles.searchInput}`}>
                             <div className="flex flex-row gap-2 items-center w-full">
