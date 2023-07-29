@@ -7,7 +7,7 @@
 .markdown h3, 
 .markdown h4, 
 .markdown h5 {
-    @apply text-xl font-bold;
+    @apply text-xl font-bold my-1;
 }
 
 .markdown a {

@@ -8,9 +8,14 @@ export default function RenderMarkdown({
         content?: React.ReactNode, 
         className?: string 
     }) {
+
     return (
-        <ReactMarkdown className={`${styles.markdown} ${className}`}>
+        <>
+        { children || content &&
+            <ReactMarkdown className={`${styles.markdown} ${className}`}>
             {`${children || content}`}
         </ReactMarkdown>
+        }
+        </>
     )
 }
