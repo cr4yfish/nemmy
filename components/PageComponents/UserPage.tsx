@@ -81,7 +81,7 @@ export default function UserPage({ initialUser, userInstance } : {  initialUser:
     }, [pathname, userDataError]);
 
     const getData = async ({ page=1 } : { page?: number }) => {
-        const data = await fetch(`/api/getUser?limit=${pageLimit}&page=${page}&username=${pathname}&sort=${sort}&instance=${session.currentAccount?.instance}`);
+        const data = await fetch(`/api/getUser?limit=${pageLimit}&page=${page}&username=${pathname}&sort=${sort}&instance=${session.currentAccount?.instance}&saved_only=${filter === "SavedOnly"}`);
         const json = (await data.json());
         const posts = json.posts;
         const comments = json.comments;
@@ -89,20 +89,26 @@ export default function UserPage({ initialUser, userInstance } : {  initialUser:
         if(filter === "Comments") {
             if(comments.length === 0) setMorePages(false)
             return comments as CommentView[];
-        } else {
+        } else if(filter === "Posts") {
             if(posts.length === 0) setMorePages(false)
             return posts as PostView[];
+        } else if(filter === "SavedOnly") {
+            if(posts.length === 0) setMorePages(false)
+            return {posts: posts as PostView[], comments: comments as CommentView};
         }
     }
 
     const handleLoadMore = async () => {
-        const data = await getData({ page: currentPage });
+        const data = await getData({ page: currentPage }) as any;
 
         if(filter == "Comments") {
             setComments([...comments, ...data as CommentView[]])
         }
-        else {
+        else if(filter == "Posts") {
             setPosts([...posts, ...data as PostView[]])
+        } else if (filter == "SavedOnly") {
+            setPosts([...posts, ...data.posts as PostView[]])
+            setComments([...comments, ...data.comments as CommentView[]])
         }
 
         setCurrentPage(currentPage + 1);
