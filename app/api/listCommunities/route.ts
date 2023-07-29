@@ -15,7 +15,7 @@ export async function GET(req: Request) {
         let auth = params.get("auth") || undefined;
         let instance = params.get("instance") || undefined;
         
-        let client: LemmyHttp = new LemmyHttp(instance ? `https://${instance}` : DEFAULT_INSTANCE);
+        let client: LemmyHttp = new LemmyHttp((instance && instance.length > 1 && (instance !== "undefined")) ? `https://${instance}` : DEFAULT_INSTANCE);
         let communities = await client.listCommunities({ 
             type_: type_ as unknown as ListingType,
             auth: auth as unknown as string,
