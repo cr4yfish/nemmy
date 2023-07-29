@@ -33,7 +33,7 @@ async function getPostData (postId: number, jwt?: string, instance?: string) {
     }
 }
 
-export default async function Post({ params: { slug }, searchParams: { preload } } : { params: { slug: number }, searchParams: { preload: boolean } }) {
+export default async function Post({ params: { slug }, searchParams: { preload, instance } } : { params: { slug: number }, searchParams: { preload: boolean, instance: string } }) {
     const cookieStore = cookies();
     const currentAccount = getCurrentAccountServerSide(cookieStore);
 
@@ -50,13 +50,14 @@ export default async function Post({ params: { slug }, searchParams: { preload }
         )
     }
 
-    const postData = (await getPostData(slug, currentAccount?.jwt, currentAccount?.instance)).post_view;
+    const postData = (await getPostData(slug, currentAccount?.jwt, instance || currentAccount?.instance)).post_view;
     
     return (
         <>
         <PostPage 
             data={postData}
             instance={currentAccount?.instance}
+            postInstance={instance}
             jwt={currentAccount?.jwt} postId={slug}
         />
         </>

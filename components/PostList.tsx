@@ -129,7 +129,7 @@ export default function PostList({ fetchParams={ limit: DEFAULT_POST_LIMIT, page
                                 post={post} 
                                 instance={session.currentAccount?.instance}
                                 auth={session.currentAccount?.jwt} 
-                                key={index} 
+                                key={index} postInstance={new URL(post.post.ap_id).host}
                             />
                         )
                     })}

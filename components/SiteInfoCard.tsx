@@ -19,6 +19,8 @@ export default function SiteInfoCard({ siteResponse} : { siteResponse: GetSiteRe
     const site = siteResponse?.site_view.site;
     const counts = siteResponse?.site_view.counts;
 
+    if(!site) return null;
+
     return (
         <div className=" dark:bg-neutral-900 
         dark:rounded-lg dark:border dark:border-neutral-800 
@@ -27,13 +29,15 @@ export default function SiteInfoCard({ siteResponse} : { siteResponse: GetSiteRe
 
         "
         >
-            <div className="flex flex-col gap-2 w-full">
-                <span className="font-bold text-xl">{site?.name}</span>
-                <img 
+            <div className="flex flex-col gap-2 w-full h-fit">
+                <span className="font-bold text-xl">{new URL(site.actor_id).host}</span>
+                { site.banner &&
+                    <img 
                     className="rounded-xl 
                     overflow-hidden dark:border border-neutral-700" 
                     src={site?.banner} alt="" 
                 />
+                }
             </div>
 
             <div className="flex flex-row flex-wrap items-center gap-2 w-full dark:border border-neutral-700 rounded-lg p-2">

@@ -37,7 +37,7 @@ export default function LeftSideMenu(
                 <button className={`${styles.currentInstance}`} onClick={() => setShowSiteInfo(true)} >
                     <div className="flex flex-col justify-start items-start">
                         <span className=" uppercase font-bold text-xs dark:text-fuchsia-300">Current Instance</span>
-                        <span className="font-bold ">{session.currentAccount?.instance || DEFAULT_INSTANCE}</span>
+                        <span className="font-bold ">{session.currentAccount?.instance || new URL(DEFAULT_INSTANCE).host}</span>
                     </div>
                     
                     <span className="material-symbols-outlined">expand_content</span>

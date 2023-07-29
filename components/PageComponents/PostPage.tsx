@@ -22,9 +22,10 @@ import Image from "next/image";
 import { DEFAULT_AVATAR } from "@/constants/settings";
 
 export default function PostPage({ 
-    data, instance, jwt, shallow, postId, commentResponse } :  { 
+    data, instance, jwt, shallow, postId, commentResponse, postInstance } :  { 
         data?: PostView, instance?: string, jwt?: string, 
-        shallow?: boolean, postId: number, commentResponse?: CommentResponse
+        shallow?: boolean, postId: number, commentResponse?: CommentResponse,
+        postInstance?: string
     }) {
     const { navbar, setNavbar } = useNavbar();
 
@@ -52,9 +53,9 @@ export default function PostPage({
         <motion.div 
             id="post"
             className={`${styles.pageWrapper} mt-24`}
-            initial={{ opacity: 0, x: shallow ? 1000 : 0 }}
-            animate={{ opacity: 1, x: 0, transition: { bounce: 0.1} }}
-            exit={{ opacity: 0, x: shallow ? 1000 : 0 }}
+            initial={{ opacity: 0  }}
+            animate={{ opacity: 1, transition: { bounce: 0.1} }}
+            exit={{ opacity: 0 }}
             >
             <div className={`${styles.wrapper}`}>
                 <div className={`${styles.post}`}>
@@ -158,7 +159,7 @@ export default function PostPage({
         { postData?.post?.id &&
             <Comments 
                 postId={postData?.post?.id}
-                instance={instance} jwt={jwt}
+                instance={postInstance} jwt={jwt}
                 postData={postData} setPostData={setPostData}
                 commentResponse={commentResponse}
             />

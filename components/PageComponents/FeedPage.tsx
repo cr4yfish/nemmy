@@ -18,7 +18,7 @@ export default function FeedPage({
     initPosts?: PostView[],
     instance: string,
     jwt?: string
-    siteResponse: GetSiteResponse | null
+    siteResponse: GetSiteResponse | null,
 }) {
 
 
@@ -28,6 +28,7 @@ export default function FeedPage({
             <PostList 
                 fetchParams={fetchParams}
                 initPosts={initPosts}
+                
             />
 
             <SiteInfoCard siteResponse={siteResponse} />

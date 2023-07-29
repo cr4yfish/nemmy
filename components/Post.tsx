@@ -15,9 +15,10 @@ import markdownStyle from "@/styles/util/markdown.module.css";
 import BookmarkButton from "./ui/BookmarkButton";
 
 export default function Post({ 
-    post, onClick=() => null, instance, auth
+    post, onClick=() => null, instance, auth, postInstance
     } : { 
-    post: PostView, onClick?: () => void, instance?: string, auth?: string
+    post: PostView, onClick?: () => void, instance?: string, auth?: string,
+    postInstance: string,
     }) {
     if(!post) throw new Error("Post is undefined");
 
@@ -28,7 +29,7 @@ export default function Post({
     //
     //const postUrl = `https://${baseUrl}/post/${post.post.id}`;
 
-    const postUrl = `/post/${post.post.id}?preload=true`;
+    const postUrl = `/post/${post.post.id}?instance=${postInstance}&preload=true`;
 
     return (
         <>

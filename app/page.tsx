@@ -9,8 +9,8 @@ import { DEFAULT_INSTANCE, nextInstance } from "@/constants/settings";
 
 export const revalidate = 60 * 2; // 2 minutes
 
-async function getInitialPosts({ instance, auth } : {  instance: string, auth?: string }) {
-  const client = new LemmyHttp( instance ? `https://${instance}` : DEFAULT_INSTANCE );
+async function getInitialPosts({ instance, auth="" } : {  instance: string, auth?: string }) {
+  const client = new LemmyHttp( instance ? `https://${instance.replace("https://", "")}` : DEFAULT_INSTANCE );
   return (await client.getPosts({
     type_: "All",
     sort: "Active",
@@ -20,7 +20,7 @@ async function getInitialPosts({ instance, auth } : {  instance: string, auth?: 
 }
 
 async function getInitialSiteResponse(instance: string) {
-  const client = new LemmyHttp( instance ? `https://${instance}` : DEFAULT_INSTANCE );
+  const client = new LemmyHttp( instance ? `https://${instance.replace("https://", "")}` : DEFAULT_INSTANCE );
   return await client.getSite();
 }
 
@@ -31,7 +31,7 @@ export default async function Home() {
   let instance = DEFAULT_INSTANCE;
 
   // {} is the default value if the cookie is not set
-  if(currentAccount) {
+  if(currentAccount?.instance && currentAccount.instance.length > 0) {
     instance = currentAccount.instance;
   }
 
@@ -41,7 +41,7 @@ export default async function Home() {
     posts = await getInitialPosts({ instance: instance, auth: currentAccount?.jwt });
     siteResponse = await getInitialSiteResponse(instance);
   } catch (e) {
-    console.error("Instance not available, switching instances");
+    console.error("Instance not available, switching instances", instance, DEFAULT_INSTANCE);
 
     let isError = true;
     let step = 0;
@@ -50,7 +50,7 @@ export default async function Home() {
         // switch to next instance
         nextInstance();
         posts = await getInitialPosts({ instance: DEFAULT_INSTANCE });
-        siteResponse = await getInitialSiteResponse(DEFAULT_INSTANCE);
+        siteResponse = await getInitialSiteResponse(DEFAULT_INSTANCE)
         isError = false; // stop loop
       } catch (e) {
         // continue in loop
