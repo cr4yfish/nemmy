@@ -3,11 +3,12 @@ import { AnimatePresence, motion } from "framer-motion"
 
 import { useState } from "react"
 
-export type FilterType = "Posts" | "Comments"
+export type FilterType = "Posts" | "Comments" | "SavedOnly"
 
 const iconMap = {
     Posts: <span className="material-symbols-outlined">auto_awesome_motion</span>,
     Comments: <span className="material-symbols-outlined">comment</span>,
+    SavedOnly: <span className="material-symbols-outlined">bookmark</span>
 }
 
 function Button({
@@ -85,6 +86,10 @@ export default function FilterButton({ onChange }: { onChange: (newOption: Filte
                     />
 
                     <Button label="Comments" option="Comments" icon="comment" 
+                            current={currentOption} onChange={onClick}
+                    />
+
+                    <Button label="Saved Only" option="SavedOnly" icon="bookmark" 
                             current={currentOption} onChange={onClick}
                     />
 
