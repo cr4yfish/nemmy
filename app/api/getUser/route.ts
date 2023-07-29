@@ -16,6 +16,8 @@ export async function GET(req: Request) {
         let limit = params.get("limit") || 10;
         let page = params.get("page") || 1;
         let auth = params.get("auth") || undefined;
+        let saved_only = params.get("saved_only") || false;
+
         let instance = params.get("instance") || undefined;
 
         let client: LemmyHttp = new LemmyHttp((instance && instance.length > 1 && instance !== "undefined") ? `https://${instance}` : DEFAULT_INSTANCE);
@@ -26,6 +28,7 @@ export async function GET(req: Request) {
             page: page as unknown as number,
             limit: limit as unknown as number,
             auth: auth as unknown as string,
+            saved_only: saved_only as unknown as boolean
         });
 
         return new Response(JSON.stringify(person), { status: 200, headers: { 'Content-Type': 'application/json' } })
