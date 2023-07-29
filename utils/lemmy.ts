@@ -6,7 +6,7 @@ import { CommentResponse, CommentView, CreateComment, CreatePost, FollowCommunit
     LoginResponse, GetCaptcha, GetFederatedInstances, GetFederatedInstancesResponse, 
     GetCaptchaResponse, GetPosts, GetPostsResponse, 
     GetReplies, GetRepliesResponse, GetUnreadCount, GetUnreadCountResponse, 
-    CreateCommunity, CommunityResponse, Community, SaveUserSettings, SavePost, SaveComment } from "lemmy-js-client"
+    CreateCommunity, CommunityResponse, Community, SaveUserSettings, SavePost, SaveComment, PostView, CommunityView } from "lemmy-js-client"
 import { AccountWithSiteResponse } from "./authFunctions";
 
 export const getUserDetails = async (jwt: string, baseUrl: string) :  Promise<(GetSiteResponse)> => {
@@ -32,26 +32,22 @@ export const getPosts = async (params: GetPosts, instance?: string) : Promise<(b
     return posts;
 }
 
-export const getTrendingCommunities = async (instance?: string) : Promise<(boolean | ListCommunitiesResponse)> => {
-    const data = await listCommunities({
-        type_: "All",
-        sort: "TopTwelveHour",
-        page: 1,
-        limit: 3
-    }, instance);
-    if(!data) return false;
-    return data;
+export const getTrendingCommunities = async (instance?: string) : Promise<(boolean | CommunityView[])> => {
+    const communities: ListCommunitiesResponse = await fetch(`/api/listCommunities?type_=All&sort=TopTwelveHour&limit=3&instance=${instance}`).then(res => res.json());
+    if(!communities.communities) {
+        console.warn("Could not retrieve communities");
+        return false;
+    }
+    return communities.communities.slice(0,3);
 }
 
-export const getTrendingTopics = async (instance?: string) : Promise<(boolean | GetPostsResponse)> => {
-    const data = await getPosts({
-        type_: "All",
-        sort: "TopTwelveHour",
-        page: 1,
-        limit: 3
-    }, instance);
-    if(!data) return false;
-    return data;
+export const getTrendingTopics = async (instance?: string) : Promise<(boolean | PostView[])> => {
+    const posts: GetPostsResponse = await fetch(`/api/getPosts?type_=All&sort=TopTwelveHour&limit=3&instance=${instance}`).then(res => res.json());
+    if(!posts.posts) {
+        console.warn("Could not retrieve posts");
+        return false;
+    }
+    return posts.posts.slice(0, 3);
 }
 
 export const createPost = async (params: CreatePost) : Promise<(boolean | PostResponse)> => {

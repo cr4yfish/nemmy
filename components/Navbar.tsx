@@ -145,11 +145,11 @@ export default function Navbar() {
         if(!searchOverlay) return;
         getTrendingCommunities(session.currentAccount?.instance).then((data) => {
             if(typeof data === "boolean") return;
-            setTrendingCommunities(data.communities);
+            setTrendingCommunities(data);
         })
         getTrendingTopics().then((data) => {
             if(typeof data === "boolean") return;
-            setTrendingTopics(data.posts);
+            setTrendingTopics(data);
         })
     }, [searchOverlay])
 
