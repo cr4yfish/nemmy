@@ -34,7 +34,7 @@ export default function SiteInfoCard({ siteResponse} : { siteResponse: GetSiteRe
                 { site.banner &&
                     <img 
                     className="rounded-xl 
-                    overflow-hidden dark:border border-neutral-700" 
+                    overflow-hidden" 
                     src={site?.banner} alt="" 
                 />
                 }
