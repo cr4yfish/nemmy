@@ -209,6 +209,7 @@ export default function UserPage({ initialUser, userInstance } : {  initialUser:
                                     key={post.post.id} 
                                     instance={session.currentAccount?.instance}
                                     auth={session.currentAccount?.jwt}
+                                    postInstance={session.currentAccount?.instance}
                                 />
                             )
                         })}

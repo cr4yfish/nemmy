@@ -13,12 +13,13 @@ import { AutoMediaType, isImageType } from "@/utils/AutoMediaType";
 import styles from "../styles/post.module.css"
 import markdownStyle from "@/styles/util/markdown.module.css";
 import BookmarkButton from "./ui/BookmarkButton";
+import { DEFAULT_INSTANCE } from "@/constants/settings";
 
 export default function Post({ 
     post, onClick=() => null, instance, auth, postInstance
     } : { 
     post: PostView, onClick?: () => void, instance?: string, auth?: string,
-    postInstance: string,
+    postInstance?: string,
     }) {
     if(!post) throw new Error("Post is undefined");
 
@@ -29,7 +30,7 @@ export default function Post({
     //
     //const postUrl = `https://${baseUrl}/post/${post.post.id}`;
 
-    const postUrl = `/post/${post.post.id}?instance=${postInstance}&preload=true`;
+    const postUrl = `/post/${post.post.id}?instance=${postInstance || DEFAULT_INSTANCE}&preload=true`;
 
     return (
         <>
