@@ -176,7 +176,7 @@ export default function UserMenu({
             </Swiper>
           }
 
-          {session.currentAccount == session.currentAccount && (
+          {!session.isLoggedIn && (
             <span>
               <Link href={"/auth"} className="a">
                 Log in
@@ -186,7 +186,7 @@ export default function UserMenu({
           )}
 
           <div className={`${styles.userMenuInteractionsTop}`}>
-            {session.currentAccount ? (
+            {session.isLoggedIn ? (
               <Link onClick={() => handleClose()} href={"/inbox"}>
                 <button className="relative">
                   <div className="relative flex h-full w-fit items-center justify-center">
@@ -217,28 +217,28 @@ export default function UserMenu({
               icon="account_circle"
               link={`/u/${session.currentAccount?.user?.person?.name}@${session.currentAccount?.instance}`}
               close={handleClose}
-              disabled={session.currentAccount == session.currentAccount}
+              disabled={!session.isLoggedIn}
             />
             <UserMenuItem
               text="Create a Post"
               icon="add_circle_outline"
               link="/post/new"
               close={handleClose}
-              disabled={session.currentAccount == session.currentAccount}
+              disabled={!session.isLoggedIn}
             />
             <UserMenuItem
               text="Create a Community"
               icon="group_add"
               link="/c/new"
               close={handleClose}
-              disabled={session.currentAccount == session.currentAccount}
+              disabled={!session.isLoggedIn}
             />
             <UserMenuItem
               text="Chat"
               icon="chat"
               link="/chat"
               close={handleClose}
-              disabled={session.currentAccount == session.currentAccount}
+              disabled={!session.isLoggedIn}
             />
           </div>
         </div>
