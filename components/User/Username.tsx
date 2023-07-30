@@ -41,7 +41,7 @@ export default function Username({
               width={40}
             />
           </span>
-          <span className="font-medium text-neutral-800 dark:text-neutral-100">
+          <span className="font-medium text-neutral-800 dark:text-neutral-100 text-sm max-sm:text-xs">
             {user.name}
           </span>
           <SmallUser
