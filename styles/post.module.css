@@ -153,13 +153,13 @@
   align-self: center;
 }
 
-.communityImage {
+.communityImage, .communityIconFill {
   height: 50px;
   width: 50px;
 }
 
 .communityIconFill {
-  @apply h-5 w-5 rounded-full bg-neutral-300 dark:bg-neutral-700
+  @apply rounded-full bg-neutral-300 dark:bg-neutral-800
     max-md:h-14 max-md:w-14;
 }
 
