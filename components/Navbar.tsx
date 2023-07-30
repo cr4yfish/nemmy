@@ -31,6 +31,7 @@ import LeftSideMenu from "./Navbar/LeftSideMenu";
 import SearchOverlay from "./Navbar/SearchOverlay";
 
 import styles from "@/styles/Navbar.module.css";
+import { enablePageScroll } from "scroll-lock";
 
 const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
@@ -264,12 +265,14 @@ export default function Navbar() {
     navbar && setNavbar({ ...navbar, overlayActive: false });
     await delay(100);
     setFilterClicked(false);
+    enablePageScroll();
     setSortOptions(false);
   };
 
   const handleUserMenuClose = async () => {
     navbar && setNavbar({ ...navbar, overlayActive: false });
     await delay(100);
+    enablePageScroll();
     setUserMenu(false);
   };
 
@@ -286,11 +289,13 @@ export default function Navbar() {
   const handleMenuClose = async () => {
     navbar && setNavbar({ ...navbar, overlayActive: false });
     await delay(100);
+    enablePageScroll();
     setMenu(false);
   };
 
   const handleCloseSearchOverlay = async () => {
     setCurrentSearch("");
+    enablePageScroll();
     setIsSearching(false);
     setSearchOverlay(false);
   };
