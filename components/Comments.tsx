@@ -206,24 +206,22 @@ export default function Comments({
       // Has old data
       if (commentsData?.comments?.length > 0) {
         const oldData = commentsData;
-        const newData = data;
-
-        // filter out duplicates
-        const uniqueComments = newData.comments.filter((newComment) => {
-          return !oldData.comments.some((oldComment) => {
-            return oldComment.comment.id === newComment.comment.id;
-          });
-        });
+        const newData = [...oldData.comments, ...data.comments];
 
         // filter out removed comments and only get top-level comments
-        const filtered = uniqueComments.filter(
+        const filtered = newData.filter(
           (c) =>
             !c.comment.removed &&
             !c.comment.deleted &&
             c.comment.path.split(".")[1] == c.comment.id.toString(),
         );
 
-        if (filtered.length == 0) {
+        // filter out duplicates
+        const uniqueComments = filtered.filter((c, index) => {
+          return filtered.findIndex((c2) => c2.comment.id == c.comment.id) == index;
+        })
+
+        if (uniqueComments.length == 0) {
           console.warn(
             "Lemmy wasted resources again! This message is shown every time Lemmy sends a stupid response.",
           );
@@ -232,7 +230,7 @@ export default function Comments({
 
         setCommentsData({
           ...oldData,
-          comments: [...oldData.comments, ...filtered],
+          comments: uniqueComments,
         });
       }
       // No old data => just set new data

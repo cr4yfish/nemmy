@@ -122,18 +122,53 @@ export default function Comment({
       if (!comments || !comments.comments)
         throw new Error("No comments returned from api");
 
-      // check if comment already exists in children
-      const existingComment = children?.find(
-        (c) => c.comment.id === commentView.comment.id,
-      );
-
-      if (!existingComment) {
-        setChildren(
-          comments?.comments?.filter(
-            (c) => c.comment.id !== commentView.comment.id,
-          ),
+      // Remove duplicates from self
+      comments.comments = comments.comments.filter((c, index) => {
+        return (
+          comments.comments.findIndex((c2) => c2.comment.id === c.comment.id) ===
+          index
         );
-      }
+      });
+
+      // Remove duplicates from all comments
+      comments.comments = comments.comments.filter((c) => {
+        return (
+          allComments.findIndex((c2) => c2.comment.id === c.comment.id) === -1
+        );
+      });
+
+      // Children are only direct children of the comment,
+      // which means their ID is right after the commentView.comment.id in the path (e.g. 1.2)
+      // So a path like (1.3.2) is not a child of (1.3)
+
+      // Path of the comment we are viewing => parent path
+      const path = commentView.comment.path.split(".");
+
+      // Filter out comments that are not direct children
+      comments.comments = comments.comments.filter((c) => {
+        const childPath = c.comment.path.split(".");
+        
+        // Index of the parent in the childPath
+        const parentIndex = childPath.findIndex((p) => p === path[path.length - 1]);
+
+        // Index of current comment in the childPath
+        const currentIndex = childPath.findIndex((p) => p === c.comment.id.toString());
+
+        // If the parent is not in the childPath, it's not a direct child
+        if (parentIndex === -1) return false;
+
+        // If the current comment is not right after the parent, it's not a direct child
+        if (currentIndex !== parentIndex + 1) return false;
+
+        return true;
+      });
+
+      setChildren(
+        comments?.comments?.filter(
+          (c) => c.comment.id !== commentView.comment.id,
+        ),
+      );
+      
     } catch (e) {
       console.error(e);
     }
