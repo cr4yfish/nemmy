@@ -18,12 +18,14 @@ export interface SessionState {
   accounts: Account[];
   currentAccount?: Account;
   siteResponse?: GetSiteResponse;
+  isLoggedIn: boolean;
 }
 
 const defaultState: SessionState = {
   currentAccount: undefined,
   accounts: [],
   pendingAuth: true,
+  isLoggedIn: false,
 };
 
 interface SessionContextProps {
@@ -67,6 +69,7 @@ export const SessionContextProvider = ({ children }: { children: any }) => {
             currentAccount: currentAccount,
             pendingAuth: false,
             siteResponse: currentAccountWithSite.site,
+            isLoggedIn: true,
           });
           return;
         }
@@ -85,6 +88,7 @@ export const SessionContextProvider = ({ children }: { children: any }) => {
           accounts: accounts,
           currentAccount: defaultAccount,
           pendingAuth: false,
+          isLoggedIn: true,
         });
         return;
       } else {
@@ -93,17 +97,17 @@ export const SessionContextProvider = ({ children }: { children: any }) => {
       }
     } catch (e) {
       // Fallback, some error happened
-      console.warn(e, "setting pending auth to false");
+      console.warn(e);
 
       // get site data for current instance
       getUserData(new URL(DEFAULT_INSTANCE).host)
         .then((res) => {
-          setSession({ ...session, pendingAuth: false, siteResponse: res });
+          setSession({ ...session, pendingAuth: false, siteResponse: res, isLoggedIn: false });
           return;
         })
         .catch((err) => {
           console.error(err);
-          setSession({ ...session, pendingAuth: false });
+          setSession({ ...session, pendingAuth: false, isLoggedIn: false });
           return;
         });
     }
