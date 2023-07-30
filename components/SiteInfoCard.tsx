@@ -3,6 +3,7 @@ import { GetSiteResponse } from "lemmy-js-client";
 import RenderMarkdown from "./ui/RenderMarkdown";
 
 import { FormatNumber } from "@/utils/helpers";
+import Username from "./User/Username";
 
 function Snack({ text, icon }: { text?: string; icon?: string }) {
   return (
@@ -30,18 +31,16 @@ export default function SiteInfoCard({
 
   return (
     <div
-      className=" flex 
+      className=" card flex flex-col max-lg:hidden
         h-fit w-full max-w-xs 
-        flex-col gap-2 p-4 dark:rounded-lg dark:border dark:border-neutral-800
-        dark:bg-neutral-900 max-lg:hidden
-
         "
     >
-      <div className="flex h-fit w-full flex-col gap-2">
-        <span className="text-xl font-bold capitalize">{new URL(site.actor_id).host}</span>
+      <div className="flex h-fit w-full flex-col gap-2 prose dark:prose-invert prose-headings:mb-0">
+        <h1 className="capitalize">{new URL(site.actor_id).host}</h1>
+        <span className="text-sm">{site?.description}</span>
         {site.banner && (
           <img
-            className="overflow-hidden 
+            className="overflow-hidden mt-0 
                     rounded-xl"
             src={site?.banner}
             alt=""
@@ -56,21 +55,41 @@ export default function SiteInfoCard({
             icon="people"
           />
         )}
-        {counts?.users && (
+        {counts?.communities && (
           <Snack
             text={FormatNumber(counts.communities, true).toString()}
             icon="communities"
           />
         )}
-        {counts?.users && (
+        {counts?.posts && (
           <Snack
             text={FormatNumber(counts.posts, true).toString()}
             icon="edit"
           />
         )}
+        {counts?.posts && (
+          <Snack
+            text={siteResponse.version.split("-")[0]}
+            icon="update"
+          />
+        )}
       </div>
 
-      <RenderMarkdown className="w-full text-xs" content={site?.sidebar} />
+      <div className="flex flex-col gap-1">
+        <span className="prose dark:prose-invert font-bold">Instance Admins</span>
+        <div className="flex flex-row flex-wrap gap-2">
+          {siteResponse.admins.map((admin) => (
+            <Username key={admin.person.id} user={admin.person} baseUrl={new URL(site.actor_id).host} />
+          ))}          
+        </div>
+
+      </div>
+
+      <div className="flex flex-col">
+        <span className="prose dark:prose-invert font-bold">Instance Sidebar</span>
+        <RenderMarkdown className="w-full text-xs" content={site?.sidebar} />
+      </div>
+
     </div>
   );
 }
