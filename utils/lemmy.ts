@@ -34,6 +34,7 @@ import {
   PostView,
   CommunityView,
 } from "lemmy-js-client";
+import { cache } from "react";
 import { AccountWithSiteResponse } from "./authFunctions";
 
 export const getUserDetails = async (
@@ -46,19 +47,19 @@ export const getUserDetails = async (
   return user as GetSiteResponse;
 };
 
-export const listCommunities = async (
+export const listCommunities = cache(async (
   params: ListCommunities,
   instance?: string,
 ): Promise<boolean | ListCommunitiesResponse> => {
   const communities: ListCommunitiesResponse = await fetch(
-    `/api/listCommunities?auth=${params.auth}&type_=${params.type_}&sort=${params.sort}&page=${params.page}&limit=${params.limit}&instance=${instance}`,
+    `/api/listCommunities?auth=${params.auth}&type_=${params.type_}&sort=${params.sort}&page=${params.page}&instance=${instance}`,
   ).then((res) => res.json());
   if (!communities.communities) {
     console.warn("Could not retrieve communities");
     return false;
   }
   return communities as ListCommunitiesResponse;
-};
+})
 
 export const getPosts = async (
   params: GetPosts,
