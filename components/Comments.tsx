@@ -13,6 +13,7 @@ import InfiniteScroll from "react-infinite-scroller";
 import Link from "next/link";
 
 import RenderFormattingOptions from "./ui/RenderFormattingOptions";
+import SortButton from "./ui/SortButton";
 
 import { sendComment, getComments } from "@/utils/lemmy";
 
@@ -66,12 +67,11 @@ export default function Comments({
   const [showReply, setShowReply] = useState<boolean>(false);
 
   const [currentCommentsPage, setCurrentCommentsPage] = useState<number>(1);
-  const [currentCommentSort, setCurrentCommentSort] = useState<
-    CommentSortType | undefined
-  >("Hot");
+  const [currentCommentSort, setCurrentCommentSort] = useState<CommentSortType>("Hot");
   const [forceCommentUpdate, setForceCommentUpdate] = useState<number>(0);
   const [commentsLoading, setCommentsLoading] = useState<boolean>(true);
   const [hasMoreComments, setHasMoreComments] = useState<boolean>(true);
+
 
   // commentReplyMode
   const [parentId, setParentId] = useState<number | undefined>(undefined);
@@ -122,6 +122,11 @@ export default function Comments({
     }, 500);
     return () => clearTimeout(timer);
   }, [commentsData]);
+
+  useEffect(() => {
+    setCommentsData({} as GetCommentsResponse);
+    setCurrentCommentsPage(1);
+  }, [currentCommentSort])
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -303,15 +308,13 @@ export default function Comments({
         />
 
         <div
-          className={`${styles.comments} mb-24 max-w-3xl max-md:w-full max-sm:p-2`}
+          className={`${styles.comments} mb-24 max-w-3xl max-md:w-full max-sm:p-2 relative`}
         >
           {commentsData?.comments?.length > 0 && (
-            <div className={`${styles.commentsInteractions}`}>
-              <div className={`${styles.commentsInteractionsSort}`}>
-                <span className={`material-symbols-outlined`}>sort</span>
-                <span>Hot</span>
-              </div>
-            </div>
+            <SortButton 
+              type="comment" defaultOption={currentCommentSort}
+              onChange={(sort) => setCurrentCommentSort(sort as CommentSortType)}
+            />
           )}
 
           {/* Comments  */}
