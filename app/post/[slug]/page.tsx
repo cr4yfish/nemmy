@@ -2,6 +2,8 @@
 
 import { LemmyHttp, PostId } from "lemmy-js-client";
 import { cookies } from "next/dist/client/components/headers";
+import { cache } from "react";
+import { ResolvingMetadata, Metadata } from "next";
 
 import { DEFAULT_INSTANCE } from "@/constants/settings";
 
@@ -9,7 +11,7 @@ import { getCurrentAccountServerSide } from "@/utils/authFunctions";
 
 import PostPage from "@/components/PageComponents/PostPage";
 
-async function getPostData(postId: number, jwt?: string, instance?: string) {
+const getPostData = cache(async (postId: number, jwt?: string, instance?: string) => {
   try {
     let client: LemmyHttp = new LemmyHttp(
       instance ? `https://${instance}` : DEFAULT_INSTANCE,
@@ -31,15 +33,26 @@ async function getPostData(postId: number, jwt?: string, instance?: string) {
 
     return posts;
   }
+})
+
+type Props = {
+  params: { slug: number };
+  searchParams: { preload: boolean; instance: string };
+}
+
+export async function generateMetadata({ params: { slug }, searchParams: { instance } }: Props, parent?: ResolvingMetadata): Promise<Metadata> {
+  const postData = await getPostData(slug, instance);
+
+  return {
+    title: postData.post_view.post.name + " - Nemmy",
+    description: postData.post_view.post?.body ? postData.post_view.post.body.slice(0, 100) + "..." : `Post by ${postData.post_view.creator.name}.`,
+  };
 }
 
 export default async function Post({
-  params: { slug },
-  searchParams: { preload, instance },
-}: {
-  params: { slug: number };
-  searchParams: { preload: boolean; instance: string };
-}) {
+    params: { slug },
+    searchParams: { preload, instance },
+  }: Props) {
   const cookieStore = cookies();
   const currentAccount = getCurrentAccountServerSide(cookieStore);
 

@@ -11,6 +11,11 @@ import RenderMarkdown from "@/components/ui/RenderMarkdown";
 import RenderError from "@/components/ui/RenderError";
 import { getCurrentAccountServerSide } from "@/utils/authFunctions";
 
+export const metadata = {
+  title: "Chat - Nemmy",
+  description: "Chat with other users on Nemmy.",
+};
+
 async function getChats({
   auth,
   instance,

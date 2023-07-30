@@ -7,6 +7,11 @@ import { getCurrentAccountServerSide } from "@/utils/authFunctions";
 
 import SettingsPage from "@/components/PageComponents/SettingsPage";
 
+export const metadata = {
+  title: "Settings - Nemmy",
+  description: "Change your settings on Nemmy.",
+};
+
 export default async function Settings() {
   const cookieStore = cookies();
   const currentAccount = getCurrentAccountServerSide(cookieStore);

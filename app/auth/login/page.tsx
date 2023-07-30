@@ -25,6 +25,11 @@ import { DEFAULT_AVATAR } from "@/constants/settings";
 import styles from "@/styles/Pages/LoginPage.module.css";
 import Image from "next/image";
 
+export const metadata = {
+  title: "Log in - Nemmy",
+  description: "Log in to Nemmy with your Fediverse account.",
+};
+
 export default function Login() {
   const { session, setSession } = useSession();
   const router = useRouter();

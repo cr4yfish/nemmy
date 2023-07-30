@@ -4,6 +4,7 @@ import {
   GetPersonDetailsResponse,
 } from "lemmy-js-client";
 import { cookies } from "next/dist/client/components/headers";
+import { cache } from "react";
 
 import InboxCard from "@/components/ui/InboxCard";
 import InboxInfiniteScroller from "@/components/ui/InboxInfiniteScroller";
@@ -11,13 +12,7 @@ import InboxInfiniteScroller from "@/components/ui/InboxInfiniteScroller";
 import { DEFAULT_INSTANCE } from "@/constants/settings";
 import { getCurrentAccountServerSide } from "@/utils/authFunctions";
 
-async function getReplies({
-  jwt,
-  instance,
-}: {
-  jwt?: string;
-  instance?: string;
-}): Promise<GetRepliesResponse> {
+const getReplies = cache(async ({ jwt, instance }: { jwt?: string; instance?: string }): Promise<GetRepliesResponse> =>  {
   const lemmy = new LemmyHttp(
     instance ? `https://${instance}` : DEFAULT_INSTANCE,
   );
@@ -28,7 +23,12 @@ async function getReplies({
     unread_only: false,
   });
   return replies;
-}
+})
+
+export const metadata = {
+  title: "Inbox - Nemmy",
+  description: "View your inbox on Nemmy.",
+};
 
 export default async function Inbox({
   params: { page },

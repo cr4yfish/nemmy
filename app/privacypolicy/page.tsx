@@ -1,3 +1,9 @@
+
+export const metadata = {
+  title: "Privacy Policy - Nemmy",
+  description: "View the privacy policy of Nemmy",
+};
+
 export default function PrivacyPolicy() {
   return (
     <>
