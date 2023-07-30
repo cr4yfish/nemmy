@@ -4,51 +4,73 @@ import RenderMarkdown from "./ui/RenderMarkdown";
 
 import { FormatNumber } from "@/utils/helpers";
 
-function Snack({text, icon} : { text?: string, icon?: string }) {
-
-    return (
-        <div className="flex flex-row gap-1 items-center text-xs" >
-            <span className="material-symbols-outlined h-fit" style={{ fontSize: "1rem" }}>{icon}</span>
-            <span>{text}</span>
-        </div>
-    )
+function Snack({ text, icon }: { text?: string; icon?: string }) {
+  return (
+    <div className="flex flex-row items-center gap-1 text-xs">
+      <span
+        className="material-symbols-outlined h-fit"
+        style={{ fontSize: "1rem" }}
+      >
+        {icon}
+      </span>
+      <span>{text}</span>
+    </div>
+  );
 }
 
-export default function SiteInfoCard({ siteResponse} : { siteResponse: GetSiteResponse | null }) {
+export default function SiteInfoCard({
+  siteResponse,
+}: {
+  siteResponse: GetSiteResponse | null;
+}) {
+  const site = siteResponse?.site_view.site;
+  const counts = siteResponse?.site_view.counts;
 
-    const site = siteResponse?.site_view.site;
-    const counts = siteResponse?.site_view.counts;
+  if (!site) return null;
 
-    if(!site) return null;
-
-    return (
-        <div className=" dark:bg-neutral-900 
-        dark:rounded-lg dark:border dark:border-neutral-800 
-        flex flex-col max-w-xs w-full gap-2 p-4
-        h-fit max-lg:hidden
+  return (
+    <div
+      className=" flex 
+        h-fit w-full max-w-xs 
+        flex-col gap-2 p-4 dark:rounded-lg dark:border dark:border-neutral-800
+        dark:bg-neutral-900 max-lg:hidden
 
         "
-        >
-            <div className="flex flex-col gap-2 w-full h-fit">
-                <span className="font-bold text-xl">{new URL(site.actor_id).host}</span>
-                { site.banner &&
-                    <img 
-                    className="rounded-xl 
-                    overflow-hidden" 
-                    src={site?.banner} alt="" 
-                />
-                }
-            </div>
+    >
+      <div className="flex h-fit w-full flex-col gap-2">
+        <span className="text-xl font-bold">{new URL(site.actor_id).host}</span>
+        {site.banner && (
+          <img
+            className="overflow-hidden 
+                    rounded-xl"
+            src={site?.banner}
+            alt=""
+          />
+        )}
+      </div>
 
-            <div className="flex flex-row flex-wrap items-center gap-2 w-full dark:border border-neutral-700 rounded-lg p-2">
-                {counts?.users && <Snack text={FormatNumber(counts.users, true).toString()} icon="people" />}
-                {counts?.users && <Snack text={FormatNumber(counts.communities, true).toString()} icon="communities" />}
-                {counts?.users && <Snack text={FormatNumber(counts.posts, true).toString()} icon="edit" />}
-                
-            </div>
+      <div className="flex w-full flex-row flex-wrap items-center gap-2 rounded-lg border-neutral-700 p-2 dark:border">
+        {counts?.users && (
+          <Snack
+            text={FormatNumber(counts.users, true).toString()}
+            icon="people"
+          />
+        )}
+        {counts?.users && (
+          <Snack
+            text={FormatNumber(counts.communities, true).toString()}
+            icon="communities"
+          />
+        )}
+        {counts?.users && (
+          <Snack
+            text={FormatNumber(counts.posts, true).toString()}
+            icon="edit"
+          />
+        )}
+      </div>
 
-            <RenderMarkdown className="text-xs w-full" content={site?.sidebar} />
-
-        </div>
-    )
+      <RenderMarkdown className="w-full text-xs" content={site?.sidebar} />
+    </div>
+  );
 }

@@ -9,57 +9,71 @@ import { getCurrentAccountServerSide } from "@/utils/authFunctions";
 
 import PostPage from "@/components/PageComponents/PostPage";
 
+async function getPostData(postId: number, jwt?: string, instance?: string) {
+  try {
+    let client: LemmyHttp = new LemmyHttp(
+      instance ? `https://${instance}` : DEFAULT_INSTANCE,
+    );
 
-async function getPostData (postId: number, jwt?: string, instance?: string) {
+    let posts = await client.getPost({
+      id: postId as unknown as PostId,
+      auth: jwt as unknown as string,
+    });
 
-    try {
-        let client: LemmyHttp = new LemmyHttp(instance ? `https://${instance}` : DEFAULT_INSTANCE);
+    return posts;
+  } catch (e) {
+    // Force default instance, disable auth
+    let client: LemmyHttp = new LemmyHttp(DEFAULT_INSTANCE);
 
-        let posts = await client.getPost({ 
-            id: postId as unknown as PostId, 
-            auth: jwt as unknown as string,
-        });
+    let posts = await client.getPost({
+      id: postId as unknown as PostId,
+    });
 
-        return posts;
-    } catch (e) {
-        // Force default instance, disable auth
-        let client: LemmyHttp = new LemmyHttp(DEFAULT_INSTANCE);
-
-        let posts = await client.getPost({
-            id: postId as unknown as PostId,
-        });
-
-        return posts;
-    }
+    return posts;
+  }
 }
 
-export default async function Post({ params: { slug }, searchParams: { preload, instance } } : { params: { slug: number }, searchParams: { preload: boolean, instance: string } }) {
-    const cookieStore = cookies();
-    const currentAccount = getCurrentAccountServerSide(cookieStore);
+export default async function Post({
+  params: { slug },
+  searchParams: { preload, instance },
+}: {
+  params: { slug: number };
+  searchParams: { preload: boolean; instance: string };
+}) {
+  const cookieStore = cookies();
+  const currentAccount = getCurrentAccountServerSide(cookieStore);
 
-    // Data has been preloaded, so we don't need to fetch it again
-    if(preload) {
-        return (
-            <>
-            <PostPage 
-                instance={currentAccount?.instance}
-                jwt={currentAccount?.jwt}
-                shallow postId={slug}
-            />
-            </>
-        )
-    }
-
-    const postData = (await getPostData(slug, currentAccount?.jwt, instance || currentAccount?.instance)).post_view;
-    
+  // Data has been preloaded, so we don't need to fetch it again
+  if (preload) {
     return (
-        <>
-        <PostPage 
-            data={postData}
-            instance={currentAccount?.instance}
-            postInstance={instance}
-            jwt={currentAccount?.jwt} postId={slug}
+      <>
+        <PostPage
+          instance={currentAccount?.instance}
+          jwt={currentAccount?.jwt}
+          shallow
+          postId={slug}
         />
-        </>
+      </>
+    );
+  }
+
+  const postData = (
+    await getPostData(
+      slug,
+      currentAccount?.jwt,
+      instance || currentAccount?.instance,
     )
+  ).post_view;
+
+  return (
+    <>
+      <PostPage
+        data={postData}
+        instance={currentAccount?.instance}
+        postInstance={instance}
+        jwt={currentAccount?.jwt}
+        postId={slug}
+      />
+    </>
+  );
 }

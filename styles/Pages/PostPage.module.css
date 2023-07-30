@@ -1,170 +1,162 @@
-
 .pageWrapper {
-    @apply w-full;
-    display: flex;
-    justify-content: center;
-    overflow-x: hidden;
+  @apply w-full;
+  display: flex;
+  justify-content: center;
+  overflow-x: hidden;
 }
 
 .wrapper {
-    @apply flex flex-col items-center 
-    gap-6 justify-center pb-4
-    w-full
-    max-w-3xl
+  @apply flex w-full max-w-3xl 
+    flex-col items-center justify-center
+    gap-6
+    pb-4
     max-md:w-full max-md:p-4
-    max-sm:p-6
-    ;
+    max-sm:p-6;
 }
 
 .post {
-    @apply flex flex-col items-center gap-2 justify-center w-full;
+  @apply flex w-full flex-col items-center justify-center gap-2;
 }
 
 .postHeader {
-    @apply flex flex-col gap-2 w-full;
+  @apply flex w-full flex-col gap-2;
 }
 
 .postHeaderMetadata {
-    @apply flex flex-row gap-2;
+  @apply flex flex-row gap-2;
 }
 
 .communityImage {
-    @apply rounded-full object-cover;
-    overflow: hidden;
-    height: 50px;
-    width: 50px;
+  @apply rounded-full object-cover;
+  overflow: hidden;
+  height: 50px;
+  width: 50px;
 }
 
 .communityImage img {
-    object-fit: contain;
+  object-fit: contain;
 }
 
 .postHeaderMetadataContent {
-    @apply flex flex-col gap-1;
+  @apply flex flex-col gap-1;
 }
 
 .postHeaderMetadataContentUsername {
-    @apply flex flex-row items-center flex-wrap;
+  @apply flex flex-row flex-wrap items-center;
 }
 
 .postHeaderTitle {
-    @apply text-xl font-bold
-    max-md:text-lg
-    ;
+  @apply text-xl font-bold
+    max-md:text-lg;
 }
 
 .postContent {
-    @apply w-full;
-    overflow: hidden;
-    overflow-wrap: break-word;
-    word-wrap: break-word;
-    hyphens: auto;
+  @apply w-full;
+  overflow: hidden;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  hyphens: auto;
 }
 
 .postContentText {
-    @apply w-full font-normal;
-    overflow: hidden;
-    overflow-wrap: break-word;
+  @apply w-full font-normal;
+  overflow: hidden;
+  overflow-wrap: break-word;
 }
 
 .postInteractions {
-    @apply flex flex-row gap-6 w-full items-center justify-start ;
-    user-select: none;
+  @apply flex w-full flex-row items-center justify-start gap-6;
+  user-select: none;
 }
 
 .interaction {
-    @apply flex items-center gap-2;
+  @apply flex items-center gap-2;
 }
 
 .commentsReplies {
-    cursor: unset !important;
+  cursor: unset !important;
 }
 
 .textarea {
-    @apply w-full max-md:hidden
-    bg-neutral-50 dark:bg-neutral-900
-    text-neutral-900 dark:text-neutral-50
-    rounded-lg p-2 flex flex-col items-end
-    ;
-    position: relative
+  @apply flex w-full
+    flex-col items-end
+    rounded-lg bg-neutral-50
+    p-2 text-neutral-900 dark:bg-neutral-900 dark:text-neutral-50 max-md:hidden;
+  position: relative;
 }
 
 .textarea textarea {
-    @apply
-    bg-transparent w-full p-2
-    ;
-    overflow: hidden;
-    overflow-wrap: break-word;
-    resize: vertical;
-    outline: none;
+  @apply w-full bg-transparent p-2;
+  overflow: hidden;
+  overflow-wrap: break-word;
+  resize: vertical;
+  outline: none;
 }
 
 .comments {
-    @apply w-full flex flex-col gap-6;
-    overflow: hidden;
+  @apply flex w-full flex-col gap-6;
+  overflow: hidden;
 }
 
-.commentsInteractions, .commentsInteractionsSort {
-    @apply w-2/3;
-    user-select: none;
+.commentsInteractions,
+.commentsInteractionsSort {
+  @apply w-2/3;
+  user-select: none;
 }
 
 .commentsInteractionsSort {
-    @apply flex flex-row gap-2 items-center;
-    cursor: pointer;
+  @apply flex flex-row items-center gap-2;
+  cursor: pointer;
 }
 
 .commentsList {
-    @apply flex flex-col gap-6 w-full;
+  @apply flex w-full flex-col gap-6;
 }
 
 .postBodyMedia {
-    @apply 
+  @apply mb-6
+        max-w-xl
         rounded-lg
         shadow-md
         dark:shadow-none
-        max-w-xl
-        max-md:w-full
-        mb-6
-        ;
-    overflow: hidden;
+        max-md:w-full;
+  overflow: hidden;
 }
 
 .postBodyEmbed {
-    @apply flex flex-col gap-2
-    mb-4 p-2 rounded-lg border
-    border-neutral-300 dark:border-neutral-600
-    ;
+  @apply mb-4 flex flex-col
+    gap-2 rounded-lg border border-neutral-300
+    p-2 dark:border-neutral-600;
 }
 
 .postBodyEmbed a {
-    @apply text-xs
+  @apply text-xs;
 }
 
 .postBodyEmbedTitle {
-    @apply text-lg font-bold;
+  @apply text-lg font-bold;
 }
 
 .postBodyEmbedDescription {
-    @apply text-sm font-light;
+  @apply text-sm font-light;
 }
 
 .postBodyEmbedImage {
-    @apply rounded-lg overflow-hidden;
+  @apply overflow-hidden rounded-lg;
 }
 
 .spinner {
-    background-color: grey;
+  background-color: grey;
 }
 
 .spinner span {
-    border-color: red;
+  border-color: red;
 }
 
 .showReply {
-    @apply fixed;
+  @apply fixed;
 }
 
 .hideReply {
-    @apply hidden;
+  @apply hidden;
 }

@@ -1,40 +1,39 @@
 .menu {
-    @apply flex-col gap-6 p-6 h-screen overflow-hidden justify-start
+  @apply h-screen flex-col justify-start gap-6 overflow-hidden bg-neutral-50/75
 
-    max-sm:max-w-xs
-    max-xs:w-72
+    p-6
+    backdrop-blur-xl
 
-    bg-neutral-50/75 dark:bg-neutral-950/75
+    dark:bg-neutral-950/75 max-sm:max-w-xs
 
-    backdrop-blur-xl;
-    position: fixed;
-    top: 0; left: 0;
-    z-index: 51;
-    pointer-events: all;
-    overflow: hidden;
-    display: flex;
+    max-xs:w-72;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 51;
+  pointer-events: all;
+  overflow: hidden;
+  display: flex;
 }
-
 
 .currentInstance {
-    @apply flex flex-row justify-between gap-4 rounded-lg p-4 py-3 items-center
-    bg-neutral-300 text-neutral-900
-    dark:bg-fuchsia-800 dark:text-fuchsia-50
+  @apply flex flex-row items-center justify-between gap-4 rounded-lg bg-neutral-300 p-4
+    py-3 text-neutral-900
+    dark:bg-fuchsia-800 dark:text-fuchsia-50;
 }
 
-
 .menuLinks {
-    @apply flex flex-col gap-4 w-full
+  @apply flex w-full flex-col gap-4;
 }
 
 .menuLinks button {
-    @apply w-full flex flex-row gap-1 items-center justify-start
+  @apply flex w-full flex-row items-center justify-start gap-1;
 }
 
 .menuCommunitiesList {
-    @apply flex flex-col gap-4
+  @apply flex flex-col gap-4;
 }
 
 .menuCommunity {
-    @apply flex flex-row gap-2 items-center
+  @apply flex flex-row items-center gap-2;
 }

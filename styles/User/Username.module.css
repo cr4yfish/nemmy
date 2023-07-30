@@ -1,23 +1,23 @@
 .wrapper {
-    margin-left: 2px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    position: relative;
-    gap: 3px;
-    min-width: 50px;
-    user-select: none;
+  margin-left: 2px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  position: relative;
+  gap: 3px;
+  min-width: 50px;
+  user-select: none;
 }
 
 .userimage {
-    @apply rounded-full w-5 h-5;
-    overflow: hidden;
-    object-fit: cover;
+  @apply h-5 w-5 rounded-full;
+  overflow: hidden;
+  object-fit: cover;
 }
 
 .hovercatcher {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    cursor: pointer;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  cursor: pointer;
 }

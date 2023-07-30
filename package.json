@@ -47,6 +47,8 @@
     "@types/jsonwebtoken": "^9.0.2",
     "@types/papaparse": "^5.3.7",
     "@types/react-infinite-scroller": "^1.2.3",
-    "@types/scroll-lock": "^2.1.0"
+    "@types/scroll-lock": "^2.1.0",
+    "prettier": "3.0.0",
+    "prettier-plugin-tailwindcss": "^0.4.1"
   }
 }

@@ -1,69 +1,61 @@
-
-
 .wrapper {
-    @apply 
-    bg-neutral-50 dark:bg-zinc-800 
-    border border-fuchsia-500 dark:border-fuchsia-300
-    shadow-lg dark:shadow-none
-    flex flex-row items-center rounded-lg
-    p-4 gap-3 max-sm:flex-wrap
-    
-    ;
-    position: absolute; 
-    min-width: 200px;
-    min-height: 50px;
-    z-index: 999;
-    pointer-events: none;
-    opacity: 0;
-    transition: all .2s;
+  @apply flex flex-row 
+    items-center gap-3 rounded-lg
+    border border-fuchsia-500
+    bg-neutral-50 p-4 shadow-lg dark:border-fuchsia-300
+    dark:bg-zinc-800 dark:shadow-none max-sm:flex-wrap;
+  position: absolute;
+  min-width: 200px;
+  min-height: 50px;
+  z-index: 999;
+  pointer-events: none;
+  opacity: 0;
+  transition: all 0.2s;
 }
 
-
 .active {
-    opacity: 1;
-    transform: translateY(0%);
-    pointer-events: all !important;
+  opacity: 1;
+  transform: translateY(0%);
+  pointer-events: all !important;
 }
 
 .activeToTop {
-    opacity: 1;
-    transform: translateY(-130%);
-    pointer-events: all !important;
+  opacity: 1;
+  transform: translateY(-130%);
+  pointer-events: all !important;
 }
 
 .content {
-    @apply flex flex-col items-start min-w-max max-sm:min-w-min;
+  @apply flex min-w-max flex-col items-start max-sm:min-w-min;
 }
 
 .avatar {
-    @apply overflow-hidden rounded-full
-    dark:border-2 border dark:border-fuchsia-300 border-fuchsia-500
-    w-12 h-12
- bg-slate-200
-    ;
-    max-width: unset;
-    position: relative;
-    object-fit: cover
+  @apply h-12 w-12
+    overflow-hidden rounded-full border border-fuchsia-500
+    bg-slate-200 dark:border-2
+ dark:border-fuchsia-300;
+  max-width: unset;
+  position: relative;
+  object-fit: cover;
 }
 
 .userImage {
-    @apply w-full h-full;
-    width: 48px;
-    height: fit-content;
-    object-fit: cover;
+  @apply h-full w-full;
+  width: 48px;
+  height: fit-content;
+  object-fit: cover;
 }
 
 .usernames {
-    @apply flex flex-col items-start h-full w-full max-md:w-fit;
+  @apply flex h-full w-full flex-col items-start max-md:w-fit;
 }
 
 .display_name {
-    @apply text-fuchsia-500 dark:text-fuchsia-300 font-bold w-full;
-    font-size: 12pt;
+  @apply w-full font-bold text-fuchsia-500 dark:text-fuchsia-300;
+  font-size: 12pt;
 }
 
 .name {
-    @apply dark:text-fuchsia-50 w-full;
-    font-size: 10pt;
+  @apply w-full dark:text-fuchsia-50;
+  font-size: 10pt;
 }
-

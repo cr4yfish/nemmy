@@ -1,81 +1,77 @@
 .userMenu {
-    @apply 
-    flex-col gap-6 p-6 h-screen overflow-hidden justify-between
+  @apply h-screen w-80 flex-col justify-between gap-6 overflow-hidden
 
-    w-80
-    max-sm:w-80
-    max-xs:w-72
-
-    bg-neutral-50/75 dark:bg-neutral-950/75
-
+    bg-neutral-50/75
+    p-6
     backdrop-blur-xl
-    ;
-    position: fixed;
-    top: 0; right: 0;
-    z-index: 51;
-    pointer-events: all;
-    overflow: hidden;
-    overflow-y: auto;
-    display: flex;
-    
+
+    dark:bg-neutral-950/75 max-sm:w-80
+
+    max-xs:w-72;
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 51;
+  pointer-events: all;
+  overflow: hidden;
+  overflow-y: auto;
+  display: flex;
 }
 
 .userMenuTop {
-    @apply flex flex-col gap-4
+  @apply flex flex-col gap-4;
 }
 
 .userProfiles {
-    @apply flex flex-row gap-4 overflow-x-scroll overflow-y-hidden min-w-max h-fit pb-3;
-    user-select: none;
+  @apply flex h-fit min-w-max flex-row gap-4 overflow-y-hidden overflow-x-scroll pb-3;
+  user-select: none;
 }
 
 .userProfile {
-    @apply flex flex-col gap-2 items-start justify-between relative
-    w-40 h-48 rounded-lg p-4 bg-transparent overflow-hidden
-    border-2 
-    border-neutral-300 dark:border-neutral-600
-    
-    ;
+  @apply relative flex h-48 w-40 flex-col items-start
+    justify-between gap-2 overflow-hidden rounded-lg border-2 border-neutral-300
+    bg-transparent 
+    p-4 dark:border-neutral-600;
 }
 
 .userProfileActive {
-    @apply border-2 
-    border-fuchsia-500 dark:border-fuchsia-400
-    ;
+  @apply border-2 
+    border-fuchsia-500 dark:border-fuchsia-400;
 }
 
 .userProfileBanner {
-    @apply absolute top-0 left-0 w-full h-full 
+  @apply absolute left-0 top-0 h-full w-full 
     overflow-hidden rounded-lg object-cover;
-    z-index: -2;
+  z-index: -2;
 }
 
 .userProfileBannerOverlay {
-    @apply absolute top-0 left-0 w-full h-full 
-    bg-transparent backdrop-blur-sm
-    ;
-    z-index: -1;
+  @apply absolute left-0 top-0 h-full w-full 
+    bg-transparent backdrop-blur-sm;
+  z-index: -1;
 }
 
 .userProfileAvatar {
-    @apply w-20 h-20 overflow-hidden rounded-full
+  @apply h-20 w-20 overflow-hidden rounded-full;
 }
 
 .userProfileText {
-    @apply flex flex-col text-sm
-    text-neutral-50
+  @apply flex flex-col text-sm
+    text-neutral-50;
 }
 
 .userProfileDisplayName {
-    @apply font-bold text-xl
+  @apply text-xl font-bold;
 }
 
-.userMenuInteractionsTop, .userMenuInteractionsBottom {
-    @apply flex flex-col gap-2 w-full
-    font-light
+.userMenuInteractionsTop,
+.userMenuInteractionsBottom {
+  @apply flex w-full flex-col gap-2
+    font-light;
 }
 
-.userMenuInteractionsTop button, .userMenuInteractionsBottom button {
-    @apply  w-64 p-2 rounded-lg
-    flex items-center justify-start gap-2
+.userMenuInteractionsTop button,
+.userMenuInteractionsBottom button {
+  @apply flex w-64 items-center
+    justify-start gap-2 rounded-lg p-2;
 }

@@ -7,7 +7,6 @@
  * https://lab.laukstein.com/bug/input
  * https://twitter.com/timer150/status/1345217126680899584
  */
- body.loading * {
-    transition: none !important;
-  }
-  
+body.loading * {
+  transition: none !important;
+}

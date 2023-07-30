@@ -1,78 +1,78 @@
 .wrapper {
-    @apply flex flex-col w-full;
-    position: relative;
+  @apply flex w-full flex-col;
+  position: relative;
 }
 
 .header {
-    @apply flex flex-row items-center w-fit;
+  @apply flex w-fit flex-row items-center;
 }
 
 .avatar {
-    @apply rounded-full;
-    overflow: hidden;
+  @apply rounded-full;
+  overflow: hidden;
 }
 
 .username {
-    @apply flex flex-row gap-0;
+  @apply flex flex-row gap-0;
 }
 
 .date {
-    @apply text-neutral-400 dark:text-neutral-300 text-xs
-    ;
-    user-select: none;
+  @apply text-xs text-neutral-400 dark:text-neutral-300;
+  user-select: none;
 }
 
 .body {
-    @apply flex flex-row w-full;
-    position: relative;
+  @apply flex w-full flex-row;
+  position: relative;
 }
 
 .chainlineWrapper {
-    @apply flex items-start justify-center pt-1;
-    position: relative;
-    cursor: pointer;
-    z-index: 10;
-    pointer-events: all;
-    width: 1.5rem
+  @apply flex items-start justify-center pt-1;
+  position: relative;
+  cursor: pointer;
+  z-index: 10;
+  pointer-events: all;
+  width: 1.5rem;
 }
 
 .chainlineLine {
-    @apply rounded-lg;
-    position: relative;
-    width: 2px;
-    height: calc(100% - 12px);
+  @apply rounded-lg;
+  position: relative;
+  width: 2px;
+  height: calc(100% - 12px);
 }
 
 .content {
-    @apply flex flex-col gap-3 font-normal justify-start w-fit
+  @apply flex w-fit flex-col justify-start gap-3 font-normal;
 }
 
 .comment {
-    @apply flex flex-col gap-1 w-full max-sm:max-w-min;
+  @apply flex w-full flex-col gap-1 max-sm:max-w-min;
 }
 
 .commentText {
-    @apply pl-1 pt-1 font-normal w-full h-full overflow-hidden max-sm:w-auto max-w-fit max-sm:min-h-max;
+  @apply h-full w-full max-w-fit overflow-hidden pl-1 pt-1 font-normal max-sm:min-h-max max-sm:w-auto;
 }
 
 .commentInteractions {
-    @apply flex flex-row gap-4 w-fit;
-    user-select: none;
+  @apply flex w-fit flex-row gap-4;
+  user-select: none;
 }
 
 .interaction {
-    @apply flex items-center gap-2;
+  @apply flex items-center gap-2;
 }
 
-.upvote, .downvote {
-    @apply transition-all duration-100;
-    cursor: pointer;
+.upvote,
+.downvote {
+  @apply transition-all duration-100;
+  cursor: pointer;
 }
 
 .upvote:hover {
-    @apply text-fuchsia-300;
+  @apply text-fuchsia-300;
 }
 
 .downvote:hover {
-    @apply text-indigo-300;
+  @apply text-indigo-300;
 }

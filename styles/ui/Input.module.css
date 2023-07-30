@@ -1,28 +1,25 @@
 .inputWrapper {
-    @apply flex flex-col gap-1 relative
+  @apply relative flex flex-col gap-1;
 }
 
 .inputWrapper input {
-    @apply 
-
-    transition-all duration-200
+  @apply rounded-lg p-3
     
-    rounded-lg p-3 px-3;
-    outline: none;
+    px-3 transition-all duration-200;
+  outline: none;
 }
 
 .input {
-    @apply     
-    border-transparent overflow-hidden
-    rounded-lg
+  @apply overflow-hidden rounded-lg
+    border-transparent
     bg-neutral-200 text-neutral-950
+    dark:border dark:border-neutral-500
     dark:bg-transparent dark:text-neutral-100
-    dark:border-neutral-500 dark:border
-    dark:focus:border-fuchsia-200
+    dark:focus:border-fuchsia-200;
 }
 
 .inputError {
-    @apply border-red-500
+  @apply border-red-500
     bg-red-50 text-red-950
-    dark:bg-red-900 dark:text-red-50
+    dark:bg-red-900 dark:text-red-50;
 }

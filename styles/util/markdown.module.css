@@ -1,21 +1,16 @@
 .markdown {
-    @apply prose dark:prose-invert
-    prose-img:rounded-lg w-full prose-p:my-1
-    prose-a:break-all prose-a:text-ellipsis prose-a:hyphens-auto
-    ;
+  @apply prose w-full
+    dark:prose-invert prose-p:my-1 prose-a:text-ellipsis
+    prose-a:hyphens-auto prose-a:break-all prose-img:rounded-lg;
 }
 
 .markdown a {
-    @apply text-blue-400 hover:text-blue-800
-        dark:text-blue-400 dark:hover:text-blue-300
-    ;
+  @apply text-blue-400 hover:text-blue-800
+        dark:text-blue-400 dark:hover:text-blue-300;
 }
 
-
 .markdown blockquote {
-    @apply 
-    border-l-4 p-1 pl-2 italic my-2
-    border-neutral-300
-    dark:border-neutral-700
-    ;
+  @apply my-2 border-l-4 border-neutral-300 p-1 pl-2
+    italic
+    dark:border-neutral-700;
 }
