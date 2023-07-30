@@ -91,39 +91,51 @@ This means that there is no single huge "Lemmy Server" but many smaller "instanc
 ## Getting started
 
 ### Production Setup
+
 Here you can choose between hosting it the conventional way and using the Docker image.
 
 #### Conventional
-Follow the development setup steps but instead of running ```npm run dev``` you run ```npm run build``` and then ```npm run start```
+
+Follow the development setup steps but instead of running `npm run dev` you run `npm run build` and then `npm run start`
 
 #### Docker
+
 There are multiple ways to do this. Here is one example using a Dockerfile.
 
 1. Get the Docker Image link [here](https://github.com/cr4yfish/nemmy/pkgs/container/nemmy)
 2. Create the Dockerfile
+
 ```docker
 FROM ghcr.io/cr4yfish/nemmy:[latest version] # :latest is not supported yet
 ```
+
 3. Build and run
+
 ```
 docker build -t nemmy .
 ```
+
 ```
 docker run nemmy
 ```
-Nemmy will now run on the local network. To be able to access the server from the internet, you'll have to open the port ```3000```.
+
+Nemmy will now run on the local network. To be able to access the server from the internet, you'll have to open the port `3000`.
 
 ### Development Setup
+
 To setup Nemmy for development, there are only a few steps to take.
 
 1. Download and install Node.js
 2. (Optional) Create a fork if you intend to contribute to Nemmy
 3. Clone the Repository
 4. Install dependencies
+
 ```
 npm i
 ```
+
 5. Run the development server
+
 ```
 npm run dev
 ```
@@ -136,34 +148,34 @@ npm run dev
   - [x] Voting on Comments
   - [x] Bookmarking Posts & Comments
 - [x] PWA installable
-- [X] Community Page
-- [X] Sort/Filter/Search
-    - [X] Search
-    - [X] Filter
-    - [X] Sorting 
-    - [X] Explore Section
-- [X] Authentication
-    - [X] Login
-    - [X] Register
-    - [X] Support for multiple instances
-    - [X] Subscribing to Communities
-- [ ] Creating Content 
-    - [X] Creating Comments
-    - [X] Creating Posts
-    - [X] Creating Communities 
-    - [ ] Supporting *all* Lemmy Markdown Features **<- Almost done**
-    - [ ] Support Markdown inserts **<- Only UI currently**
+- [x] Community Page
+- [x] Sort/Filter/Search
+  - [x] Search
+  - [x] Filter
+  - [x] Sorting
+  - [x] Explore Section
+- [x] Authentication
+  - [x] Login
+  - [x] Register
+  - [x] Support for multiple instances
+  - [x] Subscribing to Communities
+- [ ] Creating Content
+  - [x] Creating Comments
+  - [x] Creating Posts
+  - [x] Creating Communities
+  - [ ] Supporting _all_ Lemmy Markdown Features **<- Almost done**
+  - [ ] Support Markdown inserts **<- Only UI currently**
 - [ ] User Page
-    - [ ] Settings **<- WIP**
-    - [X] Notifications
-    - [X] User Profile
-    - [X] User Posts
-    - [ ] Bookmarks **<- Almost done**
-    - [X] User Comments
-    - [ ] Chat **<- WIP**
-- [X] Sidebar
-    - [X] Subscribed Communities
-    - [X] Instance Info
+  - [ ] Settings **<- WIP**
+  - [x] Notifications
+  - [x] User Profile
+  - [x] User Posts
+  - [ ] Bookmarks **<- Almost done**
+  - [x] User Comments
+  - [ ] Chat **<- WIP**
+- [x] Sidebar
+  - [x] Subscribed Communities
+  - [x] Instance Info
 - [ ] Edit tools
   - [ ] Edit Comments
   - [ ] Edit Posts
@@ -207,6 +219,7 @@ Ideas for Q4+
 - Nemmy will always be 100% free to use (I might start adding donation options if the Hosting Costs rise)
 
 ## Security
+
 To make sure Nemmy is safe to use, there are multiple code scanners scanning every commit.
 Humans can also scan the code since it's 100% open source and [create a security issue](https://github.com/cr4yfish/nemmy/security).
 

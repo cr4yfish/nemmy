@@ -53,7 +53,6 @@ export default function Post({
         </div>
 
         <div className={`${styles.rightSide}`}>
-
           <div className={`${styles.header}`}>
             <div className={`${styles.headerContent}`}>
               <div className={`${styles.headerMetadata}`}>
@@ -126,7 +125,12 @@ export default function Post({
             </div>
           </div>
 
-          <Link href={postUrl} className={`${styles.content}`} shallow target="_blank">
+          <Link
+            href={postUrl}
+            className={`${styles.content}`}
+            shallow
+            target="_blank"
+          >
             {/* Display Overlay if post has no media */}
             {!post?.post?.embed_title && // 100% dont display content overlay
               !post?.post?.url?.endsWith(".html") && // 100% dont display content overlay
@@ -143,7 +147,7 @@ export default function Post({
               !(
                 post?.post?.embed_title || post?.post?.url?.endsWith(".html")
               ) && (
-                <div  className={`${styles.body} mb-2`}>
+                <div className={`${styles.body} mb-2`}>
                   <RenderMarkdown content={post?.post?.body} />
                 </div>
               )}

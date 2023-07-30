@@ -31,14 +31,20 @@ export default function SiteInfoCard({
 
   return (
     <div
-      className=" card flex flex-col max-lg:hidden
-        h-fit w-full max-w-xs gap-4
+      className=" card flex h-fit w-full
+        max-w-xs flex-col gap-4 max-lg:hidden
         "
     >
-      <div className="flex h-fit w-full flex-col gap-2 prose dark:prose-invert prose-headings:mb-0">
+      <div className="prose flex h-fit w-full flex-col gap-2 dark:prose-invert prose-headings:mb-0">
         <h1 className="capitalize">{new URL(site.actor_id).host}</h1>
         <span className="text-sm">{site?.description}</span>
-        {site.banner && ( <img  className="overflow-hidden mt-0 rounded-xl" src={site?.banner}  alt="" /> )}
+        {site.banner && (
+          <img
+            className="mt-0 overflow-hidden rounded-xl"
+            src={site?.banner}
+            alt=""
+          />
+        )}
       </div>
 
       <div className="flex w-full flex-row flex-wrap items-center gap-2 rounded-lg border-neutral-700 p-2 dark:border">
@@ -61,27 +67,31 @@ export default function SiteInfoCard({
           />
         )}
         {counts?.posts && (
-          <Snack
-            text={siteResponse.version.split("-")[0]}
-            icon="update"
-          />
+          <Snack text={siteResponse.version.split("-")[0]} icon="update" />
         )}
       </div>
 
       <div className="flex flex-col gap-1">
-        <span className="prose dark:prose-invert font-bold">Instance Admins</span>
+        <span className="prose font-bold dark:prose-invert">
+          Instance Admins
+        </span>
         <div className="flex flex-row flex-wrap gap-2">
           {siteResponse.admins.map((admin) => (
-            <Username key={admin.person.id} user={admin.person} baseUrl={new URL(site.actor_id).host} />
-          ))}          
+            <Username
+              key={admin.person.id}
+              user={admin.person}
+              baseUrl={new URL(site.actor_id).host}
+            />
+          ))}
         </div>
       </div>
 
       <div className="flex flex-col">
-        <span className="prose dark:prose-invert font-bold">Instance Sidebar</span>
+        <span className="prose font-bold dark:prose-invert">
+          Instance Sidebar
+        </span>
         <RenderMarkdown className="w-full text-xs" content={site?.sidebar} />
       </div>
-
     </div>
   );
 }

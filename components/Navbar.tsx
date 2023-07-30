@@ -410,7 +410,11 @@ export default function Navbar() {
                   <Image
                     width={40}
                     height={40}
-                    className={`h-10 w-10 overflow-hidden ${session?.currentAccount?.user?.person?.avatar ? "object-cover" : "object-contain"} `}
+                    className={`h-10 w-10 overflow-hidden ${
+                      session?.currentAccount?.user?.person?.avatar
+                        ? "object-cover"
+                        : "object-contain"
+                    } `}
                     style={{ borderRadius: "50%" }}
                     src={
                       session?.currentAccount?.user?.person?.avatar ||
