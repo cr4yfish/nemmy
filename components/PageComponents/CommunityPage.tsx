@@ -186,12 +186,15 @@ export default function CommunityPage({
         </div>
       </div>
 
-      <div className={`${styles.sortsWrapper} relative`}>
-        <SortButton onChange={(newSort) => setCurrentSort(newSort)} />
+      <div className={`${styles.sortsWrapper}`}>
+        <div className="flex flex-row justify-between items-center max-w-2xl px-4 w-full">
+          <SortButton onChange={(newSort) => setCurrentSort(newSort as SortType)} />
 
-        <div className="flex items-center">
-          <span className="material-symbols-outlined">view_day</span>
+          <div className="flex items-center">
+            <span className="material-symbols-outlined">view_day</span>
+          </div>
         </div>
+
       </div>
 
       <div

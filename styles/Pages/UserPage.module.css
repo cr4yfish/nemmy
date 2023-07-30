@@ -70,10 +70,11 @@
 }
 
 .sortsWrapper {
-  @apply flex w-full flex-row flex-wrap items-center justify-between bg-neutral-200 px-28 py-4
+  @apply flex flex-row flex-wrap items-center justify-center bg-neutral-200 px-28 py-4
     dark:bg-neutral-900 dark:text-neutral-300
-     max-md:p-6;
+     max-md:p-6 w-full;
 }
+
 
 .sort {
   @apply flex flex-row items-center gap-1;

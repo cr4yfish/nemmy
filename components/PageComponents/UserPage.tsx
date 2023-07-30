@@ -245,18 +245,22 @@ export default function UserPage({
         </div>
 
         <div className="flex w-full flex-col items-center gap-4 bg-neutral-50 dark:bg-neutral-950 dark:pt-4">
+
           <div className={`${styles.sortsWrapper}`}>
-            <div className="relative flex flex-row flex-wrap items-center gap-4">
-              <SortButton onChange={(newSort: SortType) => setSort(newSort)} />
+            <div className="flex flex-row justify-between items-center max-w-2xl w-full">
+              <div className="relative flex flex-row flex-wrap items-center gap-4">
+                <SortButton onChange={(newSort) => setSort(newSort as SortType)} />
 
-              <FilterButton
-                onChange={(newFilter: FilterType) => setFilter(newFilter)}
-              />
+                <FilterButton
+                  onChange={(newFilter: FilterType) => setFilter(newFilter)}
+                />
+              </div>
+
+              <div className="flex items-center">
+                <span className="material-symbols-outlined">view_day</span>
+              </div>
             </div>
 
-            <div className="flex items-center">
-              <span className="material-symbols-outlined">view_day</span>
-            </div>
           </div>
 
           <div
