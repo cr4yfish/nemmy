@@ -125,7 +125,6 @@ button {
       p-4 text-slate-100 transition-all
       duration-300 hover:drop-shadow-lg
       max-sm:rounded-none
-      max-sm:dark:rounded-lg
       dark:border
       dark:border-neutral-800
       dark:bg-neutral-900 
