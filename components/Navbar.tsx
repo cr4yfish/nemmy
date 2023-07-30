@@ -31,7 +31,7 @@ import LeftSideMenu from "./Navbar/LeftSideMenu";
 import SearchOverlay from "./Navbar/SearchOverlay";
 
 import styles from "@/styles/Navbar.module.css";
-import { enablePageScroll } from "scroll-lock";
+import { disablePageScroll, enablePageScroll } from "scroll-lock";
 
 const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
@@ -278,11 +278,13 @@ export default function Navbar() {
 
   const handleUserMenuOpen = async () => {
     handleFilterOverlayClose();
+    disablePageScroll();
     setUserMenu(true);
   };
 
   const handleMenuOpen = async () => {
     handleFilterOverlayClose();
+    disablePageScroll();
     setMenu(true);
   };
 
