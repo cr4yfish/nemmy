@@ -265,7 +265,7 @@ export default function UserPage({
 
           <div
             className="flex min-h-screen max-w-3xl flex-col items-center 
-                    justify-start bg-neutral-50 dark:bg-neutral-900 max-md:w-full"
+                    justify-start max-md:w-full"
           >
             <InfiniteScroll
               pageStart={1}
@@ -274,7 +274,7 @@ export default function UserPage({
               loader={<Loader key={"loader"} />}
               className={`${postListStyles.postList} `}
             >
-              {posts.map((post: PostView, index: number) => {
+              { posts.map((post: PostView, index: number) => {
                 return (
                   <Post
                     post={post}
