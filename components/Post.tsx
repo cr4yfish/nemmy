@@ -95,14 +95,14 @@ export default function Post({
                     }
 
                     {/* Display Body if post has body and is not a Link */}
-                    {post?.post?.body && !(post?.post?.embed_title || post?.post?.url?.endsWith(".html")) && <div className={`${styles.body} ${markdownStyle.markdown}`}><RenderMarkdown>{post?.post?.body}</RenderMarkdown></div> }
+                    {post?.post?.body && !(post?.post?.embed_title || post?.post?.url?.endsWith(".html")) && <div className={`${styles.body} mb-2`}><RenderMarkdown content={post?.post?.body} /></div> }
 
                     {/* Display Link if post has link e.g. Article case */}
                     {(post?.post?.embed_title || post?.post?.url?.endsWith(".html")) &&
                         <div className={`${styles.postBodyEmbed}`}>
                             <div className="flex flex-col gap-1">
                                 <div className={`${styles.postBodyEmbedTitle}`}>{post?.post?.embed_title}</div>
-                                <RenderMarkdown className={`${styles.postBodyEmbedDescription}`}>{post?.post?.embed_description}</RenderMarkdown>
+                                <RenderMarkdown className={`${styles.postBodyEmbedDescription}`} content={post?.post?.embed_description} />
                             </div>
                            <div className={`${styles.link} flex justify-start items-start w-full p-1 pl-0`}>
                                 {post.post.url && <a className="a text-xs" href={post.post.url} target="_blank">{new URL(post.post.url).hostname}</a>}

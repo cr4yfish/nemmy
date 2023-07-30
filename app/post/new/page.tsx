@@ -362,7 +362,7 @@ export default function New() {
                         <div className="relative w-fit h-full p-6 flex justify-center pt-20 flex-col gap-1">
                             <button onClick={() => setCommunityRulesPopup(false)} className="flex items-center justify-center"><span className="material-symbols-outlined absolute top-10 left-10">close</span></button>
                             <span className="font-bold text-xl">{selectedCommunity?.community?.title}</span>
-                            <RenderMarkdown>{selectedCommunity?.community?.description}</RenderMarkdown>
+                            <RenderMarkdown content={selectedCommunity?.community?.description} />
                         </div>
                     </motion.div>
                 }

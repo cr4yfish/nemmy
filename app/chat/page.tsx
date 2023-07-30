@@ -46,7 +46,7 @@ function ChatPreview({creator, chats} : {creator: any, chats: PrivateMessagesRes
                     
                     {/* newest message by creator */}
                     <div className=" text-ellipsis overflow-clip line-clamp-1 font-light text-fuchsia-900 max-w-xs">
-                        <RenderMarkdown>{lastMessage.content}</RenderMarkdown>
+                        <RenderMarkdown content={lastMessage.content} />
                     </div>
                 </div>
             </Link>

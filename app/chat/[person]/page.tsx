@@ -84,7 +84,7 @@ export default async function UserChat({ params: { person } } : { params: { pers
                         {!isSameDate && <RenderDate date={currentDate} />}
                         <div className={` bg-neutral-200 text-neutral-950 rounded-3xl p-4 pb-6 pr-6 relative max-w-sm self-start overflow-ellipsis overflow-clip ${m.creator.name != person && styles.ownMessage}`}>
                             <span className={`absolute right-3 bottom-2 text-neutral-600 ${m.creator.name != person && styles.ownMessageMetadata} font-light italic text-xs`}>{getHoursMinutes(m.private_message.published)}</span>
-                            <RenderMarkdown key={m.private_message.id}>{m.private_message.content}</RenderMarkdown>
+                            <RenderMarkdown key={m.private_message.id} content={m.private_message.content} />
                         </div>
                         </>
                     )

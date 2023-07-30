@@ -170,7 +170,7 @@ export default function SearchOverlay({
 
                                 <div className="flex flex-col gap-1">
                                     <span className="font-bold">{result?.post?.name}</span>
-                                   {!result?.post?.thumbnail_url && <span className=" text-neutral-500 dark:text-neutral-300 line-clamp-2"><RenderMarkdown>{result?.post?.body}</RenderMarkdown></span>}
+                                   {!result?.post?.thumbnail_url && <span className=" text-neutral-500 dark:text-neutral-300 line-clamp-2"><RenderMarkdown content={result?.post?.body} /></span>}
                                 </div>
 
                                 <div className="flex flex-row gap-4 text-neutral-500 dark:text-neutral-300">

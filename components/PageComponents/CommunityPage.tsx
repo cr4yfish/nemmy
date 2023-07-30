@@ -72,7 +72,7 @@ export default function CommunityPage({ initialCommunity, communityInstance }: {
                 <div className={`${styles.descriptionOverlay}  ${descriptionExpanded && "hidden"}`}></div>
                 <div className={`${styles.descriptionContent} ${descriptionExpanded && styles.descriptionContentExpanded} `}>
                     <span className="font-bold">Community Description</span>
-                    {communityData?.community_view?.community?.description ? <RenderMarkdown>{communityData?.community_view?.community?.description}</RenderMarkdown>
+                    {communityData?.community_view?.community?.description ? <RenderMarkdown content={communityData?.community_view?.community?.description} />
                     :
                     <div className=" italic ">This community does not have a description</div>
                     }

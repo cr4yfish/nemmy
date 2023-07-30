@@ -148,7 +148,7 @@ export default function UserPage({ initialUser, userInstance } : {  initialUser:
                             </div>
                         </div>
                         
-                        <span><RenderMarkdown>{userData?.person_view?.person?.bio}</RenderMarkdown></span>
+                        <span><RenderMarkdown content={userData?.person_view?.person?.bio} /></span>
 
                         <div className="flex flex-row gap-2 items-center">
                             <button className={`${styles.button} ${styles.buttonFuchsia}`}><span className="material-icons-outlined">chat_bubble_outline</span>Message</button>

@@ -44,7 +44,7 @@ export default function PostPage({
             history.replaceState({}, "", pathname);
         }
         setNavbar({ ...navbar!, showSort: false, showFilter: false, 
-            showSearch: false, showback: false, hidden: false, titleOverride: "" 
+            showSearch: true, showback: false, hidden: false, titleOverride: "" 
         })
     }, [])
 
@@ -137,7 +137,7 @@ export default function PostPage({
                         {postData?.post?.body && 
                             <div 
                                 className={`${styles.postContentText} ${markdownStyle.markdown}`}>
-                                    <RenderMarkdown>{postData?.post?.body}</RenderMarkdown>
+                                    <RenderMarkdown content={postData?.post?.body} />
                             </div>
                         }
                         

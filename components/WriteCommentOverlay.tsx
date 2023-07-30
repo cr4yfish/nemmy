@@ -85,7 +85,7 @@ export default function WriteCommentOverlay({
             {comment?.comment?.content ?
             <div className="flex flex-col">
                 <div className="flex flex-row"><Username user={comment?.creator} baseUrl="" /></div>
-                <div><RenderMarkdown>{comment?.comment?.content}</RenderMarkdown></div>
+                <div><RenderMarkdown content={comment?.comment?.content} /></div>
             </div>
             :
             <div className="flex flex-col overflow-y-auto mb-4">
@@ -106,7 +106,7 @@ export default function WriteCommentOverlay({
                    {(post?.post?.thumbnail_url || post?.post?.url) && <Image height={80} width={80} src={post.post?.thumbnail_url || post.post?.url || ""} className="rounded-lg w-20 h-20 object-contain"  alt="" />}
                 </div>
             </div>
-            <div className=" h-12 p-4"> {post?.post?.body && <RenderMarkdown>{post.post?.body}</RenderMarkdown>}</div>
+            <div className=" h-12 p-4"> {post?.post?.body && <RenderMarkdown content={post.post?.body} />}</div>
             </div>
             }
 
