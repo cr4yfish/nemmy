@@ -118,3 +118,20 @@ button {
 .filled {
   font-variation-settings: "FILL" 1;
 }
+
+@layer components {
+  .card {
+    @apply p-4 rounded-lg transition-all duration-300 
+      dark:shadow-none border border-fuchsia-200
+      text-slate-100 bg-neutral-50
+      dark:rounded-lg
+      dark:border
+      dark:border-neutral-800
+      dark:bg-neutral-900 hover:dark:border-neutral-700
+      max-md:hover:border-neutral-800
+      hover:drop-shadow-lg
+      max-md:hover:drop-shadow-none
+      ;
+  }
+
+}
