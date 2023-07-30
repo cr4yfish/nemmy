@@ -243,9 +243,11 @@ export default function UserMenu({
         </div>
 
         <div className={`${styles.userMenuInteractionsBottom}`}>
-          <button onClick={() => handleClose()}>
-            <span className="material-symbols-outlined">close</span>Close
-          </button>
+          <a>
+            <button onClick={() => handleClose()}>
+              <span className="material-symbols-outlined">close</span>Close
+            </button>
+          </a>
 
           <UserMenuItem
             text="Settings"
@@ -254,19 +256,21 @@ export default function UserMenu({
             close={handleClose}
           />
 
-          <button
-            onClick={() => {
-              handleClose();
-              handleLogout({
-                session: session,
-                setSession: setSession,
-                router: router,
-                account: session.currentAccount,
-              });
-            }}
-          >
-            <span className="material-symbols-outlined">logout</span>Log out
-          </button>
+          <a>
+            <button
+              onClick={() => {
+                handleClose();
+                handleLogout({
+                  session: session,
+                  setSession: setSession,
+                  router: router,
+                  account: session.currentAccount,
+                });
+              }}
+            >
+              <span className="material-symbols-outlined">logout</span>Log out
+            </button>
+          </a>
         </div>
       </motion.div>
     </>
