@@ -1,17 +1,24 @@
 "use client";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-
-import { useSession } from "@/hooks/auth";
-import { DEFAULT_INSTANCE, DEFAULT_AVATAR } from "@/constants/settings";
-import Input from "../ui/Input";
 import { motion, AnimatePresence } from "framer-motion";
 import { disablePageScroll, enablePageScroll } from "scroll-lock";
+import Image from "next/image";
+import InfiniteScroll from "react-infinite-scroller";
+
+import { useSession } from "@/hooks/auth";
+
+import { DEFAULT_INSTANCE, DEFAULT_AVATAR } from "@/constants/settings";
+
+import Input from "../ui/Input";
+
+import { listCommunities } from "@/utils/lemmy";
 
 import SiteInfo from "./SiteInfo";
 
 import styles from "@/styles/components/Navbar/LeftSideMenu.module.css";
-import Image from "next/image";
+import { CommunityView } from "lemmy-js-client";
+
 
 export default function LeftSideMenu({
   handleMenuClose,
@@ -24,6 +31,8 @@ export default function LeftSideMenu({
 }) {
   const { session } = useSession();
   const [showSiteInfo, setShowSiteInfo] = useState(false);
+  const [communities, setCommunities] = useState<CommunityView[]>([]);
+  const [hasMore, setHasMore] = useState(true);
 
   useEffect(() => {
     disablePageScroll();
@@ -33,6 +42,28 @@ export default function LeftSideMenu({
     enablePageScroll();
     handleMenuClose();
   };
+
+  const handleLoadMore = async (page: number) => {
+    const data = await listCommunities({ page: page, auth: session.currentAccount?.jwt, type_: "Subscribed", sort: "Active" }, session.currentAccount?.instance);
+    console.log(data);    
+    if(typeof data == "boolean" || data?.communities?.length == 0) {
+      setHasMore(false);
+      return
+    };
+
+    const oldData = communities;
+
+    const newData = [...oldData, ...data.communities]
+
+    const unique = newData.filter((c, index) => newData.findIndex((c2) => c.community.id == c2.community.id) == index)
+
+    // Sort alphabetically
+    const sortedData = unique.sort((a, b) =>
+      a.community.name.localeCompare(b.community.name)
+    );
+
+    setCommunities(sortedData);
+  }
 
   return (
     <>
@@ -46,7 +77,7 @@ export default function LeftSideMenu({
       </AnimatePresence>
       <motion.div
         id="menu"
-        className={`${styles.menu} overflow-y-auto`}
+        className={`${styles.menu} overflow-y-scroll`}
         initial={{ opacity: 0, x: -300 }}
         animate={{ opacity: 1, x: 0, transition: { bounce: 0 } }}
         exit={{ opacity: 0, x: -300 }}
@@ -78,7 +109,7 @@ export default function LeftSideMenu({
           </div>
         </div>
 
-        <div className={`flex flex-col gap-2`}>
+        <div className={`flex flex-col gap-2 h-fit`}>
           <div className="flex items-center justify-between gap-1">
             <span className="font-bold">Communities</span>
             <span className="material-symbols-outlined">arrow_drop_down</span>
@@ -98,11 +129,21 @@ export default function LeftSideMenu({
                 />
               </div>
 
-              <div className={`relative flex flex-col gap-4 overflow-y-auto`}>
-                {session?.siteResponse?.my_user?.follows
+              <InfiniteScroll 
+                pageStart={0}
+                hasMore={hasMore}
+                loadMore={async (page) => await handleLoadMore(page)}
+                className={`relative flex flex-col gap-2 h-fit pb-4`}
+              >
+                {communities
                   ?.filter((c) => c.community.name.includes(communitySearch))
                   .map((community, index) => (
-                    <div key={index}>
+                    <motion.div 
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0, transition: { bounce: 0.2 } }}
+                      exit={{ opacity: 0, y: 10 }}
+                      key={index}
+                    >
                       <Link
                         href={`/c/${community.community.name}@${
                           new URL(community.community.actor_id).host
@@ -113,17 +154,21 @@ export default function LeftSideMenu({
                         <Image
                           height={40}
                           width={40}
-                          className="h-10 w-10 overflow-hidden rounded-full"
+                          className="h-10 w-10 overflow-hidden rounded-full object-cover"
                           src={community?.community?.icon || DEFAULT_AVATAR}
                           alt=""
                         />
-                        <span className=" capitalize ">
-                          {community.community.name}
-                        </span>
+                        <div className="flex flex-col text-xs h-full">
+                          <span className=" capitalize font-bold">
+                            {community.community.name}
+                          </span>
+                          <span className="font-light text-neutral-700 dark:text-neutral-300">{new URL(community.community.actor_id).host}</span>
+                        </div>
+
                       </Link>
-                    </div>
+                    </motion.div>
                   ))}
-              </div>
+              </InfiniteScroll>
             </>
           ) : (
             <div
