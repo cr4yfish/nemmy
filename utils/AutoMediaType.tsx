@@ -33,7 +33,7 @@ export function AutoMediaType({ url, alt="", nsfw=false } : { url: string, alt?:
         return (
         <div className="relative"  style={{ }}>
            {nsfw && <NSFWRBlurRender defaultState={nsfw} />}
-            <Image src={url} alt={alt} height={500} width={500} style={{ width: "100%", height: "auto" }} />
+            <Image src={url} alt={alt} height={500} width={500} style={{ width: "100%", height: "auto", objectFit: "cover" }} />
         </div>
         )
     } 
