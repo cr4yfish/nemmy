@@ -1,11 +1,12 @@
 "use client"
 import Link from "next/link"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 import { useSession } from "@/hooks/auth"
 import { DEFAULT_INSTANCE, DEFAULT_AVATAR } from "@/constants/settings"
 import Input from "../ui/Input"
 import { motion, AnimatePresence } from "framer-motion"
+import { disablePageScroll, enablePageScroll } from "scroll-lock"
 
 import SiteInfo from "./SiteInfo"
 
@@ -19,6 +20,16 @@ export default function LeftSideMenu(
     }) {
     const { session } = useSession();
     const [showSiteInfo, setShowSiteInfo] = useState(false)
+
+
+    useEffect(() => {
+        disablePageScroll();
+    }, [])
+
+    const handleClose = () => {
+        enablePageScroll();
+        handleMenuClose();
+    }
 
     return (
         <>
@@ -44,7 +55,7 @@ export default function LeftSideMenu(
                 </button>
 
                 <div className={`${styles.menuLinks}`}>
-                    <Link onClick={() => handleMenuClose()} href={"/"}><button><span className="material-symbols-outlined">home</span>Home</button></Link>
+                    <Link onClick={() => handleClose()} href={"/"}><button><span className="material-symbols-outlined">home</span>Home</button></Link>
                 </div>
 
             </div>
@@ -69,7 +80,7 @@ export default function LeftSideMenu(
                 <div className={`flex flex-col gap-4 overflow-y-auto relative`}>
                     {session?.siteResponse?.my_user?.follows?.filter((c) => c.community.name.includes(communitySearch)).map((community, index) => (
                         <div key={index}>
-                            <Link href={`/c/${community.community.name}@${new URL(community.community.actor_id).host}`} onClick={() => handleMenuClose()} className={`${styles.menuCommunity}`}>
+                            <Link href={`/c/${community.community.name}@${new URL(community.community.actor_id).host}`} onClick={() => handleClose()} className={`${styles.menuCommunity}`}>
                                 <Image height={40} width={40} className="w-10 h-10 overflow-hidden rounded-full" src={community?.community?.icon || DEFAULT_AVATAR } alt="" />
                                 <span className=" capitalize ">{community.community.name}</span>
                             </Link>                 
