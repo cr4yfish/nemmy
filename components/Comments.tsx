@@ -161,6 +161,7 @@ export default function Comments({
             page: currentCommentsPage,
             auth: session.currentAccount?.jwt
         }, instance || DEFAULT_INSTANCE);
+
         if(data) { 
             setCommentsLoading(false)
 
@@ -181,6 +182,11 @@ export default function Comments({
                 // filter out removed comments and only get top-level comments
                 const filtered = uniqueComments.filter((c) => !c.comment.removed && !c.comment.deleted && c.comment.path.split(".")[1] == c.comment.id.toString());
 
+                if(filtered.length == 0) {
+                    console.warn("Lemmy wasted resources again! This message is shown every time Lemmy sends a stupid response.")
+                    //setHasMoreComments(false);
+                }
+
                 setCommentsData({ ...oldData, comments: [...oldData.comments, ...filtered] });
             } 
             // No old data => just set new data
@@ -188,7 +194,10 @@ export default function Comments({
                 setCommentsData(data);
             }
             setCurrentCommentsPage(currentCommentsPage + 1);
+        } else {
+            //setHasMoreComments(false);
         }
+        setCommentsLoading(false); // For all cases
     }
 
     return (

@@ -1,6 +1,7 @@
 "use client"
-import { CommentView, GetCommentsResponse } from "lemmy-js-client"
+import { CommentId, CommentSortType, CommentView, GetCommentsResponse, PostId } from "lemmy-js-client"
 import React, { useState, useEffect, Dispatch, SetStateAction, useRef } from "react"
+import useSWR from "swr";
 
 
 import RenderMarkdown from "./ui/RenderMarkdown"
@@ -13,6 +14,16 @@ import { useSession } from "@/hooks/auth"
 import { FormatDate } from "@/utils/formatDate"
 import { sendComment } from "@/utils/lemmy"
 
+
+async function fetcher(url: string) {
+    try {
+        const res = await fetch(url);
+        const data = await res.json();
+        return data;
+    } catch (error) {
+        console.log(error);
+    }
+  }
 
 // Tailwind colors for comment chain colors
 const colors = ["bg-red-300", "bg-orange-300", "bg-amber-300", "bg-yellow-300", "bg-lime-300", "bg-green-300", 
@@ -27,14 +38,17 @@ export default function Comment({ commentView, allComments, depth=0, setReplyCom
     setShowReply: React.Dispatch<React.SetStateAction<boolean>>,
     commentReplyMode?: boolean
     }) {
+        
     const { session } = useSession();
     const [children, setChildren] = useState<CommentView[]>([]);
     const [childrenHidden, setChildrenHidden] = useState(false);
-    const [childrenError, setChildrenError] = useState(true);
     const [showDesktopReply, setShowDesktopReply] = useState(false);
     const [replyText, setReplyText] = useState("");
     const textareaRef = useRef<HTMLTextAreaElement>(null);
     const [loading, setLoading] = useState<boolean>(false);
+    const [loaded, setLoaded] = useState<boolean>(false);
+
+    const { data, error } = useSWR(`/api/getComments?post_id=${commentView.comment.post_id}&parent_id=${commentView.comment.id}&sort=Top&page=1&auth=${session.currentAccount?.jwt}`, fetcher)
 
     // Adjust textarea height to content on user input
     useEffect(() => {
@@ -56,39 +70,35 @@ export default function Comment({ commentView, allComments, depth=0, setReplyCom
 
     }, [])
 
-
     // Load children from api
     useEffect(() => {
-        if(!childrenError) return;
-        if(children.length > 0) return;
-        if(loading) return;
-        if(depth > 10) return;
+        if(!data) return; // No data yet
+        if(loaded) return; // Already loaded children
+        if(children.length > 0) return; // Already loaded children
+        if(loading) return; // Already loading children
+        if(depth > 3) return; // TODO Load more comments button
+        if(session.pendingAuth) return; // Session not loaded yet
+        setLoading(true);
 
-        (async () => {
-            if(session.pendingAuth) return;
-            setLoading(true)
-            try {
-                console.log("fetching children")
-                const data = await fetch(`/api/getComments?post_id=${commentView.comment.post_id}&parent_id=${commentView.comment.id}&sort=Top&page=1&auth=${session.currentAccount?.jwt}
-                `);
-                const json = (await data.json());
-                if(json.error) {
-                    console.error(json.error)
-                    setChildrenError(true);
-                    setLoading(false)
-                    return;
-                } else {
-                    setChildrenError(false);
-                    const comments = json as GetCommentsResponse;
-                    setChildren(comments.comments.filter(c => c.comment.id !== commentView.comment.id));
-                    setLoading(false)
-                }
-            } catch(e) {
-                setLoading(false)
-                console.error(e);
-            }  
-        })()
-    }, [commentView, allComments, childrenError])
+        try {
+            const comments = data as GetCommentsResponse;
+            if(!comments || !comments.comments) throw new Error("No comments returned from api");
+
+            // check if comment already exists in children
+            const existingComment = children?.find(c => c.comment.id === commentView.comment.id);
+
+            if(!existingComment) {
+                setChildren(comments?.comments?.filter(c => c.comment.id !== commentView.comment.id));
+            }
+                
+            
+        } catch(e) {
+            console.error(e);
+        }  
+        setLoaded(true);
+        setLoading(false);
+
+    }, [data])
 
     const handleToggleChildren = () => {
         children.length > 0 ? setChildrenHidden(!childrenHidden) : null;
@@ -125,13 +135,19 @@ export default function Comment({ commentView, allComments, depth=0, setReplyCom
 
     return (
         <>
-        <div className={`${styles.wrapper}`}>
+        <div className={`${styles.wrapper} h-fit`}>
 
 
             <div className={`${styles.header}`}>
-                <div className={`${styles.username}`}><Username user={commentView?.creator} baseUrl="" /></div>
-                <span className={`${styles.date}`}><FormatDate date={new Date(commentView?.comment?.published)} /></span>
-                {(commentView?.comment?.deleted || commentView?.comment?.removed) && <span className=" bg-red-400 text-red-950 p-2 rounded-full" >Removed</span>}
+                { (commentView.comment.deleted || commentView.comment.removed) ?
+                    <div className="" >[removed]</div>
+                    :
+                    <>
+                    <div className={`${styles.username}`}><Username user={commentView?.creator} baseUrl="" /></div>
+                    <div className="dividerDot"></div>
+                    <span className={`${styles.date}`}><FormatDate date={new Date(commentView?.comment?.published)} /></span>
+                    </>
+                }
             </div>
 
             <div className={`${styles.body}`}>
@@ -141,13 +157,17 @@ export default function Comment({ commentView, allComments, depth=0, setReplyCom
                 <div className={`${styles.content}`}>
 
                     <div className={`${styles.comment}`}>
-                        <div className={`${styles.commentText}`}>
-                            <RenderMarkdown>{commentView?.comment?.content}</RenderMarkdown>
+                        <div className={`${styles.commentText} text-sm max-sm:text-xs`}>
+                            { (commentView.comment.deleted || commentView.comment.removed) ?
+                                <div className="text-red-400" >This comment has been removed</div>
+                                :
+                                <RenderMarkdown content={commentView?.comment?.content} />
+                            }
                         </div>
-                        <div className={`${styles.commentInteractions}`}>
+                        <div className={`${styles.commentInteractions} text-sm text-neutral-700 dark:text-neutral-300`}>
                             <Vote comment={commentView} isComment horizontal />
-                            <div className="flex flex-row gap-4 items-center">
-                                <button onClick={() => handleReply()} className={`${styles.interaction}`}><span className="material-icons">chat_bubble_outline</span>Reply</button>
+                            <div className="flex flex-row gap-4 items-center ">
+                                <button onClick={() => handleReply()} className={`${styles.interaction}`}><span className="material-symbols-outlined" style={{ fontSize: "1.25rem" }}>chat_bubble_outline</span>Reply</button>
                                 {session?.currentAccount?.jwt &&
                                     <BookmarkButton 
                                         type="comment"
@@ -157,7 +177,7 @@ export default function Comment({ commentView, allComments, depth=0, setReplyCom
                                         initState={commentView.saved}
                                     />
                                 }
-                                <div className={`${styles.interaction}`}><span className="material-icons">more_vert</span></div>
+                                <div className={`${styles.interaction}`}><span className="material-symbols-outlined" style={{ fontSize: "1.25rem" }}>more_vert</span></div>
                             </div>
                             
                         </div>
