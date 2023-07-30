@@ -107,13 +107,11 @@ export default function SmallUser({
 
         <div className={`${styles.content}`}>
           <div className={`${styles.usernames}`}>
-            {user.display_name && (
-              <span className={`${styles.display_name}`}>
-                {user.display_name}
-              </span>
-            )}
+            <span className={`${styles.display_name}`}>
+              {user.display_name || user.name}
+            </span>
             <span className={`${styles.name}`}>
-              <span className=" select-all ">@{user.name}</span>{" "}
+              <span className=" select-all text-neutral-700 dark:text-neutral-400 ">@{user.name}</span>{" "}
               {!user.local && !user.display_name && `on ${baseUrl}`}
             </span>
           </div>
@@ -134,7 +132,7 @@ export default function SmallUser({
           href={`/u/${user.name}@${baseUrl}`}
           target="_blank"
         >
-          <span className="material-icons">open_in_new</span>
+          <span className="material-symbols-outlined text-neutral-700 dark:text-neutral-400">open_in_new</span>
         </Link>
       </div>
     </>

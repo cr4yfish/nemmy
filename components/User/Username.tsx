@@ -41,7 +41,7 @@ export default function Username({
               width={40}
             />
           </span>
-          <span className="font-medium">{user.name}</span>
+          <span className="font-medium text-neutral-800 dark:text-neutral-100">{user.name}</span>
           <SmallUser
             user={user}
             userHover={userHover}
