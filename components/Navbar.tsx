@@ -460,7 +460,6 @@ export default function Navbar() {
         {userMenu && (
           <UserMenu
             handleUserMenuClose={handleUserMenuClose}
-            handleLogout={handleLogout}
             unreadCount={unreadCount}
             router={router}
           />

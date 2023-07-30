@@ -16,6 +16,7 @@ import {
   Account,
   switchToAccount,
   sortCurrentAccount,
+  handleLogout
 } from "@/utils/authFunctions";
 import { useEffect } from "react";
 
@@ -59,12 +60,10 @@ function UserMenuItem({
 
 export default function UserMenu({
   handleUserMenuClose,
-  handleLogout,
   unreadCount,
   router,
 }: {
   handleUserMenuClose: any;
-  handleLogout: any;
   unreadCount: any;
   router: any;
 }) {
