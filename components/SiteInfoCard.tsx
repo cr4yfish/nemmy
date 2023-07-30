@@ -38,7 +38,7 @@ export default function SiteInfoCard({
         "
     >
       <div className="flex h-fit w-full flex-col gap-2">
-        <span className="text-xl font-bold">{new URL(site.actor_id).host}</span>
+        <span className="text-xl font-bold capitalize">{new URL(site.actor_id).host}</span>
         {site.banner && (
           <img
             className="overflow-hidden 
