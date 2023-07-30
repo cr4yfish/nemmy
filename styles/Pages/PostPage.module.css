@@ -12,7 +12,7 @@
     w-full
     max-w-3xl
     max-md:w-full max-md:p-4
-    max-sm:p-4
+    max-sm:p-6
     ;
 }
 
@@ -44,7 +44,7 @@
 }
 
 .postHeaderMetadataContentUsername {
-    @apply flex flex-row items-center;
+    @apply flex flex-row items-center flex-wrap;
 }
 
 .postHeaderTitle {

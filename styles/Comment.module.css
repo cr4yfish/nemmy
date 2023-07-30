@@ -1,10 +1,10 @@
 .wrapper {
-    @apply flex flex-col;
+    @apply flex flex-col w-full;
     position: relative;
 }
 
 .header {
-    @apply flex flex-row gap-1 items-center;
+    @apply flex flex-row items-center w-fit;
 }
 
 .avatar {
@@ -23,9 +23,8 @@
 }
 
 .body {
-    @apply flex flex-row;
+    @apply flex flex-row w-full;
     position: relative;
-    height: 100%;
 }
 
 .chainlineWrapper {
@@ -45,19 +44,19 @@
 }
 
 .content {
-    @apply flex flex-col gap-3 font-normal justify-start w-full
+    @apply flex flex-col gap-3 font-normal justify-start w-fit
 }
 
 .comment {
-    @apply flex flex-col gap-1;
+    @apply flex flex-col gap-1 w-full max-sm:max-w-min;
 }
 
 .commentText {
-    @apply p-1 pt-2 font-normal w-full overflow-hidden;
+    @apply pl-1 pt-1 font-normal w-full h-full overflow-hidden max-sm:w-auto max-w-fit max-sm:min-h-max;
 }
 
 .commentInteractions {
-    @apply flex flex-row gap-4;
+    @apply flex flex-row gap-4 w-fit;
     user-select: none;
 }
 
