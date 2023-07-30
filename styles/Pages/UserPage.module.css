@@ -16,7 +16,7 @@
 
 .userDetailsWrapper {
   @apply relative flex h-fit 
-    max-w-3xl w-full items-center justify-center p-6 max-sm:p-2 py-10;
+    max-w-3xl w-full items-center justify-center p-6 max-sm:p-4 py-10;
   overflow: hidden;
 }
 
