@@ -31,6 +31,19 @@ import styles from "@/styles/Pages/UserPage.module.css";
 
 import { DEFAULT_AVATAR, DEFAULT_SORT_TYPE } from "@/constants/settings";
 
+function UserStat({ text, icon } : { text: string, icon: string }) {
+  return (
+    <>
+    <div className={"flex flex-row flex-wrap gap-4 text-xs"}>
+      <div className={`flex flex-row gap-1 items-center`}>
+        <span className="material-symbols-outlined" style={{ fontSize: "1rem" }}>{icon}</span>
+        <span>{text}</span>
+      </div>
+    </div>
+    </>
+  )
+}
+
 export default function UserPage({
   initialUser,
   userInstance,
@@ -158,52 +171,60 @@ export default function UserPage({
 
   return (
     <>
-      <div className={`${styles.bannerOverlay} `}></div>
-      {userData?.person_view?.person?.banner && (
-        <Image
-          height={200}
-          width={500}
-          src={userData.person_view.person.banner}
-          alt=""
-          className={`${styles.banner}`}
-        />
-      )}
+
       <div className="mt-20 flex min-h-screen flex-col items-center overflow-x-hidden">
         <div className={`${styles.userDetailsWrapper} `}>
           <div className={`${styles.userDetails}`}>
-            <div className={`${styles.userAvatar}`}>
-              <Image
-                height={80}
-                width={80}
-                src={userData?.person_view?.person?.avatar || DEFAULT_AVATAR}
-                alt=""
-              />
-            </div>
-            <div className="flex flex-col gap-2">
-              <div className="flex flex-col gap-0">
-                <h1 className=" text-3xl font-bold">
-                  {userData?.person_view?.person?.display_name}
-                </h1>
-                <div className="flex flex-row items-center gap-4 max-sm:text-xs">
-                  <span className="flex items-center justify-center font-light">
-                    @{userData?.person_view?.person?.name}
-                  </span>
-                  <span className="dividerDot"></span>
-                  <span className="flex items-center justify-center gap-1 text-neutral-300">
-                    <span
-                      className="material-icons"
-                      style={{ fontSize: "1rem" }}
-                    >
-                      cake
-                    </span>
-                    <span className="flex items-center justify-center">
-                      {new Date(
-                        userData?.person_view?.person?.published,
-                      ).toDateString()}
-                    </span>
-                  </span>
-                </div>
+ 
+            <div className="flex flex-col gap-2 relative w-full overflow-hidden rounded-lg p-4">
+                <div className={`${styles.bannerOverlay} `}></div>
+                {userData?.person_view?.person?.banner && (
+                  <Image
+                    height={200}
+                    width={500}
+                    src={userData.person_view.person.banner}
+                    alt=""
+                    className={`${styles.banner}`}
+                  />
+                )}
+              <div className={`${styles.userAvatar}`}>
+                  <Image
+                    height={80}
+                    width={80}
+                    src={userData?.person_view?.person?.avatar || DEFAULT_AVATAR}
+                    alt=""
+                  />
               </div>
+
+              <div className="flex flex-col gap-2">
+
+                <div className="flex flex-col gap-0">
+                  <h1 className=" text-3xl font-bold">
+                    {userData?.person_view?.person?.display_name}
+                  </h1>
+
+                  <div className="flex flex-row items-center gap-4 max-sm:text-xs">
+
+                    <span className="flex items-center justify-center font-light">
+                      @{userData?.person_view?.person?.name}
+                    </span>
+                    
+                  </div>
+                </div>
+                <div className="flex flex-row items-center">
+
+                  <UserStat icon="auto_awesome" text={FormatNumber(karma, true).toString() + " Points"} />
+
+                  <div className="dividerDot"></div>
+
+                  <UserStat icon="cake" text={new Date(userData?.person_view?.person?.published).toDateString()} />
+
+                </div>
+                
+              </div>
+
+
+            </div>
 
               <span>
                 <RenderMarkdown content={userData?.person_view?.person?.bio} />
@@ -220,15 +241,6 @@ export default function UserPage({
                   <span className="material-icons">block</span>Block user
                 </button>
               </div>
-
-              <div className={"flex flex-row flex-wrap gap-4"}>
-                <div className={`snack`}>
-                  <span className="material-icons">auto_awesome</span>
-                  <span>{FormatNumber(karma, true)}</span>
-                  <span>Points</span>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
 

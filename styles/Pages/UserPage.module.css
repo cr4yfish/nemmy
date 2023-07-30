@@ -1,9 +1,9 @@
 .banner {
-  @apply absolute h-auto max-h-fit w-full;
+  @apply absolute min-h-full min-w-full;
   overflow: hidden;
   top: 0;
   left: 0;
-  object-fit: contain;
+  object-fit: cover;
   z-index: -2;
 }
 
@@ -16,14 +16,13 @@
 
 .userDetailsWrapper {
   @apply relative flex h-fit 
-    max-w-3xl items-center justify-center p-6 py-10;
+    max-w-3xl w-full items-center justify-center p-6 max-sm:p-2 py-10;
   overflow: hidden;
 }
 
 .userDetails {
-  @apply flex w-full flex-row items-start 
-    justify-start gap-2 text-neutral-50 max-md:flex-col
-    max-md:p-6;
+  @apply flex flex-col w-full items-start 
+    justify-start gap-2 text-neutral-50 max-md:flex-col;
 }
 
 .userAvatar {
@@ -31,6 +30,7 @@
 }
 
 .userAvatar img {
+  @apply border-2 border-neutral-50;
   max-width: unset !important;
   width: 80px;
   height: 80px;
