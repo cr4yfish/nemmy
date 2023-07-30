@@ -133,7 +133,7 @@ export default function SearchOverlay({
                         <span className="font-bold text-xs uppercase ml-5 dark:text-neutral-200">Popular topics</span>
 
                         {trendingTopics?.map((post, index) => (
-                            <TrendingTopic key={index} post={post} closeSearch={handleCloseSearchOverlay} />
+                            <TrendingTopic key={index} post={post} closeSearch={handleClose} />
                         ))}
 
                     </div>
@@ -142,7 +142,7 @@ export default function SearchOverlay({
                         <span className="font-bold text-xs uppercase ml-5 dark:text-neutral-200">Trending communities</span>
 
                         {trendingCommunities?.map((community, index) => (
-                            <TrendingCommunity key={index} community={community} closeSearch={handleCloseSearchOverlay}  />
+                            <TrendingCommunity key={index} community={community} closeSearch={handleClose}  />
                         ))}
 
                     </div>
