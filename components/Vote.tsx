@@ -75,7 +75,8 @@ export default function Vote({
   };
 
   const handleLike = async () => {
-    if (liked || !session?.currentAccount?.jwt) {
+    if(!session?.currentAccount) return alert("You must be logged in to vote");
+    if (liked) {
       return;
     }
 
@@ -94,7 +95,8 @@ export default function Vote({
   };
 
   const handleDislike = async () => {
-    if (disliked || !session?.currentAccount?.jwt) return;
+    if(!session?.currentAccount) return alert("You must be logged in to vote");
+    if (disliked) return;
 
     liked ? setScore(score - 2) : setScore(score - 1);
 
