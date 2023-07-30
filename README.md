@@ -96,33 +96,34 @@ This means that there is no single huge "Lemmy Server" but many smaller "instanc
   - [x] Voting on Comments
   - [x] Bookmarking Posts & Comments
 - [x] PWA installable
-- [x] Community Page
-- [x] Sort/Filter/Search
-  - [x] Search
-  - [x] Filter
-  - [x] Sorting
-  - [x] Explore Section
-- [x] Authentication
-  - [x] Login
-  - [x] Register
-  - [x] Support for multiple instances
-  - [x] Subscribing to Communities
-- [ ] Creating Content
-  - [x] Creating Comments
-  - [x] Creating Posts
-  - [x] Creating Communities
-  - [ ] Supporting _all_ Lemmy Markdown Features **<- "Thinking about it" phase**
+- [X] Community Page
+- [X] Sort/Filter/Search
+    - [X] Search
+    - [X] Filter
+    - [X] Sorting 
+    - [X] Explore Section
+- [X] Authentication
+    - [X] Login
+    - [X] Register
+    - [X] Support for multiple instances
+    - [X] Subscribing to Communities
+- [ ] Creating Content 
+    - [X] Creating Comments
+    - [X] Creating Posts
+    - [X] Creating Communities 
+    - [ ] Supporting *all* Lemmy Markdown Features **<- Almost done**
+    - [ ] Support Markdown inserts **<- Only UI currently**
 - [ ] User Page
-  - [ ] Settings **<- Being worked on**
-  - [x] Notifications
-  - [x] User Profile
-  - [x] User Posts
-  - [ ] Bookmarks **<- Design phase**
-  - [x] User Comments
-  - [ ] Chat **<- Being worked on**
-- [x] Sidebar
-  - [x] Subscribed Communities
-  - [x] Instance Info
+    - [ ] Settings **<- WIP**
+    - [X] Notifications
+    - [X] User Profile
+    - [X] User Posts
+    - [ ] Bookmarks **<- Almost done**
+    - [X] User Comments
+    - [ ] Chat **<- WIP**
+- [X] Sidebar
+    - [X] Subscribed Communities
+    - [X] Instance Info
 - [ ] Edit tools
   - [ ] Edit Comments
   - [ ] Edit Posts
