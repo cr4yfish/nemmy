@@ -126,7 +126,7 @@ export default function PostList({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1, transition: { bounce: 0.1 } }}
       exit={{ opacity: 0 }}
-      className="w-fit max-w-2xl px-4 max-md:w-full"
+      className="w-fit max-w-2xl px-4 max-sm:px-0 max-md:w-full"
     >
       <div className=" flex w-full justify-center">
         <InfiniteScroll
@@ -134,7 +134,7 @@ export default function PostList({
           loadMore={async () => await handleLoadMore()}
           hasMore={morePages}
           loader={<Loader key={"loaderCard"} />}
-          className={`${styles.postList} w-fit pb-10`}
+          className={`${styles.postList} pb-10`}
           key={"postList"}
         >
           {posts.map((post: PostView, index: number) => {

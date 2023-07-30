@@ -33,7 +33,7 @@ export default function FeedPage({
   siteResponse: GetSiteResponse | null;
 }) {
   return (
-    <div className="flex flex-row justify-center gap-2">
+    <div className="flex flex-row justify-center gap-2 max-lg:gap-0 w-full">
       <PostList fetchParams={fetchParams} initPosts={initPosts} />
 
       <SiteInfoCard siteResponse={siteResponse} />

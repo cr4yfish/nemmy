@@ -1,9 +1,7 @@
 .postList {
-  @apply gap-4 max-md:gap-0;
+  @apply gap-4 max-md:gap-0 w-full items-center justify-center;
   display: flex;
   flex-direction: column;
-  flex-wrap: wrap;
-  align-items: center;
 }
 
 .loader {

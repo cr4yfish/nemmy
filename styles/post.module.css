@@ -1,12 +1,10 @@
 .wrapper {
-  @apply max-w-2xl
-    max-md:w-full;
+  @apply max-w-2xl w-full;
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
   align-items: flex-start;
   gap: 15px;
-  width: 100%;
 }
 
 .rightSide {
@@ -29,21 +27,20 @@
 }
 
 .headerContent {
+  @apply w-full;
   display: flex;
   flex-direction: column;
   min-height: 25px;
-  width: 100%;
   gap: 0.5rem;
 }
 
 .headerMetadata {
-  @apply items-center;
+  @apply w-full;
 
   display: flex;
   flex-direction: row;
   gap: 10px;
   min-height: 25px;
-  width: 100%;
 }
 
 .headerMetadataContent {
@@ -59,7 +56,7 @@
 }
 
 .headerTitle {
-  @apply gap-2;
+  @apply gap-2 w-full;
   display: flex;
   align-items: center;
   flex-direction: row;
@@ -87,7 +84,9 @@
 
 .title {
   @apply text-left text-xl font-bold text-neutral-900
-    dark:text-neutral-100 max-md:text-sm;
+    dark:text-neutral-100 max-md:text-sm
+    break-words w-full overflow-hidden
+    ;
 }
 
 .flair {
