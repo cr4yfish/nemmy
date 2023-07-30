@@ -103,7 +103,7 @@ export default function CommunityPage({ initialCommunity, communityInstance }: {
         </div>
 
 
-        <div className={`${styles.postsWrapper}`}>
+        <div className={`${styles.postsWrapper} w-full flex justify-center items-center`}>
 
             <PostList 
                 fetchParams={{ 
