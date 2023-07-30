@@ -20,7 +20,7 @@ type Props = {
   params: { slug: string };
 }
 
-export async function generateMetadata({ params: { slug }}: Props, parent?: ResolvingMetadata): Promise<Metadata> {
+export async function generateMetadata({ params: { slug }}: Props, parent: ResolvingMetadata): Promise<Metadata> {
   const instance = slug.split("%40")[1];
   const communityName = slug.split("%40")[0];
   const communityResponse = await getInitialCommunity(communityName, instance);

@@ -8,10 +8,6 @@ import { motion } from "framer-motion";
 
 import styles from "@/styles/Pages/AuthPage.module.css";
 
-export const metadata = {
-  title: "Auth - Nemmy",
-  description: "Join and explore the fediverse on Nemmy.",
-};
 
 export default function Auth() {
   const { navbar, setNavbar } = useNavbar();

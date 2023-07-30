@@ -40,7 +40,7 @@ type Props = {
   searchParams: { preload: boolean; instance: string };
 }
 
-export async function generateMetadata({ params: { slug }, searchParams: { instance } }: Props, parent?: ResolvingMetadata): Promise<Metadata> {
+export async function generateMetadata({ params: { slug }, searchParams: { instance } }: Props, parent: ResolvingMetadata): Promise<Metadata> {
   const postData = await getPostData(slug, instance);
 
   return {

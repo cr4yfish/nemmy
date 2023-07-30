@@ -62,10 +62,6 @@ const getHostnameFromMarkdownLink = (markdown: string) => {
   return url;
 };
 
-export const metadata = {
-  title: "Sign up - Nemmy",
-  description: "Create an Account for the Fediverse on Nemmy.",
-};
 
 export default function Register() {
   const [form, setForm] = useState<{
