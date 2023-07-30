@@ -125,21 +125,20 @@ export default function Post({
             </div>
           </div>
 
-          <Link
-            href={postUrl}
-            className={`${styles.content}`}
-            shallow
-            target="_blank"
-          >
+          <div className={`${styles.content}`}>
+            
             {/* Display Overlay if post has no media */}
             {!post?.post?.embed_title && // 100% dont display content overlay
               !post?.post?.url?.endsWith(".html") && // 100% dont display content overlay
               !post.post.thumbnail_url && // maybe display content overlay
               !(post?.post?.url && isImageType(post?.post?.url)) && ( // dont display
-                <div
+                <Link
+                href={postUrl}
+                shallow
+                target="_blank"
                   className={`${styles.contentOverlay}`}
                   style={{ display: hasMedia ? "none" : "block" }}
-                ></div>
+                ></Link>
               )}
 
             {/* Display Body if post has body and is not a Link */}
@@ -148,7 +147,7 @@ export default function Post({
                 post?.post?.embed_title || post?.post?.url?.endsWith(".html")
               ) && (
                 <div className={`${styles.body} mb-2`}>
-                  <RenderMarkdown content={post?.post?.body} />
+                  <RenderMarkdown content={post?.post?.body} disableLinks />
                 </div>
               )}
 
@@ -162,7 +161,8 @@ export default function Post({
                   </div>
                   <RenderMarkdown
                     className={`${styles.postBodyEmbedDescription}`}
-                    content={post?.post?.embed_description}
+                    content={post?.post?.embed_description} 
+                    disableLinks
                   />
                 </div>
                 <div
@@ -218,7 +218,8 @@ export default function Post({
                 />
               </div>
             )}
-          </Link>
+
+          </div>
 
           <div className={styles.footer}>
             <div className="hidden max-md:flex">
