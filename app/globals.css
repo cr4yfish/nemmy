@@ -127,9 +127,8 @@ button {
       dark:rounded-lg
       dark:border
       dark:border-neutral-800
-      dark:bg-neutral-900 hover:dark:border-neutral-700
-      max-md:hover:border-neutral-800
-      hover:drop-shadow-lg
+      dark:bg-neutral-900 
+      hover:drop-shadow-lg hover:dark:border-neutral-700
       max-md:hover:drop-shadow-none
       ;
   }
