@@ -301,9 +301,9 @@ export default function Navbar() {
     <>
       <nav className={`${styles.wrapper} ${navbar?.hidden && "hidden"}`}>
         <div className="flex flex-row items-center gap-6">
-          <a href="/" className={styles.logo}>
+          <Link href="/" className={styles.logo}>
             Nemmy
-          </a>
+          </Link>
 
           <div className="flex flex-row items-center gap-4">
             {navbar?.showMenu && (

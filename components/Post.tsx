@@ -166,13 +166,14 @@ export default function Post({
                   className={`${styles.link} flex w-full items-start justify-start p-1 pl-0`}
                 >
                   {post.post.url && (
-                    <a
+                    <Link
                       className="a text-xs"
                       href={post.post.url}
                       target="_blank"
+                      rel="noopener noreferrer"
                     >
                       {new URL(post.post.url).hostname}
-                    </a>
+                    </Link>
                   )}
                 </div>
                 {/* Display Thumbnail */}
