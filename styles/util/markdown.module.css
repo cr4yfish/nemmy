@@ -1,7 +1,9 @@
 .markdown {
   @apply prose w-full
     dark:prose-invert prose-p:my-1 prose-a:text-ellipsis
-    prose-a:hyphens-auto prose-a:break-all prose-img:rounded-lg;
+    prose-a:hyphens-auto prose-a:break-all prose-img:rounded-lg
+    prose-headings:mb-1
+    ;
 }
 
 .markdown a {
