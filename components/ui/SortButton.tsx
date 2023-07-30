@@ -1,4 +1,4 @@
-import { SortType } from "lemmy-js-client";
+import { CommentSortType, SortType } from "lemmy-js-client";
 import { AnimatePresence, motion } from "framer-motion";
 
 import { useState } from "react";
@@ -12,20 +12,27 @@ const iconMap = {
   ),
 };
 
+const iconMapComment = {
+  Hot: <span className="material-symbols-outlined">whatshot</span>,
+  New: <span className="material-symbols-outlined">hourglass_top</span>,
+  Top: <span className="material-symbols-outlined">arrows_more_up</span>,
+  Old: <span className="material-symbols-outlined">arrows_more_down</span>,
+};
+
 function Button({
   option,
   label,
   icon = undefined,
   replaceIcon = undefined,
-  current,
   onChange,
+  type="post",
 }: {
-  option: SortType;
+  option: SortType | CommentSortType;
   label: string;
   icon?: string;
   replaceIcon?: React.ReactNode;
-  current: SortType;
-  onChange?: (newOption: SortType) => void;
+  onChange?: (newOption: SortType | CommentSortType) => void;
+  type?: "post" | "comment";
 }) {
   if (!option || !label) {
     console.error(
@@ -38,13 +45,11 @@ function Button({
     return null;
   }
 
-  const isCurrent = current === option;
-
   return (
     <>
       <button
         onClick={() => onChange && onChange(option)}
-        className={` flex w-full flex-row items-center gap-1 rounded-lg p-2 hover:bg-neutral-50`}
+        className={` flex w-full flex-row items-center gap-1 rounded-lg p-2 hover:bg-neutral-50 dark:hover:bg-neutral-700`}
       >
         {icon && <span className={`material-symbols-outlined`}>{icon}</span>}
         {replaceIcon}
@@ -55,34 +60,48 @@ function Button({
 }
 
 export default function SortButton({
-  onChange,
+  onChange, type="post", defaultOption
 }: {
-  onChange: (newOption: SortType) => void;
+  onChange: (newOption: SortType | CommentSortType) => void;
+  type?: "post" | "comment"; defaultOption?: SortType | CommentSortType;
 }) {
-  const [currentOption, setCurrentOption] = useState<SortType>("Active");
+  const [currentOption, setCurrentOption] = useState<SortType>((defaultOption as SortType) || "Active");
+  const [currentOptionComment, setCurrentOptionComment] = useState<CommentSortType>((defaultOption as CommentSortType) || "Hot");
+
   const [open, setOpen] = useState(false);
 
-  const onClick = (newOption: SortType) => {
-    setCurrentOption(newOption);
+  const onClick = (newOption: SortType | CommentSortType) => {
+    if(type == "post") {
+      setCurrentOption(newOption as SortType);
+    } else {
+      setCurrentOptionComment(newOption as CommentSortType);
+    }
     onChange(newOption);
     setOpen(false);
   };
 
   return (
-    <div className={``}>
+    <div className={` relative`}>
       <button
         onBlur={() => setOpen(false)}
         onClick={() => setOpen(!open)}
         className={`flex flex-row gap-1`}
       >
         <div className="flex flex-row items-center gap-1">
-          {
+          { type == "post" ?
             iconMap[
               currentOption as unknown as
                 | "Active"
                 | "Hot"
                 | "New"
                 | "MostComments"
+            ]
+            :
+            iconMapComment[
+              currentOptionComment as unknown as
+                | "Hot"
+                | "New"
+                | "Top"
             ]
           }
           <span>{currentOption}</span>
@@ -105,11 +124,12 @@ export default function SortButton({
                         dark:border-fuchsia-300 dark:bg-zinc-800 dark:shadow-none
                     "
           >
+            { type == "post" ?
+            <>
             <Button
               label="Active"
               option="Active"
               replaceIcon={<span className="active m-2"></span>}
-              current={currentOption}
               onChange={onClick}
             />
 
@@ -117,7 +137,6 @@ export default function SortButton({
               label="Hot"
               option="Hot"
               icon="whatshot"
-              current={currentOption}
               onChange={onClick}
             />
 
@@ -125,7 +144,6 @@ export default function SortButton({
               label="New"
               option="New"
               icon="history"
-              current={currentOption}
               onChange={onClick}
             />
 
@@ -133,9 +151,39 @@ export default function SortButton({
               label="Most Comments"
               option="MostComments"
               icon="arrows_more_up"
-              current={currentOption}
               onChange={onClick}
             />
+            </>
+            :
+            <>
+            <Button
+              label="Hot"
+              option="Hot"
+              icon="whatshot"
+              onChange={onClick}
+            />
+            <Button
+              label="Top"
+              option="Top"
+              icon="arrow_circle_up"
+              onChange={onClick}
+            />
+            <Button
+              label="New"
+              option="New"
+              icon="history"
+              onChange={onClick}
+            />
+            <Button
+              label="Old"
+              option="Old"
+              icon="hourglass_top"
+              onChange={onClick}
+            />
+            </>
+            }
+
+            
           </motion.div>
         )}
       </AnimatePresence>
