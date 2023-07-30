@@ -113,6 +113,7 @@ This means that there is no single huge "Lemmy Server" but many smaller "instanc
     - [X] Creating Posts
     - [X] Creating Communities 
     - [ ] Supporting *all* Lemmy Markdown Features **<- Almost done**
+    - [ ] Support Markdown inserts **<- Only UI currently**
 - [ ] User Page
     - [ ] Settings **<- WIP**
     - [X] Notifications
