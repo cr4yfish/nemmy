@@ -7,7 +7,7 @@ import Username from "./User/Username";
 
 function Snack({ text, icon }: { text?: string; icon?: string }) {
   return (
-    <div className="flex flex-row items-center gap-1 text-xs">
+    <div className="flex flex-row items-center gap-1 text-xs text-neutral-700 dark:text-neutral-400">
       <span
         className="material-symbols-outlined h-fit"
         style={{ fontSize: "1rem" }}
@@ -32,20 +32,13 @@ export default function SiteInfoCard({
   return (
     <div
       className=" card flex flex-col max-lg:hidden
-        h-fit w-full max-w-xs 
+        h-fit w-full max-w-xs gap-4
         "
     >
       <div className="flex h-fit w-full flex-col gap-2 prose dark:prose-invert prose-headings:mb-0">
         <h1 className="capitalize">{new URL(site.actor_id).host}</h1>
         <span className="text-sm">{site?.description}</span>
-        {site.banner && (
-          <img
-            className="overflow-hidden mt-0 
-                    rounded-xl"
-            src={site?.banner}
-            alt=""
-          />
-        )}
+        {site.banner && ( <img  className="overflow-hidden mt-0 rounded-xl" src={site?.banner}  alt="" /> )}
       </div>
 
       <div className="flex w-full flex-row flex-wrap items-center gap-2 rounded-lg border-neutral-700 p-2 dark:border">
@@ -82,7 +75,6 @@ export default function SiteInfoCard({
             <Username key={admin.person.id} user={admin.person} baseUrl={new URL(site.actor_id).host} />
           ))}          
         </div>
-
       </div>
 
       <div className="flex flex-col">
