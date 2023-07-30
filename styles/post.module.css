@@ -1,18 +1,11 @@
 .wrapper {
-  @apply max-w-2xl rounded-none border-b border-neutral-300 bg-neutral-50
-    text-slate-100 transition-all duration-100 dark:rounded-lg
-    dark:border
-    dark:border-neutral-800
-    dark:bg-neutral-900 hover:dark:border-neutral-700
-    max-md:w-full
-    max-md:hover:border-neutral-800;
-  padding: 1rem;
+  @apply max-w-2xl
+    max-md:w-full;
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
   align-items: flex-start;
   gap: 15px;
-  overflow: hidden;
   width: 100%;
 }
 

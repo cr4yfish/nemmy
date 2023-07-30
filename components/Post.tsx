@@ -44,7 +44,7 @@ export default function Post({
   return (
     <>
       <div
-        className={`${styles.wrapper}`}
+        className={`card ${styles.wrapper} `}
         key={post.post.id}
         id={`${post.post.id.toString()}@${baseUrl}`}
         style={{
