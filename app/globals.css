@@ -8,6 +8,13 @@
   --background-end-rgb: 255, 255, 255;
 }
 
+::-webkit-scrollbar-track {
+  @apply bg-neutral-50;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-neutral-200;
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     --foreground-rgb: 255, 255, 255;
@@ -29,12 +36,6 @@ body {
   overflow-x: hidden;
 }
 
-::-webkit-scrollbar-track {
-  @apply bg-neutral-50;
-}
-::-webkit-scrollbar-thumb {
-  @apply bg-neutral-200;
-}
 
 ::-webkit-scrollbar {
   @apply w-2;
