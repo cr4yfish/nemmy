@@ -47,11 +47,14 @@
 }
 
 .comment {
-  @apply flex w-full flex-col gap-1 max-sm:max-w-min;
+  @apply flex w-full flex-col gap-1;
 }
 
 .commentText {
-  @apply h-full w-full max-w-fit overflow-hidden pl-1 pt-1 font-normal max-sm:min-h-max max-sm:w-auto;
+  @apply h-full w-full max-w-fit overflow-hidden
+   pl-1 pt-1 font-normal max-sm:max-h-full max-sm:max-w-full
+   text-sm max-sm:text-xs
+   ;
 }
 
 .commentInteractions {

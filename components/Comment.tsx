@@ -236,7 +236,7 @@ export default function Comment({
           </div>
           <div className={`${styles.content}`}>
             <div className={`${styles.comment}`}>
-              <div className={`${styles.commentText} text-sm max-sm:text-xs`}>
+              <div className={`${styles.commentText} `}>
                 {commentView.comment.deleted || commentView.comment.removed ? (
                   <div className="text-red-400">
                     This comment has been removed

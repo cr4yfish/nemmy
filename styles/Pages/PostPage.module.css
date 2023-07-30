@@ -110,7 +110,7 @@
 }
 
 .commentsList {
-  @apply flex w-full flex-col gap-6;
+  @apply flex w-full flex-col gap-6 max-sm:p-2;
 }
 
 .postBodyMedia {
