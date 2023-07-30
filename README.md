@@ -88,6 +88,46 @@ This means that there is no single huge "Lemmy Server" but many smaller "instanc
 - Lemmy JS-Client
 - Tailwind
 
+## Getting started
+
+### Production Setup
+Here you can choose between hosting it the conventional way and using the Docker image.
+
+#### Conventional
+Follow the development setup steps but instead of running ```npm run dev``` you run ```npm run build``` and then ```npm run start```
+
+#### Docker
+There are multiple ways to do this. Here is one example using a Dockerfile.
+
+1. Get the Docker Image link [here](https://github.com/cr4yfish/nemmy/pkgs/container/nemmy)
+2. Create the Dockerfile
+```docker
+FROM ghcr.io/cr4yfish/nemmy:[latest version] # :latest is not supported yet
+```
+3. Build and run
+```
+docker build -t nemmy .
+```
+```
+docker run nemmy
+```
+Nemmy will now run on the local network. To be able to access the server from the internet, you'll have to open the port ```3000```.
+
+### Development Setup
+To setup Nemmy for development, there are only a few steps to take.
+
+1. Download and install Node.js
+2. (Optional) Create a fork if you intend to contribute to Nemmy
+3. Clone the Repository
+4. Install dependencies
+```
+npm i
+```
+5. Run the development server
+```
+npm run dev
+```
+
 ## Roadmap for Q3 2023
 
 - [x] Basic APIs
@@ -165,6 +205,10 @@ Ideas for Q4+
 
 - Nemmy will always be 100% Open Source, no strings attached.
 - Nemmy will always be 100% free to use (I might start adding donation options if the Hosting Costs rise)
+
+## Security
+To make sure Nemmy is safe to use, there are multiple code scanners scanning every commit.
+Humans can also scan the code since it's 100% open source and [create a security issue](https://github.com/cr4yfish/nemmy/security).
 
 [contributors-shield]: https://img.shields.io/github/contributors/Cr4yfish/Nemmy.svg?style=for-the-badge
 [contributors-url]: https://github.com/Cr4yfish/Nemmy/graphs/contributors
