@@ -232,13 +232,13 @@ export default function UserPage({
 
               <div className="flex flex-row items-center gap-2">
                 <button className={`${styles.button} ${styles.buttonFuchsia}`}>
-                  <span className="material-icons-outlined">
+                  <span className="material-symbols-outlined">
                     chat_bubble_outline
                   </span>
                   Message
                 </button>
                 <button className={`${styles.button} ${styles.buttonBlock}`}>
-                  <span className="material-icons">block</span>Block user
+                  <span className="material-symbols-outlined">block</span>Block user
                 </button>
               </div>
           </div>
@@ -255,7 +255,7 @@ export default function UserPage({
             </div>
 
             <div className="flex items-center">
-              <span className="material-icons-outlined">view_day</span>
+              <span className="material-symbols-outlined">view_day</span>
             </div>
           </div>
 

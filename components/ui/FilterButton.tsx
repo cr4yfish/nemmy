@@ -83,7 +83,7 @@ export default function FilterButton({
           {iconMap[currentOption as unknown as FilterType]}
           <span className=" max-xs:hidden">{currentOption}</span>
         </div>
-        <span className="material-icons">expand_more</span>
+        <span className="material-symbols-outlined">expand_more</span>
       </button>
 
       <AnimatePresence>

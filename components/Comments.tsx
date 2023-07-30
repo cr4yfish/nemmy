@@ -310,7 +310,7 @@ export default function Comments({
           {commentsData?.comments?.length > 0 && (
             <div className={`${styles.commentsInteractions}`}>
               <div className={`${styles.commentsInteractionsSort}`}>
-                <span className={`material-icons`}>sort</span>
+                <span className={`material-symbols-outlined`}>sort</span>
                 <span>Hot</span>
               </div>
             </div>
@@ -375,7 +375,7 @@ export default function Comments({
               <button
                 onClick={() => setForceCommentUpdate(forceCommentUpdate + 1)}
               >
-                <span className="material-icons">refresh</span>
+                <span className="material-symbols-outlined">refresh</span>
               </button>
             </div>
           )}

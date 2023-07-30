@@ -302,7 +302,7 @@ export default function Comment({
                 <div
                   className={`flex w-full items-center gap-1 rounded-lg p-2 text-sm dark:bg-neutral-800`}
                 >
-                  <span className={`material-icons text-sm`}>expand_more</span>
+                  <span className={`material-symbols-outlined text-sm`}>expand_more</span>
                   Tap to see {children.length}{" "}
                   {children.length == 1 ? "comment" : "comments"}
                 </div>

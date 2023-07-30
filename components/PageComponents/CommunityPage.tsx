@@ -190,7 +190,7 @@ export default function CommunityPage({
         <SortButton onChange={(newSort) => setCurrentSort(newSort)} />
 
         <div className="flex items-center">
-          <span className="material-icons-outlined">view_day</span>
+          <span className="material-symbols-outlined">view_day</span>
         </div>
       </div>
 

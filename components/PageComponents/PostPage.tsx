@@ -202,11 +202,11 @@ export default function PostPage({
             <div className={`${styles.postInteractions}`}>
               {postData?.counts && <Vote post={postData} horizontal />}
               <div className={`${styles.interaction}`}>
-                <span className="material-icons">chat_bubble_outline</span>
+                <span className="material-symbols-outlined">chat_bubble_outline</span>
                 {postData?.counts?.comments}
               </div>
               <div className={`${styles.interaction}`}>
-                <span className="material-icons">more_vert</span>
+                <span className="material-symbols-outlined">more_vert</span>
               </div>
             </div>
           </div>

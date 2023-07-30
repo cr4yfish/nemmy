@@ -33,7 +33,7 @@ export default function Auth() {
         <div className="flex w-full flex-col items-center gap-3">
           <Link className="w-full" href={"/auth/login"}>
             <button className={`${styles.button} ${styles.primary}`}>
-              <span className="material-icons-outlined">email</span>
+              <span className="material-symbols-outlined">email</span>
               Sign in
             </button>
           </Link>

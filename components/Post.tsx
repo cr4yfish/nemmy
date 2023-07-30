@@ -229,7 +229,7 @@ export default function Post({
               <button>
                 {post?.counts?.comments > 0 &&
                   FormatNumber(post?.counts?.comments, true)}
-                <span className="material-icons-outlined">
+                <span className="material-symbols-outlined">
                   chat_bubble_outline
                 </span>
               </button>
@@ -246,7 +246,7 @@ export default function Post({
               )}
 
               <button>
-                <span className="material-icons-outlined">more_horiz</span>
+                <span className="material-symbols-outlined">more_horiz</span>
               </button>
             </div>
           </div>

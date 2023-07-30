@@ -87,7 +87,7 @@ export default function SortButton({
           }
           <span>{currentOption}</span>
         </div>
-        <span className="material-icons">expand_more</span>
+        <span className="material-symbols-outlined">expand_more</span>
       </button>
 
       <AnimatePresence>
