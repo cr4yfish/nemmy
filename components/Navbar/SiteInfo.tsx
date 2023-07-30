@@ -28,24 +28,21 @@ export default function SiteInfo({
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: 20 }}
         id="siteInfo"
-        className=" absolute left-0 top-0 flex h-full w-full flex-col gap-4 p-6
+        className=" absolute left-0 top-0 flex h-full w-full flex-col gap-4 p-6 overflow-y-auto
              backdrop-blur-3xl
-             dark:bg-neutral-950/50 "
-        style={{ zIndex: 1000 }}
+             dark:bg-neutral-950/50 
+             prose dark:prose-invert prose-headings:my-1
+             "
+        style={{ zIndex: 1000, WebkitOverflowScrolling: "touch", touchAction: "auto" }}
       >
         <button onClick={() => handleClose()}>
           <span className="material-symbols-outlined">close</span>
         </button>
-        <div className="flex w-fit flex-col gap-0 rounded-lg p-4 dark:bg-neutral-900">
-          <span className="text-xs font-bold">Your Instance</span>
-          <span>{new URL(siteResponse.site_view.site.actor_id).host}</span>
-        </div>
         <div>
-          <span className="text-xl italic">
-            <RenderMarkdown content={siteResponse.site_view.site.description} />
-          </span>
-          <RenderMarkdown content={siteResponse.site_view.site.sidebar} />
+          <h1 className=" capitalize">{new URL(siteResponse.site_view.site.actor_id).host}</h1>
+          <RenderMarkdown content={siteResponse.site_view.site.description} />
         </div>
+        <RenderMarkdown content={siteResponse.site_view.site.sidebar} />
       </motion.div>
     </>
   );
