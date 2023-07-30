@@ -47,16 +47,13 @@ export default function Post({
         className={`card ${styles.wrapper} `}
         key={post.post.id}
         id={`${post.post.id.toString()}@${baseUrl}`}
-        style={{
-          height: !hasMedia ? "fit-content" : "unset",
-          cursor: hasMedia ? "unset" : "pointer",
-        }}
       >
         <div className="max-md:hidden">
           <Vote post={post} />
         </div>
 
         <div className={`${styles.rightSide}`}>
+
           <div className={`${styles.header}`}>
             <div className={`${styles.headerContent}`}>
               <div className={`${styles.headerMetadata}`}>
@@ -85,6 +82,7 @@ export default function Post({
                     href={`/c/${post?.community?.name}@${
                       new URL(post.post.ap_id).host
                     }`}
+                    target="_blank"
                     className={`${styles.sub} flex flex-row flex-wrap gap-1`}
                   >
                     <span className="font-bold capitalize">
@@ -127,7 +125,8 @@ export default function Post({
               )}
             </div>
           </div>
-          <div className={`${styles.content}`}>
+
+          <Link href={postUrl} className={`${styles.content}`} shallow target="_blank">
             {/* Display Overlay if post has no media */}
             {!post?.post?.embed_title && // 100% dont display content overlay
               !post?.post?.url?.endsWith(".html") && // 100% dont display content overlay
@@ -144,7 +143,7 @@ export default function Post({
               !(
                 post?.post?.embed_title || post?.post?.url?.endsWith(".html")
               ) && (
-                <div className={`${styles.body} mb-2`}>
+                <div  className={`${styles.body} mb-2`}>
                   <RenderMarkdown content={post?.post?.body} />
                 </div>
               )}
@@ -182,6 +181,7 @@ export default function Post({
                     className={`${styles.image}`}
                     href={post.post.thumbnail_url}
                     target="_blank"
+                    rel="noopener noreferrer"
                   >
                     <AutoMediaType
                       url={post.post.thumbnail_url}
@@ -214,7 +214,8 @@ export default function Post({
                 />
               </div>
             )}
-          </div>
+          </Link>
+
           <div className={styles.footer}>
             <div className="hidden max-md:flex">
               <Vote post={post} horizontal />
