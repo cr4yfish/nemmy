@@ -398,38 +398,28 @@ export default function Navbar() {
 
           {navbar?.showUser && (
             <>
-              {session.currentAccount ? (
-                <button
-                  onClick={() => {
-                    handleFilterOverlayClose();
-                    handleUserMenuOpen();
-                    setNavbar({ ...navbar, overlayActive: true });
-                  }}
-                  className={`${styles.userWrapper} cursor-pointer select-none`}
-                >
-                  <div className={styles.userImage}>
-                    <Image
-                      width={40}
-                      height={40}
-                      className="h-10 w-10 overflow-hidden "
-                      style={{ borderRadius: "50%" }}
-                      src={
-                        session.currentAccount.user?.person?.avatar ||
-                        DEFAULT_AVATAR
-                      }
-                      alt={"Account"}
-                    />
-                  </div>
-                </button>
-              ) : (
-                <Link href="/auth">
-                  <button
-                    className={`${styles.userWrapper} cursor-pointer select-none`}
-                  >
-                    Login
-                  </button>
-                </Link>
-              )}
+              <button
+                onClick={() => {
+                  handleFilterOverlayClose();
+                  handleUserMenuOpen();
+                  setNavbar({ ...navbar, overlayActive: true });
+                }}
+                className={`${styles.userWrapper} cursor-pointer select-none`}
+              >
+                <div className={styles.userImage}>
+                  <Image
+                    width={40}
+                    height={40}
+                    className={`h-10 w-10 overflow-hidden ${session?.currentAccount?.user?.person?.avatar ? "object-cover" : "object-contain"} `}
+                    style={{ borderRadius: "50%" }}
+                    src={
+                      session?.currentAccount?.user?.person?.avatar ||
+                      DEFAULT_AVATAR
+                    }
+                    alt={"Account"}
+                  />
+                </div>
+              </button>
             </>
           )}
         </div>
