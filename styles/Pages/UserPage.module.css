@@ -1,81 +1,81 @@
 .banner {
-    @apply  max-h-fit absolute w-full h-auto;
-    overflow: hidden;
-    top: 0; left: 0;
-    object-fit: contain;
-    z-index: -2;
+  @apply absolute min-h-full min-w-full;
+  overflow: hidden;
+  top: 0;
+  left: 0;
+  object-fit: cover;
+  z-index: -2;
 }
 
 .bannerOverlay {
-    @apply absolute top-0 left-0 w-full h-full
-    backdrop-blur-sm
-    bg-neutral-900/25;
-    z-index: -1;
+  @apply absolute left-0 top-0 h-full w-full
+    bg-neutral-900/25
+    backdrop-blur-sm;
+  z-index: -1;
 }
 
 .userDetailsWrapper {
-    @apply relative h-fit p-6 
-    py-10 max-w-3xl flex items-center justify-center;
-    overflow: hidden
+  @apply relative flex h-fit 
+    max-w-3xl w-full items-center justify-center p-6 max-sm:p-4 py-10;
+  overflow: hidden;
 }
 
-
 .userDetails {
-    @apply flex flex-row w-full justify-start 
-    max-md:flex-col max-md:p-6 gap-2 items-start
-    text-neutral-50
-    ;
+  @apply flex flex-col w-full items-start 
+    justify-start gap-2 text-neutral-50 max-md:flex-col;
 }
 
 .userAvatar {
-    @apply h-20 w-20 relative;
+  @apply relative h-20 w-20;
 }
 
 .userAvatar img {
-    max-width: unset !important;
-    width: 80px; height: 80px;
-    object-fit: cover;
-    border-radius: 50%;
+  @apply border-2 border-neutral-50;
+  max-width: unset !important;
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 50%;
 }
 
 .banner img {
-    object-fit: contain;
+  object-fit: contain;
 }
 
 .button {
-    @apply flex flex-row items-center justify-center gap-1
-    border rounded-2xl p-1 px-4 text-xs font-bold
+  @apply flex flex-row items-center justify-center gap-1
+    rounded-2xl border p-1 px-4 text-xs font-bold;
 }
 
 .button span {
-    @apply text-sm
+  @apply text-sm;
 }
 
 .buttonFuchsia {
-    @apply bg-fuchsia-200 text-fuchsia-900 border-fuchsia-900
+  @apply border-fuchsia-900 bg-fuchsia-200 text-fuchsia-900;
 }
 
 .buttonBlock {
-    @apply bg-rose-200 text-rose-900 border-rose-900
+  @apply border-rose-900 bg-rose-200 text-rose-900;
 }
 
 .snack {
-    @apply flex flex-row p-2 px-4 gap-1 rounded-3xl
-    text-xs font-semibold
-    bg-amber-200 text-amber-900 
+  @apply flex flex-row gap-1 rounded-3xl bg-amber-200 p-2
+    px-4 text-xs
+    font-semibold text-amber-900;
 }
 
 .snack span {
-    @apply text-xs
+  @apply text-xs;
 }
-
 
 .sortsWrapper {
-    @apply flex flex-row flex-wrap justify-between px-28 max-md:p-6 py-4 items-center w-full
-    bg-neutral-200 dark:bg-neutral-900
-     dark:text-neutral-300
+  @apply flex flex-row flex-wrap items-center justify-center bg-neutral-200 px-28 py-4
+    dark:bg-neutral-900 dark:text-neutral-300
+     max-md:p-6 w-full;
 }
 
+
 .sort {
-    @apply flex flex-row items-center gap-1
+  @apply flex flex-row items-center gap-1;
 }

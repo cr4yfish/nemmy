@@ -1,335 +1,315 @@
 .wrapper {
-    @apply 
-        gap-10
+  @apply left-0
+        top-0
+        h-20 w-full
+        gap-10 
+        border-b border-neutral-200
+        bg-neutral-50/25 backdrop-blur-xl dark:border-neutral-800
+        dark:bg-neutral-950/25
         max-md:gap-5
-        bg-neutral-50/25 dark:bg-neutral-950/25
-        border-b 
-        border-neutral-200 dark:border-neutral-800
-        h-20 top-0 left-0
-        max-xs:overflow-x-scroll
-        w-full
-        backdrop-blur-xl
-    ;
-    padding: 1rem 2rem;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    position: fixed;
-    z-index: 50;
+        max-xs:overflow-x-scroll;
+  padding: 1rem 2rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  z-index: 50;
 }
 
 .logo {
-    @apply text-fuchsia-300 max-md:hidden;
-    text-transform: uppercase;
-    font-weight: 900;
-    font-size: 21pt;
-    user-select: none;
+  @apply text-fuchsia-300 max-md:hidden;
+  text-transform: uppercase;
+  font-weight: 900;
+  font-size: 21pt;
+  user-select: none;
 }
 
 .menuButton {
-    @apply flex items-center justify-center h-full
+  @apply flex h-full items-center justify-center;
 }
 
 .navButton {
-    @apply 
-    text-neutral-900 bg-neutral-200
-    dark:text-neutral-400 dark:bg-neutral-800 rounded-lg
-    p-2
-    flex flex-row items-center gap-2
-    h-full relative
-    font-semibold
-    transition-all duration-300 ease-out
+  @apply relative flex
+    h-full flex-row items-center
+    gap-2
+    rounded-lg bg-neutral-200 p-2 font-semibold
+    text-neutral-900 transition-all
+    duration-300
+    ease-out dark:bg-neutral-800 dark:text-neutral-400;
 }
 
 .navButton > div {
-    @apply flex items-center gap-1;
+  @apply flex items-center gap-1;
 }
-
 
 .navButtonText {
-    @apply max-sm:hidden;
+  @apply max-sm:hidden;
 }
 
-
-.filterOptions, .sortOptions {
-    @apply fixed min-h-max w-full top-20 left-0
-    flex flex-col gap-2 p-6 overflow-hidden
-    bg-neutral-50/75  dark:bg-neutral-950/75
+.filterOptions,
+.sortOptions {
+  @apply pointer-events-none fixed left-0 top-20 flex
+    min-h-max w-full flex-col gap-2 overflow-hidden
+    bg-neutral-50/75  p-6
     backdrop-blur-xl
-    transition-all duration-300 pointer-events-none ease-out
-    ;
-    transform: translateY(-100%);
-    z-index: 39;
+    transition-all duration-300 ease-out dark:bg-neutral-950/75;
+  transform: translateY(-100%);
+  z-index: 39;
 }
 
-.filterActive, .sortOptionsActive {
-    pointer-events: all;
-    transform: translateY(0%);
+.filterActive,
+.sortOptionsActive {
+  pointer-events: all;
+  transform: translateY(0%);
 }
 
-.filterOptions button, .sortOptions button {
-    @apply 
-        p-2 rounded-lg
-    ;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: .5rem;
-    width: 100%;
-    cursor: pointer;
-    user-select: none;
+.filterOptions button,
+.sortOptions button {
+  @apply rounded-lg p-2;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.5rem;
+  width: 100%;
+  cursor: pointer;
+  user-select: none;
 }
 
-.activeFilterOption, .activeSortOption {
-    @apply 
-    font-bold
-    bg-neutral-100 text-neutral-900
-    dark:bg-fuchsia-900 dark:text-neutral-50
-    ;
+.activeFilterOption,
+.activeSortOption {
+  @apply bg-neutral-100
+    font-bold text-neutral-900
+    dark:bg-fuchsia-900 dark:text-neutral-50;
 }
 
 .searchWrapper {
-    @apply bg-transparent;
-    user-select: none;
+  @apply bg-transparent;
+  user-select: none;
 }
 
 .searchWrapper input {
-    @apply max-md:w-2/4
+  @apply max-md:w-2/4;
 }
 
 .searchWrapperActive {
-    border-color: white;
+  border-color: white;
 }
 
 .searchWrapperActive span {
-    @apply text-neutral-50
-    dark:text-neutral-900
-    ;
+  @apply text-neutral-50
+    dark:text-neutral-900;
 }
 
 .searchWrapper span {
-    color: grey;
+  color: grey;
 }
 
 .search {
-    background-color: transparent;
-    padding: .7rem 0;
+  background-color: transparent;
+  padding: 0.7rem 0;
 }
 
 .search:focus {
-    outline: none;
+  outline: none;
 }
 
 .submitButton {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .searchIcon {
-    @apply flex;
-    height: 100%;
-    justify-content: center;
-    align-items: center;
-    opacity: 0;
-    transform: translateX(-15%);
-    transition: all .25s;
-    cursor: pointer;
+  @apply flex;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transform: translateX(-15%);
+  transition: all 0.25s;
+  cursor: pointer;
 }
 
 .searchIconActive {
-    opacity: 1;
-    transform: translateX(0%);
+  opacity: 1;
+  transform: translateX(0%);
 }
 
 .userImage {
-    @apply w-10 h-10;
+  @apply h-10 w-10;
 }
 
 .userWrapper {
-    @apply flex items-center gap-2
-    
-    ;
+  @apply flex items-center gap-2;
 }
 
-
 .overlay {
-    @apply fixed top-0 left-0 w-full  min-h-screen
-    bg-neutral-200/50 dark:bg-neutral-900/75
+  @apply pointer-events-none fixed left-0 top-0  min-h-screen
+    w-full bg-neutral-200/50
+    opacity-0
     backdrop-blur-sm
-    pointer-events-none
-    opacity-0 transition-all duration-300 ease-out
+    transition-all duration-300 ease-out dark:bg-neutral-900/75;
 }
 
 .overlayActive {
-    @apply pointer-events-auto opacity-100;
-    pointer-events: all;
+  @apply pointer-events-auto opacity-100;
+  pointer-events: all;
 }
 
-
 .userMenu {
-    @apply 
-    flex-col gap-6 p-6 h-screen overflow-hidden justify-between
+  @apply h-screen flex-col justify-between gap-6 overflow-hidden bg-neutral-50/75
 
-    max-sm:max-w-xs
-    max-xs:w-72
-
-    transition-all ease-out duration-300
-
-    bg-neutral-50/75 dark:bg-neutral-950/75
-
+    p-6
     backdrop-blur-xl
-    ;
-    position: fixed;
-    top: 0; right: 0;
-    z-index: 51;
-    transform: translateX(100%);
-    pointer-events: all;
-    overflow: hidden;
-    display: none;
-    
+
+    transition-all duration-300 ease-out
+
+    dark:bg-neutral-950/75 max-sm:max-w-xs
+
+    max-xs:w-72;
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 51;
+  transform: translateX(100%);
+  pointer-events: all;
+  overflow: hidden;
+  display: none;
 }
 
 .menu {
-    @apply flex-col gap-6 p-6 h-screen overflow-hidden justify-start
+  @apply h-screen flex-col justify-start gap-6 overflow-hidden bg-neutral-50/75
 
-    max-sm:max-w-xs
-    max-xs:w-72
+    p-6
+    backdrop-blur-xl
 
-    transition-all ease-out duration-300
+    transition-all duration-300 ease-out
 
-    bg-neutral-50/75 dark:bg-neutral-950/75
+    dark:bg-neutral-950/75 max-sm:max-w-xs
 
-    backdrop-blur-xl;
-    position: fixed;
-    top: 0; left: 0;
-    z-index: 51;
-    transform: translateX(-100%);
-    pointer-events: all;
-    overflow: hidden;
-    display: none;
+    max-xs:w-72;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 51;
+  transform: translateX(-100%);
+  pointer-events: all;
+  overflow: hidden;
+  display: none;
 }
 
 .menuActive {
-    transform: translateX(0%);
+  transform: translateX(0%);
 }
 
 .userMenuActive {
-    transform: translateX(0%);
+  transform: translateX(0%);
 }
 
 .currentInstance {
-    @apply flex flex-row justify-between gap-4 rounded-lg p-4 py-3 items-center
-    bg-neutral-300 text-neutral-900
-    dark:bg-fuchsia-800 dark:text-fuchsia-50
+  @apply flex flex-row items-center justify-between gap-4 rounded-lg bg-neutral-300 p-4
+    py-3 text-neutral-900
+    dark:bg-fuchsia-800 dark:text-fuchsia-50;
 }
 
-
 .menuLinks {
-    @apply flex flex-col gap-4 w-full
+  @apply flex w-full flex-col gap-4;
 }
 
 .menuLinks button {
-    @apply w-full flex flex-row gap-1 items-center justify-start
+  @apply flex w-full flex-row items-center justify-start gap-1;
 }
 
 .menuCommunitiesList {
-    @apply flex flex-col gap-4
+  @apply flex flex-col gap-4;
 }
 
 .menuCommunity {
-    @apply flex flex-row gap-2 items-center
+  @apply flex flex-row items-center gap-2;
 }
 
 .userMenuTop {
-    @apply flex flex-col gap-4
+  @apply flex flex-col gap-4;
 }
 
 .userProfiles {
-    @apply flex flex-row gap-4 overflow-x-scroll overflow-y-hidden min-w-max h-fit pb-3;
-    user-select: none;
+  @apply flex h-fit min-w-max flex-row gap-4 overflow-y-hidden overflow-x-scroll pb-3;
+  user-select: none;
 }
 
 .userProfile {
-    @apply flex flex-col gap-2 items-start justify-between relative
-    w-40 h-52 rounded-lg p-4 bg-transparent overflow-hidden
-    border-2 
-    border-fuchsia-300 dark:border-fuchsia-600
-    
-    ;
+  @apply relative flex h-52 w-40 flex-col items-start
+    justify-between gap-2 overflow-hidden rounded-lg border-2 border-fuchsia-300
+    bg-transparent 
+    p-4 dark:border-fuchsia-600;
 }
 
 .userProfileBanner {
-    @apply absolute top-0 left-0 w-full h-full 
+  @apply absolute left-0 top-0 h-full w-full 
     overflow-hidden rounded-lg object-cover;
-    z-index: -2;
+  z-index: -2;
 }
 
 .userProfileBannerOverlay {
-    @apply absolute top-0 left-0 w-full h-full 
-    bg-transparent backdrop-blur-sm
-    ;
-    z-index: -1;
+  @apply absolute left-0 top-0 h-full w-full 
+    bg-transparent backdrop-blur-sm;
+  z-index: -1;
 }
 
 .userProfileAvatar {
-    @apply w-20 h-20 overflow-hidden rounded-full
+  @apply h-20 w-20 overflow-hidden rounded-full;
 }
 
 .userProfileText {
-    @apply flex flex-col text-sm
-    text-neutral-50
+  @apply flex flex-col text-sm
+    text-neutral-50;
 }
 
 .userProfileDisplayName {
-    @apply font-bold text-xl
+  @apply text-xl font-bold;
 }
 
-.userMenuInteractionsTop, .userMenuInteractionsBottom {
-    @apply flex flex-col gap-2 w-full
-    font-light
+.userMenuInteractionsTop,
+.userMenuInteractionsBottom {
+  @apply flex w-full flex-col gap-2
+    font-light;
 }
 
-.userMenuInteractionsTop button, .userMenuInteractionsBottom button {
-    @apply  w-64 p-2 rounded-lg
-    flex items-center justify-start gap-2
+.userMenuInteractionsTop button,
+.userMenuInteractionsBottom button {
+  @apply flex w-64 items-center
+    justify-start gap-2 rounded-lg p-2;
 }
-
 
 .searchOverlay {
-    @apply fixed top-0 left-0 w-full h-full flex items-center flex-col
-    bg-neutral-50/10 dark:bg-neutral-950/90
-    backdrop-blur-3xl opacity-0 pointer-events-none
-    transition-all duration-300 ease-out
-    ;
-    z-index: 99;
+  @apply pointer-events-none fixed left-0 top-0 flex h-full w-full flex-col
+    items-center bg-neutral-50/10
+    opacity-0 backdrop-blur-3xl transition-all
+    duration-300 ease-out dark:bg-neutral-950/90;
+  z-index: 99;
 }
 
 .searchActive {
-    @apply opacity-100 pointer-events-auto
-    
+  @apply pointer-events-auto opacity-100;
 }
 
 .searchInputWrapper {
-    @apply flex flex-row gap-3 items-center px-6 p-4 border-b w-full justify-center
-    bg-neutral-50 dark:bg-neutral-950
-    border-neutral-300
+  @apply flex w-full flex-row items-center justify-center gap-3 border-b border-neutral-300 bg-neutral-50
+    p-4 px-6
     dark:border-neutral-600
-    ;
+    dark:bg-neutral-950;
 }
 
 .searchInput {
-    @apply flex flex-row justify-between rounded-lg p-4 w-full items-center
+  @apply flex w-full flex-row items-center justify-between rounded-lg border-neutral-700
     
-    bg-neutral-200 dark:bg-neutral-950
-    dark:border border-neutral-700
+    bg-neutral-200 p-4
+    dark:border dark:bg-neutral-950
 
-    dark:focus:border-neutral-400
-
-    ;
+    dark:focus:border-neutral-400;
 }
 
 .searchOverlayTrending {
-    @apply flex flex-col gap-4 p-4 px-4 w-full
+  @apply flex w-full flex-col gap-4 p-4 px-4;
 }

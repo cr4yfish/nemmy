@@ -1,68 +1,63 @@
 .loginWrapper {
-    @apply flex flex-col gap-3 p-4 w-full max-sm:w-full
+  @apply flex w-full flex-col gap-3 p-4 max-sm:w-full;
 }
 
 .inputWrapper {
-    @apply flex flex-col gap-1 relative
+  @apply relative flex flex-col gap-1;
 }
 
 .inputWrapper input {
-    @apply 
-    border
+  @apply rounded-lg
 
-    transition-all duration-200
+    border p-3
     
-    rounded-lg p-3 px-3;
-    outline: none;
+    px-3 transition-all duration-200;
+  outline: none;
 }
 
 .button {
-    @apply bg-fuchsia-300 text-neutral-100
-    dark:bg-fuchsia-400 dark:text-fuchsia-900
-    font-bold
-    rounded-lg p-1
-    ;
+  @apply rounded-lg bg-fuchsia-300
+    p-1 font-bold
+    text-neutral-100
+    dark:bg-fuchsia-400 dark:text-fuchsia-900;
 }
 
 .button {
-    @apply flex flex-row items-center gap-6 p-3 px-6 rounded-lg font-bold
-    w-full justify-center relative
-    ;
+  @apply relative flex w-full flex-row items-center justify-center gap-6 rounded-lg
+    p-3 px-6 font-bold;
 }
 
 .primary {
-    @apply 
-    bg-fuchsia-500 text-fuchsia-100
-    dark:bg-fuchsia-500 dark:text-fuchsia-100
+  @apply bg-fuchsia-500 text-fuchsia-100
+    dark:bg-fuchsia-500 dark:text-fuchsia-100;
 }
 
 .input {
-    @apply     
-    border-transparent
+  @apply border-transparent
     bg-neutral-200 text-neutral-950
+    dark:border dark:border-neutral-500
     dark:bg-transparent dark:text-neutral-100
-    dark:border-neutral-500 dark:border
-    dark:focus:border-fuchsia-200
+    dark:focus:border-fuchsia-200;
 }
 
 .inputError {
-    @apply border-red-500
+  @apply border-red-500
     bg-red-50 text-red-950
-    dark:bg-red-900 dark:text-red-50
+    dark:bg-red-900 dark:text-red-50;
 }
 
 .weakPassword {
-    @apply text-red-500
+  @apply text-red-500;
 }
 
 .passwordOk {
-    @apply text-green-500
+  @apply text-green-500;
 }
 
 .passwordStrong {
-    @apply text-fuchsia-500
+  @apply text-fuchsia-500;
 }
 
 .passwordUltimate {
-    @apply text-indigo-500
+  @apply text-indigo-500;
 }

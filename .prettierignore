@@ -1,0 +1,5 @@
+android
+node_modules
+
+# ignore everything with a . in front
+.*

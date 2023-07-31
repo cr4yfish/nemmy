@@ -1,27 +1,23 @@
 .postList {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    gap: 1rem;
-    align-items: center;
+  @apply gap-4 max-md:gap-0 w-full items-center justify-center;
+  display: flex;
+  flex-direction: column;
 }
 
 .loader {
-    @apply 
-    w-full h-52 rounded-lg
-    shadow-md dark:shadow-md
-    bg-neutral-50 dark:bg-neutral-900
-    animate-pulse
-    flex flex-row
-    items-start
-    gap-5
-    p-4
-    ;
-    width: 48rem;
+  @apply flex h-52 w-full
+    animate-pulse flex-row
+    items-start gap-5
+    rounded-lg
+    bg-neutral-50 p-4
+    shadow-md
+    dark:bg-neutral-900
+    dark:shadow-md;
+  width: 48rem;
 }
 
 @media screen and (max-width: 768px) {
-    .loader {
-        width: 100vw;
-    }
+  .loader {
+    width: 100vw;
+  }
 }

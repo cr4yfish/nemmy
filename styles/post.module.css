@@ -1,220 +1,196 @@
 .wrapper {
-    @apply 
-    bg-neutral-50 text-slate-100 border-b border-neutral-300 rounded-none
-    dark:bg-neutral-900 dark:rounded-lg dark:border dark:border-neutral-800
-    hover:dark:border-neutral-700
-    max-md:hover:border-neutral-800
-    transition-all duration-100
-    max-w-2xl
-    max-md:w-full
-    ;
-    padding: 1rem;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: flex-start;
-    gap: 15px;
-    overflow: hidden;
-    width: 100%;;
+  @apply max-w-2xl w-full;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 15px;
 }
 
-
 .rightSide {
-    @apply flex flex-col gap-1 w-full;
+  @apply flex w-full flex-col gap-1;
 }
 
 .header {
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-    min-height: 25px;
-    width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  min-height: 25px;
+  width: 100%;
 }
 
 .votes {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    flex-wrap: nowrap;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex-wrap: nowrap;
 }
 
 .headerContent {
-    display: flex;
-    flex-direction: column;
-    min-height: 25px;
-    width: 100%;
-    gap: .5rem;
+  @apply w-full;
+  display: flex;
+  flex-direction: column;
+  min-height: 25px;
+  gap: 0.5rem;
 }
 
 .headerMetadata {
-    @apply items-center;
+  @apply w-full;
 
-    display: flex;
-    flex-direction: row;
-    gap: 10px;
-    min-height: 25px;
-    width: 100%;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  min-height: 25px;
 }
 
 .headerMetadataContent {
-    @apply flex flex-row gap-2 h-full
-    max-md:flex-col max-md:gap-1 max-md:justify-between
-    items-center
-    max-md:items-start
-    ;
+  @apply flex h-full flex-row items-center
+    gap-2 max-md:flex-col max-md:items-start
+    max-md:justify-between
+    max-md:gap-1;
 }
 
 .dividerDot {
-    @apply w-1 h-1 rounded-full bg-neutral-300 dark:bg-neutral-700
-    max-md:hidden
-    ;
+  @apply h-1 w-1 rounded-full bg-neutral-300 dark:bg-neutral-700
+    max-md:hidden;
 }
 
 .headerTitle {
-    @apply gap-2;
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-    cursor: pointer;
+  @apply gap-2 w-full;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  cursor: pointer;
 }
 
-.sub, .user {
-    @apply text-xs
-    ;
+.sub,
+.user {
+  @apply text-xs;
 }
 
 .sub {
-    @apply text-neutral-600 dark:text-neutral-300
+  @apply text-neutral-600 dark:text-neutral-300;
 }
 
 .user {
-    @apply 
-    flex
+  @apply flex
     flex-row items-center gap-1
-    max-md:text-xs max-md:flex-row
-    max-sm:flex-wrap
-    dark:text-neutral-400 text-neutral-500
-    ;
-    width: 100%;
-    display: flex;
+    text-neutral-500 dark:text-neutral-400
+    max-md:flex-row
+    max-md:text-xs max-sm:flex-wrap;
+  width: 100%;
+  display: flex;
 }
 
-
 .title {
-    @apply text-xl font-bold text-neutral-900 dark:text-neutral-100
-    max-md:text-sm text-left
+  @apply text-left text-xl font-bold text-neutral-900
+    dark:text-neutral-100 max-md:text-sm
+    break-words w-full overflow-hidden
+    ;
 }
 
 .flair {
-    display: flex;
-    background-color: red;
-    border-radius: 100%;
+  display: flex;
+  background-color: red;
+  border-radius: 100%;
 }
 
 .content {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
 }
 
 .body {
-    @apply text-neutral-700 dark:text-neutral-300 w-full line-clamp-5 text-sm;
+  @apply w-full text-sm text-neutral-700 line-clamp-5 dark:text-neutral-300;
 }
 
 .postBodyEmbed {
-    @apply flex flex-col gap-0 w-full
-    mb-4 p-2 rounded-lg border
-    border-neutral-300 dark:border-neutral-600
-    text-neutral-800 dark:text-neutral-200
-    ;
+  @apply mb-4 flex w-full flex-col
+    gap-0 rounded-lg border border-neutral-300
+    p-2 text-neutral-800
+    dark:border-neutral-600 dark:text-neutral-200;
 }
 
 .postBodyEmbed a {
-    @apply text-xs;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    font-size: 9px
+  @apply text-xs;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  font-size: 9px;
 }
 
 .postBodyEmbedTitle {
-    @apply text-xs font-bold
-    ;
+  @apply text-xs font-bold;
 }
 
 .postBodyEmbedDescription {
-    @apply text-xs font-light;
+  @apply text-xs font-light;
 }
 
-
 .contentOverlay {
-    position: absolute;
-    z-index: 2;
-    height: 100%; width: 100%;
-    @apply 
-        bg-gradient-to-b 
+  position: absolute;
+  z-index: 2;
+  height: 100%;
+  width: 100%;
+  @apply bg-gradient-to-b 
         from-neutral-50/30 to-neutral-50/90
         dark:from-neutral-900/50 dark:to-neutral-900/90;
-        ;
 }
 
 .image {
-    position: relative;
-    border-radius: 9px;
-    overflow: hidden;
-    width: auto;
-    min-height: max-content;
-    object-fit: cover;
-    justify-self: center;
-    align-self: center;
+  position: relative;
+  border-radius: 9px;
+  overflow: hidden;
+  width: auto;
+  min-height: max-content;
+  object-fit: cover;
+  justify-self: center;
+  align-self: center;
 }
 
-.communityImage {
-    height: 50px;
-    width: 50px;
+.communityImage, .communityIconFill {
+  height: 50px;
+  width: 50px;
 }
 
 .communityIconFill {
-    @apply rounded-full w-5 h-5 max-md:w-14 max-md:h-14
-    bg-neutral-300 dark:bg-neutral-700
-    ;
+  @apply rounded-full bg-neutral-300 dark:bg-neutral-800
+    max-md:h-14 max-md:w-14;
 }
 
-
-.footer, .footerInteractions {
-    @apply gap-3
-    max-md:gap-2
-    w-full
+.footer,
+.footerInteractions {
+  @apply w-full
     justify-start
-    ;
-    display: flex;
-    align-items: center;
+    gap-3
+    max-md:gap-2;
+  display: flex;
+  align-items: center;
 }
 
 .footer {
-    @apply max-md:justify-between;
+  @apply max-md:justify-between;
 }
 
 .footerInteractions {
-    @apply w-fit
+  @apply w-fit;
 }
 
 .footerInteractions button {
-    @apply 
+  @apply gap-3
+         rounded-lg
+        p-2 
         text-neutral-400
-         p-2
-        rounded-lg 
         hover:bg-neutral-100
-        hover:dark:bg-neutral-900
-        gap-3
-        ;
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    user-select: none;
-    outline: none;
+        hover:dark:bg-neutral-900;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  outline: none;
 }

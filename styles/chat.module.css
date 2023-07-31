@@ -1,8 +1,7 @@
-
 .ownMessage {
-    @apply bg-blue-500 text-neutral-50 self-end
+  @apply self-end bg-blue-500 text-neutral-50;
 }
 
 .ownMessageMetadata {
-    @apply text-blue-300
+  @apply text-blue-300;
 }

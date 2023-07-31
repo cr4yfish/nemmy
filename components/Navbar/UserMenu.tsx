@@ -1,128 +1,278 @@
-"use client"
+"use client";
 import Link from "next/link";
 import Marquee from "react-fast-marquee";
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Mousewheel, Scrollbar } from "swiper/modules";
-import 'swiper/css';
-import 'swiper/css/scrollbar';
+import "swiper/css";
+import "swiper/css/scrollbar";
 import { motion } from "framer-motion";
 
 import { DEFAULT_AVATAR } from "@/constants/settings";
 import { useSession } from "@/hooks/auth";
 
 import styles from "@/styles/components/Navbar/UserMenu.module.css";
-import { Account, switchToAccount, sortCurrentAccount } from "@/utils/authFunctions";
+import {
+  Account,
+  switchToAccount,
+  sortCurrentAccount,
+  handleLogout
+} from "@/utils/authFunctions";
 import { useEffect } from "react";
 
-export default function UserMenu( {
-    handleUserMenuClose, handleLogout, unreadCount, router
- } : { 
-    handleUserMenuClose: any, handleLogout: any, unreadCount: any, router: any }) {
-    const { session, setSession } = useSession();
-
-    // Only sort accounts on first render
-    // So they dont get switched around when switching accounts
-    useEffect(() => {
-        sortCurrentAccount(session, setSession);
-    }, [])
-
-    const handleSwitchAccount = (account: Account) => {
-        switchToAccount(account, setSession, session);
-    }
-
-    const handleClose = () => {
-        sortCurrentAccount(session, setSession);
-        handleUserMenuClose();
-    }
-
+function UserMenuItem({
+  text,
+  icon,
+  link,
+  close,
+  disabled,
+}: {
+  text: string;
+  icon: string;
+  link: string;
+  close: Function;
+  disabled?: boolean;
+}) {
+  if (disabled) {
     return (
-        <>
-        <motion.div 
-            initial={{ opacity: 0, x: 300 }}
-            animate={{ opacity: 1, x: 0, transition: { bounce: 0 } }}
-            exit={{ opacity: 0, x: 300 }}
-            id="usermenu" 
-            className={`${styles.userMenu}`}
-        >
-            <div className={`flex flex-col gap-4 h-full w-full`}>
+      <>
+        <div className=" cursor-not-allowed text-neutral-700 dark:text-neutral-400">
+          <button className="cursor-not-allowed">
+            <span className="material-symbols-outlined">{icon}</span>
+            {text}
+          </button>
+        </div>
+      </>
+    );
+  } else {
+    return (
+      <>
+        <Link onClick={() => close()} href={link}>
+          <button>
+            <span className="material-symbols-outlined">{icon}</span>
+            {text}
+          </button>
+        </Link>
+      </>
+    );
+  }
+}
 
-                {<Swiper 
-                    modules={[Mousewheel, Scrollbar]}
-                    className="h-52 w-full"
-                    spaceBetween={50}
-                    slidesPerView={1}
-                    mousewheel={{
-                        forceToAxis: true,
-                        releaseOnEdges: true,
-                    }}
-                    scrollbar={{
-                        draggable: true,
-                    }}
-                    >
+export default function UserMenu({
+  handleUserMenuClose,
+  unreadCount,
+  router,
+}: {
+  handleUserMenuClose: any;
+  unreadCount: any;
+  router: any;
+}) {
+  const { session, setSession } = useSession();
 
-                    {session.accounts.map((account, index) => (
-                        <SwiperSlide onClick={() => handleSwitchAccount(account)} key={index} className={`${styles.userProfile} ${(account.username == session.currentAccount?.username) && styles.userProfileActive} cursor-pointer`}>
-                            <Image width={100} height={50} className={`${styles.userProfileBanner}`} src={account?.user?.person.banner || ""} alt="" />
-                            <div className={`${styles.userProfileBannerOverlay}`}></div>
-                            <Image width={40} height={40} className={`${styles.userProfileAvatar}`} src={account.user?.person?.avatar || DEFAULT_AVATAR} alt="" />
-                            <div className={`${styles.userProfileText}`}>
-                                <span className={`${styles.userProfileUsername} text-xs`}>{account.instance}</span>
-                                {account.username.length > 30 ? <Marquee><span className={`${styles.userProfileDisplayName} text-sm`}>u/{account.username}</span></Marquee>
-                                :
-                                <span className={`${styles.userProfileDisplayName} text-sm`} >u/{account.username}</span>
-                                }
-                            </div>
-                        </SwiperSlide>
-                    ))}
+  // Only sort accounts on first render
+  // So they dont get switched around when switching accounts
+  useEffect(() => {
+    sortCurrentAccount(session, setSession);
+  }, []);
 
-                    <SwiperSlide className="flex justify-center items-center w-12 h-48 px-6">
-                        <Link href={"/auth"}>
-                            <button 
-                                onClick={() => handleClose()} 
-                                className="flex justify-center items-center flex-col gap-2 h-full w-full
-                                     bg-fuchsia-200 border-2 border-transparent hover:border-fuchsia-700 
-                                     transition-all duration-100 ease-in-out p-6 rounded-lg"
-                            >
-                                <span className="material-symbols-outlined text-fuchsia-700">add</span>
-                                <span className=" text-fuchsia-700 font-medium">Add another Account</span>
-                            </button>
-                        </Link>
-                    </SwiperSlide>
-                </Swiper>}
+  const handleSwitchAccount = (account: Account) => {
+    switchToAccount(account, setSession, session);
+  };
 
-                <div className={`${styles.userMenuInteractionsTop}`}>
-                    <Link onClick={() => handleClose()} href={"/inbox"}>
-                        <button className="relative">
-                            <div className="relative h-full flex items-center justify-center w-fit">
-                                {unreadCount > 0 && 
-                                    <span 
-                                        className=" m-2 absolute left-1/3 top-0
-                                        bg-red-400 text-red-950 rounded-full px-1 text-xs font-bold
-                                        ">
-                                        {unreadCount}
-                                    </span>
-                                }
-                                <span className="material-symbols-outlined">notifications</span>
-                            </div>
-                            Notifications
-                        </button>
-                    </Link>
-                    <Link onClick={() => handleClose()} href={`/u/${session.currentAccount?.user?.person?.name}@${session.currentAccount?.instance}`}><button><span className="material-symbols-outlined">account_circle</span>My Profile</button></Link>
-                    <Link onClick={() => handleClose()} href="/post/new"><button><span className="material-symbols-outlined">add_circle_outline</span>Create a Post</button></Link>
-                    <Link onClick={() => handleClose()} href={"/c/new"}><button><span className="material-symbols-outlined">group_add</span>Create a Community</button></Link>
-                    <Link onClick={() => handleClose()} href={"/chat"}><button><span className="material-symbols-outlined">chat</span>Chat</button></Link>
-                </div>
+  const handleClose = () => {
+    sortCurrentAccount(session, setSession);
+    handleUserMenuClose();
+  };
 
+  return (
+    <>
+      <motion.div
+        initial={{ opacity: 0, x: 300 }}
+        animate={{ opacity: 1, x: 0, transition: { bounce: 0 } }}
+        exit={{ opacity: 0, x: 300 }}
+        id="usermenu"
+        className={`${styles.userMenu}`}
+      >
+        <div className={`flex h-full w-full flex-col gap-4`}>
+          {
+            <Swiper
+              modules={[Mousewheel, Scrollbar]}
+              className="h-52 w-full"
+              spaceBetween={50}
+              slidesPerView={1}
+              mousewheel={{
+                forceToAxis: true,
+                releaseOnEdges: true,
+              }}
+              scrollbar={{
+                draggable: true,
+              }}
+            >
+              {session.accounts.map((account, index) => (
+                <SwiperSlide
+                  onClick={() => handleSwitchAccount(account)}
+                  key={index}
+                  className={`${styles.userProfile} ${
+                    account.username == session.currentAccount?.username &&
+                    styles.userProfileActive
+                  } cursor-pointer`}
+                >
+                  <Image
+                    width={100}
+                    height={50}
+                    className={`${styles.userProfileBanner}`}
+                    src={account?.user?.person.banner || ""}
+                    alt=""
+                  />
+                  <div className={`${styles.userProfileBannerOverlay}`}></div>
+                  <Image
+                    width={40}
+                    height={40}
+                    className={`${styles.userProfileAvatar}`}
+                    src={account.user?.person?.avatar || DEFAULT_AVATAR}
+                    alt=""
+                  />
+                  <div className={`${styles.userProfileText}`}>
+                    <span className={`${styles.userProfileUsername} text-xs`}>
+                      {account.instance}
+                    </span>
+                    {account.username.length > 30 ? (
+                      <Marquee>
+                        <span
+                          className={`${styles.userProfileDisplayName} text-sm`}
+                        >
+                          u/{account.username}
+                        </span>
+                      </Marquee>
+                    ) : (
+                      <span
+                        className={`${styles.userProfileDisplayName} text-sm`}
+                      >
+                        u/{account.username}
+                      </span>
+                    )}
+                  </div>
+                </SwiperSlide>
+              ))}
 
-            </div>
+              <SwiperSlide className="flex h-48 w-12 items-center justify-center px-6">
+                <Link href={"/auth"}>
+                  <button
+                    onClick={() => handleClose()}
+                    className="flex h-full w-full flex-col items-center justify-center gap-2
+                                  rounded-lg border-2 border-transparent bg-fuchsia-200 
+                                  p-6 transition-all duration-100 ease-in-out hover:border-fuchsia-700"
+                  >
+                    <span className="material-symbols-outlined text-fuchsia-700">
+                      add
+                    </span>
+                    <span className=" font-medium text-fuchsia-700">
+                      Add an Account
+                    </span>
+                  </button>
+                </Link>
+              </SwiperSlide>
+            </Swiper>
+          }
 
-            <div className={`${styles.userMenuInteractionsBottom}`}>
-                <button onClick={() => handleClose()}><span className="material-symbols-outlined">close</span>Close</button>
-                <Link onClick={() => handleClose()} href={"/settings"}><button><span className="material-symbols-outlined">settings</span>Settings</button></Link>
-                <button onClick={() => { handleClose(); handleLogout({ session: session, setSession: setSession, router: router, account: session.currentAccount }) }} ><span className="material-symbols-outlined">logout</span>Log out</button>
-            </div>
-        </motion.div>
-        </>
-    )
+          {!session.isLoggedIn && (
+            <span>
+              <Link href={"/auth"} className="a">
+                Log in
+              </Link>{" "}
+              for more features.
+            </span>
+          )}
+
+          <div className={`${styles.userMenuInteractionsTop}`}>
+            {session.isLoggedIn ? (
+              <Link onClick={() => handleClose()} href={"/inbox"}>
+                <button className="relative">
+                  <div className="relative flex h-full w-fit items-center justify-center">
+                    {unreadCount > 0 && (
+                      <span className=" absolute left-1/3 top-0 m-2 rounded-full bg-red-400 px-1 text-xs font-bold text-red-950">
+                        {unreadCount}
+                      </span>
+                    )}
+                    <span className="material-symbols-outlined">
+                      notifications
+                    </span>
+                  </div>
+                  Notifications
+                </button>
+              </Link>
+            ) : (
+              <UserMenuItem
+                text="Notifications"
+                icon="notifications"
+                link="/inbox"
+                close={handleClose}
+                disabled
+              />
+            )}
+
+            <UserMenuItem
+              text="My Profile"
+              icon="account_circle"
+              link={`/u/${session.currentAccount?.user?.person?.name}@${session.currentAccount?.instance}`}
+              close={handleClose}
+              disabled={!session.isLoggedIn}
+            />
+            <UserMenuItem
+              text="Create a Post"
+              icon="add_circle_outline"
+              link="/post/new"
+              close={handleClose}
+              disabled={!session.isLoggedIn}
+            />
+            <UserMenuItem
+              text="Create a Community"
+              icon="group_add"
+              link="/c/new"
+              close={handleClose}
+              disabled={!session.isLoggedIn}
+            />
+            <UserMenuItem
+              text="Chat"
+              icon="chat"
+              link="/chat"
+              close={handleClose}
+              disabled={!session.isLoggedIn}
+            />
+          </div>
+        </div>
+
+        <div className={`${styles.userMenuInteractionsBottom}`}>
+          <a>
+            <button onClick={() => handleClose()}>
+              <span className="material-symbols-outlined">close</span>Close
+            </button>
+          </a>
+
+          <UserMenuItem
+            text="Settings"
+            icon="settings"
+            link="/settings"
+            close={handleClose}
+          />
+
+          <a>
+            <button
+              onClick={() => {
+                handleClose();
+                handleLogout({
+                  session: session,
+                  setSession: setSession,
+                  router: router,
+                  account: session.currentAccount,
+                });
+              }}
+            >
+              <span className="material-symbols-outlined">logout</span>Log out
+            </button>
+          </a>
+        </div>
+      </motion.div>
+    </>
+  );
 }
