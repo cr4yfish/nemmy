@@ -77,6 +77,7 @@ export default function New() {
   const [form, setForm] = useState<CreatePost>({} as CreatePost);
   const [step, setStep] = useState<number>(0);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+
   const router = useRouter();
 
   const [communities, setCommunities] = useState<CommunityView[]>([]);
@@ -154,6 +155,11 @@ export default function New() {
       textarea?.removeEventListener("input", adjustHeight);
     };
   }, []);
+
+  // weird react hack
+  useEffect(() => {
+    const textarea = textareaRef.current;
+  }, [textareaRef.current?.selectionStart])
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -301,9 +307,13 @@ export default function New() {
                 </div>
 
                 <div className="flex w-full flex-row gap-2 overflow-x-auto border-b border-neutral-300 pb-2 max-sm:pb-4">
-                  <RenderFormattingOptions />
+                  <RenderFormattingOptions 
+                    text={form.body} 
+                    setText={(newText: string) => setForm(prevState => { return { ...prevState, body: newText} })}
+                    index={textareaRef.current?.selectionStart || 0} 
+                  />
                 </div>
-
+                
                 <div
                   className={`w-full rounded-lg border border-transparent p-2 dark:bg-neutral-900`}
                 >
@@ -320,6 +330,9 @@ export default function New() {
                     placeholder="Tell the world what you think"
                   />
                 </div>
+
+                <RenderMarkdown content={form.body} />
+
               </form>
             </motion.div>
           )}
@@ -446,7 +459,7 @@ export default function New() {
 
               <div className="flex flex-col gap-2">
                 <div className="flex w-full flex-row gap-2 overflow-x-auto border-b border-neutral-300 pb-2 dark:text-neutral-500 max-sm:pb-4">
-                  <RenderFormattingOptions />
+                  <RenderFormattingOptions text="" setText={() => null} index={0} />
                 </div>
 
                 <div className="mt-4">
