@@ -16,6 +16,7 @@ import RenderMarkdown from "@/components/ui/RenderMarkdown";
 import SortButton from "../ui/SortButton";
 
 import { subscribeToCommunity } from "@/utils/lemmy";
+import { FormatNumber } from "@/utils/helpers";
 
 import { DEFAULT_AVATAR, DEFAULT_SORT_TYPE } from "@/constants/settings";
 
@@ -111,7 +112,7 @@ export default function CommunityPage({
             <div className="flex flex-row flex-wrap gap-2 pt-2">
               <span className="snack">
                 <span className="material-symbols-outlined">communities</span>{" "}
-                {communityData?.community_view?.counts?.subscribers} Subscribers
+                {FormatNumber(communityData?.community_view?.counts?.subscribers, true)} Subscribers
               </span>
               <span className="snack">
                 <span className="material-symbols-outlined">group</span>{" "}
