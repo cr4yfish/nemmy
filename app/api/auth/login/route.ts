@@ -1,11 +1,12 @@
 import { LemmyHttp, Login } from "lemmy-js-client";
 import { DEFAULT_INSTANCE } from "@/constants/settings";
 
-async function userLogin(username: string, password: string, baseUrl: string) {
+async function userLogin(username: string, password: string, baseUrl: string, totp_2fa_token: string = "") {
   let client: LemmyHttp = new LemmyHttp(baseUrl);
   let loginForm: Login = {
     username_or_email: username,
     password: password,
+    totp_2fa_token: totp_2fa_token,
   };
   let jwt = (await client.login(loginForm)).jwt;
   if (!jwt) throw new Error("Login failed");
@@ -19,6 +20,7 @@ export async function POST(req: Request) {
       body.username,
       body.password,
       body.instance ? `https://${body.instance}` : DEFAULT_INSTANCE,
+      body.totp
     );
 
     // TODO encrypt jwt

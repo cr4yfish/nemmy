@@ -8,6 +8,7 @@ import { motion } from "framer-motion";
 import { ClipLoader } from "react-spinners";
 
 import { useSession } from "@/hooks/auth";
+import { useNavbar } from "@/hooks/navbar";
 
 import Logo from "@/components/Logo";
 
@@ -26,8 +27,10 @@ import styles from "@/styles/Pages/LoginPage.module.css";
 import Image from "next/image";
 
 
+
 export default function Login() {
   const { session, setSession } = useSession();
+  const { navbar, setNavbar } = useNavbar();
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
   const [inputFocus, setInputFocus] = useState<boolean>(false);
@@ -43,12 +46,18 @@ export default function Login() {
     password: string;
     saveLogin: boolean;
     instance: string;
+    totp: string;
   }>({
     username: "",
     password: "",
     saveLogin: false,
     instance: "",
+    totp: "",
   });
+
+  useEffect(() => {
+    setNavbar({ ...navbar!, hidden: true });
+  }, []);
 
   useEffect(() => {
     if (!selectedUser?.person.name) return;
@@ -245,6 +254,20 @@ export default function Login() {
               value={form.instance}
               onChange={(e) =>
                 setForm({ ...form, instance: e.currentTarget.value })
+              }
+              required
+              type="text"
+              disabled={loading}
+              className={`${loginError ? styles.inputError : styles.input}`}
+            />
+          </div>
+
+          <div className={`${styles.inputWrapper}`}>
+            <label htmlFor="">2FA (optional)</label>
+            <input
+              value={form.totp}
+              onChange={(e) =>
+                setForm({ ...form, totp: e.currentTarget.value})
               }
               required
               type="text"
