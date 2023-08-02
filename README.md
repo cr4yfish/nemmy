@@ -149,8 +149,11 @@ npm run dev
   - [x] Bookmarking Posts & Comments
 - [x] PWA installable
 - [x] Community Page
-- [x] Sort/Filter/Search
-  - [x] Search
+- [ ] Sort/Filter/Search
+  - [ ] Search
+    - [ ] Search for Communities
+    - [X] Search for Posts
+    - [ ] Search for Users
   - [x] Filter
   - [x] Sorting
   - [x] Explore Section
@@ -176,7 +179,7 @@ npm run dev
 - [x] Sidebar
   - [x] Subscribed Communities
   - [x] Instance Info
-- [ ] Edit tools
+- [ ] Edit tools **<- Next Step**
   - [ ] Edit Comments
   - [ ] Edit Posts
 - [ ] Moderation Tools
@@ -190,7 +193,7 @@ npm run dev
   - [ ] Show UI without connection
 - [ ] Customization
   - [ ] User Themes
-  - [ ] Dark/Light mode per User choice
+  - [ ] Dark/Light mode per User choice **<- More difficult than expected**
   - [ ] Compact Style (Like compact.reddit) **<- Design phase**
   - [ ] Classic Style (Like old.reddit)
 - [ ] QoL Features
