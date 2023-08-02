@@ -6,13 +6,10 @@ import { Dispatch, SetStateAction } from "react";
  * @return {String}
  */
 const getClosestWord = (str: string, pos: number): string => {
-  console.log("at index:", pos)
   // Perform type conversions.
   pos = Number(pos) >>> 0;
 
   // Search for the word's beginning and end.
-  console.log("left.", str.slice(0, pos + 1).search(/\S+$/))
-  console.log("right.", str.slice(pos).search(/\s/) + pos)
   var left = str.slice(0, pos + 1).search(/\S+$/),
       right = str.slice(pos).search(/\s/);
 
@@ -39,8 +36,6 @@ function FormattingOption({
     if(!text) return setText(`${before}${after}`);
 
     const word = getClosestWord(text, index);
-
-    console.log(text, index, word)
 
     let newText = text.replace(word, `${before}${word}${after}`);
   
@@ -69,12 +64,12 @@ export default function RenderFormattingOptions({
       <FormattingOption index={index} before="[](" after=")" text={text} setText={setText} icon="link" />
       <FormattingOption index={index} before="" after="" text={text} setText={setText} icon="add_reaction" />
       <FormattingOption index={index} before="![](" after=")" text={text} setText={setText} icon="add_photo_alternate" />
-      <FormattingOption index={index} before="\n# " after="" text={text} setText={setText} icon="format_h1" />
+      <FormattingOption index={index} before={`\n# `} after="" text={text} setText={setText} icon="format_h1" />
       <FormattingOption index={index} before="~~" after="~~" text={text} setText={setText} icon="strikethrough_s" />
       <FormattingOption index={index} before=">" after="" text={text} setText={setText} icon="format_quote" />
-      <FormattingOption index={index} before="-" after="" text={text} setText={setText} icon="format_list_bulleted" />
-      <FormattingOption index={index} before="```" after="```" text={text} setText={setText} icon="code" />
-      <FormattingOption index={index} before="" after="" text={text} setText={setText} icon="ad_group_off" />
+      <FormattingOption index={index} before="- " after="" text={text} setText={setText} icon="format_list_bulleted" />
+      <FormattingOption index={index} before={`\`\`\`\n`} after={`\n\`\`\``}text={text} setText={setText} icon="code" />
+      <FormattingOption index={index} before={`::: spoiler spoiler\n`} after={`\n:::`} text={text} setText={setText} icon="ad_group_off" />
       <FormattingOption index={index} before="" after="" text={text} setText={setText} icon="superscript" />
     </>
   );
