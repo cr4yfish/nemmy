@@ -9,6 +9,7 @@ import InfiniteScroll from "react-infinite-scroller";
 
 import RenderFormattingOptions from "@/components/ui/RenderFormattingOptions";
 import RenderMarkdown from "@/components/ui/RenderMarkdown";
+import MdTextarea from "@/components/ui/MdTextarea";
 
 import { listCommunities, createPost } from "@/utils/lemmy";
 import { FormatNumber } from "@/utils/helpers";
@@ -76,8 +77,6 @@ export default function New() {
   const { session } = useSession();
   const [form, setForm] = useState<CreatePost>({} as CreatePost);
   const [step, setStep] = useState<number>(0);
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const [selectionStart, setSelectionStart] = useState<number>(0);
 
   const router = useRouter();
 
@@ -137,46 +136,6 @@ export default function New() {
   useEffect(() => {
     loadMoreCommunities();
   }, [session.currentAccount]);
-
-  // Adjust textarea height to content on user input
-  useEffect(() => {
-    const textarea = textareaRef.current;
-
-    function adjustHeight() {
-      if (!textarea) return;
-      textarea.style.height = "auto";
-      textarea.style.height = textarea.scrollHeight + "px";
-    }
-
-    textarea?.addEventListener("input", adjustHeight);
-    adjustHeight();
-
-    // Cleanup on onmount
-    return () => {
-      textarea?.removeEventListener("input", adjustHeight);
-    };
-  }, []);
-
-  // manually fire input event on change
-  // This is a hack to update the textarea height when
-  // inserting using markdown formatting options
-  useEffect(() => {
-    // manually fire input event on change
-    textareaRef.current?.dispatchEvent(new Event("input"));
-  }, [form.body])
-  // weird react hack to get correct selection index
-  useEffect(() => {
-    const textarea = textareaRef.current;
-
-    textarea?.addEventListener("selectionchange", () => {
-      setSelectionStart(textarea?.selectionStart || 0);
-    })
-
-    return () => {
-      setSelectionStart(textarea?.selectionStart || 0)
-    }
-
-  }, [textareaRef.current?.selectionStart])
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -323,42 +282,9 @@ export default function New() {
                   />
                 </div>
 
-                <div className="flex w-full flex-row gap-2 overflow-x-auto border-b border-neutral-300 pb-2 max-sm:pb-4">
-                  <RenderFormattingOptions 
-                    text={form.body} 
-                    setText={(newText: string) => setForm(prevState => { return { ...prevState, body: newText} })}
-                    index={textareaRef.current?.selectionStart || 0} 
-                  />
-                </div>
-                
-                <div
-                  className={`w-full rounded-lg border border-transparent p-2 dark:bg-neutral-900`}
-                >
-                  <textarea
-                    ref={textareaRef}
-                    value={form.body}
-                    onChange={(e) =>
-                      setForm({ ...form, body: e.currentTarget.value })
-                    }
-                    name=""
-                    id=""
-                    style={{ resize: "vertical" }}
-                    className={`${styles.textarea}`}
-                    placeholder="Tell the world what you think"
-                  />
-                </div>
-                
-                <AnimatePresence>
-                {form.body?.length && form.body.length > 0 && 
-                  <motion.h2 
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    className=" text-lg prose dark:prose-invert">Markdown Preview</motion.h2>
-                }
-                </AnimatePresence>
-
-                <RenderMarkdown content={form.body} />
+                <MdTextarea 
+                  onChange={(newText) => setForm(prevState => { return { ...prevState, body: newText } })}
+                />
 
               </form>
             </motion.div>
@@ -486,7 +412,7 @@ export default function New() {
 
               <div className="flex flex-col gap-2">
                 <div className="flex w-full flex-row gap-2 overflow-x-auto border-b border-neutral-300 pb-2 dark:text-neutral-500 max-sm:pb-4">
-                  <RenderFormattingOptions text="" setText={() => null} index={0} />
+                  <RenderFormattingOptions text="" setText={() => null} selectionStart={0} selectionEnd={0} />
                 </div>
 
                 <div className="mt-4">
@@ -500,20 +426,7 @@ export default function New() {
                     className={`${styles.input}`}
                   />
                 </div>
-                <div>
-                  <textarea
-                    ref={textareaRef}
-                    value={form.body}
-                    onChange={(e) =>
-                      setForm({ ...form, body: e.currentTarget.value })
-                    }
-                    name=""
-                    id=""
-                    style={{ resize: "vertical" }}
-                    className={`${styles.textarea}`}
-                    placeholder="Tell the world what you think"
-                  />
-                </div>
+                <MdTextarea readonly defaultValue={form.body} />
               </div>
             </motion.form>
           )}
