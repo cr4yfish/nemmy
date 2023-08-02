@@ -77,6 +77,7 @@ export default function New() {
   const [form, setForm] = useState<CreatePost>({} as CreatePost);
   const [step, setStep] = useState<number>(0);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const [selectionStart, setSelectionStart] = useState<number>(0);
 
   const router = useRouter();
 
@@ -156,9 +157,25 @@ export default function New() {
     };
   }, []);
 
-  // weird react hack
+  // manually fire input event on change
+  // This is a hack to update the textarea height when
+  // inserting using markdown formatting options
+  useEffect(() => {
+    // manually fire input event on change
+    textareaRef.current?.dispatchEvent(new Event("input"));
+  }, [form.body])
+  // weird react hack to get correct selection index
   useEffect(() => {
     const textarea = textareaRef.current;
+
+    textarea?.addEventListener("selectionchange", () => {
+      setSelectionStart(textarea?.selectionStart || 0);
+    })
+
+    return () => {
+      setSelectionStart(textarea?.selectionStart || 0)
+    }
+
   }, [textareaRef.current?.selectionStart])
 
   const handleSubmit = (e: FormEvent) => {
@@ -330,6 +347,16 @@ export default function New() {
                     placeholder="Tell the world what you think"
                   />
                 </div>
+                
+                <AnimatePresence>
+                {form.body?.length && form.body.length > 0 && 
+                  <motion.h2 
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className=" text-lg prose dark:prose-invert">Markdown Preview</motion.h2>
+                }
+                </AnimatePresence>
 
                 <RenderMarkdown content={form.body} />
 
