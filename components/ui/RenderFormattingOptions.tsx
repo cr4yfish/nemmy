@@ -65,14 +65,13 @@ export default function RenderFormattingOptions({
       <FormattingOption selectionStart={selectionStart} selectionEnd={selectionEnd} before="**" after="**" text={text} setText={setText} icon="format_bold" />
       <FormattingOption selectionStart={selectionStart} selectionEnd={selectionEnd} before="*" after="*" text={text} setText={setText} icon="format_italic" />
       <FormattingOption selectionStart={selectionStart} selectionEnd={selectionEnd} before="[](" after=")" text={text} setText={setText} icon="link" />
-      <FormattingOption selectionStart={selectionStart} selectionEnd={selectionEnd} before="" after="" text={text} setText={setText} icon="add_reaction" />
       <FormattingOption selectionStart={selectionStart} selectionEnd={selectionEnd} before="![](" after=")" text={text} setText={setText} icon="add_photo_alternate" />
       <FormattingOption selectionStart={selectionStart} selectionEnd={selectionEnd} before={`\n# `} after="" text={text} setText={setText} icon="format_h1" />
       <FormattingOption selectionStart={selectionStart} selectionEnd={selectionEnd} before="~~" after="~~" text={text} setText={setText} icon="strikethrough_s" />
-      <FormattingOption selectionStart={selectionStart} selectionEnd={selectionEnd} before=">" after="" text={text} setText={setText} icon="format_quote" />
-      <FormattingOption selectionStart={selectionStart} selectionEnd={selectionEnd} before="- " after="" text={text} setText={setText} icon="format_list_bulleted" />
+      <FormattingOption selectionStart={selectionStart} selectionEnd={selectionEnd} before={`\n> `} after="" text={text} setText={setText} icon="format_quote" />
+      <FormattingOption selectionStart={selectionStart} selectionEnd={selectionEnd} before={`\n- `} after="" text={text} setText={setText} icon="format_list_bulleted" />
       <FormattingOption selectionStart={selectionStart} selectionEnd={selectionEnd} before={`\`\`\`\n`} after={`\n\`\`\``}text={text} setText={setText} icon="code" />
-      <FormattingOption selectionStart={selectionStart} selectionEnd={selectionEnd} before={`::: spoiler spoiler\n`} after={`\n:::`} text={text} setText={setText} icon="ad_group_off" />
+      <FormattingOption selectionStart={selectionStart} selectionEnd={selectionEnd} before={`\n::: spoiler spoiler\n`} after={`\n:::`} text={text} setText={setText} icon="ad_group_off" />
       <FormattingOption selectionStart={selectionStart} selectionEnd={selectionEnd} before="" after="" text={text} setText={setText} icon="superscript" />
     </>
   );
