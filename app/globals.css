@@ -74,7 +74,7 @@ button {
 }
 
 .dividerDot {
-  @apply mx-2 h-1 w-1 rounded-full bg-neutral-300 dark:bg-neutral-700;
+  @apply mx-1 h-1 w-1 rounded-full bg-neutral-300 dark:bg-neutral-700;
 }
 
 .snack {
