@@ -11,7 +11,6 @@ import { FormatNumber } from "@/utils/helpers";
 import { AutoMediaType, isImageType } from "@/utils/AutoMediaType";
 
 import styles from "../styles/post.module.css";
-import markdownStyle from "@/styles/util/markdown.module.css";
 import BookmarkButton from "./ui/BookmarkButton";
 import { DEFAULT_INSTANCE } from "@/constants/settings";
 
@@ -76,34 +75,37 @@ export default function Post({
                     <div className={`${styles.communityIconFill}`}></div>
                   )}
                 </Link>
-                <div className={`${styles.headerMetadataContent}`}>
-                  <Link
-                    href={`/c/${post?.community?.name}@${
-                      new URL(post.post.ap_id).host
-                    }`}
-                    target="_blank"
-                    className={`${styles.sub} flex flex-row flex-wrap gap-1`}
-                  >
-                    <span className="font-bold capitalize">
-                      {post.community.name}
-                    </span>
-                    <span className="text-xs font-light">
-                      @ {new URL(post.post.ap_id).host}
-                    </span>
-                  </Link>
-                  <span className={`${styles.dividerDot}`}></span>
-                  <div className={`${styles.user}`}>
-                    <Username user={post.creator} baseUrl={baseUrl} />
-                    <div className="dividerDot"></div>
-                    <div className={`${styles.date}`}>
-                      <FormatDate date={new Date(post.post.published)} />
+                <div className={`flex flex-col gap-0`}>
+                    <Link 
+                      href={`/c/${post?.community?.name}@${new URL(post.post.ap_id).host}`} 
+                      className="flex flex-row gap-1 items-center prose dark:prose-invert"
+                      target="_blank"
+                      >
+                        <span className="font-bold capitalize">
+                          {post.community.name}
+                        </span>
+
+                        <span className="font-light text-xs w-fit flex gap-0">
+                          <span>@</span> 
+                          <span className=" text-neutral-700 dark:text-neutral-400 ">{new URL(post.post.ap_id).host}</span>
+                        </span>
+                      
+                    </Link>
+                    <div className="">
+                      <div className={`${styles.user}`}>
+                        <Username user={post.creator} baseUrl={baseUrl} />
+                        <div className="dividerDot"></div>
+                        <div className={`${styles.date}`}>
+                          <FormatDate date={new Date(post.post.published)} />
+                        </div>
+                        {(post.post.featured_local || post.post.featured_community) && (
+                          <span className="material-symbols-outlined text-sm text-green-500">
+                            push_pin
+                          </span>
+                        )}
+                      </div>                      
                     </div>
-                    {post.post.featured_local && (
-                      <span className="material-symbols-outlined text-sm text-green-500">
-                        push_pin
-                      </span>
-                    )}
-                  </div>
+
                 </div>
               </div>
 
