@@ -18,6 +18,8 @@ export default function MdTextarea({
 
     const [value, setValue] = useState<string>(defaultValue);
 
+    const [showPreview, setShowPreview] = useState<boolean>(false);
+
     const textareaRef = useRef<HTMLTextAreaElement>(null);
 
     // Adjust textarea height to content on user input
@@ -96,15 +98,29 @@ export default function MdTextarea({
                 
                 <AnimatePresence>
                 {value?.length && value.length > 0 && 
-                  <motion.h2 
+                  <>
+                  <motion.button 
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className=" text-lg prose dark:prose-invert">Markdown Preview</motion.h2>
+                    type="button"
+                    onClick={() => setShowPreview(!showPreview)}
+                    className=" text-lg prose dark:prose-invert flex items-center gap-4">
+                      <span>Markdown Preview</span>
+                      <motion.span className={`material-symbols-outlined transition-all duration-300 ease-in-out ${showPreview ? "rotate-180" : "rotate-0"}`}>arrow_downward</motion.span>
+                  </motion.button>
+                  <AnimatePresence>
+                  { showPreview &&
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} >
+                      <RenderMarkdown content={value} />
+                    </motion.div>
+                  }
+                  </AnimatePresence>
+                  </>
                 }
                 </AnimatePresence>
 
-                <RenderMarkdown content={value} />
+                
         </div>
         </>
     )
