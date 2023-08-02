@@ -159,12 +159,12 @@ npm run dev
   - [x] Register
   - [x] Support for multiple instances
   - [x] Subscribing to Communities
-- [ ] Creating Content
+- [X] Creating Content
   - [x] Creating Comments
   - [x] Creating Posts
   - [x] Creating Communities
-  - [ ] Supporting _all_ Lemmy Markdown Features **<- Almost done**
-  - [ ] Support Markdown inserts **<- Only UI currently**
+  - [X] Supporting _all_ Lemmy Markdown Features
+  - [X] Support Markdown inserts
 - [ ] User Page
   - [ ] Settings **<- WIP**
   - [x] Notifications
