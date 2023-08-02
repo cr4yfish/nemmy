@@ -70,7 +70,7 @@ export default function MdTextarea({
 
     return (
         <>
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 w-full">
 
                 <div className="flex w-full flex-row gap-2 overflow-x-auto border-b border-neutral-300 pb-2 max-sm:pb-4">
                   <RenderFormattingOptions 
