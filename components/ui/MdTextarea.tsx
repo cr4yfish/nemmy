@@ -9,8 +9,8 @@ import RenderMarkdown from "./RenderMarkdown"
 import styles from "@/styles/components/MdTextarea.module.css"
 
 export default function MdTextarea({ 
-    defaultValue="", onChange=() => null, readonly=false } : { 
-        defaultValue?: string, onChange?: (newText: string) => void, readonly?: boolean }) {
+    defaultValue="", onChange=() => null, readonly=false, placeholder } : { 
+        defaultValue?: string, onChange?: (newText: string) => void, readonly?: boolean, placeholder?: string }) {
 
     // these only need to be set, in order to refresh the ref state
     const [selectionStart, setSelectionStart] = useState(0);
@@ -92,7 +92,7 @@ export default function MdTextarea({
                     id=""
                     style={{ resize: "vertical" }}
                     className={`${styles.textarea}`}
-                    placeholder="Tell the world what you think"
+                    placeholder={placeholder}
                   />
                 </div>
                 

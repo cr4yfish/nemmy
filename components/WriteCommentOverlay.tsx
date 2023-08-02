@@ -11,9 +11,9 @@ import { ClipLoader } from "react-spinners";
 
 import { sendComment } from "@/utils/lemmy";
 
-import RenderFormattingOptions from "@/components/ui/RenderFormattingOptions";
 import RenderMarkdown from "@/components/ui/RenderMarkdown";
 import Username from "@/components/User/Username";
+import MdTextarea from "./ui/MdTextarea";
 
 import { useSession } from "@/hooks/auth";
 
@@ -168,24 +168,12 @@ export default function WriteCommentOverlay({
             </div>
           </div>
         )}
-
-        <div className="flex h-full flex-col border-t border-neutral-300 bg-neutral-50 dark:border-neutral-700 dark:bg-neutral-950 dark:text-neutral-400">
-          <div className="flex flex-row items-center gap-1 overflow-x-auto border-b p-2">
-            <RenderFormattingOptions />
-          </div>
-
-          <textarea
-            disabled={loading}
-            name=""
-            id=""
-            className=" h-full w-full bg-transparent p-4 outline-none dark:text-neutral-50"
-            placeholder="What are your toughts?..."
-            maxLength={50000}
-            style={{ resize: "vertical" }}
-            value={replyCommentText}
-            onChange={(e) => setReplyCommentText(e.target.value)}
-          />
-        </div>
+        
+        <MdTextarea 
+          placeholder="What are your toughts?..."
+          defaultValue={replyCommentText}
+          onChange={(newText) => setReplyCommentText(newText)}
+        />
       </form>
 
       <div

@@ -13,8 +13,8 @@ import { useSession } from "@/hooks/auth";
 import { useNavbar } from "@/hooks/navbar";
 
 import RenderMarkdown from "@/components/ui/RenderMarkdown";
-import RenderFormattingOptions from "@/components/ui/RenderFormattingOptions";
 import Input from "@/components/ui/Input";
+import MdTextarea from "@/components/ui/MdTextarea";
 
 import { DEFAULT_AVATAR } from "@/constants/settings";
 
@@ -456,26 +456,10 @@ export default function New() {
                 onSubmit={(e) => handleStep1(e)}
                 className="flex w-full flex-col gap-2"
               >
-                <div className="flex w-full flex-row gap-2 overflow-x-auto border-b border-neutral-300 pb-2 max-sm:pb-4">
-                  <RenderFormattingOptions />
-                </div>
-
-                <div
-                  className={`w-full rounded-lg border border-transparent p-2 dark:bg-neutral-900`}
-                >
-                  <textarea
-                    ref={textareaRef}
-                    value={form.description}
-                    onChange={(e) =>
-                      setForm({ ...form, description: e.currentTarget.value })
-                    }
-                    name=""
-                    id=""
-                    style={{ resize: "vertical" }}
-                    className={`${styles.textarea}`}
-                    placeholder="Tell the world what you think"
-                  />
-                </div>
+                <MdTextarea 
+                  placeholder="Tell the world what you think"
+                  defaultValue={form.description} 
+                  onChange={(newText) => setForm(prevState => { return { ...prevState, description: newText } })} />
               </form>
             </motion.div>
           )}

@@ -6,14 +6,13 @@ import {
   CommentSortType,
   CommentView,
   GetCommentsResponse,
-  GetPostResponse,
   PostView,
 } from "lemmy-js-client";
 import InfiniteScroll from "react-infinite-scroller";
 import Link from "next/link";
 
-import RenderFormattingOptions from "./ui/RenderFormattingOptions";
 import SortButton from "./ui/SortButton";
+import MdTextarea from "./ui/MdTextarea";
 
 import { sendComment, getComments } from "@/utils/lemmy";
 
@@ -257,19 +256,10 @@ export default function Comments({
           onSubmit={(e) => handleSubmit(e)}
           className={`${styles.textarea} max-w-3xl max-md:w-full max-sm:p-2`}
         >
-          <div className="mb-1 flex w-full flex-row gap-2 border-b pb-2 dark:border-neutral-700 dark:text-neutral-400">
-            <RenderFormattingOptions />
-          </div>
-          <textarea
-            disabled={replyLoading}
-            placeholder={"What are your toughts?..."}
-            required
-            maxLength={50000}
-            ref={textareaRef}
-            value={replyCommentText}
-            onChange={() =>
-              setReplyCommentText(textareaRef.current?.value || "")
-            }
+          <MdTextarea 
+            defaultValue={replyCommentText}
+            onChange={(newText) => setReplyCommentText(newText)}
+            placeholder="What are your thoughts?..."
           />
           {replyLoading ? (
             <ClipLoader color="#487be0" loading={true} size={25} />

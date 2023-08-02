@@ -19,6 +19,7 @@ import RenderMarkdown from "./ui/RenderMarkdown";
 import Vote from "./Vote";
 import Username from "./User/Username";
 import BookmarkButton from "./ui/BookmarkButton";
+import MdTextarea from "./ui/MdTextarea";
 
 import { useSession } from "@/hooks/auth";
 
@@ -294,20 +295,7 @@ export default function Comment({
                 >
                   <span className="material-symbols-outlined">close</span>
                 </button>
-                <div className="flex h-fit w-full flex-row gap-2 overflow-x-auto overflow-y-hidden p-2 pb-4 pl-0">
-                  <RenderFormattingOptions />
-                </div>
-                <textarea
-                  name=""
-                  id=""
-                  placeholder="Write a reply..."
-                  maxLength={10000}
-                  required
-                  value={replyText}
-                  onChange={(e) => setReplyText(e.target.value)}
-                  ref={textareaRef}
-                  className="h-full w-full resize-y bg-transparent text-sm outline-none dark:text-neutral-50"
-                />
+                <MdTextarea placeholder="Write a reply..." defaultValue={replyText} onChange={(newText) => setReplyText(newText)} />
                 <button
                   type="submit"
                   className="m-3 flex items-center gap-2 text-blue-500"
