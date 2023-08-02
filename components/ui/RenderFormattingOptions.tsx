@@ -22,22 +22,25 @@ const getClosestWord = (str: string, pos: number): string => {
 }
 
 function FormattingOption({ 
-  icon, text, setText, index, before, after }: { 
+  icon, text, setText, selectionStart, selectionEnd, before, after }: { 
     icon: string, text?: string, 
-    setText: (newText: string) => void, index: number, before: string, after: string }) {
-    
-      //       index is somewhere in a word
-      // test1 test2 test3
-
-      // output:
-      // test1 before + test2 + after test3
+    setText: (newText: string) => void, selectionStart: number, selectionEnd: number, before: string, after: string }) {
 
   const handleInsert = () => {
     if(!text) return setText(`${before}${after}`);
 
-    const word = getClosestWord(text, index);
+    let newText: string = text;
 
-    let newText = text.replace(word, `${before}${word}${after}`);
+    if(selectionStart == selectionEnd) {
+      // No selection
+      const word = getClosestWord(text, selectionStart);
+      newText = text.replace(word, `${before}${word}${after}`); 
+    } else {
+      // Selection
+      const selectedText = text.slice(selectionStart, selectionEnd);
+      newText = text.replace(selectedText, `${before}${selectedText}${after}`);
+    }
+
   
     setText(newText);
   }
@@ -56,21 +59,21 @@ function FormattingOption({
  * @returns 
  */
 export default function RenderFormattingOptions({ 
-  text, setText, index } : { text?: string, setText: (newText: string) => void, index: number }) {
+  text, setText, selectionStart, selectionEnd } : { text?: string, setText: (newText: string) => void, selectionStart: number, selectionEnd: number }) {
   return (
     <>
-      <FormattingOption index={index} before="**" after="**" text={text} setText={setText} icon="format_bold" />
-      <FormattingOption index={index} before="*" after="*" text={text} setText={setText} icon="format_italic" />
-      <FormattingOption index={index} before="[](" after=")" text={text} setText={setText} icon="link" />
-      <FormattingOption index={index} before="" after="" text={text} setText={setText} icon="add_reaction" />
-      <FormattingOption index={index} before="![](" after=")" text={text} setText={setText} icon="add_photo_alternate" />
-      <FormattingOption index={index} before={`\n# `} after="" text={text} setText={setText} icon="format_h1" />
-      <FormattingOption index={index} before="~~" after="~~" text={text} setText={setText} icon="strikethrough_s" />
-      <FormattingOption index={index} before=">" after="" text={text} setText={setText} icon="format_quote" />
-      <FormattingOption index={index} before="- " after="" text={text} setText={setText} icon="format_list_bulleted" />
-      <FormattingOption index={index} before={`\`\`\`\n`} after={`\n\`\`\``}text={text} setText={setText} icon="code" />
-      <FormattingOption index={index} before={`::: spoiler spoiler\n`} after={`\n:::`} text={text} setText={setText} icon="ad_group_off" />
-      <FormattingOption index={index} before="" after="" text={text} setText={setText} icon="superscript" />
+      <FormattingOption selectionStart={selectionStart} selectionEnd={selectionEnd} before="**" after="**" text={text} setText={setText} icon="format_bold" />
+      <FormattingOption selectionStart={selectionStart} selectionEnd={selectionEnd} before="*" after="*" text={text} setText={setText} icon="format_italic" />
+      <FormattingOption selectionStart={selectionStart} selectionEnd={selectionEnd} before="[](" after=")" text={text} setText={setText} icon="link" />
+      <FormattingOption selectionStart={selectionStart} selectionEnd={selectionEnd} before="" after="" text={text} setText={setText} icon="add_reaction" />
+      <FormattingOption selectionStart={selectionStart} selectionEnd={selectionEnd} before="![](" after=")" text={text} setText={setText} icon="add_photo_alternate" />
+      <FormattingOption selectionStart={selectionStart} selectionEnd={selectionEnd} before={`\n# `} after="" text={text} setText={setText} icon="format_h1" />
+      <FormattingOption selectionStart={selectionStart} selectionEnd={selectionEnd} before="~~" after="~~" text={text} setText={setText} icon="strikethrough_s" />
+      <FormattingOption selectionStart={selectionStart} selectionEnd={selectionEnd} before=">" after="" text={text} setText={setText} icon="format_quote" />
+      <FormattingOption selectionStart={selectionStart} selectionEnd={selectionEnd} before="- " after="" text={text} setText={setText} icon="format_list_bulleted" />
+      <FormattingOption selectionStart={selectionStart} selectionEnd={selectionEnd} before={`\`\`\`\n`} after={`\n\`\`\``}text={text} setText={setText} icon="code" />
+      <FormattingOption selectionStart={selectionStart} selectionEnd={selectionEnd} before={`::: spoiler spoiler\n`} after={`\n:::`} text={text} setText={setText} icon="ad_group_off" />
+      <FormattingOption selectionStart={selectionStart} selectionEnd={selectionEnd} before="" after="" text={text} setText={setText} icon="superscript" />
     </>
   );
 }
