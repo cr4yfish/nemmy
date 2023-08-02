@@ -4,7 +4,12 @@
     prose-a:text-ellipsis prose-a:hyphens-auto prose-a:break-all
     prose-img:rounded-lg
     prose-hr:my-6 max-sm:prose-p:text-xs
+    overflow-visible
     ;
+}
+
+.markdown * {
+  overflow: visible;
 }
 
 .markdown a {
