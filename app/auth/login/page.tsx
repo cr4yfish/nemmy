@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ClipLoader } from "react-spinners";
+import va from "@vercel/analytics"
 
 import { useSession } from "@/hooks/auth";
 import { useNavbar } from "@/hooks/navbar";
@@ -95,6 +96,8 @@ export default function Login() {
         router.push("/");
         return;
       }
+
+      va.track("login", { instance: form.instance })
 
       // get jwt token
       const jwt = await fetch("/api/auth/login", {
@@ -269,7 +272,6 @@ export default function Login() {
               onChange={(e) =>
                 setForm({ ...form, totp: e.currentTarget.value})
               }
-              required
               type="text"
               disabled={loading}
               className={`${loginError ? styles.inputError : styles.input}`}
