@@ -246,7 +246,7 @@ export default function UserPage({
 
         <div className="flex w-full flex-col items-center gap-4 bg-neutral-50 dark:bg-neutral-950 dark:pt-4">
 
-          <div className={`${styles.sortsWrapper}`}>
+          <div className={`${styles.sortsWrapper} bg-neutral-200 dark:bg-neutral-900 dark:text-neutral-300`}>
             <div className="flex flex-row justify-between items-center max-w-2xl w-full">
               <div className="relative flex flex-row flex-wrap items-center gap-4">
                 <SortButton onChange={(newSort) => setSort(newSort as SortType)} />

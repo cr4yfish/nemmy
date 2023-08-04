@@ -187,7 +187,7 @@ export default function CommunityPage({
         </div>
       </div>
 
-      <div className={`${styles.sortsWrapper}`}>
+      <div className={`${styles.sortsWrapper} bg-neutral-200 dark:bg-neutral-900 dark:text-neutral-300`}>
         <div className="flex flex-row justify-between items-center max-w-2xl px-4 w-full">
           <SortButton onChange={(newSort) => setCurrentSort(newSort as SortType)} />
 

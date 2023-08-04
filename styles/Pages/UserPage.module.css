@@ -70,8 +70,8 @@
 }
 
 .sortsWrapper {
-  @apply flex flex-row flex-wrap items-center justify-center bg-neutral-200 px-28 py-4
-    dark:bg-neutral-900 dark:text-neutral-300
+  @apply flex flex-row flex-wrap items-center justify-center  px-28 py-4
+    
      max-md:p-6 w-full;
 }
 
