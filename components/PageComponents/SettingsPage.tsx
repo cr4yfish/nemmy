@@ -45,27 +45,53 @@ export default function SettingsPage({
 
               <div className="flex flex-col items-center gap-2">
 
-                <div className=" bg-neutral-400 dark:bg-neutral-600 rounded-lg flex flex-col overflow-hidden gap-2 p-1" style={{ width: "50px", height: "100px" }}>
+                <button onClick={() =>  setSettings(prevValue => { return { ...prevValue, cardType: "modern" }})} className=" bg-neutral-400 dark:bg-neutral-600 rounded-lg flex flex-col overflow-hidden gap-2 p-1" style={{ width: "50px", height: "100px" }}>
                   <div className=" w-full h-9 bg-neutral-600 dark:bg-neutral-400 rounded-sm "></div>
                   <div className=" w-full h-9 bg-neutral-600 dark:bg-neutral-400 rounded-sm"></div>
                   <div className=" w-full h-9 bg-neutral-600 dark:bg-neutral-400 rounded-sm"></div>
-                </div>
+                </button>
 
-                <span>Modern</span>
-                <Checkbox radius="full" defaultChecked={settings.cardType == "modern" || false} isSelected={settings.cardType == "modern" || false} onValueChange={(isSelected) => setSettings(prevValue => { return { ...prevValue, cardType: isSelected ? "modern" : "compact"}})} />
+                <Checkbox 
+                  radius="full" 
+                  defaultChecked={settings.cardType == "modern" || false} isSelected={settings.cardType == "modern" || false}
+                  onValueChange={(isSelected) => setSettings(prevValue => { return { ...prevValue, cardType: isSelected ? "modern" : "modern"}})}>
+                    Modern
+                </Checkbox>
               </div>
+
+              <div className="flex flex-col items-center justify-center gap-2">
+
+                <button onClick={() =>  setSettings(prevValue => { return { ...prevValue, cardType: "auto" }})} className=" bg-neutral-400 dark:bg-neutral-600 rounded-lg flex flex-col overflow-hidden gap-2 p-1" style={{ width: "50px", height: "100px" }}>
+                  <div className=" w-full h-9 bg-neutral-600 dark:bg-neutral-400 rounded-sm "></div>
+                  <div className=" w-full h-4 bg-neutral-600 dark:bg-neutral-400 rounded-sm"></div>
+                  <div className=" w-full h-9 bg-neutral-600 dark:bg-neutral-400 rounded-sm"></div>
+                </button>
+
+                <Checkbox 
+                  radius="full" 
+                  defaultChecked={settings.cardType == "auto" || false} isSelected={settings.cardType == "auto" || false} 
+                  onValueChange={(isSelected) => setSettings(prevValue => { return { ...prevValue, cardType: isSelected ? "auto" : "auto"}})}>
+                    Auto
+                </Checkbox>
+              </div>
+
               
               <div className="flex flex-col items-center  gap-2">
 
-                <div className=" bg-neutral-400 dark:bg-neutral-600 rounded-lg flex flex-col overflow-hidden gap-2 p-1" style={{ width: "50px", height: "100px" }}>
+                <button onClick={() =>  setSettings(prevValue => { return { ...prevValue, cardType: "compact" }})} className=" bg-neutral-400 dark:bg-neutral-600 rounded-lg flex flex-col overflow-hidden gap-2 p-1" style={{ width: "50px", height: "100px" }}>
                   <div className=" w-full h-4 bg-neutral-600 dark:bg-neutral-400 rounded-sm "></div>
                   <div className=" w-full h-4 bg-neutral-600 dark:bg-neutral-400 rounded-sm"></div>
                   <div className=" w-full h-4 bg-neutral-600 dark:bg-neutral-400 rounded-sm"></div>
                   <div className=" w-full h-4 bg-neutral-600 dark:bg-neutral-400 rounded-sm"></div>
-                </div>
+                </button>
                 
-                <span>Compact</span>
-                <Checkbox radius="full" defaultChecked={settings.cardType == "compact" || false} isSelected={settings.cardType == "compact" || false} onValueChange={(isSelected) => setSettings(prevValue => { return { ...prevValue, cardType: isSelected ? "compact" : "modern"}})} />
+                <Checkbox 
+                  radius="full" 
+                  defaultChecked={settings.cardType == "compact" || false} 
+                  isSelected={settings.cardType == "compact" || false} 
+                  onValueChange={(isSelected) => setSettings(prevValue => { return { ...prevValue, cardType: isSelected ? "compact" : "compact"}})}>
+                    Compact
+                  </Checkbox>
               </div>
             </div>
 
