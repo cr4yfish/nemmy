@@ -6,14 +6,7 @@
   @apply relative flex flex-col gap-1;
 }
 
-.inputWrapper input {
-  @apply rounded-lg
 
-    border p-3
-    
-    px-3 transition-all duration-200;
-  outline: none;
-}
 
 .button {
   @apply rounded-lg bg-fuchsia-300

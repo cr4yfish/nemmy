@@ -1,28 +1,22 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
-import { FormEvent, useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import {
-  CommunityView,
   ListingType,
-  PostView,
-  Search,
-  SearchResponse,
   SortType,
 } from "lemmy-js-client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { AnimatePresence } from "framer-motion";
+import va from "@vercel/analytics"
 
 import { DEFAULT_INSTANCE, DEFAULT_AVATAR } from "@/constants/settings";
 
 import { useSession } from "@/hooks/auth";
 import { useNavbar, NavbarState } from "@/hooks/navbar";
 
-import { handleLogout } from "@/utils/authFunctions";
 import {
-  getTrendingCommunities,
-  getTrendingTopics,
   getUnreadCount,
 } from "@/utils/lemmy";
 
@@ -81,7 +75,7 @@ function SortButton({
         className={`${
           sortOptions &&
           navbar?.currentSort == option &&
-          styles.activeFilterOption
+          "bg-neutral-100 font-bold text-neutral-900 dark:bg-fuchsia-900 dark:text-neutral-50"
         }`}
       >
         {icon && <span className={`material-symbols-outlined`}>{icon}</span>}
@@ -135,7 +129,7 @@ function FilterButton({
         className={`${
           filterClicked &&
           navbar?.currentType == option &&
-          styles.activeFilterOption
+          "bg-neutral-100 font-bold text-neutral-900 dark:bg-fuchsia-900 dark:text-neutral-50"
         }`}
       >
         <span className="material-symbols-outlined">{icon}</span>
@@ -145,32 +139,10 @@ function FilterButton({
   );
 }
 
-async function search({ searchParams }: { searchParams: Search }) {
-  // add a signature to the object to make typescript happy
-  const params: { [index: string]: any } = {
-    ...searchParams,
-  };
-
-  // filter out undefined values
-  Object.keys(params).forEach(
-    (key) => params[key] === undefined && delete params[key],
-  );
-
-  const query = Object.keys(params)
-    .map((key) => key + "=" + params[key])
-    .join("&");
-  const requestUrl = `/api/search?${query}`;
-
-  const response = await fetch(requestUrl);
-
-  const data = await response.json();
-  return data;
-}
-
 export default function Navbar() {
   const { session, setSession } = useSession();
   const { navbar, setNavbar } = useNavbar();
-  const [isSearching, setIsSearching] = useState(false);
+  
   const [filterClicked, setFilterClicked] = useState(false);
   const [sortOptions, setSortOptions] = useState(false);
   const [userMenu, setUserMenu] = useState(false);
@@ -179,53 +151,11 @@ export default function Navbar() {
   const [communitySearch, setCommunitySearch] = useState<string>("");
 
   const [searchOverlay, setSearchOverlay] = useState(false);
-  const [currentSearch, setCurrentSearch] = useState("");
-  const [searchResults, setSearchResults] = useState<SearchResponse>(
-    {} as SearchResponse,
-  );
-  const searchInputRef = useRef<HTMLInputElement>(null);
-  const [searchLoading, setSearchLoading] = useState(false);
-  const [trendingCommunities, setTrendingCommunities] = useState<
-    CommunityView[]
-  >([]);
-  const [trendingTopics, setTrendingTopics] = useState<PostView[]>([]);
 
   const [unreadCount, setUnreadCount] = useState(0);
 
   const router = useRouter();
 
-  // Update input value when user stops typing
-  useEffect(() => {
-    if (currentSearch?.length == 0) return;
-    const timer = setTimeout(async () => {
-      if (currentSearch.length == 0) return;
-      if (currentSearch.length < 2)
-        return alert("Search term must be at least 2 characters long");
-      setSearchLoading(true);
-      const data = await search({
-        searchParams: {
-          q: currentSearch,
-        },
-      });
-      setIsSearching(true);
-      setSearchResults(data);
-      setSearchLoading(false);
-    }, 1000);
-
-    return () => clearTimeout(timer);
-  }, [currentSearch]);
-
-  useEffect(() => {
-    if (!searchOverlay) return;
-    getTrendingCommunities(session.currentAccount?.instance).then((data) => {
-      if (typeof data === "boolean") return;
-      setTrendingCommunities(data);
-    });
-    getTrendingTopics().then((data) => {
-      if (typeof data === "boolean") return;
-      setTrendingTopics(data);
-    });
-  }, [searchOverlay]);
 
   useEffect(() => {
     if (session.pendingAuth || !session?.currentAccount) return;
@@ -238,28 +168,6 @@ export default function Navbar() {
       setUnreadCount(total);
     });
   }, [session.pendingAuth, session.currentAccount]);
-
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    setIsSearching(true);
-    setSearchLoading(true);
-    const resp = await search({
-      searchParams: {
-        q: currentSearch,
-        community_id: undefined,
-        community_name: undefined,
-        creator_id: undefined,
-        type_: "Posts",
-        sort: undefined,
-        listing_type: undefined,
-        page: undefined,
-        limit: undefined,
-        auth: session?.currentAccount?.jwt || undefined,
-      },
-    });
-    setSearchLoading(false);
-    setSearchResults(resp);
-  };
 
   const handleFilterOverlayClose = async () => {
     navbar && setNavbar({ ...navbar, overlayActive: false });
@@ -277,12 +185,14 @@ export default function Navbar() {
   };
 
   const handleUserMenuOpen = async () => {
+    va.track("user-menu-open", { instance: session?.currentAccount?.instance || DEFAULT_INSTANCE })
     handleFilterOverlayClose();
     disablePageScroll();
     setUserMenu(true);
   };
 
   const handleMenuOpen = async () => {
+    va.track("menu-open", { instance: session?.currentAccount?.instance || DEFAULT_INSTANCE })
     handleFilterOverlayClose();
     disablePageScroll();
     setMenu(true);
@@ -296,9 +206,7 @@ export default function Navbar() {
   };
 
   const handleCloseSearchOverlay = async () => {
-    setCurrentSearch("");
     enablePageScroll();
-    setIsSearching(false);
     setSearchOverlay(false);
   };
 
@@ -306,7 +214,12 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className={`${styles.wrapper} ${navbar?.hidden && "hidden"}`}>
+      <nav 
+        className={`
+          ${styles.wrapper} 
+          bg-neutral-50/25  dark:bg-neutral-950/25 border-neutral-200 dark:border-neutral-800
+          ${navbar?.hidden && "hidden"} 
+        `}>
         <div className="flex flex-row items-center gap-6">
           <Link href="/" className={styles.logo}>
             Nemmy
@@ -316,7 +229,7 @@ export default function Navbar() {
             {navbar?.showMenu && (
               <button
                 onClick={() => handleMenuOpen()}
-                className={`${styles.menuButton}`}
+                className={`${styles.menuButton} text-neutral-800 dark:text-neutral-100`}
               >
                 <span className="material-symbols-outlined">menu</span>
               </button>
@@ -345,7 +258,7 @@ export default function Navbar() {
 
             {navbar?.showFilter && (
               <button
-                className={`${styles.navButton}`}
+                className={`${styles.navButton} bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-400 text-neutral-900`}
                 onClick={() => {
                   setFilterClicked(!filterClicked);
                   setSortOptions(false);
@@ -367,7 +280,7 @@ export default function Navbar() {
 
             {navbar?.showSort && (
               <button
-                className={`${styles.navButton}`}
+                className={`${styles.navButton} bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-400 text-neutral-900`}
                 onClick={() => {
                   setSortOptions(!sortOptions);
                   handleUserMenuClose();
@@ -393,10 +306,10 @@ export default function Navbar() {
         <div className="flex flex-row items-center gap-4">
           {navbar?.showSearch && (
             <button
-              className="flex items-center justify-center"
+              className="flex items-center justify-center text-neutral-900 dark:text-neutral-100"
               onClick={() => {
                 setSearchOverlay(true);
-                searchInputRef?.current?.focus();
+                va.track("search-open", { instance: session?.currentAccount?.instance || DEFAULT_INSTANCE })
               }}
             >
               <span className="material-symbols-outlined">search</span>
@@ -440,15 +353,6 @@ export default function Navbar() {
         {searchOverlay && (
           <SearchOverlay
             handleCloseSearchOverlay={handleCloseSearchOverlay}
-            searchInputRef={searchInputRef}
-            handleSubmit={handleSubmit}
-            searchLoading={searchLoading}
-            currentSearch={currentSearch}
-            setCurrentSearch={setCurrentSearch}
-            isSearching={isSearching}
-            trendingTopics={trendingTopics}
-            trendingCommunities={trendingCommunities}
-            searchResults={searchResults}
           />
         )}
       </AnimatePresence>
@@ -475,9 +379,8 @@ export default function Navbar() {
 
       {/* Filter Options */}
       <div
-        className={`${styles.filterOptions} ${
-          filterClicked && styles.filterActive
-        }`}
+        className={`${styles.filterOptions} 
+        ${filterClicked && styles.filterActive}`}
       >
         <FilterButton
           label="All"
@@ -562,7 +465,7 @@ export default function Navbar() {
           handleUserMenuClose();
           handleMenuClose();
         }}
-        className={`${styles.overlay} z-50 ${
+        className={`${styles.overlay} bg-neutral-200/50 dark:bg-neutral-900/75 z-50 ${
           (userMenu || menu) && styles.overlayActive
         }`}
       ></div>
@@ -571,7 +474,7 @@ export default function Navbar() {
       <div
         onTouchEnd={() => handleFilterOverlayClose()}
         onMouseUp={() => handleFilterOverlayClose()}
-        className={`${styles.overlay} z-10 ${
+        className={`${styles.overlay} bg-neutral-200/50 dark:bg-neutral-900/75 z-10 ${
           (filterClicked || sortOptions) && styles.overlayActive
         }`}
       ></div>

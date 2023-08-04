@@ -1,14 +1,15 @@
 "use client";
 
 import { GetSiteResponse, PersonView } from "lemmy-js-client";
-import { FormEvent, useState, useEffect } from "react";
+import { FormEvent, useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ClipLoader } from "react-spinners";
 import va from "@vercel/analytics"
+import { Button, Input } from "@nextui-org/react";
 
-import { useSession } from "@/hooks/auth";
+import { defaultState, useSession } from "@/hooks/auth";
 import { useNavbar } from "@/hooks/navbar";
 
 import Logo from "@/components/Logo";
@@ -37,7 +38,11 @@ export default function Login() {
   const [inputFocus, setInputFocus] = useState<boolean>(false);
   const [users, setUsers] = useState<PersonView[]>([]);
   const [selectedUser, setSelectedUser] = useState<PersonView | null>(null);
+
   const [loginError, setLoginError] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>("");
+
+  const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
 
   const [searchingUserLoading, setSearchingUserLoading] =
     useState<boolean>(false);
@@ -70,6 +75,14 @@ export default function Login() {
       };
     });
   }, [selectedUser]);
+
+  const validateHostname = (value: string) => value.match(/^[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}$/i);
+
+  const instanceValid = useMemo(() => {
+    if (form.instance === "") return undefined;
+
+    return validateHostname(form.instance) ? "valid" : "invalid";
+  }, [form.instance]);
 
   const handleSubmit = async (e: FormEvent) => {
     try {
@@ -119,6 +132,7 @@ export default function Login() {
         jwt: jwt.jwt,
         user: user.my_user.local_user_view,
         site: user,
+        settings: defaultState.settings
       };
 
       await handleLogin({
@@ -130,7 +144,9 @@ export default function Login() {
     } catch (e: any) {
       setLoading(false);
       setLoginError(true);
-      console.error(e.message);
+      va.track("login_error", { instance: form.instance, error: e.message })
+      console.error("Got error message:",e.message);
+      setErrorMessage(`${e.message}`)
     }
   };
 
@@ -142,6 +158,7 @@ export default function Login() {
   };
 
   useEffect(() => {
+    setSelectedUser(null);
     const timer = setTimeout(async () => {
       if (form.username.length > 0) await searchUsers(form.username);
     }, 250);
@@ -171,46 +188,32 @@ export default function Login() {
       {!inputFocus && <Logo />}
 
       <div className="flex flex-col items-center gap-4">
-        {!inputFocus && <h1 className="text-3xl font-bold">Welcome back</h1>}
+        {!inputFocus && <h1 className="text-3xl font-bold text-neutral-900 dark:text-neutral-200">Welcome back</h1>}
 
         <form
-          onSubmit={(e) => handleSubmit(e)}
-          className={`${styles.loginWrapper}`}
-        >
-          <div className={`${styles.inputWrapper}`}>
-            <label htmlFor="">Username</label>
+          onSubmit={(e) => handleSubmit(e)}  className={`${styles.loginWrapper} text-neutral-900 dark:text-neutral-100 `}>
 
-            <div
-              className={`${
-                loginError ? styles.inputError : styles.input
-              } relative overflow-hidden rounded-lg`}
-            >
-              <input
-                value={form.username}
-                onChange={(e) => {
-                  setForm({ ...form, username: e.currentTarget.value });
-                  setSelectedUser(null);
-                }}
-                required
-                type="text"
-                disabled={loading}
-                className={`h-full w-full bg-transparent outline-none`}
-              />
-              <div className="absolute right-0 top-0 flex h-full items-center justify-center pr-2">
+          <div className="relative">
+            <Input 
+              label="Username" 
+              variant="bordered" 
+              color="primary" 
+              required
+              disabled={loading}
+              labelPlacement="inside" 
+              defaultValue={form.username}
+              onChange={(e) => setForm({ ...form, username: e.currentTarget.value })}
+              endContent={
                 <ClipLoader
                   color={"#e6b0fa"}
                   size={20}
                   loading={searchingUserLoading}
                   className=""
                 />
-              </div>
-            </div>
-
+              }
+            />
             {users?.length > 0 && !selectedUser && (
-              <div
-                className="absolute left-0 z-50 flex w-full translate-y-full flex-col gap-4 rounded-lg border border-neutral-300 bg-neutral-100/75 p-4 backdrop-blur-3xl dark:border-neutral-700 dark:bg-neutral-900/90"
-                style={{ bottom: "-10%" }}
-              >
+              <div  className="absolute left-0 z-50 flex w-full translate-y-full flex-col gap-4 rounded-lg border border-neutral-300 bg-neutral-100/75 p-4 backdrop-blur-3xl dark:border-neutral-700 dark:bg-neutral-900/90" style={{ bottom: "-10%" }}>
                 {users.map((user, i) => (
                   <div
                     onClick={() => setSelectedUser(user)}
@@ -237,47 +240,55 @@ export default function Login() {
               </div>
             )}
           </div>
-          <div className={`${styles.inputWrapper}`}>
-            <label htmlFor="">Password</label>
-            <input
-              value={form.password}
-              onChange={(e) =>
-                setForm({ ...form, password: e.currentTarget.value })
-              }
-              required
-              type="password"
-              disabled={loading}
-              className={`${loginError ? styles.inputError : styles.input}`}
-            />
-          </div>
 
-          <div className={`${styles.inputWrapper}`}>
-            <label htmlFor="">Instance</label>
-            <input
-              value={form.instance}
-              onChange={(e) =>
-                setForm({ ...form, instance: e.currentTarget.value })
-              }
-              required
-              type="text"
-              disabled={loading}
-              className={`${loginError ? styles.inputError : styles.input}`}
-            />
-          </div>
+          <Input 
+            label="Password" 
+            variant="bordered" 
+            color="primary" 
+            required
+            disabled={loading}
+            labelPlacement="inside" 
+            type={isPasswordVisible ? "text" : "password"}
+            defaultValue={form.password}
+            onChange={(e) => setForm({ ...form, password: e.currentTarget.value })}
+            endContent={
+              <Button 
+                variant="light"
+                isIconOnly
+                onClick={() => setIsPasswordVisible(!isPasswordVisible)}><span className="material-symbols-outlined">{isPasswordVisible ? "visibility_off" : "visibility"}</span></Button>
+            }
+          />
 
-          <div className={`${styles.inputWrapper}`}>
-            <label htmlFor="">2FA (optional)</label>
-            <input
-              value={form.totp}
-              onChange={(e) =>
-                setForm({ ...form, totp: e.currentTarget.value})
-              }
-              type="text"
-              disabled={loading}
-              className={`${loginError ? styles.inputError : styles.input}`}
-            />
-          </div>
+          <Input 
+            label="Instance" 
+            variant="bordered" 
+            required
+            disabled={loading}
+            labelPlacement="inside" 
+            value={form.instance}
+            color={instanceValid === "invalid" ? "danger" : form.instance.length > 0 ? "success" : "primary"}
+            errorMessage={instanceValid === "invalid" && "Please enter a valid Instance"}
+            validationState={instanceValid}
+            defaultValue={form.instance || ""}
+            onChange={(e) => setForm({ ...form, instance: e.currentTarget.value })}
+          />
 
+          <Input 
+            label="2FA (optional)" 
+            variant="bordered" 
+            color="primary" 
+            disabled={loading}
+            labelPlacement="inside" 
+            defaultValue={form.totp}
+            onChange={(e) => setForm({ ...form, totp: e.currentTarget.value })}
+          />
+
+          {loginError && (
+            <div className="text-red-500 text-sm w-full break-words break-all max-w-lg">
+              {errorMessage}
+              </div>
+          )
+          }
           <button
             disabled={loading}
             className={`${styles.button} ${styles.primary}`}

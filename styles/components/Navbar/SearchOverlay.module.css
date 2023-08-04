@@ -1,24 +1,17 @@
 .searchOverlay {
   @apply fixed left-0 top-0 flex h-full w-full flex-col items-center
-    bg-neutral-50/80 backdrop-blur-xl
-    dark:bg-neutral-950/90;
+;
   z-index: 99;
 }
 
 .searchInputWrapper {
-  @apply flex w-full flex-row items-center justify-center gap-3 border-b border-neutral-300 bg-neutral-50
+  @apply flex w-full flex-row items-center justify-center gap-3 border-b 
     p-4 px-6
-    dark:border-neutral-600
-    dark:bg-neutral-950;
+;
 }
 
 .searchInput {
-  @apply flex w-full flex-row items-center justify-between rounded-lg border-neutral-700
-    
-    bg-neutral-200 p-4
-    dark:border dark:bg-neutral-950
-
-    dark:focus:border-neutral-400;
+  @apply flex w-full flex-row items-center justify-between rounded-lg dark:border ;
 }
 
 .searchOverlayTrending {

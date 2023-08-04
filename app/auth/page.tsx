@@ -5,6 +5,7 @@ import Logo from "@/components/Logo";
 import { useNavbar } from "@/hooks/navbar";
 import { useEffect } from "react";
 import { motion } from "framer-motion";
+import { Button } from "@nextui-org/react";
 
 import styles from "@/styles/Pages/AuthPage.module.css";
 
@@ -33,16 +34,15 @@ export default function Auth() {
 
         <div className="flex w-full flex-col items-center gap-3">
           <Link className="w-full" href={"/auth/login"}>
-            <button className={`${styles.button} ${styles.primary}`}>
-              <span className="material-symbols-outlined">email</span>
+            <Button startContent={<span className="material-symbols-outlined">login</span>} color="primary" className=" w-full">
               Sign in
-            </button>
+            </Button>
           </Link>
           <span className="font-light text-neutral-400">or</span>
           <Link className="w-full" href={"/auth/signup"}>
-            <button className={`${styles.button} ${styles.secondary}`}>
+            <Button startContent={<span className="material-symbols-outlined">person_add</span>} className=" w-full" variant="bordered" color="primary">
               Sign up
-            </button>
+            </Button>
           </Link>
         </div>
       </div>

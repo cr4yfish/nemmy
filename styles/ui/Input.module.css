@@ -12,10 +12,7 @@
 .input {
   @apply overflow-hidden rounded-lg
     border-transparent
-    bg-neutral-200 text-neutral-950
-    dark:border dark:border-neutral-500
-    dark:bg-transparent dark:text-neutral-100
-    dark:focus:border-fuchsia-200;
+;
 }
 
 .inputError {

@@ -19,7 +19,12 @@ export default function RenderMarkdown({
     <>
       {content && (
         <ReactMarkdown
-          className={`${styles.markdown} ${className}`}
+          className={`prose w-full
+          dark:prose-invert prose-headings:mb-1 prose-p:my-1
+          prose-a:text-ellipsis prose-a:hyphens-auto prose-a:break-all
+          prose-img:rounded-lg
+          prose-hr:my-6 max-sm:prose-p:text-xs
+          overflow-visible ${className}`}
           remarkPlugins={[remarkGfm]}
           remarkRehypeOptions={{
             allowDangerousHtml: true,

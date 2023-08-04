@@ -1,7 +1,7 @@
 .votesDesktop,
 .votesMobile {
-  @apply text-neutral-700 transition-all
-    duration-200 dark:text-neutral-300;
+  @apply  transition-all
+    duration-200 ;
 }
 
 .votesDesktop {
@@ -19,12 +19,4 @@
 .downvote {
   @apply transition-all duration-100;
   cursor: pointer;
-}
-
-.upvote:hover {
-  @apply text-fuchsia-300;
-}
-
-.downvote:hover {
-  @apply text-indigo-300;
 }

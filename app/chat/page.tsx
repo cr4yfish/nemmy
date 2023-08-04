@@ -57,23 +57,24 @@ function ChatPreview({
         <Link
           href={`/chat/${creator.name}`}
           key={creator.id}
-          className="flex w-full cursor-pointer flex-row items-center gap-2 rounded-lg bg-fuchsia-100 p-4"
+          className="flex w-full cursor-pointer flex-row items-center gap-2 rounded-lg bg-fuchsia-100 dark:bg-neutral-800 p-4"
         >
-          <div className=" flex h-20 w-20 items-center justify-center overflow-hidden rounded-full">
+          <div className="flex items-center justify-center overflow-hidden rounded-full">
             <Image
               height={80}
               width={80}
               src={creator.avatar || DEFAULT_AVATAR}
               alt=""
-              className="h-full w-full object-contain"
+              style={{ height: "80px", width: "80px" }}
+              className="h-full w-full object-cover rounded-full overflow-hidden"
             />
           </div>
           <div className="flex w-full flex-col">
             <div className=" flex w-full justify-between">
-              <span className="font-xl font-bold text-fuchsia-950">
+              <span className="font-xl font-bold text-fuchsia-950 dark:text-fuchsia-200">
                 {creator.name}
               </span>
-              <span className=" text-xs font-light text-fuchsia-600">
+              <span className=" text-xs font-light text-fuchsia-600 dark:text-neutral-400">
                 {FormatDate({ date: new Date(lastMessage.published) })}
               </span>
             </div>

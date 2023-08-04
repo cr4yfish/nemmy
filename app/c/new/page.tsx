@@ -612,7 +612,9 @@ export default function New() {
                       <div
                         key={account.username}
                         onClick={() => handleChooseAccount(account)}
-                        className={`${styles.wrapper} relative
+                        className={`${styles.wrapper} border-neutral-500 bg-neutral-200 p-3
+                        text-neutral-950 dark:border 
+                        dark:bg-neutral-800 dark:text-neutral-100 relative
                                         max-w-3xl 
                                         cursor-pointer flex-wrap items-center overflow-hidden
                                         border-b border-neutral-300 pb-2 
@@ -668,7 +670,9 @@ export default function New() {
             >
               <div className=" flex w-full flex-col gap-2">
                 <div
-                  className={`${styles.wrapper} relative w-full flex-wrap items-center overflow-hidden `}
+                  className={`${styles.wrapper} border-neutral-500 bg-neutral-200 p-3
+                  text-neutral-950 dark:border 
+                  dark:bg-neutral-800 dark:text-neutral-100 relative w-full flex-wrap items-center overflow-hidden `}
                 >
                   <div className="absolute left-0 top-0 z-20 h-full w-full bg-neutral-950/10 backdrop-blur-xl"></div>
                   <div
@@ -694,7 +698,9 @@ export default function New() {
                 </div>
 
                 {form.description && (
-                  <div className={`${styles.wrapper}`}>
+                  <div className={`${styles.wrapper} border-neutral-500 bg-neutral-200 p-3
+                  text-neutral-950 dark:border 
+                  dark:bg-neutral-800 dark:text-neutral-100`}>
                     <RenderMarkdown content={form.description} />
                   </div>
                 )}
@@ -715,7 +721,9 @@ export default function New() {
                   readonly
                 />
 
-                <div className={`${styles.wrapper} `}>
+                <div className={`${styles.wrapper} border-neutral-500 bg-neutral-200 p-3
+        text-neutral-950 dark:border 
+        dark:bg-neutral-800 dark:text-neutral-100 `}>
                   <button
                     type="button"
                     onClick={() => setStep(3)}

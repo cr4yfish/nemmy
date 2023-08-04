@@ -167,7 +167,6 @@ export default function Comments({
 
   useEffect(() => {
     if (commentResponse) {
-      console.log("Comment response mode", commentResponse);
       setReplyCommet(commentResponse.comment_view);
       setCommentsData({ comments: [commentResponse.comment_view] });
       return;
@@ -254,7 +253,7 @@ export default function Comments({
         {/* desktop comments textarea */}
         <form
           onSubmit={(e) => handleSubmit(e)}
-          className={`${styles.textarea} max-w-3xl max-md:w-full max-sm:p-2`}
+          className={`${styles.textarea} bg-neutral-50 text-neutral-900 dark:bg-neutral-900 dark:text-neutral-50  max-w-3xl max-md:w-full max-sm:p-2`}
         >
           <MdTextarea 
             defaultValue={replyCommentText}
@@ -300,12 +299,15 @@ export default function Comments({
         <div
           className={`${styles.comments} mb-24 max-w-3xl max-md:w-full max-sm:p-2 relative`}
         >
-          {commentsData?.comments?.length > 0 && (
-            <SortButton 
-              type="comment" defaultOption={currentCommentSort}
-              onChange={(sort) => setCurrentCommentSort(sort as CommentSortType)}
-            />
-          )}
+          <div className="px-2">
+            {commentsData?.comments?.length > 0 && (
+              <SortButton 
+                type="comment" defaultOption={currentCommentSort}
+                onChange={(sort) => setCurrentCommentSort(sort as CommentSortType)}
+              />
+            )}
+          </div>
+
 
           {/* Comments  */}
           {commentResponse ? (

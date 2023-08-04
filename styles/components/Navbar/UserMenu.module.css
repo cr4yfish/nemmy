@@ -1,13 +1,5 @@
 .userMenu {
-  @apply h-screen w-80 flex-col justify-between gap-6 overflow-hidden
-
-    bg-neutral-50/75
-    p-6
-    backdrop-blur-xl
-
-    dark:bg-neutral-950/75 max-sm:w-80
-
-    max-xs:w-72;
+  @apply h-screen w-80 flex-col justify-between gap-6 overflow-hidden p-6 backdrop-blur-xl max-sm:w-80 max-xs:w-72;
   position: fixed;
   top: 0;
   right: 0;
@@ -29,14 +21,9 @@
 
 .userProfile {
   @apply relative flex h-48 w-40 flex-col items-start
-    justify-between gap-2 overflow-hidden rounded-lg border-2 border-neutral-300
+    justify-between gap-2 overflow-hidden rounded-lg border-2 
     bg-transparent 
-    p-4 dark:border-neutral-600;
-}
-
-.userProfileActive {
-  @apply border-2 
-    border-fuchsia-500 dark:border-fuchsia-400;
+    p-4 ;
 }
 
 .userProfileBanner {
@@ -57,7 +44,7 @@
 
 .userProfileText {
   @apply flex flex-col text-sm
-    text-neutral-50;
+    ;
 }
 
 .userProfileDisplayName {
@@ -81,5 +68,5 @@
   @apply 
   p-2 rounded-lg
   transition-all duration-200 ease-in-out
-  hover:bg-neutral-200 hover:dark:bg-neutral-800
+  
 }

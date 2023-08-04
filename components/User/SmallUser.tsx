@@ -87,7 +87,11 @@ export default function SmallUser({
         style={style}
         onMouseOver={() => setUserHover(true)}
         onMouseLeave={() => setUserHover(false)}
-        className={`${styles.wrapper} ${
+        className={`${styles.wrapper} flex flex-row 
+        items-center gap-3 rounded-lg
+        border border-fuchsia-500
+        bg-neutral-50 p-4 shadow-lg dark:border-fuchsia-300
+        dark:bg-zinc-800 dark:shadow-none max-sm:flex-wrap ${
           opensToTop ? "-translate-y-full" : "translate-y-1/4"
         } ${userHover && styles.active} ${
           userHover && opensToTop && styles.activeToTop
@@ -95,7 +99,10 @@ export default function SmallUser({
       >
         <div className={`${styles.userImage}`}>
           <Image
-            className={`${styles.avatar} ${
+            className={`${styles.avatar} h-12 w-12
+            overflow-hidden rounded-full border border-fuchsia-500
+            bg-slate-200 dark:border-2
+         dark:border-fuchsia-300 ${
               user.avatar ? "" : "object-contain p-1"
             }`}
             src={user.avatar || DEFAULT_AVATAR}
@@ -106,11 +113,11 @@ export default function SmallUser({
         </div>
 
         <div className={`${styles.content}`}>
-          <div className={`${styles.usernames}`}>
-            <span className={`${styles.display_name}`}>
+          <div className={` flex h-full w-full flex-col items-start max-md:w-fit`}>
+            <span className={`${styles.display_name} w-full font-bold text-fuchsia-500 dark:text-fuchsia-300`}>
               {user.display_name || user.name}
             </span>
-            <span className={`${styles.name}`}>
+            <span className={`${styles.name} w-full dark:text-fuchsia-50`}>
               <span className=" select-all text-neutral-700 dark:text-neutral-400 ">
                 @{user.name}
               </span>{" "}

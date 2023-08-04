@@ -32,7 +32,7 @@
   cursor: pointer;
   z-index: 10;
   pointer-events: all;
-  width: 1.5rem;
+  width: 1.25rem;
 }
 
 .chainlineLine {
@@ -52,9 +52,13 @@
 
 .commentText {
   @apply h-full w-full max-w-fit overflow-hidden
-   pl-1 pt-1 font-normal max-sm:max-h-full max-sm:max-w-full
-   text-sm max-sm:text-xs
+   pl-1 font-normal max-sm:max-h-full max-sm:max-w-full
+   text-sm max-sm:text-xs flex
    ;
+}
+
+.commentText p:first-of-type {
+  @apply mt-0;
 }
 
 .commentInteractions {
@@ -64,18 +68,4 @@
 
 .interaction {
   @apply flex items-center gap-2;
-}
-
-.upvote,
-.downvote {
-  @apply transition-all duration-100;
-  cursor: pointer;
-}
-
-.upvote:hover {
-  @apply text-fuchsia-300;
-}
-
-.downvote:hover {
-  @apply text-indigo-300;
 }

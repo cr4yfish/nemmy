@@ -1,17 +1,9 @@
 .header {
   @apply fixed left-0 top-0  flex h-16 w-full max-w-3xl flex-row items-center gap-4 
-    bg-neutral-50
-    p-6 dark:bg-neutral-950;
+    
+    p-6 ;
   left: 50%;
   transform: translateX(-50%);
-}
-
-.input {
-  @apply w-full rounded-lg bg-transparent 
-    p-2 text-3xl font-bold 
-    underline decoration-fuchsia-500 outline-none
-    dark:text-neutral-100
-    max-sm:text-2xl;
 }
 
 .textarea {
@@ -20,7 +12,5 @@
 
 .wrapper {
   @apply flex w-full flex-row items-center gap-2
-        rounded-lg border-neutral-500 bg-neutral-200 p-3
-        text-neutral-950 dark:border 
-        dark:bg-neutral-800 dark:text-neutral-100;
+        rounded-lg ;
 }

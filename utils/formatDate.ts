@@ -27,22 +27,22 @@ export function FormatDate({ date }: { date: Date }) {
   if (seconds < 60) {
     return `Just now`;
   } else if (minutes < 60) {
-    if (minutes == 1) return `1 minute ago`;
-    return `${minutes} minutes ago`;
+    if (minutes == 1) return `1min`;
+    return `${minutes}mins`;
   } else if (hours < 24) {
-    if (hours == 1) return `1 hour ago`;
-    return `${hours} hours ago`;
+    if (hours == 1) return `1h`;
+    return `${hours}hrs`;
   } else if (days < 7) {
-    if (days == 1) return `1 day ago`;
-    return `${days} days ago`;
+    if (days == 1) return `1d`;
+    return `${days}d`;
   } else if (weeks < 4) {
-    if (weeks == 1) return `1 week ago`;
-    return `${weeks} weeks ago`;
+    if (weeks == 1) return `1w`;
+    return `${weeks}w`;
   } else if (months < 12) {
-    if (months == 1) return `1 month ago`;
-    return `${months} months ago`;
+    if (months == 1) return `1m`;
+    return `${months}m`;
   } else {
-    if (years == 1) return `1 year ago`;
-    return `${years} years ago`;
+    if (years == 1) return `1y`;
+    return `${years}y`;
   }
 }

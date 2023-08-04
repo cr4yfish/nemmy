@@ -47,7 +47,7 @@ function UserMenuItem({
   } else {
     return (
       <>
-        <Link onClick={() => close()} href={link}>
+        <Link onClick={() => close()} href={link} className="hover:bg-neutral-200 dark:hover:bg-neutral-800">
           <button>
             <span className="material-symbols-outlined">{icon}</span>
             {text}
@@ -91,7 +91,7 @@ export default function UserMenu({
         animate={{ opacity: 1, x: 0, transition: { bounce: 0 } }}
         exit={{ opacity: 0, x: 300 }}
         id="usermenu"
-        className={`${styles.userMenu}`}
+        className={`${styles.userMenu} bg-neutral-50/75 dark:bg-neutral-950/75`}
       >
         <div className={`flex h-full w-full flex-col gap-4`}>
           {
@@ -112,9 +112,9 @@ export default function UserMenu({
                 <SwiperSlide
                   onClick={() => handleSwitchAccount(account)}
                   key={index}
-                  className={`${styles.userProfile} ${
+                  className={`${styles.userProfile} border-neutral-300 dark:border-neutral-600 ${
                     account.username == session.currentAccount?.username &&
-                    styles.userProfileActive
+                    "border-2 border-fuchsia-500 dark:border-fuchsia-400"
                   } cursor-pointer`}
                 >
                   <Image
@@ -132,7 +132,7 @@ export default function UserMenu({
                     src={account.user?.person?.avatar || DEFAULT_AVATAR}
                     alt=""
                   />
-                  <div className={`${styles.userProfileText}`}>
+                  <div className={`${styles.userProfileText} text-neutral-50`}>
                     <span className={`${styles.userProfileUsername} text-xs`}>
                       {account.instance}
                     </span>
@@ -186,7 +186,7 @@ export default function UserMenu({
 
           <div className={`${styles.userMenuInteractionsTop}`}>
             {session.isLoggedIn ? (
-              <Link onClick={() => handleClose()} href={"/inbox"}>
+              <Link onClick={() => handleClose()} href={"/inbox"} className="hover:bg-neutral-200 dark:hover:bg-neutral-800">
                 <button className="relative">
                   <div className="relative flex h-full w-fit items-center justify-center">
                     {unreadCount > 0 && (
@@ -243,8 +243,8 @@ export default function UserMenu({
         </div>
 
         <div className={`${styles.userMenuInteractionsBottom}`}>
-          <a>
-            <button onClick={() => handleClose()}>
+          <a className="hover:bg-neutral-200 dark:hover:bg-neutral-800">
+            <button onClick={() => handleClose()} >
               <span className="material-symbols-outlined">close</span>Close
             </button>
           </a>
@@ -256,7 +256,7 @@ export default function UserMenu({
             close={handleClose}
           />
 
-          <a>
+          <a className="hover:bg-neutral-200 dark:hover:bg-neutral-800">
             <button
               onClick={() => {
                 handleClose();

@@ -45,7 +45,6 @@ export default function LeftSideMenu({
 
   const handleLoadMore = async (page: number) => {
     const data = await listCommunities({ page: page, auth: session.currentAccount?.jwt, type_: "Subscribed", sort: "Active" }, session.currentAccount?.instance);
-    console.log(data);    
     if(typeof data == "boolean" || data?.communities?.length == 0) {
       setHasMore(false);
       return
@@ -77,14 +76,14 @@ export default function LeftSideMenu({
       </AnimatePresence>
       <motion.div
         id="menu"
-        className={`${styles.menu} overflow-y-scroll`}
+        className={`${styles.menu} bg-neutral-50/75 dark:bg-neutral-950/75 overflow-y-scroll`}
         initial={{ opacity: 0, x: -300 }}
         animate={{ opacity: 1, x: 0, transition: { bounce: 0 } }}
         exit={{ opacity: 0, x: -300 }}
       >
         <div className={`relative flex h-fit flex-col gap-6 `}>
           <button
-            className={`${styles.currentInstance}`}
+            className={`${styles.currentInstance} bg-neutral-300 dark:bg-fuchsia-800 text-neutral-900 dark:text-fuchsia-50`}
             onClick={() => setShowSiteInfo(true)}
           >
             <div className="flex flex-col items-start justify-start">
@@ -149,7 +148,7 @@ export default function LeftSideMenu({
                           new URL(community.community.actor_id).host
                         }`}
                         onClick={() => handleClose()}
-                        className={`${styles.menuCommunity}`}
+                        className={`${styles.menuCommunity} border-neutral-200 dark:border-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-800`}
                       >
                         <Image
                           height={40}
