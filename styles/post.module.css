@@ -1,8 +1,6 @@
 .wrapper {
   @apply max-w-2xl w-full;
   display: flex;
-  flex-direction: row;
-  gap: 15px;
 }
 
 .rightSide {
@@ -117,9 +115,6 @@
   z-index: 2;
   height: 100%;
   width: 100%;
-  @apply bg-gradient-to-b 
-        from-neutral-50/30 to-neutral-50/90
-        dark:from-neutral-900/50 dark:to-neutral-900/90;
 }
 
 .image {

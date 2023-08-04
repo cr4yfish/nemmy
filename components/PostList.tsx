@@ -124,6 +124,13 @@ export default function PostList({
     setCurrentPage(currentPage + 1);
   };
 
+  const isTextPost = (post: PostView) => {
+    if(post.post.url) return false;
+    if(post.post.thumbnail_url) return false;
+    if(post.post.embed_video_url) return false;
+    return true;
+  }
+
   return (
     <motion.div
       id="postList"
@@ -157,7 +164,7 @@ export default function PostList({
                     auth={session.currentAccount?.jwt}
                     key={index}
                     postInstance={new URL(post.post.ap_id).host}
-                    style={session.settings.cardType || style || "modern"}
+                    style={session.settings.cardType !== "auto" ? session.settings.cardType : isTextPost(post) ? "compact" : "modern"}
                   />
                 </motion.div>
               </AnimatePresence>

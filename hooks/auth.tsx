@@ -18,7 +18,7 @@ import { DEFAULT_INSTANCE } from "@/constants/settings";
 
 export interface Settings {
   theme: "light" | "dark" | "system";
-  cardType: "modern" | "compact";
+  cardType: "modern" | "compact" | "auto";
   useSystemTheme: boolean;
   showNSFW: boolean;
   showBotAccounts: boolean;
