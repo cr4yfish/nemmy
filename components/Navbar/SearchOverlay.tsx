@@ -1,18 +1,25 @@
 "use client";
 import Link from "next/link";
 import { ClipLoader } from "react-spinners";
-import { CommunityView, PostView, SearchResponse } from "lemmy-js-client";
+import { CommunityView, PostView, SearchResponse, Search } from "lemmy-js-client";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useState, FormEvent, useRef } from "react";
 import { disablePageScroll, enablePageScroll } from "scroll-lock";
+import { getTrendingCommunities, getTrendingTopics } from "@/utils/lemmy";
+import InfiniteScroll from "react-infinite-scroller";
 
-import Username from "../User/Username";
-import RenderMarkdown from "../ui/RenderMarkdown";
+import { useSession } from "@/hooks/auth";
 
 import styles from "@/styles/components/Navbar/SearchOverlay.module.css";
+
 import { DEFAULT_AVATAR } from "@/constants/settings";
+
 import { FormatNumber } from "@/utils/helpers";
+
+import Post from "../Post";
+import EndlessScrollingEnd from "../ui/EndlessSrollingEnd";
+import Dropdown from "../ui/Dropdown";
 
 function TrendingCommunity({
   community,
@@ -26,13 +33,14 @@ function TrendingCommunity({
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0, transition: { bounce: 0.2 } }}
       exit={{ opacity: 0, y: 10 }}
+      className=" w-full"
     >
       <Link
         href={`/c/${community?.community?.name}@${
           new URL(community?.community?.actor_id).host
         }`}
         onClick={() => closeSearch()}
-        className=" flex flex-row items-center justify-start gap-2 rounded-xl border border-neutral-500 bg-neutral-50 p-4 dark:border-neutral-800 dark:bg-neutral-900"
+        className=" w-full flex flex-row items-center justify-start gap-2 rounded-xl border border-neutral-500 bg-neutral-50 p-4 dark:border-neutral-800 dark:bg-neutral-900"
       >
         <Image
           width={48}
@@ -53,7 +61,7 @@ function TrendingCommunity({
               >
                 communities
               </span>
-              {community?.counts?.subscribers}
+              {FormatNumber(community?.counts?.subscribers, true)}
             </div>
             <div className="dividerDot"></div>
             <div className="flex items-center gap-1">
@@ -107,8 +115,8 @@ function TrendingTopic({
       >
         <div className="flex w-9/12 flex-row gap-2">
           <span
-            className="material-symbols-outlined text-fuchsia-500"
-            style={{ fontSize: "1.75rem" }}
+            className="material-symbols-outlined text-fuchsia-500 max-xs:hidden"
+            style={{ fontSize: "1.5rem" }}
           >
             trending_up
           </span>
@@ -163,46 +171,163 @@ function TrendingTopic({
 
 export default function SearchOverlay({
   handleCloseSearchOverlay,
-  searchInputRef,
-  handleSubmit,
-  searchLoading,
-  currentSearch,
-  setCurrentSearch,
-  isSearching,
-  trendingTopics,
-  trendingCommunities,
-  searchResults,
 }: {
   handleCloseSearchOverlay: Function;
-  searchInputRef: any;
-  handleSubmit: any;
-  searchLoading: boolean;
-  currentSearch: string;
-  setCurrentSearch: Function;
-  isSearching: boolean;
-  trendingTopics: PostView[];
-  trendingCommunities: CommunityView[];
-  searchResults: SearchResponse;
 }) {
-  useEffect(() => {
-    disablePageScroll();
-  }, []);
+
+  const { session, setSession } = useSession();
+  const [isSearching, setIsSearching] = useState(false);
+  const [currentSearch, setCurrentSearch] = useState("");
+
+  const [searchResults, setSearchResults] = useState<SearchResponse>({} as SearchResponse);
+  const [hasMore, setHasMore] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const searchInputRef = useRef<HTMLInputElement>(null);
+  const [searchLoading, setSearchLoading] = useState(false);
+  const [trendingCommunities, setTrendingCommunities] = useState<
+    CommunityView[]
+  >([]);
+  const [trendingTopics, setTrendingTopics] = useState<PostView[]>([]);
+
+  const [currentCategory, setCurrentCategory] = useState<"Posts" | "Communities" | "Users">("Posts");
 
   const handleClose = () => {
     enablePageScroll();
     handleCloseSearchOverlay();
   };
 
+  useEffect(() => {
+    disablePageScroll();
+  }, []);
+
+  // get trending stuff on mount
+  useEffect(() => {
+    searchInputRef.current?.focus(); // Focus searchbar on mount
+
+    getTrendingCommunities(session.currentAccount?.instance).then((data) => {
+      if (typeof data === "boolean") return;
+      setTrendingCommunities(data);
+    });
+    getTrendingTopics().then((data) => {
+      if (typeof data === "boolean") return;
+      setTrendingTopics(data);
+    });
+  }, []);
+
+  // Update input value when user stops typing
+  useEffect(() => {
+    if(searchLoading) return console.log("Not realoading, still loading results.");
+    if (currentSearch?.length == 0) return setIsSearching(false);
+    const timer = setTimeout(async () => {
+      if (currentSearch.length == 0) return;
+      if (currentSearch.length < 2) return;
+      setCurrentPage(1);
+      setSearchResults({} as SearchResponse);
+      setHasMore(true);
+      handleLoadMore();
+      setIsSearching(true)
+    }, 250);
+
+    return () => clearTimeout(timer);
+  }, [currentSearch]);
+
+  useEffect(() => {
+  }, [currentCategory])
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    setIsSearching(true);
+    handleLoadMore();
+  };
+
+  const search = async ({ searchParams }: { searchParams: Search }): Promise<SearchResponse | undefined> => {
+    console.log("Searching page:", searchParams.page)
+    setSearchLoading(true);
+    try {
+    // add a signature to the object to make typescript happy
+        const params: { [index: string]: any } = {
+          ...searchParams,
+        };
+
+        // filter out undefined values
+        Object.keys(params).forEach(
+          (key) => params[key] === undefined && delete params[key],
+        );
+
+        const query = Object.keys(params)
+          .map((key) => key + "=" + params[key])
+          .join("&");
+        const requestUrl = `/api/search?${query}`;
+
+        const response = await fetch(requestUrl);
+
+        const data: SearchResponse = await response.json();
+        
+        setSearchLoading(false);
+        return data;
+    }
+    catch(e: any) {
+      console.error(e);
+    }
+    
+  }
+
+  const handleLoadMore = async () => {
+    if(!hasMore) return;
+
+    console.log("Loading more from page", currentPage);
+
+    const data = await search({ searchParams: { 
+      page: currentPage, 
+      q: currentSearch,
+      auth: session?.currentAccount?.jwt || undefined
+    }})
+    
+    console.log(currentPage, data);
+
+    if(!data) return;
+
+    let isEmpty = true;
+
+    if(!searchResults?.posts) return setSearchResults(data);
+
+    switch(currentCategory) {
+      case "Posts":
+        isEmpty = data.posts?.length == 0;
+        // de dupe
+        const uniquePosts = data.posts?.filter((post) => !searchResults.posts?.find((p) => p.post.id == post.post.id));
+        setSearchResults({ ...searchResults, posts: [...searchResults?.posts, ...uniquePosts] })
+        break;
+      case "Communities":
+        isEmpty = data.communities?.length == 0;
+        const uniqueCommunities = data.communities?.filter((community) => !searchResults.communities?.find((c) => c.community.id == community.community.id));
+        setSearchResults({ ...searchResults, communities: [...searchResults?.communities, ...uniqueCommunities] })
+        break;
+      case "Users":
+        isEmpty = data.users?.length == 0;
+        setSearchResults({ ...searchResults, users: [...searchResults?.users, ...data?.users] })
+        break;  
+    }
+
+    console.log("isEmpty", isEmpty, currentCategory);
+
+    if(isEmpty) setHasMore(false);
+
+    setCurrentPage(currentPage+1);
+  }
+
   return (
     <>
       <motion.div
         id="search"
-        className={`${styles.searchOverlay} `}
+        className={`${styles.searchOverlay} bg-neutral-50/80 backdrop-blur-xl
+        dark:bg-neutral-950/90 overflow-x-hidden `}
         initial={{ opacity: 0, y: 1000 }}
         animate={{ opacity: 1, y: 0, transition: { bounce: 0 } }}
         exit={{ opacity: 0, y: 1000 }}
       >
-        <div className={`${styles.searchInputWrapper}`}>
+        <div className={`${styles.searchInputWrapper} border-neutral-300 bg-neutral-50 dark:border-neutral-600 dark:bg-neutral-950`}>
           <button onClick={() => handleClose()}>
             <span className="material-symbols-outlined text-neutral-400">
               arrow_back
@@ -214,7 +339,7 @@ export default function SearchOverlay({
           >
             <div
               onClick={() => searchInputRef?.current?.focus()}
-              className={`${styles.searchInput}`}
+              className={`${styles.searchInput} border-neutral-700 bg-neutral-200 p-4 dark:bg-neutral-950 dark:focus:border-neutral-400`}
             >
               <div className="flex w-full flex-row items-center gap-2">
                 <span className="material-symbols-outlined select-none text-neutral-400">
@@ -280,79 +405,42 @@ export default function SearchOverlay({
         )}
 
         {isSearching && (
-          <div className="relative flex h-full w-full flex-col gap-0 overflow-scroll">
-            {searchResults.posts?.map((result, index) => (
-              <Link
-                href={`/post/${result?.post?.id}`}
-                target="_blank"
-                key={index}
-                className="flex flex-row items-center justify-between border-b border-neutral-700 bg-neutral-50 p-4 dark:bg-neutral-950"
-              >
-                <div className="flex flex-col gap-3">
-                  <div className="flex flex-row items-center gap-2 ">
-                    <Image
-                      width={48}
-                      height={48}
-                      className="h-12 w-12 rounded-full"
-                      src={result?.community?.icon || DEFAULT_AVATAR}
-                      alt=""
-                    />
-                    <div className="flex flex-col gap-1">
-                      <span>c/{result?.community?.name}</span>
-                      <div className="flex flex-row">
-                        {result.creator && (
-                          <Username user={result.creator} baseUrl="" />
-                        )}
-                        <div className="dividerDot"></div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex flex-col gap-1">
-                    <span className="font-bold">{result?.post?.name}</span>
-                    {!result?.post?.thumbnail_url && (
-                      <span className=" text-neutral-500 line-clamp-2 dark:text-neutral-300">
-                        <RenderMarkdown content={result?.post?.body} />
-                      </span>
-                    )}
-                  </div>
-
-                  <div className="flex flex-row gap-4 text-neutral-500 dark:text-neutral-300">
-                    <div className="flex flex-row items-center gap-2 ">
-                      <div className="flex items-center gap-1 ">
-                        <span className="material-symbols-outlined">
-                          thumb_up
-                        </span>
-                        <span className="">{result?.counts.upvotes}</span>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <span className="material-symbols-outlined">
-                          thumb_down
-                        </span>
-                        <span className="">{result?.counts?.downvotes}</span>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center gap-1">
-                      <span className="material-symbols-outlined">
-                        chat_bubble
-                      </span>
-                      <span className="">{result?.counts?.comments}</span>
-                    </div>
-                  </div>
-                </div>
-                {result?.post?.thumbnail_url && (
-                  <Image
-                    width={96}
-                    height={96}
-                    className="h-24 w-24 rounded-lg"
-                    src={result.post.thumbnail_url}
-                    alt=""
-                  />
-                )}
-              </Link>
-            ))}
+          <>
+          <div className="flex flex-row gap-2 py-5 w-full px-4 relative">
+            <Dropdown 
+              options={[{ label: "Posts", icon: "view_agenda" }, { label: "Communities", icon: "communities" }, { label: "Users", icon: "people" } ]} 
+              onChange={(option) => setCurrentCategory(option.label as "Posts" | "Communities" | "Users")}  
+            />
           </div>
+          <div className="relative h-fit w-full max-w-full px-4 pb-10 overflow-auto">
+            
+            <InfiniteScroll
+              pageStart={2}
+              loadMore={handleLoadMore}
+              hasMore={true}
+              useWindow={false}
+              loader={<div key={"loader"} className=" w-full h-20 flex justify-center items-center py-5"><ClipLoader size={20} color="#e6b0fa" /></div>}
+              className="flex flex-col gap-2 relative h-fit"
+
+            >
+
+              {currentCategory == "Posts" && searchResults.posts?.map((result, index) => (
+                <div key={index} className="flex items-center justify-center pt-2 ">
+                  <Post post={result} style="compact" />
+                </div>
+              ))}
+
+              {currentCategory == "Communities" && searchResults.communities?.map((result, index) => (
+                <div key={index}>
+                  <TrendingCommunity community={result} closeSearch={handleClose} />
+                </div>
+              ))}
+
+              {!hasMore && <EndlessScrollingEnd />}
+
+            </InfiniteScroll>
+          </div>
+          </>
         )}
       </motion.div>
     </>

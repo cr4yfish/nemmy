@@ -187,7 +187,7 @@ export default function New() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className={`${styles.header} justify-between`}
+              className={`${styles.header} bg-neutral-50 dark:bg-neutral-950 justify-between`}
             >
               <button
                 onClick={handleClose}
@@ -213,7 +213,7 @@ export default function New() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className={`${styles.header} justify-start`}
+              className={`${styles.header} bg-neutral-50 dark:bg-neutral-950 justify-start`}
             >
               <button
                 onClick={() => setStep(0)}
@@ -235,7 +235,7 @@ export default function New() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className={`${styles.header} justify-between`}
+              className={`${styles.header} bg-neutral-50 dark:bg-neutral-950 justify-between`}
             >
               <button
                 onClick={handleClose}

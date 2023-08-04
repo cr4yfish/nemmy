@@ -7,8 +7,9 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { ClipLoader } from "react-spinners";
 import va from "@vercel/analytics"
+import { Button, Input } from "@nextui-org/react";
 
-import { useSession } from "@/hooks/auth";
+import { defaultState, useSession } from "@/hooks/auth";
 import { useNavbar } from "@/hooks/navbar";
 
 import Logo from "@/components/Logo";
@@ -38,6 +39,8 @@ export default function Login() {
   const [users, setUsers] = useState<PersonView[]>([]);
   const [selectedUser, setSelectedUser] = useState<PersonView | null>(null);
   const [loginError, setLoginError] = useState<boolean>(false);
+
+  const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
 
   const [searchingUserLoading, setSearchingUserLoading] =
     useState<boolean>(false);
@@ -119,6 +122,7 @@ export default function Login() {
         jwt: jwt.jwt,
         user: user.my_user.local_user_view,
         site: user,
+        settings: defaultState.settings
       };
 
       await handleLogin({
@@ -171,112 +175,98 @@ export default function Login() {
       {!inputFocus && <Logo />}
 
       <div className="flex flex-col items-center gap-4">
-        {!inputFocus && <h1 className="text-3xl font-bold">Welcome back</h1>}
+        {!inputFocus && <h1 className="text-3xl font-bold text-neutral-900 dark:text-neutral-200">Welcome back</h1>}
 
         <form
-          onSubmit={(e) => handleSubmit(e)}
-          className={`${styles.loginWrapper}`}
-        >
-          <div className={`${styles.inputWrapper}`}>
-            <label htmlFor="">Username</label>
-
-            <div
-              className={`${
-                loginError ? styles.inputError : styles.input
-              } relative overflow-hidden rounded-lg`}
-            >
-              <input
-                value={form.username}
-                onChange={(e) => {
-                  setForm({ ...form, username: e.currentTarget.value });
-                  setSelectedUser(null);
-                }}
-                required
-                type="text"
-                disabled={loading}
-                className={`h-full w-full bg-transparent outline-none`}
+          onSubmit={(e) => handleSubmit(e)}  className={`${styles.loginWrapper} text-neutral-900 dark:text-neutral-100 `}>
+          <Input 
+            label="Username" 
+            variant="bordered" 
+            color="primary" 
+            required
+            disabled={loading}
+            labelPlacement="inside" 
+            defaultValue={form.username}
+            onChange={(e) => setForm({ ...form, username: e.currentTarget.value })}
+            endContent={
+              <ClipLoader
+                color={"#e6b0fa"}
+                size={20}
+                loading={searchingUserLoading}
+                className=""
               />
-              <div className="absolute right-0 top-0 flex h-full items-center justify-center pr-2">
-                <ClipLoader
-                  color={"#e6b0fa"}
-                  size={20}
-                  loading={searchingUserLoading}
-                  className=""
-                />
-              </div>
-            </div>
+            }
+          />
 
-            {users?.length > 0 && !selectedUser && (
-              <div
-                className="absolute left-0 z-50 flex w-full translate-y-full flex-col gap-4 rounded-lg border border-neutral-300 bg-neutral-100/75 p-4 backdrop-blur-3xl dark:border-neutral-700 dark:bg-neutral-900/90"
-                style={{ bottom: "-10%" }}
-              >
-                {users.map((user, i) => (
-                  <div
-                    onClick={() => setSelectedUser(user)}
-                    key={i}
-                    className="flex cursor-pointer flex-row items-center gap-3 border-neutral-700 dark:border-b dark:pb-4"
-                  >
-                    <Image
-                      height={40}
-                      width={40}
-                      src={user.person.avatar || DEFAULT_AVATAR}
-                      className="h-10 w-10 overflow-hidden rounded-full object-contain"
-                      alt=""
-                    />
-                    <div className="flex flex-col">
-                      <span className="font-bold">
-                        {user.person.display_name || user.person.name}
-                      </span>
-                      <span className="text-xs dark:text-neutral-300">
-                        @{new URL(user.person.actor_id).hostname}
-                      </span>
-                    </div>
+          {users?.length > 0 && !selectedUser && (
+            <div
+              className="absolute left-0 z-50 flex w-full translate-y-full flex-col gap-4 rounded-lg border border-neutral-300 bg-neutral-100/75 p-4 backdrop-blur-3xl dark:border-neutral-700 dark:bg-neutral-900/90"
+              style={{ bottom: "-10%" }}
+            >
+              {users.map((user, i) => (
+                <div
+                  onClick={() => setSelectedUser(user)}
+                  key={i}
+                  className="flex cursor-pointer flex-row items-center gap-3 border-neutral-700 dark:border-b dark:pb-4"
+                >
+                  <Image
+                    height={40}
+                    width={40}
+                    src={user.person.avatar || DEFAULT_AVATAR}
+                    className="h-10 w-10 overflow-hidden rounded-full object-contain"
+                    alt=""
+                  />
+                  <div className="flex flex-col">
+                    <span className="font-bold">
+                      {user.person.display_name || user.person.name}
+                    </span>
+                    <span className="text-xs dark:text-neutral-300">
+                      @{new URL(user.person.actor_id).hostname}
+                    </span>
                   </div>
-                ))}
-              </div>
-            )}
-          </div>
-          <div className={`${styles.inputWrapper}`}>
-            <label htmlFor="">Password</label>
-            <input
-              value={form.password}
-              onChange={(e) =>
-                setForm({ ...form, password: e.currentTarget.value })
-              }
-              required
-              type="password"
-              disabled={loading}
-              className={`${loginError ? styles.inputError : styles.input}`}
-            />
-          </div>
+                </div>
+              ))}
+            </div>
+          )}
 
-          <div className={`${styles.inputWrapper}`}>
-            <label htmlFor="">Instance</label>
-            <input
-              value={form.instance}
-              onChange={(e) =>
-                setForm({ ...form, instance: e.currentTarget.value })
-              }
-              required
-              type="text"
-              disabled={loading}
-              className={`${loginError ? styles.inputError : styles.input}`}
-            />
-          </div>
+          <Input 
+            label="Password" 
+            variant="bordered" 
+            color="primary" 
+            required
+            disabled={loading}
+            labelPlacement="inside" 
+            type={isPasswordVisible ? "text" : "password"}
+            defaultValue={form.password}
+            onChange={(e) => setForm({ ...form, password: e.currentTarget.value })}
+            endContent={
+              <Button 
+                variant="light"
+                isIconOnly
+                onClick={() => setIsPasswordVisible(!isPasswordVisible)}><span className="material-symbols-outlined">{isPasswordVisible ? "visibility_off" : "visibility"}</span></Button>
+            }
+          />
 
-          <div className={`${styles.inputWrapper}`}>
-            <label htmlFor="">2FA (optional)</label>
-            <input
-              value={form.totp}
-              onChange={(e) =>
-                setForm({ ...form, totp: e.currentTarget.value})
-              }
-              type="text"
-              disabled={loading}
-              className={`${loginError ? styles.inputError : styles.input}`}
-            />
-          </div>
+          <Input 
+            label="Instance" 
+            variant="bordered" 
+            color="primary" 
+            required
+            disabled={loading}
+            labelPlacement="inside" 
+            defaultValue={form.instance}
+            onChange={(e) => setForm({ ...form, instance: e.currentTarget.value })}
+          />
+
+          <Input 
+            label="2FA (optional)" 
+            variant="bordered" 
+            color="primary" 
+            disabled={loading}
+            labelPlacement="inside" 
+            defaultValue={form.totp}
+            onChange={(e) => setForm({ ...form, totp: e.currentTarget.value })}
+          />
 
           <button
             disabled={loading}

@@ -1,6 +1,6 @@
 import { deleteCookie, setCookie, getCookie } from "cookies-next";
 import { OptionsType } from "cookies-next/lib/types";
-import { SessionState } from "@/hooks/auth";
+import { SessionState, Settings } from "@/hooks/auth";
 import { GetSiteResponse, LemmyHttp, LocalUserView } from "lemmy-js-client";
 import { ReadonlyRequestCookies } from "next/dist/server/web/spec-extension/adapters/request-cookies";
 
@@ -22,6 +22,7 @@ export interface Account {
   instance: string;
   username: string;
   user: LocalUserView;
+  settings: Settings;
 }
 
 export interface AccountWithSiteResponse extends Account {
@@ -138,6 +139,7 @@ export const handleLogin = async ({
     instance: accountWithSite.instance,
     username: accountWithSite.username,
     user: accountWithSite.user,
+    settings: accountWithSite.settings,
   };
 
   // set session to the account
@@ -146,6 +148,7 @@ export const handleLogin = async ({
     currentAccount: account,
     accounts: [...session.accounts, account],
     siteResponse: accountWithSite.site,
+    settings: accountWithSite.settings,
   });
 
   // save the account
@@ -508,3 +511,37 @@ export const sortCurrentAccount = (
     sortAccounts(currentAccount, session, setSession);
   }
 };
+
+/**
+ * Updates the account in the cookie
+ * @param updatedAccount 
+ */
+export const updateAccount = (updatedAccount: Account) => {
+  const accounts = getAccounts();
+  const account = accounts.find((account) => account.username == updatedAccount.username);
+  if (account) {
+    account.settings = updatedAccount.settings;
+    overrideAccounts(accounts);
+  }
+}
+
+export const updateCurrentAccount = (updatedAccount: Account, session: SessionState, setSession: Dispatch<SetStateAction<SessionState>>) => {
+  console.log("Updating account:", updatedAccount.settings.theme)
+  const currentAccount = getCurrentAccount();
+  if (currentAccount) {
+    updateAccount(updatedAccount);
+    setCurrentAccount(updatedAccount.username);
+
+    const accountWithSite = getUserDataFromLocalStorage(updatedAccount);
+    if (accountWithSite) {
+      accountWithSite.settings = updatedAccount.settings;
+      setSession((prevState) => {
+        return {
+          ...prevState,
+          currentAccount: accountWithSite,
+          siteResponse: accountWithSite?.site,
+        };
+      });
+    }
+  }
+}

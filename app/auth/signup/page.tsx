@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { CaptchaResponse } from "lemmy-js-client";
+import va from "@vercel/analytics"
 
 import { register, getCaptcha, getCuratedInstances } from "@/utils/lemmy";
 import { saveAccount, handleLogin, getUserData } from "@/utils/authFunctions";
@@ -213,10 +214,12 @@ export default function Register() {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setLoading(true);
-
+    
     const isValid = validateForm();
     if (!isValid) return;
     if (!form.captcha || !form.instance) return;
+
+    va.track("signup", { instance: form.instance })
 
     const res = await register(
       {
@@ -248,6 +251,7 @@ export default function Register() {
     if (!user) {
       alert("Could not get user data");
       setLoading(false);
+      va.track("error", { instance: form.instance })
       return;
     }
 

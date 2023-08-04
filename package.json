@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@nextui-org/react": "^2.0.1",
     "@tailwindcss/line-clamp": "^0.4.4",
     "@types/node": "20.3.2",
     "@types/react": "18.2.14",

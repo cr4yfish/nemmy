@@ -37,11 +37,11 @@ export default function Username({
               } `}
               src={user.avatar || DEFAULT_AVATAR}
               alt={user.name}
-              height={40}
-              width={40}
+              height={25}
+              width={25}
             />
           </span>
-          <span className="font-medium text-neutral-800 dark:text-neutral-100 text-sm max-sm:text-xs">
+          <span className="font-medium text-neutral-700 dark:text-neutral-400 text-xs">
             {user.name}
           </span>
           <SmallUser

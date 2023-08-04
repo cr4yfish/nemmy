@@ -65,17 +65,3 @@
 .interaction {
   @apply flex items-center gap-2;
 }
-
-.upvote,
-.downvote {
-  @apply transition-all duration-100;
-  cursor: pointer;
-}
-
-.upvote:hover {
-  @apply text-fuchsia-300;
-}
-
-.downvote:hover {
-  @apply text-indigo-300;
-}

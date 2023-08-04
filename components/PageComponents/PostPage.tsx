@@ -155,7 +155,7 @@ export default function PostPage({
               {/* Display Embed thumbnail with Link e.g. Article */}
               {(postData?.post?.embed_title ||
                 postData?.post?.url?.endsWith(".html")) && (
-                <div className={`${styles.postBodyEmbed}`}>
+                <div className={`${styles.postBodyEmbed} border-neutral-300 dark:border-neutral-600`}>
                   <div>
                     <div className={`${styles.postBodyEmbedTitle}`}>
                       {postData?.post?.embed_title}

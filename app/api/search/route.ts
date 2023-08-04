@@ -24,8 +24,7 @@ export async function GET(req: Request) {
     let type_ = params.get("type_") || "All";
     let sort = params.get("sort") || "Hot";
     let listing_type = params.get("listing_type") || "All";
-    let page = params.get("page") || 0;
-    let limit = params.get("limit") || 25;
+    let page = params.get("page") || 1;
     let auth = params.get("auth") || "";
 
     let client: LemmyHttp = new LemmyHttp(DEFAULT_INSTANCE);
@@ -39,7 +38,6 @@ export async function GET(req: Request) {
       listing_type: listing_type as unknown as ListingType,
 
       page: page as unknown as number,
-      limit: limit as unknown as number,
       auth: auth as unknown as string,
     });
 

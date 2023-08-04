@@ -6,8 +6,6 @@ import { useState, useRef, useEffect } from "react"
 import RenderFormattingOptions from "./RenderFormattingOptions"
 import RenderMarkdown from "./RenderMarkdown"
 
-import styles from "@/styles/components/MdTextarea.module.css"
-
 export default function MdTextarea({ 
     defaultValue="", onChange=() => null, readonly=false, placeholder } : { 
         defaultValue?: string, onChange?: (newText: string) => void, readonly?: boolean, placeholder?: string }) {
@@ -91,7 +89,7 @@ export default function MdTextarea({
                     name=""
                     id=""
                     style={{ resize: "vertical" }}
-                    className={`${styles.textarea}`}
+                    className={` bg-transparent w-full outline-none max-sm:text-sm`}
                     placeholder={placeholder}
                   />
                 </div>

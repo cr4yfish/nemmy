@@ -1,9 +1,4 @@
 .wrapper {
-  @apply flex flex-row 
-    items-center gap-3 rounded-lg
-    border border-fuchsia-500
-    bg-neutral-50 p-4 shadow-lg dark:border-fuchsia-300
-    dark:bg-zinc-800 dark:shadow-none max-sm:flex-wrap;
   position: absolute;
   min-width: 200px;
   min-height: 50px;
@@ -30,10 +25,6 @@
 }
 
 .avatar {
-  @apply h-12 w-12
-    overflow-hidden rounded-full border border-fuchsia-500
-    bg-slate-200 dark:border-2
- dark:border-fuchsia-300;
   max-width: unset;
   position: relative;
   object-fit: cover;
@@ -46,16 +37,10 @@
   object-fit: cover;
 }
 
-.usernames {
-  @apply flex h-full w-full flex-col items-start max-md:w-fit;
-}
-
 .display_name {
-  @apply w-full font-bold text-fuchsia-500 dark:text-fuchsia-300;
   font-size: 12pt;
 }
 
 .name {
-  @apply w-full dark:text-fuchsia-50;
   font-size: 10pt;
 }

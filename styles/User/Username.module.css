@@ -1,18 +1,18 @@
 .wrapper {
-  margin-left: 2px;
+  @apply gap-1;
   display: flex;
   flex-direction: row;
   align-items: center;
   position: relative;
-  gap: 3px;
   min-width: 50px;
   user-select: none;
 }
 
 .userimage {
-  @apply h-5 w-5 rounded-full;
+  @apply rounded-full;
   overflow: hidden;
   object-fit: cover;
+  height: 10px; width: 10px;
 }
 
 .hovercatcher {

@@ -115,11 +115,11 @@ export default function Vote({
   return (
     <>
       <div
-        className={`${horizontal ? styles.votesMobile : styles.votesDesktop}`}
+        className={`${horizontal ? styles.votesMobile : styles.votesDesktop} text-neutral-700 dark:text-neutral-300`}
       >
         <span
           onClick={() => handleLike()}
-          className={`material-symbols-outlined ${styles.upvote} ${
+          className={`material-symbols-outlined ${styles.upvote} hover:text-fuchsia-300 ${
             liked && "filled text-fuchsia-400"
           }`}
         >
@@ -135,7 +135,7 @@ export default function Vote({
         </span>
         <span
           onClick={() => handleDislike()}
-          className={`material-symbols-outlined rotate-180 ${styles.downvote} ${
+          className={`material-symbols-outlined rotate-180 ${styles.downvote} hover:text-indigo-300 ${
             disliked && "filled text-blue-400"
           }`}
         >

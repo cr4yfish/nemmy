@@ -49,7 +49,7 @@ export default function BookmarkButton({
     <>
       <button
         onClick={() => handleBookmark()}
-        className="flex items-center justify-center"
+        className="flex items-center justify-center text-neutral-400 hover:bg-neutral-100 hover:dark:bg-neutral-900"
       >
         {bookmarked ? (
           <span className="material-symbols-outlined filled">bookmark</span>

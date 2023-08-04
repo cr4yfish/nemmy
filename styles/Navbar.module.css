@@ -3,9 +3,8 @@
         top-0
         h-20 w-full
         gap-10 
-        border-b border-neutral-200
-        bg-neutral-50/25 backdrop-blur-xl dark:border-neutral-800
-        dark:bg-neutral-950/25
+        border-b 
+        backdrop-blur-xl 
         max-md:gap-5
         max-xs:overflow-x-scroll;
   padding: 1rem 2rem;
@@ -31,12 +30,11 @@
 
 .navButton {
   @apply relative flex
-    h-full flex-row items-center
-    gap-2
-    rounded-lg bg-neutral-200 p-2 font-semibold
-    text-neutral-900 transition-all
+    h-full flex-row items-center gap-2
+    rounded-lg  p-2 font-semibold
+    transition-all
     duration-300
-    ease-out dark:bg-neutral-800 dark:text-neutral-400;
+    ease-out ;
 }
 
 .navButton > div {
@@ -50,10 +48,9 @@
 .filterOptions,
 .sortOptions {
   @apply pointer-events-none fixed left-0 top-20 flex
-    min-h-max w-full flex-col gap-2 overflow-hidden
-    bg-neutral-50/75  p-6
+    min-h-max w-full flex-col gap-2 overflow-hidden p-6
     backdrop-blur-xl
-    transition-all duration-300 ease-out dark:bg-neutral-950/75;
+    transition-all duration-300 ease-out ;
   transform: translateY(-100%);
   z-index: 39;
 }
@@ -76,66 +73,6 @@
   user-select: none;
 }
 
-.activeFilterOption,
-.activeSortOption {
-  @apply bg-neutral-100
-    font-bold text-neutral-900
-    dark:bg-fuchsia-900 dark:text-neutral-50;
-}
-
-.searchWrapper {
-  @apply bg-transparent;
-  user-select: none;
-}
-
-.searchWrapper input {
-  @apply max-md:w-2/4;
-}
-
-.searchWrapperActive {
-  border-color: white;
-}
-
-.searchWrapperActive span {
-  @apply text-neutral-50
-    dark:text-neutral-900;
-}
-
-.searchWrapper span {
-  color: grey;
-}
-
-.search {
-  background-color: transparent;
-  padding: 0.7rem 0;
-}
-
-.search:focus {
-  outline: none;
-}
-
-.submitButton {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.searchIcon {
-  @apply flex;
-  height: 100%;
-  justify-content: center;
-  align-items: center;
-  opacity: 0;
-  transform: translateX(-15%);
-  transition: all 0.25s;
-  cursor: pointer;
-}
-
-.searchIconActive {
-  opacity: 1;
-  transform: translateX(0%);
-}
-
 .userImage {
   @apply h-10 w-10;
 }
@@ -146,170 +83,13 @@
 
 .overlay {
   @apply pointer-events-none fixed left-0 top-0  min-h-screen
-    w-full bg-neutral-200/50
+    w-full 
     opacity-0
     backdrop-blur-sm
-    transition-all duration-300 ease-out dark:bg-neutral-900/75;
+    transition-all duration-300 ease-out;
 }
 
 .overlayActive {
   @apply pointer-events-auto opacity-100;
   pointer-events: all;
-}
-
-.userMenu {
-  @apply h-screen flex-col justify-between gap-6 overflow-hidden bg-neutral-50/75
-
-    p-6
-    backdrop-blur-xl
-
-    transition-all duration-300 ease-out
-
-    dark:bg-neutral-950/75 max-sm:max-w-xs
-
-    max-xs:w-72;
-  position: fixed;
-  top: 0;
-  right: 0;
-  z-index: 51;
-  transform: translateX(100%);
-  pointer-events: all;
-  overflow: hidden;
-  display: none;
-}
-
-.menu {
-  @apply h-screen flex-col justify-start gap-6 overflow-hidden bg-neutral-50/75
-
-    p-6
-    backdrop-blur-xl
-
-    transition-all duration-300 ease-out
-
-    dark:bg-neutral-950/75 max-sm:max-w-xs
-
-    max-xs:w-72;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 51;
-  transform: translateX(-100%);
-  pointer-events: all;
-  overflow: hidden;
-  display: none;
-}
-
-.menuActive {
-  transform: translateX(0%);
-}
-
-.userMenuActive {
-  transform: translateX(0%);
-}
-
-.currentInstance {
-  @apply flex flex-row items-center justify-between gap-4 rounded-lg bg-neutral-300 p-4
-    py-3 text-neutral-900
-    dark:bg-fuchsia-800 dark:text-fuchsia-50;
-}
-
-.menuLinks {
-  @apply flex w-full flex-col gap-4;
-}
-
-.menuLinks button {
-  @apply flex w-full flex-row items-center justify-start gap-1;
-}
-
-.menuCommunitiesList {
-  @apply flex flex-col gap-4;
-}
-
-.menuCommunity {
-  @apply flex flex-row items-center gap-2;
-}
-
-.userMenuTop {
-  @apply flex flex-col gap-4;
-}
-
-.userProfiles {
-  @apply flex h-fit min-w-max flex-row gap-4 overflow-y-hidden overflow-x-scroll pb-3;
-  user-select: none;
-}
-
-.userProfile {
-  @apply relative flex h-52 w-40 flex-col items-start
-    justify-between gap-2 overflow-hidden rounded-lg border-2 border-fuchsia-300
-    bg-transparent 
-    p-4 dark:border-fuchsia-600;
-}
-
-.userProfileBanner {
-  @apply absolute left-0 top-0 h-full w-full 
-    overflow-hidden rounded-lg object-cover;
-  z-index: -2;
-}
-
-.userProfileBannerOverlay {
-  @apply absolute left-0 top-0 h-full w-full 
-    bg-transparent backdrop-blur-sm;
-  z-index: -1;
-}
-
-.userProfileAvatar {
-  @apply h-20 w-20 overflow-hidden rounded-full;
-}
-
-.userProfileText {
-  @apply flex flex-col text-sm
-    text-neutral-50;
-}
-
-.userProfileDisplayName {
-  @apply text-xl font-bold;
-}
-
-.userMenuInteractionsTop,
-.userMenuInteractionsBottom {
-  @apply flex w-full flex-col gap-2
-    font-light;
-}
-
-.userMenuInteractionsTop button,
-.userMenuInteractionsBottom button {
-  @apply flex w-64 items-center
-    justify-start gap-2 rounded-lg p-2;
-}
-
-.searchOverlay {
-  @apply pointer-events-none fixed left-0 top-0 flex h-full w-full flex-col
-    items-center bg-neutral-50/10
-    opacity-0 backdrop-blur-3xl transition-all
-    duration-300 ease-out dark:bg-neutral-950/90;
-  z-index: 99;
-}
-
-.searchActive {
-  @apply pointer-events-auto opacity-100;
-}
-
-.searchInputWrapper {
-  @apply flex w-full flex-row items-center justify-center gap-3 border-b border-neutral-300 bg-neutral-50
-    p-4 px-6
-    dark:border-neutral-600
-    dark:bg-neutral-950;
-}
-
-.searchInput {
-  @apply flex w-full flex-row items-center justify-between rounded-lg border-neutral-700
-    
-    bg-neutral-200 p-4
-    dark:border dark:bg-neutral-950
-
-    dark:focus:border-neutral-400;
-}
-
-.searchOverlayTrending {
-  @apply flex w-full flex-col gap-4 p-4 px-4;
 }

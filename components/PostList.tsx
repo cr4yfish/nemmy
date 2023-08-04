@@ -4,6 +4,7 @@ import { useState, useEffect, cache } from "react";
 import { CommunityId, ListingType, PostView, SortType } from "lemmy-js-client";
 import InfiniteScroll from "react-infinite-scroller";
 import { motion } from "framer-motion";
+import va from "@vercel/analytics"
 
 import { useSession } from "@/hooks/auth";
 import { useNavbar } from "@/hooks/navbar";
@@ -11,7 +12,7 @@ import { useNavbar } from "@/hooks/navbar";
 import EndlessScrollingEnd from "./ui/EndlessSrollingEnd";
 import Loader from "./ui/Loader";
 
-import { DEFAULT_POST_LIMIT } from "@/constants/settings";
+import { DEFAULT_INSTANCE, DEFAULT_POST_LIMIT } from "@/constants/settings";
 
 import Post from "./Post";
 
@@ -96,6 +97,7 @@ export default function PostList({
   });
 
   const handleClickPost = (currenPost: PostView) => {
+    va.track("Clicked post on feed", { instance: session.currentAccount?.instance || DEFAULT_INSTANCE });
     localStorage.setItem("currentPost", JSON.stringify(currenPost));
   };
 
@@ -146,6 +148,7 @@ export default function PostList({
                 auth={session.currentAccount?.jwt}
                 key={index}
                 postInstance={new URL(post.post.ap_id).host}
+                style="card"
               />
             );
           })}

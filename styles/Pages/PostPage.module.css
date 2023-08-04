@@ -80,8 +80,8 @@
 .textarea {
   @apply flex w-full
     flex-col items-end
-    rounded-lg bg-neutral-50
-    p-2 text-neutral-900 dark:bg-neutral-900 dark:text-neutral-50 max-md:hidden;
+    rounded-lg 
+    p-2 max-md:hidden;
   position: relative;
 }
 
@@ -125,8 +125,8 @@
 
 .postBodyEmbed {
   @apply mb-4 flex flex-col
-    gap-2 rounded-lg border border-neutral-300
-    p-2 dark:border-neutral-600;
+    gap-2 rounded-lg border 
+    p-2 ;
 }
 
 .postBodyEmbed a {

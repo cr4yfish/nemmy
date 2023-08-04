@@ -254,7 +254,7 @@ export default function Comments({
         {/* desktop comments textarea */}
         <form
           onSubmit={(e) => handleSubmit(e)}
-          className={`${styles.textarea} max-w-3xl max-md:w-full max-sm:p-2`}
+          className={`${styles.textarea} bg-neutral-50 text-neutral-900 dark:bg-neutral-900 dark:text-neutral-50  max-w-3xl max-md:w-full max-sm:p-2`}
         >
           <MdTextarea 
             defaultValue={replyCommentText}
