@@ -35,10 +35,11 @@ export default function Username({
               className={`${styles.userimage} ${
                 user.avatar ? "" : "p-1/2 object-contain"
               } `}
+              style={{ height: "20px", width: "20px"  }}
               src={user.avatar || DEFAULT_AVATAR}
               alt={user.name}
-              height={25}
-              width={25}
+              height={20}
+              width={20}
             />
           </span>
           <span className="font-medium text-neutral-700 dark:text-neutral-400 text-xs">
