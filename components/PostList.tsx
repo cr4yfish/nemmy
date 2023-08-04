@@ -39,7 +39,7 @@ export default function PostList({
   };
   initPosts?: PostView[];
   setCurrentPost?: Function;
-  style: "modern" | "compact";
+  style?: "modern" | "compact";
 }) {
   const { session } = useSession();
   const { navbar, setNavbar } = useNavbar();
