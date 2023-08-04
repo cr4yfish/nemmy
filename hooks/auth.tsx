@@ -17,7 +17,9 @@ import {
 import { DEFAULT_INSTANCE } from "@/constants/settings";
 
 export interface Settings {
-  theme: "light" | "dark";
+  theme: "light" | "dark" | "system";
+  cardType: "modern" | "compact";
+  useSystemTheme: boolean;
   showNSFW: boolean;
   showBotAccounts: boolean;
   showAvatars: boolean;
@@ -39,6 +41,8 @@ export const defaultState: SessionState = {
   isLoggedIn: false,
   settings: {
     theme: "dark",
+    cardType: "modern",
+    useSystemTheme: true,
     showNSFW: true,
     showBotAccounts: true,
     showAvatars: true,
@@ -55,12 +59,23 @@ const SessionContext = createContext<SessionContextProps>({
   setSession: () => {},
 });
 
-export function setTheme(theme: "light" | "dark") {
-  if (theme === "dark") {
+export function setTheme(theme: "light" | "dark" | "system", useSystemTheme?: boolean) {
+  if (theme === "dark" && !useSystemTheme) {
     document.getElementsByTagName("html")[0].classList.add("dark");
-  } else {
+    return "dark";
+  } else if (theme === "light" && !useSystemTheme) {
     document.getElementsByTagName("html")[0].classList.remove("dark");
+    return "light";
+  } else if (useSystemTheme) {
+    if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      document.getElementsByTagName("html")[0].classList.add("dark");
+      return "dark";
+    } else {
+      document.getElementsByTagName("html")[0].classList.remove("dark");
+      return "light";
+    }
   }
+  return "dark";
 }
 
 export const SessionContextProvider = ({ children }: { children: any }) => {
@@ -150,15 +165,18 @@ export const SessionContextProvider = ({ children }: { children: any }) => {
 
   // This can update on runtime
   useEffect(() => {
-    console.log("Updating session settings", session.settings.theme)
-    setTheme(session.settings.theme)
+    const newTheme = setTheme(session.settings.theme, session.settings.useSystemTheme) // Also takes system theme into account
 
+    if(newTheme !== session.settings.theme) {
+      setSession({ ...session, settings: { ...session.settings, theme: newTheme } });
+    }
     // update account settings in cookie
     const currentAccount = session.currentAccount;
     if (currentAccount) {
       if(currentAccount.settings == session.settings) return;
       
       currentAccount.settings = session.settings;
+      currentAccount.settings.theme = newTheme;
       updateCurrentAccount(currentAccount, session, setSession);
     }
     
@@ -169,7 +187,6 @@ export const SessionContextProvider = ({ children }: { children: any }) => {
     if (typeof window === "undefined") return;
     const browserTheme = window.matchMedia("(prefers-color-scheme: dark)");
     browserTheme.addEventListener("change", (e) => {
-      console.log("Changed device theme to", e.matches ? "dark" : "light")
       if (e.matches) {
         setSession({ ...session, settings: { ...session.settings, theme: "dark" } });
       } else {

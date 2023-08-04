@@ -6,9 +6,12 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { CaptchaResponse } from "lemmy-js-client";
 import va from "@vercel/analytics"
+import { Input, Button, Checkbox } from "@nextui-org/react";
 
 import { register, getCaptcha, getCuratedInstances } from "@/utils/lemmy";
 import { saveAccount, handleLogin, getUserData } from "@/utils/authFunctions";
+import { FormatNumber } from "@/utils/helpers";
+
 import {
   validateUsername,
   validatePassword,
@@ -93,7 +96,9 @@ export default function Register() {
   const [badUsername, setBadUsername] = useState<boolean>(false);
   const [signupError, setSignupError] = useState<boolean>(false);
 
+  const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
   const [passwordStrength, setPasswordStrength] = useState<number>(0);
+  const [passwordStrengthText, setPasswordStrengthText] = useState<string>("");
 
   const [passwordHintText, setPasswordHintText] = useState<string>("");
   const [passwordErrorText, setPasswordErrorText] = useState<string>("");
@@ -191,6 +196,18 @@ export default function Register() {
       setCuratedInstances(res);
     });
   }, []);
+
+  useEffect(() => {
+    if (passwordStrength < 10) {
+      setPasswordStrengthText("Weak");
+    } else if (passwordStrength > 50 && passwordStrength < 90) {
+      setPasswordStrengthText("Good");
+    } else if (passwordStrength > 90 && passwordStrength != 100) {
+      setPasswordStrengthText("Strong");
+    } else if (passwordStrength == 100) {
+      setPasswordStrengthText("Very strong");
+    }
+  }, [passwordStrength])
 
   const validateForm = (): boolean => {
     const email = form.email,
@@ -316,6 +333,8 @@ export default function Register() {
   return (
     <div className=" flex min-h-screen w-screen justify-center">
       <div className="flex h-full max-w-3xl flex-col items-center justify-between gap-24 pt-16 max-md:w-full ">
+
+        {/* Add basic info */}
         <AnimatePresence mode="popLayout">
           {step == 0 && (
             <motion.div
@@ -335,114 +354,54 @@ export default function Register() {
                   onSubmit={(e) => handleStep0(e)}
                   className={`${styles.loginWrapper}`}
                 >
-                  <div className={`${styles.inputWrapper}`}>
-                    <label htmlFor="username">Username</label>
-                    <input
-                      placeholder="cool_username"
-                      className={`${
-                        badUsername || signupError
-                          ? styles.inputError
-                          : styles.input
-                      } `}
-                      type="text"
-                      id="username"
-                      name="username"
-                      onChange={(e) =>
-                        setForm({ ...form, username: e.currentTarget.value })
-                      }
-                    />
-                    <span className="text-xs font-bold text-red-500">
-                      {usernameErrorText}
-                    </span>
-                  </div>
 
-                  <div className={`${styles.inputWrapper}`}>
-                    <label htmlFor="">Email</label>
-                    <input
-                      placeholder="your@email.com"
-                      className={`${styles.input}`}
-                      onChange={(e) =>
-                        setForm({ ...form, email: e.currentTarget.value })
-                      }
-                      disabled={loading}
-                      type="email"
-                    />
-                    <span className="text-xs font-bold text-red-500">
-                      {emailErrorText}
-                    </span>
-                  </div>
+                  <Input 
+                    label="Username" 
+                    variant="bordered" 
+                    color="primary" 
+                    required
+                    disabled={loading}
+                    labelPlacement="inside" 
+                    value={form.username || ""}
+                    onChange={(e) => setForm({ ...form, username: e.currentTarget.value })}
+                    errorMessage={form.username?.length > 0 && usernameErrorText}
+                  />
 
-                  <div className={`${styles.inputWrapper}`}>
-                    <label htmlFor="">Password</label>
-                    <span
-                      className={`text-xs font-bold ${
-                        passwordStrength < 10 && styles.weakPassword
-                      } ${passwordStrength > 50 && styles.passwordOk} ${
-                        passwordStrength > 90 && styles.passwordGood
-                      } ${passwordStrength == 100 && styles.passwordUltimate}`}
-                    >
-                      {form?.password?.length > 0 &&
-                        passwordStrength < 10 &&
-                        "Weak"}{" "}
-                      {passwordStrength > 50 && passwordStrength < 90 && "Good"}{" "}
-                      {passwordStrength > 90 &&
-                        passwordStrength != 100 &&
-                        "Strong"}{" "}
-                      {passwordStrength == 100 && "Very strong"}
-                    </span>
-                    <input
-                      placeholder="Subduing-Gnarly-Overarch"
-                      className={`${
-                        badPassword || signupError
-                          ? styles.inputError
-                          : styles.input
-                      }`}
-                      onChange={(e) =>
-                        setForm({ ...form, password: e.currentTarget.value })
-                      }
-                      disabled={loading}
-                      type="password"
-                    />
-                    <span className="text-xs font-bold text-red-500">
-                      {passwordErrorText}
-                    </span>
-                  </div>
+                  <Input 
+                    label="Email" 
+                    variant="bordered" 
+                    color="primary" 
+                    required
+                    disabled={loading}
+                    type="email"
+                    labelPlacement="inside" 
+                    value={form.email || ""}
+                    onChange={(e) => setForm({ ...form, email: e.currentTarget.value })}
+                    errorMessage={form.email?.length > 0 && emailErrorText}
+                  />
 
-                  <div
-                    className={`flex cursor-pointer select-none flex-row items-center gap-3`}
-                  >
-                    <input
-                      onChange={() =>
-                        setForm({ ...form, showNSFW: !form.showNSFW })
-                      }
-                      className="w-fit cursor-pointer"
-                      disabled={loading}
-                      type="checkbox"
-                      id="showNSFW"
-                      checked={form.showNSFW}
-                    />
-                    <label className="w-fit cursor-pointer" htmlFor="">
-                      Show NSFW Content
-                    </label>
-                  </div>
+                  <Input 
+                    label="Password" 
+                    variant="bordered" 
+                    color={(form.password?.length > 0 && passwordStrength < 10) ? "danger" : "primary"}
+                    required
+                    disabled={loading}
+                    labelPlacement="inside" 
+                    type={isPasswordVisible ? "text" : "password"}
+                    defaultValue={form.password}
+                    onChange={(e) => setForm({ ...form, password: e.currentTarget.value })}
+                    errorMessage={form.password?.length > 0 && passwordStrengthText}
+                    endContent={
+                      <Button 
+                        variant="light"
+                        isIconOnly
+                        onClick={() => setIsPasswordVisible(!isPasswordVisible)}><span className="material-symbols-outlined">{isPasswordVisible ? "visibility_off" : "visibility"}</span></Button>
+                    }
+                  />
 
-                  <div
-                    className={`flex select-none flex-row items-center gap-3`}
-                  >
-                    <input
-                      onChange={() =>
-                        setForm({ ...form, saveLogin: !form.saveLogin })
-                      }
-                      className="w-fit"
-                      type="checkbox"
-                      id="saveLogin"
-                      checked={form.saveLogin}
-                      disabled={loading}
-                    />
-                    <label className="w-fit" htmlFor="">
-                      Save login
-                    </label>
-                  </div>
+                  <Checkbox isSelected={form.showNSFW} >Show NSFW Content</Checkbox>
+                  <Checkbox isSelected={form.saveLogin} defaultChecked isDisabled >Save login</Checkbox>
+                  <span className="text-xs text-neutral-700 dark:text-neutral-400">Temporary login is not support currently.</span>
 
                   <button
                     className={`${styles.button} ${styles.primary}`}
@@ -459,6 +418,7 @@ export default function Register() {
           )}
         </AnimatePresence>
 
+        {/* Choose instance */}
         <AnimatePresence mode="popLayout">
           {step == 1 && (
             <motion.div
@@ -491,19 +451,17 @@ export default function Register() {
                   className={`${styles.loginWrapper} w-full`}
                 >
                   <div className={`${styles.inputWrapper} relative w-full`}>
-                    <label htmlFor="intance">Instance</label>
-                    <input
-                      placeholder={DEFAULT_INSTANCE}
-                      className={`${
-                        signupError ? styles.inputError : styles.input
-                      } w-full`}
-                      type="text"
-                      onChange={(e) => {
-                        setForm({ ...form, instance: e.currentTarget.value });
-                        setSelectedInstance(null);
-                      }}
-                      value={form.instance}
-                    />
+
+                  <Input 
+                    label="Instance" 
+                    variant="bordered" 
+                    color="primary" 
+                    required
+                    disabled={loading}
+                    labelPlacement="inside" 
+                    value={form.instance || ""}
+                    onChange={(e) => {setForm({ ...form, instance: e.currentTarget.value }); setSelectedInstance(null)}}
+                  />
 
                     {filteredInstances.length > 0 &&
                       !selectedInstance?.Instance &&
@@ -531,10 +489,7 @@ export default function Register() {
                                 className="flex w-full cursor-pointer flex-col items-center gap-2 border-b p-2 dark:border-fuchsia-800"
                               >
                                 <div className="flex w-full flex-row items-center gap-2">
-                                  <span className="material-symbols-outlined text-fuchsia-500">
-                                    public
-                                  </span>
-                                  <span className="w-full overflow-hidden text-ellipsis text-xl font-bold max-sm:text-lg ">
+                                  <span className="w-full overflow-hidden text-ellipsis text-sm font-bold max-sm:text-lg ">
                                     {getHostnameFromMarkdownLink(
                                       instance?.Instance,
                                     )}
@@ -542,7 +497,8 @@ export default function Register() {
                                 </div>
                                 <div className="flex w-full flex-row items-center gap-2">
                                   <span className="snack text-xs">
-                                    {instance.Users} active users
+                                    {FormatNumber(instance.Users, true)}
+                                    <span className="material-symbols-outlined">person</span>
                                   </span>
                                   {instance.Adult == "Yes" && (
                                     <span className="text-xs text-red-50">
@@ -568,6 +524,7 @@ export default function Register() {
           )}
         </AnimatePresence>
 
+        {/* Review info */}
         <AnimatePresence mode="popLayout">
           {step == 2 && (
             <motion.div
@@ -594,113 +551,65 @@ export default function Register() {
                   onSubmit={(e) => handleSubmit(e)}
                   className={`${styles.loginWrapper} w-full`}
                 >
-                  <div className={`${styles.inputWrapper}`}>
-                    <label>Username</label>
-                    <input
-                      placeholder="cool_username"
-                      className={`${
-                        badUsername || signupError
-                          ? styles.inputError
-                          : styles.input
-                      } `}
-                      type="text"
-                      value={form?.username}
-                      disabled
-                    />
-                    <span className="text-xs font-bold text-red-500">
-                      {usernameErrorText}
-                    </span>
-                  </div>
+ 
+                  <Input 
+                    label="Username" 
+                    variant="bordered" 
+                    color="primary" 
+                    required
+                    disabled={loading}
+                    labelPlacement="inside" 
+                    value={form.username || ""}
+                    onChange={(e) => setForm({ ...form, username: e.currentTarget.value })}
+                    errorMessage={form.username?.length > 0 && usernameErrorText}
+                  />
 
-                  <div className={`${styles.inputWrapper}`}>
-                    <label>Email</label>
-                    <input
-                      placeholder="your@email.com"
-                      className={`${styles.input}`}
-                      disabled
-                      type="email"
-                      value={form?.email}
-                    />
-                    <span className="text-xs font-bold text-red-500">
-                      {emailErrorText}
-                    </span>
-                  </div>
+                  <Input 
+                    label="Email" 
+                    variant="bordered" 
+                    color="primary" 
+                    required
+                    disabled={loading}
+                    type="email"
+                    labelPlacement="inside" 
+                    value={form.email || ""}
+                    onChange={(e) => setForm({ ...form, email: e.currentTarget.value })}
+                    errorMessage={form.email?.length > 0 && emailErrorText}
+                  />
 
-                  <div className={`${styles.inputWrapper}`}>
-                    <label>Password</label>
-                    <span
-                      className={`text-xs font-bold ${
-                        passwordStrength < 10 && styles.weakPassword
-                      } ${passwordStrength > 50 && styles.passwordOk} ${
-                        passwordStrength > 90 && styles.passwordGood
-                      } ${passwordStrength == 100 && styles.passwordUltimate}`}
-                    >
-                      {form?.password?.length > 0 &&
-                        passwordStrength < 10 &&
-                        "Weak"}{" "}
-                      {passwordStrength > 50 && passwordStrength < 90 && "Good"}{" "}
-                      {passwordStrength > 90 &&
-                        passwordStrength != 100 &&
-                        "Strong"}{" "}
-                      {passwordStrength == 100 && "Very strong"}
-                    </span>
-                    <input
-                      placeholder="Subduing-Gnarly-Overarch"
-                      className={`${
-                        badPassword || signupError
-                          ? styles.inputError
-                          : styles.input
-                      }`}
-                      value={form?.password}
-                      disabled
-                      type="password"
-                    />
-                    <span className="text-xs font-bold text-red-500">
-                      {passwordErrorText}
-                    </span>
-                  </div>
+                  <Input 
+                    label="Password" 
+                    variant="bordered" 
+                    color={(form.password?.length > 0 && passwordStrength < 10) ? "danger" : "primary"}
+                    required
+                    disabled={loading}
+                    labelPlacement="inside" 
+                    type={isPasswordVisible ? "text" : "password"}
+                    defaultValue={form.password}
+                    onChange={(e) => setForm({ ...form, password: e.currentTarget.value })}
+                    errorMessage={form.password?.length > 0 && passwordStrengthText}
+                    endContent={
+                      <Button 
+                        variant="light"
+                        isIconOnly
+                        onClick={() => setIsPasswordVisible(!isPasswordVisible)}><span className="material-symbols-outlined">{isPasswordVisible ? "visibility_off" : "visibility"}</span></Button>
+                    }
+                  />
 
-                  <div
-                    className={`flex cursor-pointer select-none flex-row items-center gap-3`}
-                  >
-                    <input
-                      className="w-fit cursor-pointer"
-                      disabled
-                      type="checkbox"
-                      checked={form.showNSFW}
-                    />
-                    <label className="w-fit cursor-pointer">
-                      Show NSFW Content
-                    </label>
-                  </div>
 
-                  <div
-                    className={`flex select-none flex-row items-center gap-3`}
-                  >
-                    <input
-                      onChange={() =>
-                        setForm({ ...form, saveLogin: !form.saveLogin })
-                      }
-                      className="w-fit"
-                      type="checkbox"
-                      checked={form.saveLogin}
-                      disabled
-                    />
-                    <label className="w-fit">Save login</label>
-                  </div>
+                  <Checkbox isSelected={form.showNSFW} >Show NSFW Content</Checkbox>
+                  <Checkbox isSelected={form.saveLogin} defaultChecked isDisabled >Save login</Checkbox>
+                  <span className="text-xs text-neutral-700 dark:text-neutral-400">Temporary login is not support currently.</span>
 
-                  <div className={`${styles.inputWrapper} relative w-full`}>
-                    <label>Instance</label>
-                    <input
-                      placeholder={DEFAULT_INSTANCE}
-                      className={`${
-                        signupError ? styles.inputError : styles.input
-                      } w-full`}
-                      type="text"
-                      disabled
-                      value={form.instance}
-                    />
-                  </div>
+                  <Input 
+                      label="Instsance" labelPlacement="inside"
+                      variant="bordered"
+                      color="primary"
+                      required
+                      disabled={loading}
+                      value={form.instance || ""}
+                      onChange={(e) => setForm({ ...form, instance: e.currentTarget.value })}
+                  />
 
                   <div className="flex flex-col">
                     <div className="flex flex-col gap-2">
@@ -710,16 +619,15 @@ export default function Register() {
                         alt=""
                       />
 
-                      <div className={`${styles.inputWrapper}`}>
-                        <label>Captcha</label>
-                        <input
-                          className={`${styles.input}`}
-                          onChange={(e) =>
-                            setForm({ ...form, captcha: e.target.value })
-                          }
-                          type="text"
-                        />
-                      </div>
+                      <Input 
+                        label="Captcha" labelPlacement="inside"
+                        variant="bordered"
+                        color="primary"
+                        required
+                        disabled={loading}
+                        value={form.captcha || ""}
+                        onChange={(e) => setForm({ ...form, captcha: e.currentTarget.value })}
+                      />
                     </div>
                   </div>
 
@@ -736,6 +644,7 @@ export default function Register() {
         </AnimatePresence>
       </div>
 
+      {/* Signup complete */}
       <AnimatePresence>
         {signupComplete && (
           <motion.div

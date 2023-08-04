@@ -167,7 +167,6 @@ export default function Comments({
 
   useEffect(() => {
     if (commentResponse) {
-      console.log("Comment response mode", commentResponse);
       setReplyCommet(commentResponse.comment_view);
       setCommentsData({ comments: [commentResponse.comment_view] });
       return;

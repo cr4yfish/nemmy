@@ -8,6 +8,7 @@ import { useEffect, useState, FormEvent, useRef } from "react";
 import { disablePageScroll, enablePageScroll } from "scroll-lock";
 import { getTrendingCommunities, getTrendingTopics } from "@/utils/lemmy";
 import InfiniteScroll from "react-infinite-scroller";
+import { Tabs, Tab } from "@nextui-org/react";
 
 import { useSession } from "@/hooks/auth";
 
@@ -169,6 +170,15 @@ function TrendingTopic({
   );
 }
 
+function TabContent({ text, icon } : { text: string, icon: string }) {
+  return (
+    <div className="flex items-center gap-1">
+      <span className="material-symbols-outlined" style={{ fontSize: ".75rem" }}>{icon}</span> 
+      <span>{text}</span>
+    </div>
+  )
+}
+
 export default function SearchOverlay({
   handleCloseSearchOverlay,
 }: {
@@ -217,7 +227,7 @@ export default function SearchOverlay({
 
   // Update input value when user stops typing
   useEffect(() => {
-    if(searchLoading) return console.log("Not realoading, still loading results.");
+    if(searchLoading) return console.warn("Not realoading, still loading results.");
     if (currentSearch?.length == 0) return setIsSearching(false);
     const timer = setTimeout(async () => {
       if (currentSearch.length == 0) return;
@@ -242,7 +252,6 @@ export default function SearchOverlay({
   };
 
   const search = async ({ searchParams }: { searchParams: Search }): Promise<SearchResponse | undefined> => {
-    console.log("Searching page:", searchParams.page)
     setSearchLoading(true);
     try {
     // add a signature to the object to make typescript happy
@@ -276,7 +285,6 @@ export default function SearchOverlay({
   const handleLoadMore = async () => {
     if(!hasMore) return;
 
-    console.log("Loading more from page", currentPage);
 
     const data = await search({ searchParams: { 
       page: currentPage, 
@@ -284,7 +292,6 @@ export default function SearchOverlay({
       auth: session?.currentAccount?.jwt || undefined
     }})
     
-    console.log(currentPage, data);
 
     if(!data) return;
 
@@ -310,7 +317,6 @@ export default function SearchOverlay({
         break;  
     }
 
-    console.log("isEmpty", isEmpty, currentCategory);
 
     if(isEmpty) setHasMore(false);
 
@@ -406,18 +412,27 @@ export default function SearchOverlay({
 
         {isSearching && (
           <>
-          <div className="flex flex-row gap-2 py-5 w-full px-4 relative">
-            <Dropdown 
-              options={[{ label: "Posts", icon: "view_agenda" }, { label: "Communities", icon: "communities" }, { label: "Users", icon: "people" } ]} 
-              onChange={(option) => setCurrentCategory(option.label as "Posts" | "Communities" | "Users")}  
-            />
+          <div className="flex flex-row gap-2 py-5 w-full max-sm:px-4 relative justify-center items-center" style={{ maxWidth: "42rem" }}>
+
+            <Tabs
+              variant="underlined"
+              disabledKeys={["Users"]}
+              selectedKey={currentCategory} onSelectionChange={(key) => setCurrentCategory(key as "Posts" | "Communities" | "Users")}
+            >
+              <Tab key="Posts" title={<TabContent text="Posts" icon="edit" />}></Tab>
+              <Tab key="Communities" title={<TabContent text="Communities" icon="communities" />}></Tab>
+              <Tab key="Users" title={<TabContent text="Users" icon="person" />}></Tab>
+            </Tabs>
+
           </div>
+
+
           <div className="relative h-fit w-full max-w-full px-4 pb-10 overflow-auto">
             
             <InfiniteScroll
               pageStart={2}
               loadMore={handleLoadMore}
-              hasMore={true}
+              hasMore={hasMore}
               useWindow={false}
               loader={<div key={"loader"} className=" w-full h-20 flex justify-center items-center py-5"><ClipLoader size={20} color="#e6b0fa" /></div>}
               className="flex flex-col gap-2 relative h-fit"

@@ -10,12 +10,15 @@ import PostList from "../PostList";
 import RenderMarkdown from "../ui/RenderMarkdown";
 import SiteInfoCard from "../SiteInfoCard";
 
+import { Account } from "@/utils/authFunctions";
+
 export default function FeedPage({
   fetchParams,
   initPosts,
   instance,
   jwt,
   siteResponse,
+  currentAccount
 }: {
   fetchParams?: {
     type_?: ListingType;
@@ -31,10 +34,11 @@ export default function FeedPage({
   instance: string;
   jwt?: string;
   siteResponse: GetSiteResponse | null;
+  currentAccount?: Account;
 }) {
   return (
     <div className="flex flex-row justify-center gap-2 max-lg:gap-0 w-full">
-      <PostList fetchParams={fetchParams} initPosts={initPosts} />
+      <PostList fetchParams={fetchParams} initPosts={initPosts} style={currentAccount?.settings?.cardType || "modern"} />
 
       <SiteInfoCard siteResponse={siteResponse} />
     </div>

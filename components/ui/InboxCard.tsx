@@ -54,7 +54,6 @@ export default function InboxCard({
   useEffect(() => {
     if (loading || !auth || !instance) return;
     if (!isPostComment) {
-      console.log(reply);
       setLoading(true);
       const path = reply.comment.path.split(".");
       const parentId = parseInt(path[path.length - 2]);

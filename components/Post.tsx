@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { PostView } from "lemmy-js-client";
 import Link from "next/link";
+import { AnimatePresence, motion } from "framer-motion";
 
 import Username from "./User/Username";
 import Vote from "./Vote";
@@ -20,14 +21,14 @@ export default function Post({
   instance,
   auth,
   postInstance,
-  style="card"
+  style="modern"
 }: {
   post: PostView;
   onClick?: () => void;
   instance?: string;
   auth?: string;
   postInstance?: string;
-  style?: "card" | "compact"
+  style?: "modern" | "compact"
 }) {
   if (!post) throw new Error("Post is undefined");
 
@@ -39,17 +40,20 @@ export default function Post({
   //const postUrl = `https://${baseUrl}/post/${post.post.id}`;
 
   const postUrl = `/post/${post.post.id}?instance=${
-    postInstance || DEFAULT_INSTANCE
+    postInstance || new URL(DEFAULT_INSTANCE).host
   }&preload=true`;
 
   switch(style) {
-    case "card":
+    case "modern":
       return (
         <>
-          <div
+          <motion.div
             className={`card ${styles.wrapper} items-start justify-start `}
             key={post.post.id}
             id={`${post.post.id.toString()}@${baseUrl}`}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
           >
             <div className="max-md:hidden">
               <Vote post={post} />
@@ -258,17 +262,19 @@ export default function Post({
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
         </>
       );
 
     case "compact":
       return (
         <>
-          <div
-            className={`card ${styles.wrapper} flex-row justify-between items-center `}
+          <motion.div  className={`card ${styles.wrapper} dark:rounded-xl flex-row justify-between items-center `}
             key={post.post.id}
             id={`${post.post.id.toString()}@${baseUrl}`}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
           >
             <div className={`${styles.rightSide}`}>
               <div className={`${styles.header}`}>
@@ -401,7 +407,7 @@ export default function Post({
                 </Link>
               )}
             </div>
-          </div>
+          </motion.div>
         </>
       );
   }
