@@ -21,7 +21,7 @@ import { DEFAULT_INSTANCE } from "@/constants/settings";
 import Logo from "@/components/Logo";
 
 import { useNavbar } from "@/hooks/navbar";
-import { useSession } from "@/hooks/auth";
+import { defaultState, useSession } from "@/hooks/auth";
 
 import styles from "@/styles/Pages/LoginPage.module.css";
 
@@ -266,6 +266,7 @@ export default function Register() {
         jwt: res.jwt,
         user: user.my_user!.local_user_view,
         site: user,
+        settings: defaultState.settings
       },
     });
 
