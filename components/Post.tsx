@@ -47,13 +47,10 @@ export default function Post({
     case "modern":
       return (
         <>
-          <motion.div
+          <div
             className={`card ${styles.wrapper} items-start justify-start `}
             key={post.post.id}
             id={`${post.post.id.toString()}@${baseUrl}`}
-            initial={{ opacity: 0, y: 0 }}
-            animate={{ opacity: 1, y: 0, transition: { bounce: 0 } }}
-            exit={{ opacity: 0, y: 0}}
           >
             <div className="max-md:hidden">
               <Vote post={post} />
@@ -262,7 +259,7 @@ export default function Post({
                 </div>
               </div>
             </div>
-          </motion.div>
+          </div>
         </>
       );
 
