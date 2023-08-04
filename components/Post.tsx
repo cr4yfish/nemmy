@@ -51,9 +51,9 @@ export default function Post({
             className={`card ${styles.wrapper} items-start justify-start `}
             key={post.post.id}
             id={`${post.post.id.toString()}@${baseUrl}`}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
+            initial={{ opacity: 0, y: 0 }}
+            animate={{ opacity: 1, y: 0, transition: { bounce: 0 } }}
+            exit={{ opacity: 0, y: 0}}
           >
             <div className="max-md:hidden">
               <Vote post={post} />
@@ -269,12 +269,9 @@ export default function Post({
     case "compact":
       return (
         <>
-          <motion.div  className={`card ${styles.wrapper} dark:rounded-xl flex-row justify-between items-center `}
+          <div  className={`card ${styles.wrapper} flex-row justify-between items-center `}
             key={post.post.id}
             id={`${post.post.id.toString()}@${baseUrl}`}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
           >
             <div className={`${styles.rightSide}`}>
               <div className={`${styles.header}`}>
@@ -407,7 +404,7 @@ export default function Post({
                 </Link>
               )}
             </div>
-          </motion.div>
+          </div>
         </>
       );
   }

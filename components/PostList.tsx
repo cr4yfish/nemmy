@@ -3,7 +3,7 @@
 import { useState, useEffect, cache } from "react";
 import { CommunityId, ListingType, PostView, SortType } from "lemmy-js-client";
 import InfiniteScroll from "react-infinite-scroller";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import va from "@vercel/analytics"
 
 import { useSession } from "@/hooks/auth";
@@ -143,15 +143,24 @@ export default function PostList({
         >
           {posts.map((post: PostView, index: number) => {
             return (
-              <Post
-                onClick={() => handleClickPost(post)}
-                post={post}
-                instance={session.currentAccount?.instance}
-                auth={session.currentAccount?.jwt}
-                key={index}
-                postInstance={new URL(post.post.ap_id).host}
-                style={style}
-              />
+              <AnimatePresence key={index}>
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  className=" w-full"
+                >
+                  <Post
+                    onClick={() => handleClickPost(post)}
+                    post={post}
+                    instance={session.currentAccount?.instance}
+                    auth={session.currentAccount?.jwt}
+                    key={index}
+                    postInstance={new URL(post.post.ap_id).host}
+                    style={session.settings.cardType || style || "modern"}
+                  />
+                </motion.div>
+              </AnimatePresence>
             );
           })}
 
