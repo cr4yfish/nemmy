@@ -139,10 +139,10 @@ export default function PostPage({
               {postData?.post?.url &&
                 !postData?.post?.url?.endsWith(".html") && (
                   <div id="image" className={`${styles.postBodyMedia}`}>
-                    <span>{postData.post.url}</span>
                     {postData?.post?.url && (
                       <AutoMediaType url={postData?.post?.url} />
                     )}
+                    <Link href={postData.post.url} className="a">{new URL(postData.post.url).host}</Link>
                   </div>
                 )}
 
