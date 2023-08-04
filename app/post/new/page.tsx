@@ -277,7 +277,11 @@ export default function New() {
                     }
                     type="text"
                     placeholder="An interesting title"
-                    className={`${styles.input}`}
+                    className={`w-full rounded-lg bg-transparent 
+                    p-2 text-3xl font-bold 
+                    underline decoration-fuchsia-500 outline-none
+                    dark:text-neutral-100
+                    max-sm:text-2xl`}
                   />
                 </div>
 
@@ -419,7 +423,11 @@ export default function New() {
                     }
                     type="text"
                     placeholder="An interesting title"
-                    className={`${styles.input}`}
+                    className={`w-full rounded-lg bg-transparent 
+                    p-2 text-3xl font-bold 
+                    underline decoration-fuchsia-500 outline-none
+                    dark:text-neutral-100
+                    max-sm:text-2xl`}
                   />
                 </div>
                 <MdTextarea readonly defaultValue={form.body} />
