@@ -80,7 +80,9 @@ export default function CommunityPage({
 
   return (
     <>
-      <div className={`${styles.bannerOverlay} mt-20`}></div>
+      <div className={`${styles.bannerOverlay} absolute top-0 h-full w-full
+    bg-gradient-to-b from-transparent 
+    to-neutral-50 dark:to-neutral-950 mt-20`}></div>
       <Image
         height={200}
         width={500}
@@ -88,7 +90,11 @@ export default function CommunityPage({
         alt=""
         className={`${styles.banner}`}
       />
-      <div className={`${styles.headerWrapper}`}>
+      <div className={`mt-20 flex flex-col flex-wrap items-center bg-gradient-to-b
+    from-neutral-50/50
+    to-neutral-50 
+    pt-2 backdrop-blur-sm
+    dark:from-neutral-950/50 dark:to-neutral-950`}>
         <div className="flex max-w-xl flex-row flex-wrap items-center gap-4 p-6 max-md:w-full">
           <Image
             height={40}
@@ -124,7 +130,8 @@ export default function CommunityPage({
           {communityData?.community_view?.subscribed == "NotSubscribed" && (
             <button
               onClick={() => subscribe()}
-              className={`${styles.subscribeButton}`}
+              className={`rounded-lg bg-fuchsia-200 p-4
+              font-medium text-fuchsia-950`}
             >
               {subscribeLoading ? (
                 <ClipLoader color={"#e6b0fa"} size={20} />
@@ -138,20 +145,23 @@ export default function CommunityPage({
         <div className={`${styles.description}`}>
           <button
             onClick={() => setDescriptionExpanded(true)}
-            className={`${styles.expandButton} ${
+            className={`absolute bottom-6
+            rounded-lg bg-fuchsia-100 p-4
+            font-medium text-fuchsia-950 ${
               descriptionExpanded && "hidden"
-            }`}
+            }`} style={{ zIndex: 2 }}
           >
             Tap to expand
           </button>
           <div
-            className={`${styles.descriptionOverlay}  ${
+            className={`absolute h-full w-full
+            bg-gradient-to-b from-transparent to-neutral-50 dark:to-neutral-950  ${
               descriptionExpanded && "hidden"
-            }`}
+            }`} style={{ zIndex: 1 }}
           ></div>
           <div
             className={`${styles.descriptionContent} ${
-              descriptionExpanded && styles.descriptionContentExpanded
+              descriptionExpanded && "bg-neutral-50 dark:bg-neutral-950 line-clamp-none "
             } `}
           >
             <span className="font-bold">Community Description</span>
@@ -187,19 +197,18 @@ export default function CommunityPage({
         </div>
       </div>
 
-      <div className={`${styles.sortsWrapper} bg-neutral-200 dark:bg-neutral-900 dark:text-neutral-300`}>
+      <div className={`flex flex-row flex-wrap items-center justify-center bg-neutral-200 px-28 py-4
+    dark:bg-neutral-900 dark:text-neutral-300
+     max-md:p-6`}>
         <div className="flex flex-row justify-between items-center max-w-2xl px-4 w-full">
           <SortButton onChange={(newSort) => setCurrentSort(newSort as SortType)} />
-
-          <div className="flex items-center">
-            <span className="material-symbols-outlined">view_day</span>
-          </div>
         </div>
 
       </div>
 
       <div
-        className={`${styles.postsWrapper} flex w-full items-center justify-center`}
+        className={`bg-neutral-50 dark:bg-neutral-950
+        dark:pt-4; flex w-full items-center justify-center`}
       >
         <PostList
           fetchParams={{
