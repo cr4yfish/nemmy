@@ -39,13 +39,11 @@ export default function FeedPage({
 }) {
   return (
     <div className="flex w-full flex-row justify-center gap-2 max-lg:gap-0">
-
       <PostList fetchParams={fetchParams} initPosts={initPosts} />
 
-      <div className="pt-2 mt-16">
+      <div className="mt-16 pt-2">
         <SiteInfoCard siteResponse={siteResponse} />
       </div>
-      
     </div>
   );
 }

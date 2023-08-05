@@ -508,13 +508,25 @@ export default function SearchOverlay({
                   ))}
 
                 {currentCategory == "Users" &&
-                  searchResults.users?.filter((user, index) => searchResults.users.findIndex((u) => u.person.id == user.person.id) == index).map((result, index) => (
-                    <div key={index}>
-                      <Link onClick={handleClose} href={`/u/${result.person.name}@${new URL(result.person.actor_id).host}`}>
-                        <UserCard userData={result} />
-                      </Link>
-                    </div>
-                ))}
+                  searchResults.users
+                    ?.filter(
+                      (user, index) =>
+                        searchResults.users.findIndex(
+                          (u) => u.person.id == user.person.id,
+                        ) == index,
+                    )
+                    .map((result, index) => (
+                      <div key={index}>
+                        <Link
+                          onClick={handleClose}
+                          href={`/u/${result.person.name}@${
+                            new URL(result.person.actor_id).host
+                          }`}
+                        >
+                          <UserCard userData={result} />
+                        </Link>
+                      </div>
+                    ))}
 
                 {!hasMore && <EndlessScrollingEnd />}
               </InfiniteScroll>

@@ -59,7 +59,7 @@ export function AutoMediaType({
           height={500}
           width={500}
           style={{ width: "100%", height: "auto", objectFit: "cover" }}
-          className=" w-full h-full"
+          className=" h-full w-full"
         />
       </div>
     );

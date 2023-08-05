@@ -53,10 +53,9 @@ export default function Post({
       return (
         <>
           <div
-            className={`card ${styles.wrapper} flex-row items-start justify-start gap-4 bg-neutral-50 dark:bg-neutral-900 dark:border-neutral-700 hover:bg-neutral-100 dark:hover:bg-neutral-900 dark:hover:border-neutral-600 `}
+            className={`card ${styles.wrapper} flex-row items-start justify-start gap-4 bg-neutral-50 hover:bg-neutral-100 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:border-neutral-600 dark:hover:bg-neutral-900 `}
             key={post.post.id}
             id={`${post.post.id.toString()}@${baseUrl}`}
-            
           >
             <div className="max-md:hidden">
               <Vote post={post} />
@@ -219,7 +218,7 @@ export default function Post({
                     {/* Display Thumbnail */}
                     {post.post.thumbnail_url && (
                       <Link
-                        className={` w-full h-full relative overflow-hidden min-h-max rounded-xl self-center object-cover place-self-center`}
+                        className={` relative h-full min-h-max w-full place-self-center self-center overflow-hidden rounded-xl object-cover`}
                         href={post.post.thumbnail_url}
                         target="_blank"
                         rel="noopener noreferrer"
@@ -236,7 +235,9 @@ export default function Post({
 
                 {/* Post has post url and no embedding,thus the url has to link to an Image -> Display Image */}
                 {post?.post?.url && !post?.post?.embed_title && (
-                  <div className={` w-full h-full relative overflow-hidden min-h-max rounded-xl self-center object-cover place-self-center`}>
+                  <div
+                    className={` relative h-full min-h-max w-full place-self-center self-center overflow-hidden rounded-xl object-cover`}
+                  >
                     <AutoMediaType
                       url={post?.post?.url}
                       alt={post.post.name}
@@ -298,8 +299,8 @@ export default function Post({
         <>
           <div
             className={`card ${styles.wrapper}
-            bg-neutral-50 dark:bg-neutral-900 border-neutral-200 dark:border-neutral-700
-             flex-col items-start justify-start gap-2 py-2 `}
+            flex-col items-start justify-start gap-2
+             border-neutral-200 bg-neutral-50 py-2 dark:border-neutral-700 dark:bg-neutral-900 `}
             key={post.post.id}
             id={`${post.post.id.toString()}@${baseUrl}`}
           >

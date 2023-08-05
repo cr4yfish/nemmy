@@ -2,7 +2,7 @@ import { AnimatePresence, motion } from "framer-motion";
 
 export default function Loader() {
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -10 }}
@@ -13,10 +13,10 @@ export default function Loader() {
         rounded-lg
         bg-neutral-50 p-4
         shadow-md
+        dark:border-neutral-700
         dark:bg-neutral-900
         dark:shadow-md
-        dark:border-neutral-700
-      `} 
+      `}
       style={{ width: "640px" }}
       key={"loader"}
     >

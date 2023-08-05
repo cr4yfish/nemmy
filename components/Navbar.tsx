@@ -356,9 +356,7 @@ export default function Navbar() {
       </AnimatePresence>
 
       <AnimatePresence>
-        {menu && (
-          <LeftSideMenu handleMenuClose={handleMenuClose}/>
-        )}
+        {menu && <LeftSideMenu handleMenuClose={handleMenuClose} />}
       </AnimatePresence>
 
       <AnimatePresence>
