@@ -28,6 +28,7 @@ import Community from "../Community";
 import EndlessScrollingEnd from "../ui/EndlessSrollingEnd";
 
 import Dropdown from "../ui/Dropdown";
+import UserCard from "../User/UserCard";
 
 function TrendingCommunity({
   community,
@@ -253,7 +254,7 @@ export default function SearchOverlay({
       setHasMore(true);
       handleLoadMore();
       setIsSearching(true);
-    }, 250);
+    }, 1000);
 
     return () => clearTimeout(timer);
   }, [currentSearch]);
@@ -453,7 +454,6 @@ export default function SearchOverlay({
             >
               <Tabs
                 variant="underlined"
-                disabledKeys={["Users"]}
                 selectedKey={currentCategory}
                 onSelectionChange={(key) =>
                   setCurrentCategory(key as "Posts" | "Communities" | "Users")
@@ -506,6 +506,15 @@ export default function SearchOverlay({
                       <Community community={result} onClick={handleClose} />
                     </div>
                   ))}
+
+                {currentCategory == "Users" &&
+                  searchResults.users?.filter((user, index) => searchResults.users.findIndex((u) => u.person.id == user.person.id) == index).map((result, index) => (
+                    <div key={index}>
+                      <Link onClick={handleClose} href={`/u/${result.person.name}@${new URL(result.person.actor_id).host}`}>
+                        <UserCard userData={result} />
+                      </Link>
+                    </div>
+                ))}
 
                 {!hasMore && <EndlessScrollingEnd />}
               </InfiniteScroll>
