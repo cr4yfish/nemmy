@@ -66,6 +66,7 @@ export default function Post({
                       }`}
                       target="_blank"
                       className={`${styles.communityImage}`}
+                      style={{ width: "50px", height: "50px" }}
                     >
                       {post?.community?.icon ? (
                         <Image
