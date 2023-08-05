@@ -45,6 +45,8 @@ export default function Post({
     postInstance || new URL(DEFAULT_INSTANCE).host
   }&preload=true`;
 
+  const isPoll = post.post.name.toLowerCase().startsWith("[poll]");
+
   switch (style) {
     case "modern":
       return (

@@ -35,7 +35,7 @@ function UserStat({ text, icon }: { text: string; icon: string }) {
   return (
     <>
       <div className={"flex flex-row flex-wrap gap-4 text-xs"}>
-        <div className={`flex flex-row items-center gap-1`}>
+        <div className={`flex flex-row items-center gap-1 text-neutral-300 `}>
           <span
             className="material-symbols-outlined"
             style={{ fontSize: "1rem" }}
@@ -176,11 +176,11 @@ export default function UserPage({
 
   return (
     <>
-      <div className="mt-20 flex min-h-screen flex-col items-center overflow-x-hidden">
+      <div className="mt-20 flex min-h-screen flex-col items-center overflow-x-hidden ">
         <div className={`${styles.userDetailsWrapper} `}>
           <div className={`${styles.userDetails}`}>
-            <div className="relative flex w-full flex-col gap-2 overflow-hidden rounded-lg p-4">
-              <div className={`${styles.bannerOverlay} `}></div>
+            <div className="relative flex w-full flex-col gap-2 overflow-hidden rounded-lg p-4 z-10" style={{  zIndex: "1"}}>
+              <div className={`${styles.bannerOverlay} absolute left-0 top-0 h-full w-full bg-neutral-900/25 backdrop-blur-sm `}></div>
               {userData?.person_view?.person?.banner && (
                 <Image
                   height={200}
@@ -201,12 +201,12 @@ export default function UserPage({
 
               <div className="flex flex-col gap-2">
                 <div className="flex flex-col gap-0">
-                  <h1 className=" text-3xl font-bold">
-                    {userData?.person_view?.person?.display_name}
+                  <h1 className=" text-3xl font-bold text-neutral-100">
+                    {userData?.person_view?.person?.display_name || userData.person_view.person.name}
                   </h1>
 
                   <div className="flex flex-row items-center gap-4 max-sm:text-xs">
-                    <span className="flex items-center justify-center font-light">
+                    <span className="flex items-center justify-center font-light text-neutral-300">
                       @{userData?.person_view?.person?.name}
                     </span>
                   </div>

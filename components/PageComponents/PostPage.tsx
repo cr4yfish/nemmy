@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { CommentResponse, PostView } from "lemmy-js-client";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { BarChart, Card, Title, Subtitle } from "@tremor/react";
 
 import { useNavbar } from "@/hooks/navbar";
 
@@ -41,6 +42,7 @@ export default function PostPage({
   const { navbar, setNavbar } = useNavbar();
 
   const [postData, setPostData] = useState<PostView>(data || ({} as PostView));
+  const [isPoll, setIsPoll] = useState<boolean>(false);
 
   useEffect(() => {
     const localStoragePost = localStorage.getItem("currentPost");
@@ -54,7 +56,9 @@ export default function PostPage({
       const pathname = window.location.pathname.split("?")[0];
       history.replaceState({}, "", pathname);
     }
-    console.log(postData);
+
+    setIsPoll(postData?.post.name.toLowerCase().startsWith("[poll]"));
+
     setNavbar({
       ...navbar!,
       showSort: false,
@@ -203,6 +207,33 @@ export default function PostPage({
                 </div>
               )}
             </div>
+
+            {/* Has a poll */}
+            {isPoll &&
+            <>
+              <Card>
+                <Title>Poll</Title>
+                <Subtitle>Vote by upvoting/downvoting</Subtitle>
+                <BarChart 
+                      className="mt-6"
+                      data={[
+                        {
+                          name: "Upvotes",
+                          "Upvotes": postData.counts.upvotes,
+                        },
+                        {
+                          name: "Downvotes",
+                          "Downvotes": postData.counts.downvotes,
+                        }
+                      ]}
+                      index="name"
+                      categories={["Upvotes", "Downvotes"]}
+                      colors={["blue", "orange"]}
+                      yAxisWidth={48}
+                />
+              </Card>
+            </>
+            }
 
             <div className={`${styles.postInteractions}`}>
               {postData?.counts && <Vote post={postData} horizontal />}
