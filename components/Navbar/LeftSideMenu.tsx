@@ -21,17 +21,14 @@ import { CommunityView } from "lemmy-js-client";
 
 export default function LeftSideMenu({
   handleMenuClose,
-  setCommunitySearch,
-  communitySearch,
 }: {
-  handleMenuClose: any;
-  setCommunitySearch: any;
-  communitySearch: any;
+  handleMenuClose?: any;
 }) {
   const { session } = useSession();
   const [showSiteInfo, setShowSiteInfo] = useState(false);
   const [communities, setCommunities] = useState<CommunityView[]>([]);
   const [hasMore, setHasMore] = useState(true);
+  const [communitySearch, setCommunitySearch] = useState<string>("");
 
   useEffect(() => {
     disablePageScroll();

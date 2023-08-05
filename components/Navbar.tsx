@@ -143,7 +143,6 @@ export default function Navbar() {
   const [userMenu, setUserMenu] = useState(false);
 
   const [menu, setMenu] = useState(false);
-  const [communitySearch, setCommunitySearch] = useState<string>("");
 
   const [searchOverlay, setSearchOverlay] = useState(false);
 
@@ -358,11 +357,7 @@ export default function Navbar() {
 
       <AnimatePresence>
         {menu && (
-          <LeftSideMenu
-            handleMenuClose={handleMenuClose}
-            setCommunitySearch={setCommunitySearch}
-            communitySearch={communitySearch}
-          />
+          <LeftSideMenu handleMenuClose={handleMenuClose}/>
         )}
       </AnimatePresence>
 
