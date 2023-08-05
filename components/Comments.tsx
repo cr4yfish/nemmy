@@ -66,11 +66,11 @@ export default function Comments({
   const [showReply, setShowReply] = useState<boolean>(false);
 
   const [currentCommentsPage, setCurrentCommentsPage] = useState<number>(1);
-  const [currentCommentSort, setCurrentCommentSort] = useState<CommentSortType>("Hot");
+  const [currentCommentSort, setCurrentCommentSort] =
+    useState<CommentSortType>("Hot");
   const [forceCommentUpdate, setForceCommentUpdate] = useState<number>(0);
   const [commentsLoading, setCommentsLoading] = useState<boolean>(true);
   const [hasMoreComments, setHasMoreComments] = useState<boolean>(true);
-
 
   // commentReplyMode
   const [parentId, setParentId] = useState<number | undefined>(undefined);
@@ -125,7 +125,7 @@ export default function Comments({
   useEffect(() => {
     setCommentsData({} as GetCommentsResponse);
     setCurrentCommentsPage(1);
-  }, [currentCommentSort])
+  }, [currentCommentSort]);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -221,8 +221,10 @@ export default function Comments({
 
         // filter out duplicates
         const uniqueComments = filtered.filter((c, index) => {
-          return filtered.findIndex((c2) => c2.comment.id == c.comment.id) == index;
-        })
+          return (
+            filtered.findIndex((c2) => c2.comment.id == c.comment.id) == index
+          );
+        });
 
         if (uniqueComments.length == 0) {
           console.warn(
@@ -253,9 +255,9 @@ export default function Comments({
         {/* desktop comments textarea */}
         <form
           onSubmit={(e) => handleSubmit(e)}
-          className={`${styles.textarea} bg-neutral-50 text-neutral-900 dark:bg-neutral-900 dark:text-neutral-50  max-w-3xl max-md:w-full max-sm:p-2`}
+          className={`${styles.textarea} max-w-3xl bg-neutral-50 text-neutral-900 dark:bg-neutral-900  dark:text-neutral-50 max-md:w-full max-sm:p-2`}
         >
-          <MdTextarea 
+          <MdTextarea
             defaultValue={replyCommentText}
             onChange={(newText) => setReplyCommentText(newText)}
             placeholder="What are your thoughts?..."
@@ -297,17 +299,19 @@ export default function Comments({
         />
 
         <div
-          className={`${styles.comments} mb-24 max-w-3xl max-md:w-full max-sm:p-2 relative`}
+          className={`${styles.comments} relative mb-24 max-w-3xl max-md:w-full max-sm:p-2`}
         >
           <div className="px-2">
             {commentsData?.comments?.length > 0 && (
-              <SortButton 
-                type="comment" defaultOption={currentCommentSort}
-                onChange={(sort) => setCurrentCommentSort(sort as CommentSortType)}
+              <SortButton
+                type="comment"
+                defaultOption={currentCommentSort}
+                onChange={(sort) =>
+                  setCurrentCommentSort(sort as CommentSortType)
+                }
               />
             )}
           </div>
-
 
           {/* Comments  */}
           {commentResponse ? (

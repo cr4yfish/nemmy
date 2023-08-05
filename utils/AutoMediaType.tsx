@@ -13,7 +13,7 @@ function NSFWRBlurRender({ defaultState = false }: { defaultState?: boolean }) {
     <>
       <button
         onClick={() => setNsfwBlur(false)}
-        className={`absolute left-0 top-0 flex h-full w-full flex-col items-center justify-center gap-2 transition-all duration-200 ${
+        className={`absolute left-0 top-0 flex h-full w-full flex-col items-center justify-center gap-2 duration-200 transition-all ${
           nsfwBlur ? styles.blurOn : styles.blurOff
         }`}
         style={{ zIndex: "10" }}
@@ -23,7 +23,7 @@ function NSFWRBlurRender({ defaultState = false }: { defaultState?: boolean }) {
         <span>Tap to view NSFW content</span>
       </button>
       <div
-        className={`absolute h-full w-full overflow-hidden rounded-lg backdrop-blur-2xl transition-all duration-200 ${
+        className={`absolute h-full w-full overflow-hidden rounded-lg backdrop-blur-2xl duration-200 transition-all ${
           nsfwBlur ? styles.blurOn : styles.blurOff
         }`}
       ></div>

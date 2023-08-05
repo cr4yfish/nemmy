@@ -168,8 +168,8 @@ export default function WriteCommentOverlay({
             </div>
           </div>
         )}
-        
-        <MdTextarea 
+
+        <MdTextarea
           placeholder="What are your toughts?..."
           defaultValue={replyCommentText}
           onChange={(newText) => setReplyCommentText(newText)}

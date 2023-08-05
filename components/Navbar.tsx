@@ -1,24 +1,19 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 import { useEffect, useState } from "react";
-import {
-  ListingType,
-  SortType,
-} from "lemmy-js-client";
+import { ListingType, SortType } from "lemmy-js-client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { AnimatePresence } from "framer-motion";
-import va from "@vercel/analytics"
+import va from "@vercel/analytics";
 
 import { DEFAULT_INSTANCE, DEFAULT_AVATAR } from "@/constants/settings";
 
 import { useSession } from "@/hooks/auth";
 import { useNavbar, NavbarState } from "@/hooks/navbar";
 
-import {
-  getUnreadCount,
-} from "@/utils/lemmy";
+import { getUnreadCount } from "@/utils/lemmy";
 
 import UserMenu from "./Navbar/UserMenu";
 import LeftSideMenu from "./Navbar/LeftSideMenu";
@@ -142,7 +137,7 @@ function FilterButton({
 export default function Navbar() {
   const { session, setSession } = useSession();
   const { navbar, setNavbar } = useNavbar();
-  
+
   const [filterClicked, setFilterClicked] = useState(false);
   const [sortOptions, setSortOptions] = useState(false);
   const [userMenu, setUserMenu] = useState(false);
@@ -155,7 +150,6 @@ export default function Navbar() {
   const [unreadCount, setUnreadCount] = useState(0);
 
   const router = useRouter();
-
 
   useEffect(() => {
     if (session.pendingAuth || !session?.currentAccount) return;
@@ -185,14 +179,18 @@ export default function Navbar() {
   };
 
   const handleUserMenuOpen = async () => {
-    va.track("user-menu-open", { instance: session?.currentAccount?.instance || DEFAULT_INSTANCE })
+    va.track("user-menu-open", {
+      instance: session?.currentAccount?.instance || DEFAULT_INSTANCE,
+    });
     handleFilterOverlayClose();
     disablePageScroll();
     setUserMenu(true);
   };
 
   const handleMenuOpen = async () => {
-    va.track("menu-open", { instance: session?.currentAccount?.instance || DEFAULT_INSTANCE })
+    va.track("menu-open", {
+      instance: session?.currentAccount?.instance || DEFAULT_INSTANCE,
+    });
     handleFilterOverlayClose();
     disablePageScroll();
     setMenu(true);
@@ -214,12 +212,13 @@ export default function Navbar() {
 
   return (
     <>
-      <nav 
+      <nav
         className={`
           ${styles.wrapper} 
-          bg-neutral-50/25  dark:bg-neutral-950/25 border-neutral-200 dark:border-neutral-800
+          border-neutral-200  bg-neutral-50/25 dark:border-neutral-800 dark:bg-neutral-950/25
           ${navbar?.hidden && "hidden"} 
-        `}>
+        `}
+      >
         <div className="flex flex-row items-center gap-6">
           <Link href="/" className={styles.logo}>
             Nemmy
@@ -257,7 +256,7 @@ export default function Navbar() {
 
             {navbar?.showFilter && (
               <button
-                className={`${styles.navButton} bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-400 text-neutral-900`}
+                className={`${styles.navButton} bg-neutral-200 text-neutral-900 dark:bg-neutral-800 dark:text-neutral-400`}
                 onClick={() => {
                   setFilterClicked(!filterClicked);
                   setSortOptions(false);
@@ -279,7 +278,7 @@ export default function Navbar() {
 
             {navbar?.showSort && (
               <button
-                className={`${styles.navButton} bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-400 text-neutral-900`}
+                className={`${styles.navButton} bg-neutral-200 text-neutral-900 dark:bg-neutral-800 dark:text-neutral-400`}
                 onClick={() => {
                   setSortOptions(!sortOptions);
                   handleUserMenuClose();
@@ -308,7 +307,10 @@ export default function Navbar() {
               className="flex items-center justify-center text-neutral-900 dark:text-neutral-100"
               onClick={() => {
                 setSearchOverlay(true);
-                va.track("search-open", { instance: session?.currentAccount?.instance || DEFAULT_INSTANCE })
+                va.track("search-open", {
+                  instance:
+                    session?.currentAccount?.instance || DEFAULT_INSTANCE,
+                });
               }}
             >
               <span className="material-symbols-outlined">search</span>
@@ -350,9 +352,7 @@ export default function Navbar() {
 
       <AnimatePresence>
         {searchOverlay && (
-          <SearchOverlay
-            handleCloseSearchOverlay={handleCloseSearchOverlay}
-          />
+          <SearchOverlay handleCloseSearchOverlay={handleCloseSearchOverlay} />
         )}
       </AnimatePresence>
 
@@ -464,7 +464,9 @@ export default function Navbar() {
           handleUserMenuClose();
           handleMenuClose();
         }}
-        className={`${styles.overlay} bg-neutral-200/50 dark:bg-neutral-900/75 z-50 ${
+        className={`${
+          styles.overlay
+        } z-50 bg-neutral-200/50 dark:bg-neutral-900/75 ${
           (userMenu || menu) && styles.overlayActive
         }`}
       ></div>
@@ -473,7 +475,9 @@ export default function Navbar() {
       <div
         onTouchEnd={() => handleFilterOverlayClose()}
         onMouseUp={() => handleFilterOverlayClose()}
-        className={`${styles.overlay} bg-neutral-200/50 dark:bg-neutral-900/75 z-10 ${
+        className={`${
+          styles.overlay
+        } z-10 bg-neutral-200/50 dark:bg-neutral-900/75 ${
           (filterClicked || sortOptions) && styles.overlayActive
         }`}
       ></div>

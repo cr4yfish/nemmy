@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { CaptchaResponse } from "lemmy-js-client";
-import va from "@vercel/analytics"
+import va from "@vercel/analytics";
 import { Input, Button, Checkbox } from "@nextui-org/react";
 
 import { register, getCaptcha, getCuratedInstances } from "@/utils/lemmy";
@@ -65,7 +65,6 @@ const getHostnameFromMarkdownLink = (markdown: string) => {
     .replace("https://", "");
   return url;
 };
-
 
 export default function Register() {
   const [form, setForm] = useState<{
@@ -207,7 +206,7 @@ export default function Register() {
     } else if (passwordStrength == 100) {
       setPasswordStrengthText("Very strong");
     }
-  }, [passwordStrength])
+  }, [passwordStrength]);
 
   const validateForm = (): boolean => {
     const email = form.email,
@@ -231,12 +230,12 @@ export default function Register() {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    
+
     const isValid = validateForm();
     if (!isValid) return;
     if (!form.captcha || !form.instance) return;
 
-    va.track("signup", { instance: form.instance })
+    va.track("signup", { instance: form.instance });
 
     const res = await register(
       {
@@ -268,7 +267,7 @@ export default function Register() {
     if (!user) {
       alert("Could not get user data");
       setLoading(false);
-      va.track("error", { instance: form.instance })
+      va.track("error", { instance: form.instance });
       return;
     }
 
@@ -283,7 +282,7 @@ export default function Register() {
         jwt: res.jwt,
         user: user.my_user!.local_user_view,
         site: user,
-        settings: defaultState.settings
+        settings: defaultState.settings,
       },
     });
 
@@ -333,7 +332,6 @@ export default function Register() {
   return (
     <div className=" flex min-h-screen w-screen justify-center">
       <div className="flex h-full max-w-3xl flex-col items-center justify-between gap-24 pt-16 max-md:w-full ">
-
         {/* Add basic info */}
         <AnimatePresence mode="popLayout">
           {step == 0 && (
@@ -354,54 +352,82 @@ export default function Register() {
                   onSubmit={(e) => handleStep0(e)}
                   className={`${styles.loginWrapper}`}
                 >
-
-                  <Input 
-                    label="Username" 
-                    variant="bordered" 
-                    color="primary" 
+                  <Input
+                    label="Username"
+                    variant="bordered"
+                    color="primary"
                     required
                     disabled={loading}
-                    labelPlacement="inside" 
+                    labelPlacement="inside"
                     value={form.username || ""}
-                    onChange={(e) => setForm({ ...form, username: e.currentTarget.value })}
-                    errorMessage={form.username?.length > 0 && usernameErrorText}
-                  />
-
-                  <Input 
-                    label="Email" 
-                    variant="bordered" 
-                    color="primary" 
-                    required
-                    disabled={loading}
-                    type="email"
-                    labelPlacement="inside" 
-                    value={form.email || ""}
-                    onChange={(e) => setForm({ ...form, email: e.currentTarget.value })}
-                    errorMessage={form.email?.length > 0 && emailErrorText}
-                  />
-
-                  <Input 
-                    label="Password" 
-                    variant="bordered" 
-                    color={(form.password?.length > 0 && passwordStrength < 10) ? "danger" : "primary"}
-                    required
-                    disabled={loading}
-                    labelPlacement="inside" 
-                    type={isPasswordVisible ? "text" : "password"}
-                    defaultValue={form.password}
-                    onChange={(e) => setForm({ ...form, password: e.currentTarget.value })}
-                    errorMessage={form.password?.length > 0 && passwordStrengthText}
-                    endContent={
-                      <Button 
-                        variant="light"
-                        isIconOnly
-                        onClick={() => setIsPasswordVisible(!isPasswordVisible)}><span className="material-symbols-outlined">{isPasswordVisible ? "visibility_off" : "visibility"}</span></Button>
+                    onChange={(e) =>
+                      setForm({ ...form, username: e.currentTarget.value })
+                    }
+                    errorMessage={
+                      form.username?.length > 0 && usernameErrorText
                     }
                   />
 
-                  <Checkbox isSelected={form.showNSFW} >Show NSFW Content</Checkbox>
-                  <Checkbox isSelected={form.saveLogin} defaultChecked isDisabled >Save login</Checkbox>
-                  <span className="text-xs text-neutral-700 dark:text-neutral-400">Temporary login is not support currently.</span>
+                  <Input
+                    label="Email"
+                    variant="bordered"
+                    color="primary"
+                    required
+                    disabled={loading}
+                    type="email"
+                    labelPlacement="inside"
+                    value={form.email || ""}
+                    onChange={(e) =>
+                      setForm({ ...form, email: e.currentTarget.value })
+                    }
+                    errorMessage={form.email?.length > 0 && emailErrorText}
+                  />
+
+                  <Input
+                    label="Password"
+                    variant="bordered"
+                    color={
+                      form.password?.length > 0 && passwordStrength < 10
+                        ? "danger"
+                        : "primary"
+                    }
+                    required
+                    disabled={loading}
+                    labelPlacement="inside"
+                    type={isPasswordVisible ? "text" : "password"}
+                    defaultValue={form.password}
+                    onChange={(e) =>
+                      setForm({ ...form, password: e.currentTarget.value })
+                    }
+                    errorMessage={
+                      form.password?.length > 0 && passwordStrengthText
+                    }
+                    endContent={
+                      <Button
+                        variant="light"
+                        isIconOnly
+                        onClick={() => setIsPasswordVisible(!isPasswordVisible)}
+                      >
+                        <span className="material-symbols-outlined">
+                          {isPasswordVisible ? "visibility_off" : "visibility"}
+                        </span>
+                      </Button>
+                    }
+                  />
+
+                  <Checkbox isSelected={form.showNSFW}>
+                    Show NSFW Content
+                  </Checkbox>
+                  <Checkbox
+                    isSelected={form.saveLogin}
+                    defaultChecked
+                    isDisabled
+                  >
+                    Save login
+                  </Checkbox>
+                  <span className="text-xs text-neutral-700 dark:text-neutral-400">
+                    Temporary login is not support currently.
+                  </span>
 
                   <button
                     className={`${styles.button} ${styles.primary}`}
@@ -451,17 +477,19 @@ export default function Register() {
                   className={`${styles.loginWrapper} w-full`}
                 >
                   <div className={`${styles.inputWrapper} relative w-full`}>
-
-                  <Input 
-                    label="Instance" 
-                    variant="bordered" 
-                    color="primary" 
-                    required
-                    disabled={loading}
-                    labelPlacement="inside" 
-                    value={form.instance || ""}
-                    onChange={(e) => {setForm({ ...form, instance: e.currentTarget.value }); setSelectedInstance(null)}}
-                  />
+                    <Input
+                      label="Instance"
+                      variant="bordered"
+                      color="primary"
+                      required
+                      disabled={loading}
+                      labelPlacement="inside"
+                      value={form.instance || ""}
+                      onChange={(e) => {
+                        setForm({ ...form, instance: e.currentTarget.value });
+                        setSelectedInstance(null);
+                      }}
+                    />
 
                     {filteredInstances.length > 0 &&
                       !selectedInstance?.Instance &&
@@ -498,7 +526,9 @@ export default function Register() {
                                 <div className="flex w-full flex-row items-center gap-2">
                                   <span className="snack text-xs">
                                     {FormatNumber(instance.Users, true)}
-                                    <span className="material-symbols-outlined">person</span>
+                                    <span className="material-symbols-outlined">
+                                      person
+                                    </span>
                                   </span>
                                   {instance.Adult == "Yes" && (
                                     <span className="text-xs text-red-50">
@@ -551,64 +581,94 @@ export default function Register() {
                   onSubmit={(e) => handleSubmit(e)}
                   className={`${styles.loginWrapper} w-full`}
                 >
- 
-                  <Input 
-                    label="Username" 
-                    variant="bordered" 
-                    color="primary" 
+                  <Input
+                    label="Username"
+                    variant="bordered"
+                    color="primary"
                     required
                     disabled={loading}
-                    labelPlacement="inside" 
+                    labelPlacement="inside"
                     value={form.username || ""}
-                    onChange={(e) => setForm({ ...form, username: e.currentTarget.value })}
-                    errorMessage={form.username?.length > 0 && usernameErrorText}
-                  />
-
-                  <Input 
-                    label="Email" 
-                    variant="bordered" 
-                    color="primary" 
-                    required
-                    disabled={loading}
-                    type="email"
-                    labelPlacement="inside" 
-                    value={form.email || ""}
-                    onChange={(e) => setForm({ ...form, email: e.currentTarget.value })}
-                    errorMessage={form.email?.length > 0 && emailErrorText}
-                  />
-
-                  <Input 
-                    label="Password" 
-                    variant="bordered" 
-                    color={(form.password?.length > 0 && passwordStrength < 10) ? "danger" : "primary"}
-                    required
-                    disabled={loading}
-                    labelPlacement="inside" 
-                    type={isPasswordVisible ? "text" : "password"}
-                    defaultValue={form.password}
-                    onChange={(e) => setForm({ ...form, password: e.currentTarget.value })}
-                    errorMessage={form.password?.length > 0 && passwordStrengthText}
-                    endContent={
-                      <Button 
-                        variant="light"
-                        isIconOnly
-                        onClick={() => setIsPasswordVisible(!isPasswordVisible)}><span className="material-symbols-outlined">{isPasswordVisible ? "visibility_off" : "visibility"}</span></Button>
+                    onChange={(e) =>
+                      setForm({ ...form, username: e.currentTarget.value })
+                    }
+                    errorMessage={
+                      form.username?.length > 0 && usernameErrorText
                     }
                   />
 
+                  <Input
+                    label="Email"
+                    variant="bordered"
+                    color="primary"
+                    required
+                    disabled={loading}
+                    type="email"
+                    labelPlacement="inside"
+                    value={form.email || ""}
+                    onChange={(e) =>
+                      setForm({ ...form, email: e.currentTarget.value })
+                    }
+                    errorMessage={form.email?.length > 0 && emailErrorText}
+                  />
 
-                  <Checkbox isSelected={form.showNSFW} >Show NSFW Content</Checkbox>
-                  <Checkbox isSelected={form.saveLogin} defaultChecked isDisabled >Save login</Checkbox>
-                  <span className="text-xs text-neutral-700 dark:text-neutral-400">Temporary login is not support currently.</span>
+                  <Input
+                    label="Password"
+                    variant="bordered"
+                    color={
+                      form.password?.length > 0 && passwordStrength < 10
+                        ? "danger"
+                        : "primary"
+                    }
+                    required
+                    disabled={loading}
+                    labelPlacement="inside"
+                    type={isPasswordVisible ? "text" : "password"}
+                    defaultValue={form.password}
+                    onChange={(e) =>
+                      setForm({ ...form, password: e.currentTarget.value })
+                    }
+                    errorMessage={
+                      form.password?.length > 0 && passwordStrengthText
+                    }
+                    endContent={
+                      <Button
+                        variant="light"
+                        isIconOnly
+                        onClick={() => setIsPasswordVisible(!isPasswordVisible)}
+                      >
+                        <span className="material-symbols-outlined">
+                          {isPasswordVisible ? "visibility_off" : "visibility"}
+                        </span>
+                      </Button>
+                    }
+                  />
 
-                  <Input 
-                      label="Instsance" labelPlacement="inside"
-                      variant="bordered"
-                      color="primary"
-                      required
-                      disabled={loading}
-                      value={form.instance || ""}
-                      onChange={(e) => setForm({ ...form, instance: e.currentTarget.value })}
+                  <Checkbox isSelected={form.showNSFW}>
+                    Show NSFW Content
+                  </Checkbox>
+                  <Checkbox
+                    isSelected={form.saveLogin}
+                    defaultChecked
+                    isDisabled
+                  >
+                    Save login
+                  </Checkbox>
+                  <span className="text-xs text-neutral-700 dark:text-neutral-400">
+                    Temporary login is not support currently.
+                  </span>
+
+                  <Input
+                    label="Instsance"
+                    labelPlacement="inside"
+                    variant="bordered"
+                    color="primary"
+                    required
+                    disabled={loading}
+                    value={form.instance || ""}
+                    onChange={(e) =>
+                      setForm({ ...form, instance: e.currentTarget.value })
+                    }
                   />
 
                   <div className="flex flex-col">
@@ -619,14 +679,17 @@ export default function Register() {
                         alt=""
                       />
 
-                      <Input 
-                        label="Captcha" labelPlacement="inside"
+                      <Input
+                        label="Captcha"
+                        labelPlacement="inside"
                         variant="bordered"
                         color="primary"
                         required
                         disabled={loading}
                         value={form.captcha || ""}
-                        onChange={(e) => setForm({ ...form, captcha: e.currentTarget.value })}
+                        onChange={(e) =>
+                          setForm({ ...form, captcha: e.currentTarget.value })
+                        }
                       />
                     </div>
                   </div>

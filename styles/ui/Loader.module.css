@@ -1,5 +1,5 @@
 .loader {
-  @apply flex h-44 max-w-2xl w-full
+  @apply flex h-44 w-full max-w-2xl
     animate-pulse flex-row
     items-start gap-5
     rounded-lg
@@ -7,7 +7,7 @@
     shadow-md
     dark:bg-neutral-900
     dark:shadow-md;
-  width: 42rem; 
+  width: 42rem;
 }
 
 @media screen and (max-width: 768px) {

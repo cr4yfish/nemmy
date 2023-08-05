@@ -1,5 +1,5 @@
 .wrapper {
-  @apply max-w-2xl w-full;
+  @apply w-full max-w-2xl;
   display: flex;
 }
 
@@ -62,9 +62,8 @@
 }
 
 .title {
-  @apply text-left font-bold  max-md:text-sm
-    break-words w-full overflow-hidden
-    ;
+  @apply w-full overflow-hidden  break-words
+    text-left font-bold max-md:text-sm;
 }
 
 .flair {
@@ -85,14 +84,13 @@
 }
 
 .body {
-  @apply w-full text-sm  line-clamp-5 ;
+  @apply w-full text-sm  line-clamp-5;
 }
 
 .postBodyEmbed {
   @apply mb-4 flex w-full flex-col
     gap-0 rounded-lg border 
-    p-2 
-    ;
+    p-2;
 }
 
 .postBodyEmbed a {
@@ -128,11 +126,11 @@
   align-self: center;
 }
 
-.communityImage, .communityIconFill {
+.communityImage,
+.communityIconFill {
   height: 25px;
   width: 25px;
 }
-
 
 .footer,
 .footerInteractions {
@@ -151,8 +149,7 @@
 .footerInteractions button {
   @apply gap-3
          rounded-lg
-        p-2 
- ;
+        p-2;
   display: flex;
   align-items: center;
   cursor: pointer;

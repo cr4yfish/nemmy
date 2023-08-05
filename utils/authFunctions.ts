@@ -514,18 +514,24 @@ export const sortCurrentAccount = (
 
 /**
  * Updates the account in the cookie
- * @param updatedAccount 
+ * @param updatedAccount
  */
 export const updateAccount = (updatedAccount: Account) => {
   const accounts = getAccounts();
-  const account = accounts.find((account) => account.username == updatedAccount.username);
+  const account = accounts.find(
+    (account) => account.username == updatedAccount.username,
+  );
   if (account) {
     account.settings = updatedAccount.settings;
     overrideAccounts(accounts);
   }
-}
+};
 
-export const updateCurrentAccount = (updatedAccount: Account, session: SessionState, setSession: Dispatch<SetStateAction<SessionState>>) => {
+export const updateCurrentAccount = (
+  updatedAccount: Account,
+  session: SessionState,
+  setSession: Dispatch<SetStateAction<SessionState>>,
+) => {
   const currentAccount = getCurrentAccount();
   if (currentAccount) {
     updateAccount(updatedAccount);
@@ -543,4 +549,4 @@ export const updateCurrentAccount = (updatedAccount: Account, session: SessionSt
       });
     }
   }
-}
+};

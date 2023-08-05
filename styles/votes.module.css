@@ -1,7 +1,7 @@
 .votesDesktop,
 .votesMobile {
-  @apply  transition-all
-    duration-200 ;
+  @apply duration-200
+    transition-all;
 }
 
 .votesDesktop {
@@ -17,6 +17,6 @@
 
 .upvote,
 .downvote {
-  @apply transition-all duration-100;
+  @apply duration-100 transition-all;
   cursor: pointer;
 }

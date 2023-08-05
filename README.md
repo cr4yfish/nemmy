@@ -152,7 +152,7 @@ npm run dev
 - [ ] Sort/Filter/Search
   - [ ] Search
     - [ ] Search for Communities
-    - [X] Search for Posts
+    - [x] Search for Posts
     - [ ] Search for Users
   - [x] Filter
   - [x] Sorting
@@ -162,12 +162,12 @@ npm run dev
   - [x] Register
   - [x] Support for multiple instances
   - [x] Subscribing to Communities
-- [X] Creating Content
+- [x] Creating Content
   - [x] Creating Comments
   - [x] Creating Posts
   - [x] Creating Communities
-  - [X] Supporting _all_ Lemmy Markdown Features
-  - [X] Support Markdown inserts
+  - [x] Supporting _all_ Lemmy Markdown Features
+  - [x] Support Markdown inserts
 - [ ] User Page
   - [ ] Settings **<- WIP**
   - [x] Notifications

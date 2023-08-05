@@ -134,7 +134,6 @@ export default function PostPage({
             </div>
 
             <div className={`${styles.postContent}`}>
-
               {/* Display Media e.g. Image, Video, Gif */}
               {postData?.post?.url &&
                 !postData?.post?.url?.endsWith(".html") && (
@@ -142,7 +141,9 @@ export default function PostPage({
                     {postData?.post?.url && (
                       <AutoMediaType url={postData?.post?.url} />
                     )}
-                    <Link href={postData.post.url} className="a">{new URL(postData.post.url).host}</Link>
+                    <Link href={postData.post.url} className="a">
+                      {new URL(postData.post.url).host}
+                    </Link>
                   </div>
                 )}
 
@@ -157,7 +158,9 @@ export default function PostPage({
               {/* Display Embed thumbnail with Link e.g. Article */}
               {(postData?.post?.embed_title ||
                 postData?.post?.url?.endsWith(".html")) && (
-                <div className={`${styles.postBodyEmbed} border-neutral-300 dark:border-neutral-600`}>
+                <div
+                  className={`${styles.postBodyEmbed} border-neutral-300 dark:border-neutral-600`}
+                >
                   <div>
                     <div className={`${styles.postBodyEmbedTitle}`}>
                       {postData?.post?.embed_title}
@@ -204,7 +207,9 @@ export default function PostPage({
             <div className={`${styles.postInteractions}`}>
               {postData?.counts && <Vote post={postData} horizontal />}
               <div className={`${styles.interaction}`}>
-                <span className="material-symbols-outlined">chat_bubble_outline</span>
+                <span className="material-symbols-outlined">
+                  chat_bubble_outline
+                </span>
                 {postData?.counts?.comments}
               </div>
               <div className={`${styles.interaction}`}>

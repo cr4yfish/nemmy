@@ -57,7 +57,7 @@ function ChatPreview({
         <Link
           href={`/chat/${creator.name}`}
           key={creator.id}
-          className="flex w-full cursor-pointer flex-row items-center gap-2 rounded-lg bg-fuchsia-100 dark:bg-neutral-800 p-4"
+          className="flex w-full cursor-pointer flex-row items-center gap-2 rounded-lg bg-fuchsia-100 p-4 dark:bg-neutral-800"
         >
           <div className="flex items-center justify-center overflow-hidden rounded-full">
             <Image
@@ -66,7 +66,7 @@ function ChatPreview({
               src={creator.avatar || DEFAULT_AVATAR}
               alt=""
               style={{ height: "80px", width: "80px" }}
-              className="h-full w-full object-cover rounded-full overflow-hidden"
+              className="h-full w-full overflow-hidden rounded-full object-cover"
             />
           </div>
           <div className="flex w-full flex-col">

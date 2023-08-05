@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ClipLoader } from "react-spinners";
-import va from "@vercel/analytics"
+import va from "@vercel/analytics";
 import { Button, Input } from "@nextui-org/react";
 
 import { defaultState, useSession } from "@/hooks/auth";
@@ -27,8 +27,6 @@ import { DEFAULT_AVATAR } from "@/constants/settings";
 
 import styles from "@/styles/Pages/LoginPage.module.css";
 import Image from "next/image";
-
-
 
 export default function Login() {
   const { session, setSession } = useSession();
@@ -76,7 +74,8 @@ export default function Login() {
     });
   }, [selectedUser]);
 
-  const validateHostname = (value: string) => value.match(/^[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}$/i);
+  const validateHostname = (value: string) =>
+    value.match(/^[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}$/i);
 
   const instanceValid = useMemo(() => {
     if (form.instance === "") return undefined;
@@ -110,7 +109,7 @@ export default function Login() {
         return;
       }
 
-      va.track("login", { instance: form.instance })
+      va.track("login", { instance: form.instance });
 
       // get jwt token
       const jwt = await fetch("/api/auth/login", {
@@ -132,7 +131,7 @@ export default function Login() {
         jwt: jwt.jwt,
         user: user.my_user.local_user_view,
         site: user,
-        settings: defaultState.settings
+        settings: defaultState.settings,
       };
 
       await handleLogin({
@@ -144,9 +143,9 @@ export default function Login() {
     } catch (e: any) {
       setLoading(false);
       setLoginError(true);
-      va.track("login_error", { instance: form.instance, error: e.message })
-      console.error("Got error message:",e.message);
-      setErrorMessage(`${e.message}`)
+      va.track("login_error", { instance: form.instance, error: e.message });
+      console.error("Got error message:", e.message);
+      setErrorMessage(`${e.message}`);
     }
   };
 
@@ -188,21 +187,28 @@ export default function Login() {
       {!inputFocus && <Logo />}
 
       <div className="flex flex-col items-center gap-4">
-        {!inputFocus && <h1 className="text-3xl font-bold text-neutral-900 dark:text-neutral-200">Welcome back</h1>}
+        {!inputFocus && (
+          <h1 className="text-3xl font-bold text-neutral-900 dark:text-neutral-200">
+            Welcome back
+          </h1>
+        )}
 
         <form
-          onSubmit={(e) => handleSubmit(e)}  className={`${styles.loginWrapper} text-neutral-900 dark:text-neutral-100 `}>
-
+          onSubmit={(e) => handleSubmit(e)}
+          className={`${styles.loginWrapper} text-neutral-900 dark:text-neutral-100 `}
+        >
           <div className="relative">
-            <Input 
-              label="Username" 
-              variant="bordered" 
-              color="primary" 
+            <Input
+              label="Username"
+              variant="bordered"
+              color="primary"
               required
               disabled={loading}
-              labelPlacement="inside" 
+              labelPlacement="inside"
               defaultValue={form.username}
-              onChange={(e) => setForm({ ...form, username: e.currentTarget.value })}
+              onChange={(e) =>
+                setForm({ ...form, username: e.currentTarget.value })
+              }
               endContent={
                 <ClipLoader
                   color={"#e6b0fa"}
@@ -213,7 +219,10 @@ export default function Login() {
               }
             />
             {users?.length > 0 && !selectedUser && (
-              <div  className="absolute left-0 z-50 flex w-full translate-y-full flex-col gap-4 rounded-lg border border-neutral-300 bg-neutral-100/75 p-4 backdrop-blur-3xl dark:border-neutral-700 dark:bg-neutral-900/90" style={{ bottom: "-10%" }}>
+              <div
+                className="absolute left-0 z-50 flex w-full translate-y-full flex-col gap-4 rounded-lg border border-neutral-300 bg-neutral-100/75 p-4 backdrop-blur-3xl dark:border-neutral-700 dark:bg-neutral-900/90"
+                style={{ bottom: "-10%" }}
+              >
                 {users.map((user, i) => (
                   <div
                     onClick={() => setSelectedUser(user)}
@@ -241,54 +250,70 @@ export default function Login() {
             )}
           </div>
 
-          <Input 
-            label="Password" 
-            variant="bordered" 
-            color="primary" 
+          <Input
+            label="Password"
+            variant="bordered"
+            color="primary"
             required
             disabled={loading}
-            labelPlacement="inside" 
+            labelPlacement="inside"
             type={isPasswordVisible ? "text" : "password"}
             defaultValue={form.password}
-            onChange={(e) => setForm({ ...form, password: e.currentTarget.value })}
+            onChange={(e) =>
+              setForm({ ...form, password: e.currentTarget.value })
+            }
             endContent={
-              <Button 
+              <Button
                 variant="light"
                 isIconOnly
-                onClick={() => setIsPasswordVisible(!isPasswordVisible)}><span className="material-symbols-outlined">{isPasswordVisible ? "visibility_off" : "visibility"}</span></Button>
+                onClick={() => setIsPasswordVisible(!isPasswordVisible)}
+              >
+                <span className="material-symbols-outlined">
+                  {isPasswordVisible ? "visibility_off" : "visibility"}
+                </span>
+              </Button>
             }
           />
 
-          <Input 
-            label="Instance" 
-            variant="bordered" 
+          <Input
+            label="Instance"
+            variant="bordered"
             required
             disabled={loading}
-            labelPlacement="inside" 
+            labelPlacement="inside"
             value={form.instance}
-            color={instanceValid === "invalid" ? "danger" : form.instance.length > 0 ? "success" : "primary"}
-            errorMessage={instanceValid === "invalid" && "Please enter a valid Instance"}
+            color={
+              instanceValid === "invalid"
+                ? "danger"
+                : form.instance.length > 0
+                ? "success"
+                : "primary"
+            }
+            errorMessage={
+              instanceValid === "invalid" && "Please enter a valid Instance"
+            }
             validationState={instanceValid}
             defaultValue={form.instance || ""}
-            onChange={(e) => setForm({ ...form, instance: e.currentTarget.value })}
+            onChange={(e) =>
+              setForm({ ...form, instance: e.currentTarget.value })
+            }
           />
 
-          <Input 
-            label="2FA (optional)" 
-            variant="bordered" 
-            color="primary" 
+          <Input
+            label="2FA (optional)"
+            variant="bordered"
+            color="primary"
             disabled={loading}
-            labelPlacement="inside" 
+            labelPlacement="inside"
             defaultValue={form.totp}
             onChange={(e) => setForm({ ...form, totp: e.currentTarget.value })}
           />
 
           {loginError && (
-            <div className="text-red-500 text-sm w-full break-words break-all max-w-lg">
+            <div className="w-full max-w-lg break-words break-all text-sm text-red-500">
               {errorMessage}
-              </div>
-          )
-          }
+            </div>
+          )}
           <button
             disabled={loading}
             className={`${styles.button} ${styles.primary}`}

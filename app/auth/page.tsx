@@ -9,7 +9,6 @@ import { Button } from "@nextui-org/react";
 
 import styles from "@/styles/Pages/AuthPage.module.css";
 
-
 export default function Auth() {
   const { navbar, setNavbar } = useNavbar();
 
@@ -34,13 +33,26 @@ export default function Auth() {
 
         <div className="flex w-full flex-col items-center gap-3">
           <Link className="w-full" href={"/auth/login"}>
-            <Button startContent={<span className="material-symbols-outlined">login</span>} color="primary" className=" w-full">
+            <Button
+              startContent={
+                <span className="material-symbols-outlined">login</span>
+              }
+              color="primary"
+              className=" w-full"
+            >
               Sign in
             </Button>
           </Link>
           <span className="font-light text-neutral-400">or</span>
           <Link className="w-full" href={"/auth/signup"}>
-            <Button startContent={<span className="material-symbols-outlined">person_add</span>} className=" w-full" variant="bordered" color="primary">
+            <Button
+              startContent={
+                <span className="material-symbols-outlined">person_add</span>
+              }
+              className=" w-full"
+              variant="bordered"
+              color="primary"
+            >
               Sign up
             </Button>
           </Link>

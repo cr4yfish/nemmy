@@ -25,7 +25,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="dark">
-      <body className={`${montserrat.className} overflow-x-hidden text-neutral-950 dark:text-neutral-50 bg-neutral-50 dark:bg-neutral-950`}>
+      <body
+        className={`${montserrat.className} overflow-x-hidden bg-neutral-50 text-neutral-950 dark:bg-neutral-950 dark:text-neutral-50`}
+      >
         <Providers>
           <SessionContextProvider>
             <NavbarContextProvider>

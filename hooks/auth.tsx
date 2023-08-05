@@ -32,7 +32,7 @@ export interface SessionState {
   currentAccount?: Account;
   siteResponse?: GetSiteResponse;
   isLoggedIn: boolean;
-  settings: Settings
+  settings: Settings;
 }
 
 export const defaultState: SessionState = {
@@ -48,7 +48,7 @@ export const defaultState: SessionState = {
     showNSFW: true,
     showBotAccounts: true,
     showAvatars: true,
-  }
+  },
 };
 
 interface SessionContextProps {
@@ -61,7 +61,10 @@ const SessionContext = createContext<SessionContextProps>({
   setSession: () => {},
 });
 
-export function setTheme(theme: "light" | "dark" | "system", useSystemTheme?: boolean) {
+export function setTheme(
+  theme: "light" | "dark" | "system",
+  useSystemTheme?: boolean,
+) {
   if (theme === "dark" && !useSystemTheme) {
     document.getElementsByTagName("html")[0].classList.add("dark");
     return "dark";
@@ -99,7 +102,6 @@ export const SessionContextProvider = ({ children }: { children: any }) => {
         let currentAccountWithSite = getCurrentAccount();
 
         if (currentAccountWithSite) {
-
           setTheme(currentAccountWithSite.settings.theme);
 
           const currentAccount = {
@@ -117,7 +119,7 @@ export const SessionContextProvider = ({ children }: { children: any }) => {
             pendingAuth: false,
             siteResponse: currentAccountWithSite.site,
             isLoggedIn: true,
-            settings: currentAccountWithSite.settings
+            settings: currentAccountWithSite.settings,
           });
           return;
         }
@@ -138,7 +140,7 @@ export const SessionContextProvider = ({ children }: { children: any }) => {
           currentAccount: defaultAccount,
           pendingAuth: false,
           isLoggedIn: true,
-          settings: defaultAccount.settings
+          settings: defaultAccount.settings,
         });
         return;
       } else {
@@ -153,13 +155,24 @@ export const SessionContextProvider = ({ children }: { children: any }) => {
       getUserData(new URL(DEFAULT_INSTANCE).host)
         .then((res) => {
           setTheme("dark");
-          setSession({ ...session, pendingAuth: false, siteResponse: res, isLoggedIn: false, settings: defaultState.settings });
+          setSession({
+            ...session,
+            pendingAuth: false,
+            siteResponse: res,
+            isLoggedIn: false,
+            settings: defaultState.settings,
+          });
           return;
         })
         .catch((err) => {
           console.error(err);
           setTheme("dark");
-          setSession({ ...session, pendingAuth: false, isLoggedIn: false, settings: defaultState.settings });
+          setSession({
+            ...session,
+            pendingAuth: false,
+            isLoggedIn: false,
+            settings: defaultState.settings,
+          });
           return;
         });
     }
@@ -167,38 +180,48 @@ export const SessionContextProvider = ({ children }: { children: any }) => {
 
   // This can update on runtime
   useEffect(() => {
-    const newTheme = setTheme(session.settings.theme, session.settings.useSystemTheme) // Also takes system theme into account
+    const newTheme = setTheme(
+      session.settings.theme,
+      session.settings.useSystemTheme,
+    ); // Also takes system theme into account
 
-    if(newTheme !== session.settings.theme) {
-      setSession({ ...session, settings: { ...session.settings, theme: newTheme } });
+    if (newTheme !== session.settings.theme) {
+      setSession({
+        ...session,
+        settings: { ...session.settings, theme: newTheme },
+      });
     }
     // update account settings in cookie
     const currentAccount = session.currentAccount;
     if (currentAccount) {
-      if(currentAccount.settings == session.settings) return;
-      
+      if (currentAccount.settings == session.settings) return;
+
       currentAccount.settings = session.settings;
       currentAccount.settings.theme = newTheme;
       updateCurrentAccount(currentAccount, session, setSession);
     }
-    
-  }, [session.settings])
-  
+  }, [session.settings]);
+
   useEffect(() => {
     // use window
     if (typeof window === "undefined") return;
     const browserTheme = window.matchMedia("(prefers-color-scheme: dark)");
     browserTheme.addEventListener("change", (e) => {
       if (e.matches) {
-        setSession({ ...session, settings: { ...session.settings, theme: "dark" } });
+        setSession({
+          ...session,
+          settings: { ...session.settings, theme: "dark" },
+        });
       } else {
-        setSession({ ...session, settings: { ...session.settings, theme: "light" } });
+        setSession({
+          ...session,
+          settings: { ...session.settings, theme: "light" },
+        });
       }
-    }
-    );
+    });
 
-    return () => browserTheme.removeEventListener("change", () => { });
-  }, [])
+    return () => browserTheme.removeEventListener("change", () => {});
+  }, []);
 
   return (
     <SessionContext.Provider value={{ session, setSession }}>

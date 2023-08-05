@@ -51,10 +51,9 @@
 }
 
 .commentText {
-  @apply h-full w-full max-w-fit overflow-hidden
-   pl-1 font-normal max-sm:max-h-full max-sm:max-w-full
-   text-sm max-sm:text-xs flex
-   ;
+  @apply flex h-full w-full max-w-fit
+   overflow-hidden pl-1 text-sm font-normal
+   max-sm:max-h-full max-sm:max-w-full max-sm:text-xs;
 }
 
 .commentText p:first-of-type {

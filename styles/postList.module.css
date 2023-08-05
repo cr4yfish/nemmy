@@ -1,5 +1,5 @@
 .postList {
-  @apply gap-4 max-md:gap-0 w-full items-center justify-center;
+  @apply w-full items-center justify-center gap-4 max-md:gap-0;
   display: flex;
   flex-direction: column;
 }

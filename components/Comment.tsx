@@ -126,8 +126,9 @@ export default function Comment({
       // Remove duplicates from self
       comments.comments = comments.comments.filter((c, index) => {
         return (
-          comments.comments.findIndex((c2) => c2.comment.id === c.comment.id) ===
-          index
+          comments.comments.findIndex(
+            (c2) => c2.comment.id === c.comment.id,
+          ) === index
         );
       });
 
@@ -148,12 +149,16 @@ export default function Comment({
       // Filter out comments that are not direct children
       comments.comments = comments.comments.filter((c) => {
         const childPath = c.comment.path.split(".");
-        
+
         // Index of the parent in the childPath
-        const parentIndex = childPath.findIndex((p) => p === path[path.length - 1]);
+        const parentIndex = childPath.findIndex(
+          (p) => p === path[path.length - 1],
+        );
 
         // Index of current comment in the childPath
-        const currentIndex = childPath.findIndex((p) => p === c.comment.id.toString());
+        const currentIndex = childPath.findIndex(
+          (p) => p === c.comment.id.toString(),
+        );
 
         // If the parent is not in the childPath, it's not a direct child
         if (parentIndex === -1) return false;
@@ -169,7 +174,6 @@ export default function Comment({
           (c) => c.comment.id !== commentView.comment.id,
         ),
       );
-      
     } catch (e) {
       console.error(e);
     }
@@ -295,7 +299,11 @@ export default function Comment({
                 >
                   <span className="material-symbols-outlined">close</span>
                 </button>
-                <MdTextarea placeholder="Write a reply..." defaultValue={replyText} onChange={(newText) => setReplyText(newText)} />
+                <MdTextarea
+                  placeholder="Write a reply..."
+                  defaultValue={replyText}
+                  onChange={(newText) => setReplyText(newText)}
+                />
                 <button
                   type="submit"
                   className="m-3 flex items-center gap-2 text-blue-500"
@@ -325,7 +333,9 @@ export default function Comment({
                 <div
                   className={`flex w-full items-center gap-1 rounded-lg p-2 text-sm dark:bg-neutral-800`}
                 >
-                  <span className={`material-symbols-outlined text-sm`}>expand_more</span>
+                  <span className={`material-symbols-outlined text-sm`}>
+                    expand_more
+                  </span>
                   Tap to see {children.length}{" "}
                   {children.length == 1 ? "comment" : "comments"}
                 </div>

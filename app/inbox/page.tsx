@@ -12,18 +12,26 @@ import InboxInfiniteScroller from "@/components/ui/InboxInfiniteScroller";
 import { DEFAULT_INSTANCE } from "@/constants/settings";
 import { getCurrentAccountServerSide } from "@/utils/authFunctions";
 
-const getReplies = cache(async ({ jwt, instance }: { jwt?: string; instance?: string }): Promise<GetRepliesResponse> =>  {
-  const lemmy = new LemmyHttp(
-    instance ? `https://${instance}` : DEFAULT_INSTANCE,
-  );
-  const replies = await lemmy.getReplies({
-    auth: jwt ? jwt : "",
-    sort: "New",
-    page: 1,
-    unread_only: false,
-  });
-  return replies;
-})
+const getReplies = cache(
+  async ({
+    jwt,
+    instance,
+  }: {
+    jwt?: string;
+    instance?: string;
+  }): Promise<GetRepliesResponse> => {
+    const lemmy = new LemmyHttp(
+      instance ? `https://${instance}` : DEFAULT_INSTANCE,
+    );
+    const replies = await lemmy.getReplies({
+      auth: jwt ? jwt : "",
+      sort: "New",
+      page: 1,
+      unread_only: false,
+    });
+    return replies;
+  },
+);
 
 export const metadata = {
   title: "Inbox - Nemmy",

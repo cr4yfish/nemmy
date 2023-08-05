@@ -16,12 +16,12 @@
 
 .userDetailsWrapper {
   @apply relative flex h-fit 
-    max-w-3xl w-full items-center justify-center p-6 max-sm:p-4 py-10;
+    w-full max-w-3xl items-center justify-center p-6 py-10 max-sm:p-4;
   overflow: hidden;
 }
 
 .userDetails {
-  @apply flex flex-col w-full items-start 
+  @apply flex w-full flex-col items-start 
     justify-start gap-2 text-neutral-50 max-md:flex-col;
 }
 
@@ -70,11 +70,10 @@
 }
 
 .sortsWrapper {
-  @apply flex flex-row flex-wrap items-center justify-center  px-28 py-4
+  @apply flex w-full flex-row flex-wrap items-center  justify-center px-28
     
-     max-md:p-6 w-full;
+     py-4 max-md:p-6;
 }
-
 
 .sort {
   @apply flex flex-row items-center gap-1;

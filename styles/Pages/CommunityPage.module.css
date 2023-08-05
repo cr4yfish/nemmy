@@ -11,7 +11,6 @@
   transform: translateX(-50%);
 }
 
-
 .icon {
   @apply h-20 w-20 overflow-hidden rounded-full;
 }
@@ -20,16 +19,14 @@
   @apply relative flex w-full flex-col items-center overflow-hidden p-4;
 }
 
-
 .descriptionContent {
-  @apply rounded-lg p-4 transition-all
-    duration-300 ease-in-out line-clamp-3;
+  @apply rounded-lg p-4 duration-300
+    ease-in-out line-clamp-3 transition-all;
 }
 
 .mods {
   @apply flex flex-row flex-wrap gap-4;
 }
-
 
 .sort {
   @apply flex flex-row items-center gap-1;

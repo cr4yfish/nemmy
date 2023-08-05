@@ -1,17 +1,15 @@
 .searchOverlay {
-  @apply fixed left-0 top-0 flex h-full w-full flex-col items-center
-;
+  @apply fixed left-0 top-0 flex h-full w-full flex-col items-center;
   z-index: 99;
 }
 
 .searchInputWrapper {
   @apply flex w-full flex-row items-center justify-center gap-3 border-b 
-    p-4 px-6
-;
+    p-4 px-6;
 }
 
 .searchInput {
-  @apply flex w-full flex-row items-center justify-between rounded-lg dark:border ;
+  @apply flex w-full flex-row items-center justify-between rounded-lg dark:border;
 }
 
 .searchOverlayTrending {

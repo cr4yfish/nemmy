@@ -25,7 +25,7 @@ function Button({
   icon = undefined,
   replaceIcon = undefined,
   onChange,
-  type="post",
+  type = "post",
 }: {
   option: SortType | CommentSortType;
   label: string;
@@ -60,18 +60,24 @@ function Button({
 }
 
 export default function SortButton({
-  onChange, type="post", defaultOption
+  onChange,
+  type = "post",
+  defaultOption,
 }: {
   onChange: (newOption: SortType | CommentSortType) => void;
-  type?: "post" | "comment"; defaultOption?: SortType | CommentSortType;
+  type?: "post" | "comment";
+  defaultOption?: SortType | CommentSortType;
 }) {
-  const [currentOption, setCurrentOption] = useState<SortType>((defaultOption as SortType) || "Active");
-  const [currentOptionComment, setCurrentOptionComment] = useState<CommentSortType>((defaultOption as CommentSortType) || "Hot");
+  const [currentOption, setCurrentOption] = useState<SortType>(
+    (defaultOption as SortType) || "Active",
+  );
+  const [currentOptionComment, setCurrentOptionComment] =
+    useState<CommentSortType>((defaultOption as CommentSortType) || "Hot");
 
   const [open, setOpen] = useState(false);
 
   const onClick = (newOption: SortType | CommentSortType) => {
-    if(type == "post") {
+    if (type == "post") {
       setCurrentOption(newOption as SortType);
     } else {
       setCurrentOptionComment(newOption as CommentSortType);
@@ -88,22 +94,17 @@ export default function SortButton({
         className={`flex flex-row gap-1`}
       >
         <div className="flex flex-row items-center gap-1">
-          { type == "post" ?
-            iconMap[
-              currentOption as unknown as
-                | "Active"
-                | "Hot"
-                | "New"
-                | "MostComments"
-            ]
-            :
-            iconMapComment[
-              currentOptionComment as unknown as
-                | "Hot"
-                | "New"
-                | "Top"
-            ]
-          }
+          {type == "post"
+            ? iconMap[
+                currentOption as unknown as
+                  | "Active"
+                  | "Hot"
+                  | "New"
+                  | "MostComments"
+              ]
+            : iconMapComment[
+                currentOptionComment as unknown as "Hot" | "New" | "Top"
+              ]}
           <span>{currentOption}</span>
         </div>
         <span className="material-symbols-outlined">expand_more</span>
@@ -124,66 +125,64 @@ export default function SortButton({
                         dark:border-fuchsia-300 dark:bg-zinc-800 dark:shadow-none
                     "
           >
-            { type == "post" ?
-            <>
-            <Button
-              label="Active"
-              option="Active"
-              replaceIcon={<span className="active m-2"></span>}
-              onChange={onClick}
-            />
+            {type == "post" ? (
+              <>
+                <Button
+                  label="Active"
+                  option="Active"
+                  replaceIcon={<span className="active m-2"></span>}
+                  onChange={onClick}
+                />
 
-            <Button
-              label="Hot"
-              option="Hot"
-              icon="whatshot"
-              onChange={onClick}
-            />
+                <Button
+                  label="Hot"
+                  option="Hot"
+                  icon="whatshot"
+                  onChange={onClick}
+                />
 
-            <Button
-              label="New"
-              option="New"
-              icon="history"
-              onChange={onClick}
-            />
+                <Button
+                  label="New"
+                  option="New"
+                  icon="history"
+                  onChange={onClick}
+                />
 
-            <Button
-              label="Most Comments"
-              option="MostComments"
-              icon="arrows_more_up"
-              onChange={onClick}
-            />
-            </>
-            :
-            <>
-            <Button
-              label="Hot"
-              option="Hot"
-              icon="whatshot"
-              onChange={onClick}
-            />
-            <Button
-              label="Top"
-              option="Top"
-              icon="arrow_circle_up"
-              onChange={onClick}
-            />
-            <Button
-              label="New"
-              option="New"
-              icon="history"
-              onChange={onClick}
-            />
-            <Button
-              label="Old"
-              option="Old"
-              icon="hourglass_top"
-              onChange={onClick}
-            />
-            </>
-            }
-
-            
+                <Button
+                  label="Most Comments"
+                  option="MostComments"
+                  icon="arrows_more_up"
+                  onChange={onClick}
+                />
+              </>
+            ) : (
+              <>
+                <Button
+                  label="Hot"
+                  option="Hot"
+                  icon="whatshot"
+                  onChange={onClick}
+                />
+                <Button
+                  label="Top"
+                  option="Top"
+                  icon="arrow_circle_up"
+                  onChange={onClick}
+                />
+                <Button
+                  label="New"
+                  option="New"
+                  icon="history"
+                  onChange={onClick}
+                />
+                <Button
+                  label="Old"
+                  option="Old"
+                  icon="hourglass_top"
+                  onChange={onClick}
+                />
+              </>
+            )}
           </motion.div>
         )}
       </AnimatePresence>

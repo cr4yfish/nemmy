@@ -102,9 +102,7 @@ export default function SmallUser({
             className={`${styles.avatar} h-12 w-12
             overflow-hidden rounded-full border border-fuchsia-500
             bg-slate-200 dark:border-2
-         dark:border-fuchsia-300 ${
-              user.avatar ? "" : "object-contain p-1"
-            }`}
+         dark:border-fuchsia-300 ${user.avatar ? "" : "object-contain p-1"}`}
             src={user.avatar || DEFAULT_AVATAR}
             alt=""
             width={48}
@@ -113,8 +111,12 @@ export default function SmallUser({
         </div>
 
         <div className={`${styles.content}`}>
-          <div className={` flex h-full w-full flex-col items-start max-md:w-fit`}>
-            <span className={`${styles.display_name} w-full font-bold text-fuchsia-500 dark:text-fuchsia-300`}>
+          <div
+            className={` flex h-full w-full flex-col items-start max-md:w-fit`}
+          >
+            <span
+              className={`${styles.display_name} w-full font-bold text-fuchsia-500 dark:text-fuchsia-300`}
+            >
               {user.display_name || user.name}
             </span>
             <span className={`${styles.name} w-full dark:text-fuchsia-50`}>

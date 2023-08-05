@@ -1,4 +1,4 @@
-import { nextui } from '@nextui-org/react';
+import { nextui } from "@nextui-org/react";
 
 /** @type {import('tailwindcss').Config} */
 
@@ -38,16 +38,16 @@ module.exports = {
             primary: {
               DEFAULT: "#d946ef",
             },
-          }
+          },
         },
         light: {
           colors: {
             primary: {
-              DEFAULT: "#d946ef"
+              DEFAULT: "#d946ef",
             },
-          }
-        }
-      }
+          },
+        },
+      },
     }),
   ],
   darkMode: "class",

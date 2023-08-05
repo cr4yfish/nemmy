@@ -2,20 +2,17 @@ import { AnimatePresence, motion } from "framer-motion";
 
 import { useState } from "react";
 
-type Option = {label: string, icon: string};
+type Option = { label: string; icon: string };
 
 function Button({
   option,
   onChange,
 }: {
-  option: Option
+  option: Option;
   onChange?: (newOption: Option) => void;
 }) {
   if (!option) {
-    console.error(
-      "SortButton: option or label not provided",
-      option,
-    );
+    console.error("SortButton: option or label not provided", option);
     return null;
   }
 
@@ -38,11 +35,17 @@ function Button({
  * @returns
  */
 export default function Dropdown({
-  onChange, options=[], defaultOption
+  onChange,
+  options = [],
+  defaultOption,
 }: {
-    options: Option[]; defaultOption?: Option; onChange: (newOption: Option) => void;
+  options: Option[];
+  defaultOption?: Option;
+  onChange: (newOption: Option) => void;
 }) {
-  const [currentOption, setCurrentOption] = useState<Option>(defaultOption || options[0]);
+  const [currentOption, setCurrentOption] = useState<Option>(
+    defaultOption || options[0],
+  );
   const [open, setOpen] = useState(false);
 
   const onClick = (newOption: Option) => {
@@ -59,8 +62,13 @@ export default function Dropdown({
         className={`flex flex-row gap-1`}
       >
         <div className="flex flex-row items-center gap-1">
-            <span className="material-symbols-outlined">{options.find((option) => option.label === currentOption.label)?.icon}</span>
-            <span className=" max-xs:hidden">{currentOption.label}</span>
+          <span className="material-symbols-outlined">
+            {
+              options.find((option) => option.label === currentOption.label)
+                ?.icon
+            }
+          </span>
+          <span className=" max-xs:hidden">{currentOption.label}</span>
         </div>
         <span className="material-symbols-outlined">expand_more</span>
       </button>
@@ -82,14 +90,9 @@ export default function Dropdown({
                         dark:border-fuchsia-300 dark:bg-zinc-800 dark:shadow-none
                     "
           >
-            { options.map((option) => (
-                <Button
-                    key={option.label}
-                    option={option}
-                    onChange={onClick}
-                />
+            {options.map((option) => (
+              <Button key={option.label} option={option} onChange={onClick} />
             ))}
-
           </motion.div>
         )}
       </AnimatePresence>

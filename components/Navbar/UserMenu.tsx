@@ -16,7 +16,7 @@ import {
   Account,
   switchToAccount,
   sortCurrentAccount,
-  handleLogout
+  handleLogout,
 } from "@/utils/authFunctions";
 import { useEffect } from "react";
 
@@ -47,7 +47,11 @@ function UserMenuItem({
   } else {
     return (
       <>
-        <Link onClick={() => close()} href={link} className="hover:bg-neutral-200 dark:hover:bg-neutral-800">
+        <Link
+          onClick={() => close()}
+          href={link}
+          className="hover:bg-neutral-200 dark:hover:bg-neutral-800"
+        >
           <button>
             <span className="material-symbols-outlined">{icon}</span>
             {text}
@@ -112,7 +116,9 @@ export default function UserMenu({
                 <SwiperSlide
                   onClick={() => handleSwitchAccount(account)}
                   key={index}
-                  className={`${styles.userProfile} border-neutral-300 dark:border-neutral-600 ${
+                  className={`${
+                    styles.userProfile
+                  } border-neutral-300 dark:border-neutral-600 ${
                     account.username == session.currentAccount?.username &&
                     "border-2 border-fuchsia-500 dark:border-fuchsia-400"
                   } cursor-pointer`}
@@ -161,7 +167,7 @@ export default function UserMenu({
                     onClick={() => handleClose()}
                     className="flex h-full w-full flex-col items-center justify-center gap-2
                                   rounded-lg border-2 border-transparent bg-fuchsia-200 
-                                  p-6 transition-all duration-100 ease-in-out hover:border-fuchsia-700"
+                                  p-6 duration-100 ease-in-out transition-all hover:border-fuchsia-700"
                   >
                     <span className="material-symbols-outlined text-fuchsia-700">
                       add
@@ -186,7 +192,11 @@ export default function UserMenu({
 
           <div className={`${styles.userMenuInteractionsTop}`}>
             {session.isLoggedIn ? (
-              <Link onClick={() => handleClose()} href={"/inbox"} className="hover:bg-neutral-200 dark:hover:bg-neutral-800">
+              <Link
+                onClick={() => handleClose()}
+                href={"/inbox"}
+                className="hover:bg-neutral-200 dark:hover:bg-neutral-800"
+              >
                 <button className="relative">
                   <div className="relative flex h-full w-fit items-center justify-center">
                     {unreadCount > 0 && (
@@ -244,7 +254,7 @@ export default function UserMenu({
 
         <div className={`${styles.userMenuInteractionsBottom}`}>
           <a className="hover:bg-neutral-200 dark:hover:bg-neutral-800">
-            <button onClick={() => handleClose()} >
+            <button onClick={() => handleClose()}>
               <span className="material-symbols-outlined">close</span>Close
             </button>
           </a>

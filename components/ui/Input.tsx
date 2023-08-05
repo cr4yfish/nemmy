@@ -46,8 +46,8 @@ export default function Input({
           <div
             className={`relative flex cursor-pointer
                             flex-row items-center justify-between rounded-lg
-                            border p-3 px-3 outline-none transition-all duration-200
-                            bg-neutral-200 text-neutral-950
+                            border bg-neutral-200 p-3 px-3 text-neutral-950 outline-none
+                            duration-200 transition-all
                             dark:border dark:border-neutral-500
                             dark:bg-transparent dark:text-neutral-100
                             dark:focus:border-fuchsia-200
@@ -91,7 +91,7 @@ export default function Input({
             <div
               className={`relative flex cursor-pointer
                             flex-row items-center justify-between rounded-lg
-                            border p-3 px-3 outline-none transition-all duration-200
+                            border p-3 px-3 outline-none duration-200 transition-all
                             ${isError ? styles.inputError : styles.input}
                         `}
             >

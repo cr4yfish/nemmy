@@ -26,9 +26,7 @@ export default async function Settings() {
               <span>Compact</span>
             </div>
 
-
             <div>Use system theme</div>
-            
           </div>
         </div>
       </>

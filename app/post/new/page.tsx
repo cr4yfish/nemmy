@@ -23,7 +23,7 @@ import EndlessScrollingEnd from "@/components/ui/EndlessSrollingEnd";
 
 function CommunityCard({ community }: { community: CommunityView }) {
   return (
-    <div className="flex h-full w-full flex-row items-center justify-start gap-2 transition-all duration-100 dark:hover:translate-y-1 max-md:hover:translate-y-0">
+    <div className="flex h-full w-full flex-row items-center justify-start gap-2 duration-100 transition-all dark:hover:translate-y-1 max-md:hover:translate-y-0">
       <Image
         height={32}
         width={32}
@@ -187,7 +187,7 @@ export default function New() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className={`${styles.header} bg-neutral-50 dark:bg-neutral-950 justify-between`}
+              className={`${styles.header} justify-between bg-neutral-50 dark:bg-neutral-950`}
             >
               <button
                 onClick={handleClose}
@@ -213,7 +213,7 @@ export default function New() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className={`${styles.header} bg-neutral-50 dark:bg-neutral-950 justify-start`}
+              className={`${styles.header} justify-start bg-neutral-50 dark:bg-neutral-950`}
             >
               <button
                 onClick={() => setStep(0)}
@@ -235,7 +235,7 @@ export default function New() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className={`${styles.header} bg-neutral-50 dark:bg-neutral-950 justify-between`}
+              className={`${styles.header} justify-between bg-neutral-50 dark:bg-neutral-950`}
             >
               <button
                 onClick={handleClose}
@@ -285,11 +285,14 @@ export default function New() {
                   />
                 </div>
 
-                <MdTextarea 
+                <MdTextarea
                   placeholder="Tell the world what you think"
-                  onChange={(newText) => setForm(prevState => { return { ...prevState, body: newText } })}
+                  onChange={(newText) =>
+                    setForm((prevState) => {
+                      return { ...prevState, body: newText };
+                    })
+                  }
                 />
-
               </form>
             </motion.div>
           )}

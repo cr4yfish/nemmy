@@ -75,7 +75,7 @@ export default function Vote({
   };
 
   const handleLike = async () => {
-    if(!session?.currentAccount) return alert("You must be logged in to vote");
+    if (!session?.currentAccount) return alert("You must be logged in to vote");
     if (liked) {
       return;
     }
@@ -95,7 +95,7 @@ export default function Vote({
   };
 
   const handleDislike = async () => {
-    if(!session?.currentAccount) return alert("You must be logged in to vote");
+    if (!session?.currentAccount) return alert("You must be logged in to vote");
     if (disliked) return;
 
     liked ? setScore(score - 2) : setScore(score - 1);
@@ -115,13 +115,15 @@ export default function Vote({
   return (
     <>
       <div
-        className={`${horizontal ? styles.votesMobile : styles.votesDesktop} text-neutral-700 dark:text-neutral-300`}
+        className={`${
+          horizontal ? styles.votesMobile : styles.votesDesktop
+        } text-neutral-700 dark:text-neutral-300`}
       >
         <span
           onClick={() => handleLike()}
-          className={`material-symbols-outlined ${styles.upvote} hover:text-fuchsia-300 ${
-            liked && "filled text-fuchsia-400"
-          }`}
+          className={`material-symbols-outlined ${
+            styles.upvote
+          } hover:text-fuchsia-300 ${liked && "filled text-fuchsia-400"}`}
         >
           shift
         </span>
@@ -135,9 +137,9 @@ export default function Vote({
         </span>
         <span
           onClick={() => handleDislike()}
-          className={`material-symbols-outlined rotate-180 ${styles.downvote} hover:text-indigo-300 ${
-            disliked && "filled text-blue-400"
-          }`}
+          className={`material-symbols-outlined rotate-180 ${
+            styles.downvote
+          } hover:text-indigo-300 ${disliked && "filled text-blue-400"}`}
         >
           shift
         </span>

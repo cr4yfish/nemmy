@@ -6,8 +6,6 @@
   @apply relative flex flex-col gap-1;
 }
 
-
-
 .button {
   @apply rounded-lg bg-fuchsia-300
     p-1 font-bold

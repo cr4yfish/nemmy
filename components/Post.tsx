@@ -21,15 +21,15 @@ export default function Post({
   instance,
   auth,
   postInstance,
-  style="modern",
-  showCommunity=true
+  style = "modern",
+  showCommunity = true,
 }: {
   post: PostView;
   onClick?: () => void;
   instance?: string;
   auth?: string;
   postInstance?: string;
-  style?: "modern" | "compact",
+  style?: "modern" | "compact";
   showCommunity?: boolean;
 }) {
   if (!post) throw new Error("Post is undefined");
@@ -45,12 +45,12 @@ export default function Post({
     postInstance || new URL(DEFAULT_INSTANCE).host
   }&preload=true`;
 
-  switch(style) {
+  switch (style) {
     case "modern":
       return (
         <>
           <div
-            className={`card ${styles.wrapper} gap-4 flex-row items-start justify-start `}
+            className={`card ${styles.wrapper} flex-row items-start justify-start gap-4 `}
             key={post.post.id}
             id={`${post.post.id.toString()}@${baseUrl}`}
           >
@@ -62,65 +62,71 @@ export default function Post({
               <div className={`${styles.header}`}>
                 <div className={`${styles.headerContent}`}>
                   <div className={`${styles.headerMetadata}`}>
-
                     {showCommunity && (
-                    <Link
-                      href={`/c/${post?.community?.name}@${
-                        new URL(post.post.ap_id).host
-                      }`}
-                      target="_blank"
-                      className={`${styles.communityImage}`}
-                      style={{ width: "50px", height: "50px" }}
-                    >
-                      {post?.community?.icon ? (
-                        <Image
-                          src={post?.community?.icon}
-                          alt=""
-                          height={40}
-                          width={40}
-                          className=" h-full w-full overflow-hidden object-cover"
-                          style={{ borderRadius: "50%" }}
-                        />
-                      ) : (
-                        <div className={`${styles.communityIconFill} bg-neutral-300 dark:bg-neutral-800 rounded-full`}></div>
-                      )}
-                    </Link>
+                      <Link
+                        href={`/c/${post?.community?.name}@${
+                          new URL(post.post.ap_id).host
+                        }`}
+                        target="_blank"
+                        className={`${styles.communityImage}`}
+                        style={{ width: "50px", height: "50px" }}
+                      >
+                        {post?.community?.icon ? (
+                          <Image
+                            src={post?.community?.icon}
+                            alt=""
+                            height={40}
+                            width={40}
+                            className=" h-full w-full overflow-hidden object-cover"
+                            style={{ borderRadius: "50%" }}
+                          />
+                        ) : (
+                          <div
+                            className={`${styles.communityIconFill} rounded-full bg-neutral-300 dark:bg-neutral-800`}
+                          ></div>
+                        )}
+                      </Link>
                     )}
                     <div className={`flex flex-col gap-0`}>
-                        <Link 
-                          href={`/c/${post?.community?.name}@${new URL(post.post.ap_id).host}`} 
-                          className="flex flex-row gap-1 items-center prose dark:prose-invert"
-                          target="_blank"
-                          >
-                            {showCommunity && (
-                            <>
+                      <Link
+                        href={`/c/${post?.community?.name}@${
+                          new URL(post.post.ap_id).host
+                        }`}
+                        className="prose flex flex-row items-center gap-1 dark:prose-invert"
+                        target="_blank"
+                      >
+                        {showCommunity && (
+                          <>
                             <span className="font-bold capitalize">
                               {post.community.name}
                             </span>
-                            
 
-                            <span className="font-light text-xs w-fit flex gap-0">
-                              <span>@</span> 
-                              <span className=" text-neutral-700 dark:text-neutral-400 ">{new URL(post.post.ap_id).host}</span>
-                            </span>
-                            </>
-                            )}
-                        </Link>
-                        <div className="">
-                          <div className={`${styles.user} text-neutral-500 dark:text-neutral-400`}>
-                            <Username user={post.creator} baseUrl={baseUrl} />
-                            <div className="dividerDot"></div>
-                            <div className={`${styles.date}`}>
-                              <FormatDate date={new Date(post.post.published)} />
-                            </div>
-                            {(post.post.featured_local || post.post.featured_community) && (
-                              <span className="material-symbols-outlined text-sm text-green-500">
-                                push_pin
+                            <span className="flex w-fit gap-0 text-xs font-light">
+                              <span>@</span>
+                              <span className=" text-neutral-700 dark:text-neutral-400 ">
+                                {new URL(post.post.ap_id).host}
                               </span>
-                            )}
-                          </div>                      
+                            </span>
+                          </>
+                        )}
+                      </Link>
+                      <div className="">
+                        <div
+                          className={`${styles.user} text-neutral-500 dark:text-neutral-400`}
+                        >
+                          <Username user={post.creator} baseUrl={baseUrl} />
+                          <div className="dividerDot"></div>
+                          <div className={`${styles.date}`}>
+                            <FormatDate date={new Date(post.post.published)} />
+                          </div>
+                          {(post.post.featured_local ||
+                            post.post.featured_community) && (
+                            <span className="material-symbols-outlined text-sm text-green-500">
+                              push_pin
+                            </span>
+                          )}
                         </div>
-
+                      </div>
                     </div>
                   </div>
 
@@ -131,7 +137,11 @@ export default function Post({
                     shallow
                     className={`${styles.headerTitle}`}
                   >
-                    <h2 className={`${styles.title} text-neutral-900 dark:text-neutral-100 text-xl`}>{post.post.name}</h2>
+                    <h2
+                      className={`${styles.title} text-xl text-neutral-900 dark:text-neutral-100`}
+                    >
+                      {post.post.name}
+                    </h2>
                   </Link>
 
                   {post?.post?.nsfw && (
@@ -143,16 +153,15 @@ export default function Post({
               </div>
 
               <div className={`${styles.content}`}>
-                
                 {/* Display Overlay if post has no media */}
                 {!post?.post?.embed_title && // 100% dont display content overlay
                   !post?.post?.url?.endsWith(".html") && // 100% dont display content overlay
                   !post.post.thumbnail_url && // maybe display content overlay
                   !(post?.post?.url && isImageType(post?.post?.url)) && ( // dont display
                     <Link
-                    href={postUrl}
-                    shallow
-                    target="_blank"
+                      href={postUrl}
+                      shallow
+                      target="_blank"
                       className={`${styles.contentOverlay} bg-gradient-to-b 
                       from-neutral-50/30 to-neutral-50/90
                       dark:from-neutral-900/50 dark:to-neutral-900/90`}
@@ -163,9 +172,12 @@ export default function Post({
                 {/* Display Body if post has body and is not a Link */}
                 {post?.post?.body &&
                   !(
-                    post?.post?.embed_title || post?.post?.url?.endsWith(".html")
+                    post?.post?.embed_title ||
+                    post?.post?.url?.endsWith(".html")
                   ) && (
-                    <div className={`${styles.body} text-neutral-700 dark:text-neutral-300 mb-2`}>
+                    <div
+                      className={`${styles.body} mb-2 text-neutral-700 dark:text-neutral-300`}
+                    >
                       <RenderMarkdown content={post?.post?.body} disableLinks />
                     </div>
                   )}
@@ -173,14 +185,16 @@ export default function Post({
                 {/* Display Link if post has link e.g. Article case */}
                 {(post?.post?.embed_title ||
                   post?.post?.url?.endsWith(".html")) && (
-                  <div className={`${styles.postBodyEmbed} border-neutral-300 text-neutral-800 dark:border-neutral-600 dark:text-neutral-200`}>
+                  <div
+                    className={`${styles.postBodyEmbed} border-neutral-300 text-neutral-800 dark:border-neutral-600 dark:text-neutral-200`}
+                  >
                     <div className="flex flex-col gap-1">
                       <div className={`${styles.postBodyEmbedTitle}`}>
                         {post?.post?.embed_title}
                       </div>
                       <RenderMarkdown
                         className={`${styles.postBodyEmbedDescription}`}
-                        content={post?.post?.embed_description} 
+                        content={post?.post?.embed_description}
                         disableLinks
                       />
                     </div>
@@ -237,7 +251,6 @@ export default function Post({
                     />
                   </div>
                 )}
-
               </div>
 
               <div className={`${styles.footer} max-md:justify-between`}>
@@ -245,7 +258,6 @@ export default function Post({
                   <Vote post={post} horizontal />
                 </div>
                 <div className={`${styles.footerInteractions}`}>
-                  
                   <button className="text-neutral-400 hover:bg-neutral-100 hover:dark:bg-neutral-900">
                     {post?.counts?.comments > 0 &&
                       FormatNumber(post?.counts?.comments, true)}
@@ -266,7 +278,9 @@ export default function Post({
                   )}
 
                   <button className="text-neutral-400 hover:bg-neutral-100 hover:dark:bg-neutral-900">
-                    <span className="material-symbols-outlined">more_horiz</span>
+                    <span className="material-symbols-outlined">
+                      more_horiz
+                    </span>
                   </button>
                 </div>
               </div>
@@ -278,13 +292,17 @@ export default function Post({
     case "compact":
       return (
         <>
-          <div  className={`card ${styles.wrapper} flex-col items-start justify-start gap-2 py-2 `}
+          <div
+            className={`card ${styles.wrapper} flex-col items-start justify-start gap-2 py-2 `}
             key={post.post.id}
             id={`${post.post.id.toString()}@${baseUrl}`}
           >
-            <div className={`${styles.headerMetadata} justify-between text-xs text-neutral-700 dark:text-neutral-400`}>
-
-              <div className={`flex flex-row items-center gap-1 max-sm:flex-wrap`}>
+            <div
+              className={`${styles.headerMetadata} justify-between text-xs text-neutral-700 dark:text-neutral-400`}
+            >
+              <div
+                className={`flex flex-row items-center gap-1 max-sm:flex-wrap`}
+              >
                 {post?.community?.icon && showCommunity && (
                   <Link
                     href={`/c/${post?.community?.name}@${
@@ -304,27 +322,30 @@ export default function Post({
                   </Link>
                 )}
 
-                {showCommunity && 
-                <>
-                <Link 
-                  href={`/c/${post?.community?.name}@${new URL(post.post.ap_id).host}`} 
-                  className="flex flex-col prose dark:prose-invert"
-                  target="_blank"
-                  >
-                    <span className="font-bold capitalize text-xs">
-                      {post.community.name}
-                    </span>
+                {showCommunity && (
+                  <>
+                    <Link
+                      href={`/c/${post?.community?.name}@${
+                        new URL(post.post.ap_id).host
+                      }`}
+                      className="prose flex flex-col dark:prose-invert"
+                      target="_blank"
+                    >
+                      <span className="text-xs font-bold capitalize">
+                        {post.community.name}
+                      </span>
 
-                    <span className="font-light text-xs w-fit flex gap-0 flex-row items-center">
-                      <span>@</span> 
-                      <span className=" text-xs ">{new URL(post.post.ap_id).host}</span>
-                    </span>
-                  
-                </Link>
+                      <span className="flex w-fit flex-row items-center gap-0 text-xs font-light">
+                        <span>@</span>
+                        <span className=" text-xs ">
+                          {new URL(post.post.ap_id).host}
+                        </span>
+                      </span>
+                    </Link>
 
-                <div className="dividerDot"></div>
-                </>
-                }
+                    <div className="dividerDot"></div>
+                  </>
+                )}
 
                 <Username user={post.creator} baseUrl={baseUrl} />
 
@@ -334,61 +355,73 @@ export default function Post({
                   <FormatDate date={new Date(post.post.published)} />
                 </div>
 
-
                 {post.post.nsfw && (
                   <>
-                  <div className="dividerDot"></div>
-                  <span className=" text-red-400 text-xs font-bold">
-                    NSFW
-                  </span>
+                    <div className="dividerDot"></div>
+                    <span className=" text-xs font-bold text-red-400">
+                      NSFW
+                    </span>
                   </>
                 )}
-
-
               </div>
-              
-                {(post.post.featured_local || post.post.featured_community) && (
-                  <span className="material-symbols-outlined text-sm text-green-500">
-                    push_pin
-                  </span>
-                )}
 
+              {(post.post.featured_local || post.post.featured_community) && (
+                <span className="material-symbols-outlined text-sm text-green-500">
+                  push_pin
+                </span>
+              )}
             </div>
 
-            <div className={` flex flex-row justify-between items-center w-full`}>
-
-              <div className={` flex flex-col items-start justify-start h-20 w-full relative`}>
-
+            <div
+              className={` flex w-full flex-row items-center justify-between`}
+            >
+              <div
+                className={` relative flex h-20 w-full flex-col items-start justify-start`}
+              >
                 <Link
                   onClick={onClick}
                   href={postUrl}
                   target="_blank"
                   shallow
-                  className="h-full w-full flex flex-col items-start justify-start relative"
+                  className="relative flex h-full w-full flex-col items-start justify-start"
                 >
-                  <div className={`${styles.title} text-neutral-900 dark:text-neutral-100 text-sm h-fit w-full z-10`} style={{ overflow: "visible"}}>
+                  <div
+                    className={`${styles.title} z-10 h-fit w-full text-sm text-neutral-900 dark:text-neutral-100`}
+                    style={{ overflow: "visible" }}
+                  >
                     {post.post.name}
                   </div>
-                
 
-                {/* Display Body if post has body and is not a Link */}
-                {post?.post?.body && !( post?.post?.embed_title || post?.post?.url?.endsWith(".html")) && (
-                  <>
-                    <div className="absolute w-full h-full top-0 left-0 bg-gradient-to-b from-neutral-50/30 to-neutral-50/90 dark:from-neutral-900/50 dark:to-neutral-900/90" style={{ zIndex: 2 }}></div>
-                    <div className={`${styles.body} text-neutral-700 dark:text-neutral-300 mb-2 text-xs`}>
-                      <RenderMarkdown content={post?.post?.body} disableLinks className="text-xs prose-p:m-0" />
-                    </div>
-                  </>
-                )}
+                  {/* Display Body if post has body and is not a Link */}
+                  {post?.post?.body &&
+                    !(
+                      post?.post?.embed_title ||
+                      post?.post?.url?.endsWith(".html")
+                    ) && (
+                      <>
+                        <div
+                          className="absolute left-0 top-0 h-full w-full bg-gradient-to-b from-neutral-50/30 to-neutral-50/90 dark:from-neutral-900/50 dark:to-neutral-900/90"
+                          style={{ zIndex: 2 }}
+                        ></div>
+                        <div
+                          className={`${styles.body} mb-2 text-xs text-neutral-700 dark:text-neutral-300`}
+                        >
+                          <RenderMarkdown
+                            content={post?.post?.body}
+                            disableLinks
+                            className="text-xs prose-p:m-0"
+                          />
+                        </div>
+                      </>
+                    )}
                 </Link>
-
               </div>
 
               {/* Display Image */}
               {post.post.thumbnail_url && (
-                <div className=" h-full flex items-center justify-center">
+                <div className=" flex h-full items-center justify-center">
                   <Link
-                    className={` overflow-hidden rounded-xl flex`}
+                    className={` flex overflow-hidden rounded-xl`}
                     style={{ height: "80px", width: "80px" }}
                     href={post.post.thumbnail_url}
                     target="_blank"
@@ -400,41 +433,38 @@ export default function Post({
                       nsfw={post?.post?.nsfw}
                     />
                   </Link>
-              
                 </div>
-               )}
+              )}
             </div>
 
             <div className={`${styles.footer} justify-start text-neutral-400`}>
+              <div className="flex">
+                <Vote post={post} horizontal />
+              </div>
+              <div className={`${styles.footerInteractions}`}>
+                <button>
+                  {post?.counts?.comments > 0 &&
+                    FormatNumber(post?.counts?.comments, true)}
+                  <span className="material-symbols-outlined">
+                    chat_bubble_outline
+                  </span>
+                </button>
 
-                <div className="flex">
-                  <Vote post={post} horizontal />
-                </div>
-                <div className={`${styles.footerInteractions}`}>
-                  <button>
-                    {post?.counts?.comments > 0 &&
-                      FormatNumber(post?.counts?.comments, true)}
-                    <span className="material-symbols-outlined">
-                      chat_bubble_outline
-                    </span>
-                  </button>
+                {auth && instance && post.post.id && (
+                  <BookmarkButton
+                    id={post.post.id}
+                    auth={auth}
+                    instance={instance}
+                    initState={post.saved}
+                    onChange={(newState) => (post.saved = newState)}
+                    type="post"
+                  />
+                )}
 
-                  {auth && instance && post.post.id && (
-                    <BookmarkButton
-                      id={post.post.id}
-                      auth={auth}
-                      instance={instance}
-                      initState={post.saved}
-                      onChange={(newState) => (post.saved = newState)}
-                      type="post"
-                    />
-                  )}
-
-                  <button>
-                    <span className="material-symbols-outlined">more_horiz</span>
-                  </button>
-                </div>
-
+                <button>
+                  <span className="material-symbols-outlined">more_horiz</span>
+                </button>
+              </div>
             </div>
           </div>
         </>

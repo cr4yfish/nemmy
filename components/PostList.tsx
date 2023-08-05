@@ -4,7 +4,7 @@ import { useState, useEffect, cache } from "react";
 import { CommunityId, ListingType, PostView, SortType } from "lemmy-js-client";
 import InfiniteScroll from "react-infinite-scroller";
 import { AnimatePresence, motion } from "framer-motion";
-import va from "@vercel/analytics"
+import va from "@vercel/analytics";
 
 import { useSession } from "@/hooks/auth";
 import { useNavbar } from "@/hooks/navbar";
@@ -25,9 +25,8 @@ export default function PostList({
   fetchParams = { limit: DEFAULT_POST_LIMIT, page: 1 },
   initPosts,
   setCurrentPost = () => null,
-  style="modern", // modern or compact
+  style = "modern", // modern or compact
   showCommunity = true,
-
 }: {
   fetchParams?: {
     type_?: ListingType;
@@ -102,7 +101,9 @@ export default function PostList({
   });
 
   const handleClickPost = (currenPost: PostView) => {
-    va.track("Clicked post on feed", { instance: session.currentAccount?.instance || DEFAULT_INSTANCE });
+    va.track("Clicked post on feed", {
+      instance: session.currentAccount?.instance || DEFAULT_INSTANCE,
+    });
     localStorage.setItem("currentPost", JSON.stringify(currenPost));
   };
 
@@ -128,11 +129,11 @@ export default function PostList({
   };
 
   const isTextPost = (post: PostView) => {
-    if(post.post.url) return false;
-    if(post.post.thumbnail_url) return false;
-    if(post.post.embed_video_url) return false;
+    if (post.post.url) return false;
+    if (post.post.thumbnail_url) return false;
+    if (post.post.embed_video_url) return false;
     return true;
-  }
+  };
 
   return (
     <motion.div
@@ -140,7 +141,7 @@ export default function PostList({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1, transition: { bounce: 0.1 } }}
       exit={{ opacity: 0 }}
-      className="w-fit max-w-2xl px-4 max-sm:px-0 max-md:w-full"
+      className="w-fit max-w-2xl px-4 max-md:w-full max-sm:px-0"
     >
       <div className=" flex w-full justify-center">
         <InfiniteScroll
@@ -152,30 +153,41 @@ export default function PostList({
           key={"postList"}
         >
           {posts
-            .filter((post) => !(session.settings.blockedInstances.includes(new URL(post.post.ap_id).host)))
+            .filter(
+              (post) =>
+                !session.settings.blockedInstances.includes(
+                  new URL(post.post.ap_id).host,
+                ),
+            )
             .map((post: PostView, index: number) => {
-            return (
-              <AnimatePresence key={index}>
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  className=" w-full"
-                >
-                  <Post
-                    onClick={() => handleClickPost(post)}
-                    post={post}
-                    instance={session.currentAccount?.instance}
-                    auth={session.currentAccount?.jwt}
-                    key={index}
-                    postInstance={new URL(post.post.ap_id).host}
-                    style={session.settings.cardType !== "auto" ? session.settings.cardType : isTextPost(post) ? "compact" : "modern"}
-                    showCommunity={showCommunity}
-                  />
-                </motion.div>
-              </AnimatePresence>
-            );
-          })}
+              return (
+                <AnimatePresence key={index}>
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    className=" w-full"
+                  >
+                    <Post
+                      onClick={() => handleClickPost(post)}
+                      post={post}
+                      instance={session.currentAccount?.instance}
+                      auth={session.currentAccount?.jwt}
+                      key={index}
+                      postInstance={new URL(post.post.ap_id).host}
+                      style={
+                        session.settings.cardType !== "auto"
+                          ? session.settings.cardType
+                          : isTextPost(post)
+                          ? "compact"
+                          : "modern"
+                      }
+                      showCommunity={showCommunity}
+                    />
+                  </motion.div>
+                </AnimatePresence>
+              );
+            })}
 
           {!morePages && posts.length > 0 && (
             <EndlessScrollingEnd key={"end"} />

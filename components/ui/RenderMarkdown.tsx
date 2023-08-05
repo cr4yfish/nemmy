@@ -20,11 +20,11 @@ export default function RenderMarkdown({
       {content && (
         <ReactMarkdown
           className={`prose w-full
-          dark:prose-invert prose-headings:mb-1 prose-p:my-1
-          prose-a:text-ellipsis prose-a:hyphens-auto prose-a:break-all
-          prose-img:rounded-lg
-          prose-hr:my-6 max-sm:prose-p:text-xs
-          overflow-visible ${className}`}
+          overflow-visible dark:prose-invert prose-headings:mb-1
+          prose-p:my-1 prose-a:text-ellipsis prose-a:hyphens-auto
+          prose-a:break-all
+          prose-img:rounded-lg prose-hr:my-6
+          max-sm:prose-p:text-xs ${className}`}
           remarkPlugins={[remarkGfm]}
           remarkRehypeOptions={{
             allowDangerousHtml: true,
@@ -45,59 +45,56 @@ export default function RenderMarkdown({
               // render spoilers
               // regex: /:::\sspoiler\s+(?<title>.+)\n(?<body>[\s\S]+?)\n:::/g
               text: (h, node) => {
-
                 let currentValue: string = node.value;
                 let newText = "";
                 let spoilerEles: any[] = [];
-                const spoilerRegex = /:::\sspoiler\s+(?<title>.+)\n(?<body>[\s\S]+?)\n:::/g;
+                const spoilerRegex =
+                  /:::\sspoiler\s+(?<title>.+)\n(?<body>[\s\S]+?)\n:::/g;
                 const matches = currentValue.match(spoilerRegex);
-                
-                // Return spoiler
-                if(matches && matches?.length > 0) {
-                  
-                  
 
+                // Return spoiler
+                if (matches && matches?.length > 0) {
                   matches.forEach((match) => {
                     let tmp = match.replace(/::: spoiler spoiler/, ``);
                     tmp = tmp.replace(/:::/, ``);
 
-                    const spoilerEle = h(
-                      node,
-                      "button",
-                      {
-                        className: "spoiler",
-                        children: tmp
-                      }
-                    )
+                    const spoilerEle = h(node, "button", {
+                      className: "spoiler",
+                      children: tmp,
+                    });
 
                     spoilerEles.push(spoilerEle);
-
-                  })
+                  });
                 }
 
                 return h(
                   node,
                   "span",
                   {
-                    children: node.value
+                    children: node.value,
                   },
-                  spoilerEles
-                )
+                  spoilerEles,
+                );
               },
-              
             },
           }}
           components={{
-            a ({ node, children, href, ...props }) {
-              if(!href) return <span className="a">{children}</span>
-              return disableLinks ? (<span className="a">{children}</span>) : (<Link rel="noopener noreferrer" href={href} {...props}>{children}</Link>);
+            a({ node, children, href, ...props }) {
+              if (!href) return <span className="a">{children}</span>;
+              return disableLinks ? (
+                <span className="a">{children}</span>
+              ) : (
+                <Link rel="noopener noreferrer" href={href} {...props}>
+                  {children}
+                </Link>
+              );
             },
-            button ({ node, children, ...props }) {
-              if(props.className?.includes("spoiler")) {
-                return <Spoiler>{children}</Spoiler>
+            button({ node, children, ...props }) {
+              if (props.className?.includes("spoiler")) {
+                return <Spoiler>{children}</Spoiler>;
               }
-              return <button {...props}>{children}</button>
-            }
+              return <button {...props}>{children}</button>;
+            },
           }}
         >
           {`${content}`}

@@ -18,7 +18,7 @@ export default function FeedPage({
   instance,
   jwt,
   siteResponse,
-  currentAccount
+  currentAccount,
 }: {
   fetchParams?: {
     type_?: ListingType;
@@ -37,7 +37,7 @@ export default function FeedPage({
   currentAccount?: Account;
 }) {
   return (
-    <div className="flex flex-row justify-center gap-2 max-lg:gap-0 w-full">
+    <div className="flex w-full flex-row justify-center gap-2 max-lg:gap-0">
       <PostList fetchParams={fetchParams} initPosts={initPosts} />
 
       <SiteInfoCard siteResponse={siteResponse} />

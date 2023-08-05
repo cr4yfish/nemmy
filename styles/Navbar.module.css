@@ -32,9 +32,9 @@
   @apply relative flex
     h-full flex-row items-center gap-2
     rounded-lg  p-2 font-semibold
-    transition-all
     duration-300
-    ease-out ;
+    ease-out
+    transition-all;
 }
 
 .navButton > div {
@@ -50,7 +50,7 @@
   @apply pointer-events-none fixed left-0 top-20 flex
     min-h-max w-full flex-col gap-2 overflow-hidden p-6
     backdrop-blur-xl
-    transition-all duration-300 ease-out ;
+    duration-300 ease-out transition-all;
   transform: translateY(-100%);
   z-index: 39;
 }
@@ -86,7 +86,7 @@
     w-full 
     opacity-0
     backdrop-blur-sm
-    transition-all duration-300 ease-out;
+    duration-300 ease-out transition-all;
 }
 
 .overlayActive {
