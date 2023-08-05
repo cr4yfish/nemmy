@@ -148,7 +148,9 @@ export default function PostList({
           className={`${styles.postList} pb-10`}
           key={"postList"}
         >
-          {posts.map((post: PostView, index: number) => {
+          {posts
+            .filter((post) => !(session.settings.blockedInstances.includes(new URL(post.post.ap_id).host)))
+            .map((post: PostView, index: number) => {
             return (
               <AnimatePresence key={index}>
                 <motion.div

@@ -19,6 +19,7 @@ import { DEFAULT_INSTANCE } from "@/constants/settings";
 export interface Settings {
   theme: "light" | "dark" | "system";
   cardType: "modern" | "compact" | "auto";
+  blockedInstances: string[];
   useSystemTheme: boolean;
   showNSFW: boolean;
   showBotAccounts: boolean;
@@ -42,6 +43,7 @@ export const defaultState: SessionState = {
   settings: {
     theme: "dark",
     cardType: "modern",
+    blockedInstances: [],
     useSystemTheme: true,
     showNSFW: true,
     showBotAccounts: true,
