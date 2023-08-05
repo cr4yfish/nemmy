@@ -195,12 +195,11 @@ export const SessionContextProvider = ({ children }: { children: any }) => {
     const currentAccount = session.currentAccount;
 
     if (currentAccount) {
-
       // Add blockedInstances if not set
-      if(currentAccount?.settings.blockedInstances === undefined) {
-        currentAccount.settings.blockedInstances = []
+      if (currentAccount?.settings.blockedInstances === undefined) {
+        currentAccount.settings.blockedInstances = [];
       }
-      
+
       if (currentAccount.settings == session.settings) return;
 
       currentAccount.settings = session.settings;

@@ -179,8 +179,13 @@ export default function UserPage({
       <div className="mt-20 flex min-h-screen flex-col items-center overflow-x-hidden ">
         <div className={`${styles.userDetailsWrapper} `}>
           <div className={`${styles.userDetails}`}>
-            <div className="relative flex w-full flex-col gap-2 overflow-hidden rounded-lg p-4 z-10" style={{  zIndex: "1"}}>
-              <div className={`${styles.bannerOverlay} absolute left-0 top-0 h-full w-full bg-neutral-900/25 backdrop-blur-sm `}></div>
+            <div
+              className="relative z-10 flex w-full flex-col gap-2 overflow-hidden rounded-lg p-4"
+              style={{ zIndex: "1" }}
+            >
+              <div
+                className={`${styles.bannerOverlay} absolute left-0 top-0 h-full w-full bg-neutral-900/25 backdrop-blur-sm `}
+              ></div>
               {userData?.person_view?.person?.banner && (
                 <Image
                   height={200}
@@ -202,7 +207,8 @@ export default function UserPage({
               <div className="flex flex-col gap-2">
                 <div className="flex flex-col gap-0">
                   <h1 className=" text-3xl font-bold text-neutral-100">
-                    {userData?.person_view?.person?.display_name || userData.person_view.person.name}
+                    {userData?.person_view?.person?.display_name ||
+                      userData.person_view.person.name}
                   </h1>
 
                   <div className="flex flex-row items-center gap-4 max-sm:text-xs">

@@ -503,10 +503,7 @@ export default function SearchOverlay({
                 {currentCategory == "Communities" &&
                   searchResults.communities?.map((result, index) => (
                     <div key={index}>
-                      <Community
-                        community={result}
-                        onClick={handleClose}
-                      />
+                      <Community community={result} onClick={handleClose} />
                     </div>
                   ))}
 

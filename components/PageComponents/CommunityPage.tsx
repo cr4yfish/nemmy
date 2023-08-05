@@ -60,11 +60,14 @@ export default function CommunityPage({
       !communityData.community_view.community.id
     )
       return;
-    const res = await subscribeToCommunity({
-      community_id: communityData.community_view.community.id,
-      auth: session.currentAccount.jwt,
-      follow: true,
-    }, session.currentAccount.instance);
+    const res = await subscribeToCommunity(
+      {
+        community_id: communityData.community_view.community.id,
+        auth: session.currentAccount.jwt,
+        follow: true,
+      },
+      session.currentAccount.instance,
+    );
     if (!res) {
       console.error("Could not follow community");
     } else {

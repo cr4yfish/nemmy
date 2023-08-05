@@ -197,11 +197,12 @@ export const getCommentChildren = async (
 
 /**
  * Contrary to the name, this can also unfollow a community
- * @param params 
- * @returns 
+ * @param params
+ * @returns
  */
 export const subscribeToCommunity = async (
-  params: FollowCommunity, instance: string
+  params: FollowCommunity,
+  instance: string,
 ): Promise<CommentResponse> => {
   const data = await fetch("/api/subscribeCommunity", {
     method: "POST",
@@ -212,7 +213,7 @@ export const subscribeToCommunity = async (
       community_id: params.community_id,
       follow: params.follow,
       auth: params.auth,
-      instance: instance
+      instance: instance,
     }),
   }).then((res) => res.json());
   return data;

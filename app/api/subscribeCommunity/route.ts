@@ -11,7 +11,11 @@ export async function POST(req: Request) {
     const auth = body.auth || undefined;
     const instance = body.instance || undefined;
 
-    let client: LemmyHttp = new LemmyHttp((instance && instance !== "undefined") ? `https://${instance}` : DEFAULT_INSTANCE);
+    let client: LemmyHttp = new LemmyHttp(
+      instance && instance !== "undefined"
+        ? `https://${instance}`
+        : DEFAULT_INSTANCE,
+    );
     let communityResponse = await client.followCommunity({
       community_id: community_id as unknown as CommunityId,
       follow: follow as unknown as boolean,

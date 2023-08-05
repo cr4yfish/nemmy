@@ -58,10 +58,7 @@ export default function SettingsPage({
         ...prevVal,
         settings: {
           ...prevVal.settings,
-          blockedInstances: [
-             ...oldBlocks,
-            instanceForm,
-          ],
+          blockedInstances: [...oldBlocks, instanceForm],
         },
       };
     });
@@ -70,7 +67,6 @@ export default function SettingsPage({
   };
 
   const handleRemoveInstanceBlock = (instance: string) => {
-
     const oldData = session.settings?.blockedInstances || [];
 
     setSession((prevVal) => {
@@ -78,9 +74,7 @@ export default function SettingsPage({
         ...prevVal,
         settings: {
           ...prevVal.settings,
-          blockedInstances: [
-            ...oldData.filter((i) => i !== instance),
-          ],
+          blockedInstances: [...oldData.filter((i) => i !== instance)],
         },
       };
     });

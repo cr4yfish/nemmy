@@ -209,31 +209,31 @@ export default function PostPage({
             </div>
 
             {/* Has a poll */}
-            {isPoll &&
-            <>
-              <Card>
-                <Title>{postData.post.name.replace("[POLL]", "")}</Title>
-                <Subtitle>Vote by upvoting/downvoting</Subtitle>
-                <BarChart 
-                      className="mt-6"
-                      data={[
-                        {
-                          name: "Upvotes",
-                          "Upvotes": postData.counts.upvotes,
-                        },
-                        {
-                          name: "Downvotes",
-                          "Downvotes": postData.counts.downvotes,
-                        }
-                      ]}
-                      index="name"
-                      categories={["Upvotes", "Downvotes"]}
-                      colors={["blue", "orange"]}
-                      yAxisWidth={48}
-                />
-              </Card>
-            </>
-            }
+            {isPoll && (
+              <>
+                <Card>
+                  <Title>{postData.post.name.replace("[POLL]", "")}</Title>
+                  <Subtitle>Vote by upvoting/downvoting</Subtitle>
+                  <BarChart
+                    className="mt-6"
+                    data={[
+                      {
+                        name: "Upvotes",
+                        Upvotes: postData.counts.upvotes,
+                      },
+                      {
+                        name: "Downvotes",
+                        Downvotes: postData.counts.downvotes,
+                      },
+                    ]}
+                    index="name"
+                    categories={["Upvotes", "Downvotes"]}
+                    colors={["blue", "orange"]}
+                    yAxisWidth={48}
+                  />
+                </Card>
+              </>
+            )}
 
             <div className={`${styles.postInteractions}`}>
               {postData?.counts && <Vote post={postData} horizontal />}

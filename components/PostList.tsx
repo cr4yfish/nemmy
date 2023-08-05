@@ -153,16 +153,16 @@ export default function PostList({
           key={"postList"}
         >
           {posts
-            .filter(
-              (post) =>{
-                // only filter if blockedInstances is set
-                if(session.settings.blockedInstances !== undefined) {
-                  return  !session.settings?.blockedInstances?.includes(new URL(post.post.ap_id)?.host)
-                } else {
-                  return true
-                }
+            .filter((post) => {
+              // only filter if blockedInstances is set
+              if (session.settings.blockedInstances !== undefined) {
+                return !session.settings?.blockedInstances?.includes(
+                  new URL(post.post.ap_id)?.host,
+                );
+              } else {
+                return true;
               }
-            )
+            })
             .map((post: PostView, index: number) => {
               return (
                 <AnimatePresence key={index}>
