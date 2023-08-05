@@ -25,11 +25,11 @@ interface NavbarContextProps {
 }
 
 const defaultState: NavbarState = {
-  showMenu: true,
-  showFilter: true,
-  showSort: true,
-  showSearch: true,
-  showUser: true,
+  showMenu: false,
+  showFilter: false,
+  showSort: false,
+  showSearch: false,
+  showUser: false,
   hidden: false,
   showback: false,
   overlayActive: false,
