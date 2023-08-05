@@ -102,7 +102,7 @@ export const SessionContextProvider = ({ children }: { children: any }) => {
         let currentAccountWithSite = getCurrentAccount();
 
         if (currentAccountWithSite) {
-          setTheme(currentAccountWithSite.settings.theme);
+          setTheme(currentAccountWithSite?.settings?.theme || "system");
 
           const currentAccount = {
             user: currentAccountWithSite.user,
@@ -119,7 +119,7 @@ export const SessionContextProvider = ({ children }: { children: any }) => {
             pendingAuth: false,
             siteResponse: currentAccountWithSite.site,
             isLoggedIn: true,
-            settings: currentAccountWithSite.settings,
+            settings: currentAccountWithSite.settings || defaultState.settings,
           });
           return;
         }
@@ -133,14 +133,14 @@ export const SessionContextProvider = ({ children }: { children: any }) => {
         setDefaultAccount(newDefaultAccount.username);
         defaultAccount = newDefaultAccount;
 
-        setTheme(defaultAccount.settings.theme);
+        setTheme(defaultAccount?.settings?.theme || "system");
         setSession({
           ...session,
           accounts: accounts,
           currentAccount: defaultAccount,
           pendingAuth: false,
           isLoggedIn: true,
-          settings: defaultAccount.settings,
+          settings: defaultAccount.settings || defaultState.settings,
         });
         return;
       } else {
@@ -181,8 +181,8 @@ export const SessionContextProvider = ({ children }: { children: any }) => {
   // This can update on runtime
   useEffect(() => {
     const newTheme = setTheme(
-      session.settings.theme,
-      session.settings.useSystemTheme,
+      session.settings?.theme,
+      session.settings?.useSystemTheme,
     ); // Also takes system theme into account
 
     if (newTheme !== session.settings.theme) {

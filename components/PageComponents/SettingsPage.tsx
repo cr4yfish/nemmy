@@ -51,13 +51,17 @@ export default function SettingsPage({
 
   const handleBlockInstance = () => {
     setInstanceForm("");
+
+    // safe guard for users without blockedInstances in settings
+    const oldBlocks = session.settings?.blockedInstances || [];
+
     setSession((prevVal) => {
       return {
         ...prevVal,
         settings: {
           ...prevVal.settings,
           blockedInstances: [
-            ...prevVal.settings.blockedInstances,
+             ...oldBlocks,
             instanceForm,
           ],
         },
@@ -66,13 +70,16 @@ export default function SettingsPage({
   };
 
   const handleRemoveInstanceBlock = (instance: string) => {
+
+    const oldData = session.settings?.blockedInstances || [];
+
     setSession((prevVal) => {
       return {
         ...prevVal,
         settings: {
           ...prevVal.settings,
           blockedInstances: [
-            ...prevVal.settings.blockedInstances.filter((i) => i !== instance),
+            ...oldData.filter((i) => i !== instance),
           ],
         },
       };
@@ -101,8 +108,8 @@ export default function SettingsPage({
 
                 <Checkbox
                   radius="full"
-                  defaultChecked={settings.cardType == "modern" || false}
-                  isSelected={settings.cardType == "modern" || false}
+                  defaultChecked={settings?.cardType == "modern" || false}
+                  isSelected={settings?.cardType == "modern" || false}
                   onValueChange={(isSelected) =>
                     setSettings((prevValue) => {
                       return {
@@ -133,8 +140,8 @@ export default function SettingsPage({
 
                 <Checkbox
                   radius="full"
-                  defaultChecked={settings.cardType == "auto" || false}
-                  isSelected={settings.cardType == "auto" || false}
+                  defaultChecked={settings?.cardType == "auto" || false}
+                  isSelected={settings?.cardType == "auto" || false}
                   onValueChange={(isSelected) =>
                     setSettings((prevValue) => {
                       return {
@@ -166,8 +173,8 @@ export default function SettingsPage({
 
                 <Checkbox
                   radius="full"
-                  defaultChecked={settings.cardType == "compact" || false}
-                  isSelected={settings.cardType == "compact" || false}
+                  defaultChecked={settings?.cardType == "compact" || false}
+                  isSelected={settings?.cardType == "compact" || false}
                   onValueChange={(isSelected) =>
                     setSettings((prevValue) => {
                       return {
@@ -183,8 +190,8 @@ export default function SettingsPage({
             </div>
 
             <Switch
-              defaultSelected={settings.useSystemTheme || false}
-              isSelected={settings.useSystemTheme || false}
+              defaultSelected={settings?.useSystemTheme || false}
+              isSelected={settings?.useSystemTheme || false}
               onValueChange={(value) =>
                 setSettings({ ...settings, useSystemTheme: value })
               }
@@ -221,9 +228,9 @@ export default function SettingsPage({
                   </span>
                 </div>
               }
-              isDisabled={settings.useSystemTheme || false}
-              defaultSelected={settings.theme === "dark" || false}
-              isSelected={settings.theme === "dark" || false}
+              isDisabled={settings?.useSystemTheme || false}
+              defaultSelected={settings?.theme === "dark" || false}
+              isSelected={settings?.theme === "dark" || false}
               onValueChange={(value) =>
                 setSettings({ ...settings, theme: value ? "dark" : "light" })
               }
@@ -284,7 +291,7 @@ export default function SettingsPage({
             <span className="text-xs">Your blocked Instances</span>
             <motion.div>
               <AnimatePresence>
-                {session.settings.blockedInstances?.map(
+                {session.settings?.blockedInstances?.map(
                   (instance: string, index: number) => (
                     <motion.div
                       key={index}
@@ -310,8 +317,8 @@ export default function SettingsPage({
                   ),
                 )}
               </AnimatePresence>
-              {(!session.settings.blockedInstances ||
-                session.settings.blockedInstances?.length == 0) && (
+              {(!session.settings?.blockedInstances ||
+                session.settings?.blockedInstances?.length == 0) && (
                 <span className="p-2 text-xs italic text-neutral-400 dark:text-neutral-500">
                   You have no blocked Instances
                 </span>

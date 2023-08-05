@@ -154,10 +154,14 @@ export default function PostList({
         >
           {posts
             .filter(
-              (post) =>
-                !session.settings.blockedInstances.includes(
-                  new URL(post.post.ap_id).host,
-                ),
+              (post) =>{
+                // only filter if blockedInstances is set
+                if(session.settings.blockedInstances) {
+                  return  !session.settings?.blockedInstances?.includes(new URL(post.post.ap_id)?.host)
+                } else {
+                  return true
+                }
+              }
             )
             .map((post: PostView, index: number) => {
               return (
@@ -176,8 +180,8 @@ export default function PostList({
                       key={index}
                       postInstance={new URL(post.post.ap_id).host}
                       style={
-                        session.settings.cardType !== "auto"
-                          ? session.settings.cardType
+                        session.settings?.cardType !== "auto"
+                          ? session.settings?.cardType
                           : isTextPost(post)
                           ? "compact"
                           : "modern"
