@@ -149,11 +149,11 @@ npm run dev
   - [x] Bookmarking Posts & Comments
 - [x] PWA installable
 - [x] Community Page
-- [ ] Sort/Filter/Search
-  - [ ] Search
+- [X] Sort/Filter/Search
+  - [X] Search
     - [x] Search for Communities
     - [x] Search for Posts
-    - [ ] Search for Users
+    - [X] Search for Users
   - [x] Filter
   - [x] Sorting
   - [x] Explore Section
@@ -192,10 +192,10 @@ npm run dev
   - [ ] Upload when online
   - [ ] Show UI without connection
 - [ ] Customization
-  - [ ] User Themes
+  - [ ] User Themes **<-Research**
   - [x] Dark/Light mode per User choice
   - [x] Compact Style
-  - [ ] Classic Style (Like old.reddit)
+  - [ ] Classic Style (Like old.reddit) **<-Design phase**
 - [ ] QoL Features
   - [ ] Auto-Register to other instances
   - [ ] Subscribe to the same community on multiple instances (like c/nemmy on Lemmy.world and Lemmy.ml)
