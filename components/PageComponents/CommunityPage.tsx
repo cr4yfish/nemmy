@@ -231,7 +231,7 @@ export default function CommunityPage({
             community_name: `${communityData.community_view.community.name}@${communityInstance}`,
             sort: currentSort,
           }}
-          showCommunity={false}
+          showCommunity={false} showTypeSwitch={false}
         />
       </div>
     </>
