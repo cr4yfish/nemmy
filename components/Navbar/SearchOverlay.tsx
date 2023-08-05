@@ -24,7 +24,9 @@ import { DEFAULT_AVATAR } from "@/constants/settings";
 import { FormatNumber } from "@/utils/helpers";
 
 import Post from "../Post";
+import Community from "../Community";
 import EndlessScrollingEnd from "../ui/EndlessSrollingEnd";
+
 import Dropdown from "../ui/Dropdown";
 
 function TrendingCommunity({
@@ -501,9 +503,9 @@ export default function SearchOverlay({
                 {currentCategory == "Communities" &&
                   searchResults.communities?.map((result, index) => (
                     <div key={index}>
-                      <TrendingCommunity
+                      <Community
                         community={result}
-                        closeSearch={handleClose}
+                        onClick={handleClose}
                       />
                     </div>
                   ))}
