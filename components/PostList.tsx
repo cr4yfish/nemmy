@@ -5,6 +5,7 @@ import { CommunityId, ListingType, PostView, SortType } from "lemmy-js-client";
 import InfiniteScroll from "react-infinite-scroller";
 import { AnimatePresence, motion } from "framer-motion";
 import va from "@vercel/analytics";
+import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Button, Tabs, Tab, DropdownSection } from "@nextui-org/react";
 
 import { useSession } from "@/hooks/auth";
 import { useNavbar } from "@/hooks/navbar";
@@ -18,6 +19,21 @@ import Post from "./Post";
 
 import styles from "../styles/postList.module.css";
 
+
+function TabContent({ text, icon }: { text: string; icon: string }) {
+  return (
+    <div className="flex items-center gap-1">
+      <span
+        className="material-symbols-outlined"
+        style={{ fontSize: ".75rem" }}
+      >
+        {icon}
+      </span>
+      <span className="max-xs:hidden">{text}</span>
+    </div>
+  );
+}
+
 /**
  * PostList
  */
@@ -27,6 +43,7 @@ export default function PostList({
   setCurrentPost = () => null,
   style = "modern", // modern or compact
   showCommunity = true,
+  showTypeSwitch = true,
 }: {
   fetchParams?: {
     type_?: ListingType;
@@ -42,8 +59,9 @@ export default function PostList({
   setCurrentPost?: Function;
   style?: "modern" | "compact";
   showCommunity?: boolean;
+  showTypeSwitch?: boolean;
 }) {
-  const { session } = useSession();
+  const { session, setSession } = useSession();
   const { navbar, setNavbar } = useNavbar();
 
   const [posts, setPosts] = useState<PostView[]>(initPosts || []);
@@ -60,8 +78,8 @@ export default function PostList({
     setNavbar({
       ...navbar!,
       showMenu: true,
-      showSort: true,
-      showFilter: true,
+      showSort: false,
+      showFilter: false,
       showSearch: true,
       showUser: true,
       showback: false,
@@ -71,23 +89,14 @@ export default function PostList({
   }, []);
 
   useEffect(() => {
-    if (fetchParams.sort && fetchParams.sort !== currentSort) {
-      setPosts([]);
-      setCurrentPage(1);
-    } else if (navbar?.currentSort && navbar.currentSort !== currentSort) {
-      setCurrentSort(navbar.currentSort);
-      setPosts([]);
-      setCurrentPage(1);
-    }
-  }, [navbar?.currentSort, fetchParams?.sort]);
+    setPosts([]);
+    setCurrentPage(1);
+  }, [navbar?.currentSort, fetchParams?.sort, currentSort]);
 
   useEffect(() => {
-    if (navbar?.currentType && navbar.currentType !== currentType) {
-      setCurrentType(navbar.currentType);
-      setPosts([]);
-      setCurrentPage(1);
-    }
-  }, [navbar?.currentType]);
+    setPosts([]);
+    setCurrentPage(1);
+  }, [navbar?.currentType, currentType, fetchParams.type_]);
 
   const getPosts = cache(async ({ page = 1 }: { page?: number }) => {
     const data = await fetch(
@@ -141,14 +150,96 @@ export default function PostList({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1, transition: { bounce: 0.1 } }}
       exit={{ opacity: 0 }}
-      className="w-fit max-w-2xl px-4 max-md:w-full max-sm:px-0"
+      className="w-fit max-w-2xl px-4 max-md:w-full max-sm:px-0 flex flex-col gap-2"
     >
+
+      <div className="flex flex-row items-center gap-2 justify-between max-sm:px-4 overflow-x-auto w-full pb-4 h-16">
+        
+        <div className="flex items-center gap-2">
+          
+          {showTypeSwitch && <>
+            <Tabs 
+              className="max-sm:hidden"
+              variant="bordered"
+              disabledKeys={session.currentAccount?.jwt ? [] : ["Subscribed"]}
+              selectedKey={currentType} onSelectionChange={(key) => setCurrentType(key as ListingType)}
+              >
+              <Tab key={"Subscribed"} title={<TabContent text="Home" icon="home" />}></Tab>
+              <Tab key={"All"} title={<TabContent text="All" icon="public" />}></Tab>
+              <Tab key={"Local"} title={<TabContent text={session.currentAccount?.instance || "Local"} icon="location_on" />}></Tab>
+            </Tabs>
+
+            <div className=" hidden max-sm:block">
+            <Dropdown showArrow shadow="sm">
+              <DropdownTrigger>
+                <Button variant="bordered" style={{ height: "43.3px" }}  >
+                  {currentType} <span className="text-sm material-symbols-outlined">expand_more</span>
+                </Button>
+              </DropdownTrigger>
+              <DropdownMenu variant="faded" onAction={(key) => setCurrentType(key as ListingType)}>
+                <DropdownItem key={"Subscribed"} startContent={<span className="material-symbols-outlined">home</span>}>Home</DropdownItem>
+                <DropdownItem key={"All"} startContent={<span className="material-symbols-outlined">public</span>}>All</DropdownItem>
+                <DropdownItem key={"Local"} startContent={<span className="material-symbols-outlined">location_on</span>}>Local</DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+            </div>
+          </>}
+
+          <Dropdown showArrow shadow="sm">
+            <DropdownTrigger>
+              <Button variant="bordered" style={{ height: "43.3px" }}>
+                {currentSort} <span className="text-sm material-symbols-outlined">expand_more</span>
+              </Button>
+            </DropdownTrigger>
+            <DropdownMenu variant="faded" onAction={(key) => setCurrentSort(key as SortType)}>
+
+              <DropdownSection title={"Most used"}>
+                <DropdownItem key={"Active"} startContent={<span className="active m-2"></span>}>Active</DropdownItem>
+                <DropdownItem key={"Hot"} startContent={<span className="material-symbols-outlined">whatshot</span>}>Hot</DropdownItem>
+                <DropdownItem key={"TopDay"} startContent={<span className="material-symbols-outlined">trending_up</span>}>Top Day</DropdownItem>
+                <DropdownItem key={"New"} startContent={<span className="material-symbols-outlined">history</span>}>New</DropdownItem>
+            </DropdownSection>
+
+              <DropdownSection title={"Others"}>
+                  <DropdownItem key={"Old"} startContent={<span className="material-symbols-outlined">hourglass_top</span>}>Old</DropdownItem>
+                  <DropdownItem key={"MostComments"} startContent={<span className="material-symbols-outlined">comment</span>}>Most Comments</DropdownItem>
+                  <DropdownItem key={"TopSixHour"} startContent={<span className="material-symbols-outlined">counter_6</span>}>Top 6h</DropdownItem>
+                  <DropdownItem key={"TopAll"} startContent={<span className="material-symbols-outlined">calendar_today</span>}>Top All</DropdownItem>
+              </DropdownSection>
+
+            </DropdownMenu>
+          </Dropdown>
+        </div>
+
+        <Dropdown showArrow>
+          <DropdownTrigger>
+            <Button variant="bordered" style={{ height: "43.3px" }}>
+              
+              <span className="material-symbols-outlined">
+                {session.settings.cardType == "auto" && "auto_awesome"}
+                {session.settings.cardType == "modern" && "view_agenda"}
+                {session.settings.cardType == "compact" && "view_list"}
+              </span>
+              <span className="max-sm:hidden capitalize">{session.settings.cardType}</span>
+            </Button>
+          </DropdownTrigger>
+          <DropdownMenu 
+            variant="faded" 
+            onAction={(newKey) => setSession(prevValue => { return { ...prevValue, settings: { ...prevValue.settings, cardType: newKey as "auto" | "modern" | "compact"} }})}>
+            <DropdownItem key={"auto"} startContent={<span className=" material-symbols-outlined">auto_awesome</span>} >Auto</DropdownItem>
+            <DropdownItem key={"modern"} startContent={<span className=" material-symbols-outlined">view_agenda</span>}>Modern</DropdownItem>
+            <DropdownItem key={"compact"} startContent={<span className=" material-symbols-outlined">view_list</span>}>Compact</DropdownItem>
+          </DropdownMenu>
+        </Dropdown>
+
+      </div>
+
       <div className=" flex w-full justify-center">
         <InfiniteScroll
           pageStart={1}
           loadMore={async () => await handleLoadMore()}
           hasMore={morePages}
-          loader={<Loader key={"loaderCard"} />}
+          loader={<AnimatePresence key={"loaderWrapper"}><Loader key={"loaderCard"} /></AnimatePresence>}
           className={`${styles.postList} pb-10`}
           key={"postList"}
         >
