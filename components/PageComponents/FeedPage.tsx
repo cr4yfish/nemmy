@@ -9,6 +9,7 @@ import {
 import PostList from "../PostList";
 import RenderMarkdown from "../ui/RenderMarkdown";
 import SiteInfoCard from "../SiteInfoCard";
+import LeftSideMenu from "../Navbar/LeftSideMenu";
 
 import { Account } from "@/utils/authFunctions";
 
@@ -38,9 +39,13 @@ export default function FeedPage({
 }) {
   return (
     <div className="flex w-full flex-row justify-center gap-2 max-lg:gap-0">
+
       <PostList fetchParams={fetchParams} initPosts={initPosts} />
 
-      <SiteInfoCard siteResponse={siteResponse} />
+      <div className="pt-2 mt-16">
+        <SiteInfoCard siteResponse={siteResponse} />
+      </div>
+      
     </div>
   );
 }
