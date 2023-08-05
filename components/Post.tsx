@@ -52,7 +52,7 @@ export default function Post({
       return (
         <>
           <div
-            className={`card ${styles.wrapper} flex-row items-start justify-start gap-4 `}
+            className={`card ${styles.wrapper} flex-row items-start justify-start gap-4 bg-neutral-900 dark:border-neutral-700 hover:bg-neutral-100 dark:hover:bg-neutral-900 dark:hover:border-neutral-600 `}
             key={post.post.id}
             id={`${post.post.id.toString()}@${baseUrl}`}
           >

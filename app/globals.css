@@ -100,12 +100,7 @@ button {
   .card {
     @apply rounded-lg border border-neutral-200 bg-neutral-50 
       p-4 text-slate-100 duration-300
-      transition-all hover:drop-shadow-lg
-      dark:border
-      dark:border-neutral-800
-      dark:bg-neutral-900
-      dark:shadow-none 
-      hover:dark:border-neutral-700 max-md:hover:drop-shadow-none
+      transition-all
       max-sm:rounded-none;
   }
 }
