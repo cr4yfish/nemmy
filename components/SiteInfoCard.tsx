@@ -18,7 +18,7 @@ export default function SiteInfoCard({
 
   return (
     <div
-      className=" card flex h-fit w-full
+      className=" card bg-neutral-50 dark:bg-neutral-900 dark:border-neutral-700 flex h-fit w-full
         max-w-xs flex-col gap-4 max-lg:hidden
         "
     >
