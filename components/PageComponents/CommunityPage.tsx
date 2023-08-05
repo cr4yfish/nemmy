@@ -46,7 +46,7 @@ export default function CommunityPage({
       showSearch: true,
       showUser: true,
       showback: true,
-      titleOverride: "",
+      titleOverride: `c/${communityData.community_view.community.title}`,
     });
   }, []);
 
@@ -208,13 +208,14 @@ export default function CommunityPage({
 
       <div
         className={`bg-neutral-50 dark:bg-neutral-950
-        dark:pt-4; flex w-full items-center justify-center`}
+        dark:pt-4; flex w-full items-center justify-center pt-2`}
       >
         <PostList
           fetchParams={{
             community_name: `${communityData.community_view.community.name}@${communityInstance}`,
             sort: currentSort,
           }}
+          showCommunity={false}
         />
       </div>
     </>
