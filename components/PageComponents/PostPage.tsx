@@ -57,7 +57,7 @@ export default function PostPage({
       history.replaceState({}, "", pathname);
     }
 
-    setIsPoll(postData?.post.name.toLowerCase().startsWith("[poll]"));
+    postData?.post?.name && setIsPoll(postData?.post.name.toLowerCase().startsWith("[poll]"));
 
     setNavbar({
       ...navbar!,
