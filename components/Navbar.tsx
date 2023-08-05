@@ -242,7 +242,6 @@ export default function Navbar() {
                   onClick={() => router.back()}
                 >
                   <span className="material-symbols-outlined">arrow_back</span>
-                  Back
                 </button>
               </div>
             )}
