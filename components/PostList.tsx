@@ -25,7 +25,8 @@ export default function PostList({
   fetchParams = { limit: DEFAULT_POST_LIMIT, page: 1 },
   initPosts,
   setCurrentPost = () => null,
-  style="modern"
+  style="modern", // modern or compact
+  showCommunity = true,
 }: {
   fetchParams?: {
     type_?: ListingType;
@@ -40,6 +41,7 @@ export default function PostList({
   initPosts?: PostView[];
   setCurrentPost?: Function;
   style?: "modern" | "compact";
+  showCommunity?: boolean;
 }) {
   const { session } = useSession();
   const { navbar, setNavbar } = useNavbar();
@@ -167,6 +169,7 @@ export default function PostList({
                     key={index}
                     postInstance={new URL(post.post.ap_id).host}
                     style={session.settings.cardType !== "auto" ? session.settings.cardType : isTextPost(post) ? "compact" : "modern"}
+                    showCommunity={showCommunity}
                   />
                 </motion.div>
               </AnimatePresence>

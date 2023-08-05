@@ -21,14 +21,16 @@ export default function Post({
   instance,
   auth,
   postInstance,
-  style="modern"
+  style="modern",
+  showCommunity=true
 }: {
   post: PostView;
   onClick?: () => void;
   instance?: string;
   auth?: string;
   postInstance?: string;
-  style?: "modern" | "compact"
+  style?: "modern" | "compact",
+  showCommunity?: boolean;
 }) {
   if (!post) throw new Error("Post is undefined");
 
@@ -60,6 +62,8 @@ export default function Post({
               <div className={`${styles.header}`}>
                 <div className={`${styles.headerContent}`}>
                   <div className={`${styles.headerMetadata}`}>
+
+                    {showCommunity && (
                     <Link
                       href={`/c/${post?.community?.name}@${
                         new URL(post.post.ap_id).host
@@ -81,21 +85,26 @@ export default function Post({
                         <div className={`${styles.communityIconFill} bg-neutral-300 dark:bg-neutral-800 rounded-full`}></div>
                       )}
                     </Link>
+                    )}
                     <div className={`flex flex-col gap-0`}>
                         <Link 
                           href={`/c/${post?.community?.name}@${new URL(post.post.ap_id).host}`} 
                           className="flex flex-row gap-1 items-center prose dark:prose-invert"
                           target="_blank"
                           >
+                            {showCommunity && (
+                            <>
                             <span className="font-bold capitalize">
                               {post.community.name}
                             </span>
+                            
 
                             <span className="font-light text-xs w-fit flex gap-0">
                               <span>@</span> 
                               <span className=" text-neutral-700 dark:text-neutral-400 ">{new URL(post.post.ap_id).host}</span>
                             </span>
-                          
+                            </>
+                            )}
                         </Link>
                         <div className="">
                           <div className={`${styles.user} text-neutral-500 dark:text-neutral-400`}>
@@ -276,7 +285,8 @@ export default function Post({
             <div className={`${styles.headerMetadata} justify-between text-xs text-neutral-700 dark:text-neutral-400`}>
 
               <div className={`flex flex-row items-center gap-1 max-sm:flex-wrap`}>
-                {post?.community?.icon && (
+
+                {post?.community?.icon && showCommunity && (
                   <Link
                     href={`/c/${post?.community?.name}@${
                       new URL(post.post.ap_id).host
@@ -294,6 +304,9 @@ export default function Post({
                     />
                   </Link>
                 )}
+
+                {showCommunity && 
+                <>
                 <Link 
                   href={`/c/${post?.community?.name}@${new URL(post.post.ap_id).host}`} 
                   className="flex flex-col prose dark:prose-invert"
@@ -311,6 +324,8 @@ export default function Post({
                 </Link>
 
                 <div className="dividerDot"></div>
+                </>
+                }
 
                 <Username user={post.creator} baseUrl={baseUrl} />
 
@@ -352,7 +367,9 @@ export default function Post({
                   shallow
                   className="h-full w-full flex flex-col items-start justify-start relative"
                 >
-                  <div className={`${styles.title} text-neutral-900 dark:text-neutral-100 text-sm h-fit w-full z-10`} style={{ overflow: "visible"}}>{post.post.name}</div>
+                  <div className={`${styles.title} text-neutral-900 dark:text-neutral-100 text-sm h-fit w-full z-10`} style={{ overflow: "visible"}}>
+                    {post.post.name}
+                  </div>
                 
 
                 {/* Display Body if post has body and is not a Link */}
@@ -389,7 +406,8 @@ export default function Post({
                )}
             </div>
 
-            <div className={`${styles.footer} justify-start`}>
+            <div className={`${styles.footer} justify-start text-neutral-400`}>
+
                 <div className="flex">
                   <Vote post={post} horizontal />
                 </div>
@@ -417,6 +435,7 @@ export default function Post({
                     <span className="material-symbols-outlined">more_horiz</span>
                   </button>
                 </div>
+
             </div>
           </div>
         </>
