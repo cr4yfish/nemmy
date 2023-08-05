@@ -31,7 +31,6 @@ export default function SettingsPage({
   const [settings, setSettings] = React.useState<Settings>(currentAccount.settings || {} as Settings)
 
   const [instanceForm, setInstanceForm] = React.useState<string>("");
-
   useEffect(() => {
     if (currentAccount) {
       setSession(prevValue => { return { ...prevValue, settings: settings } })
@@ -46,7 +45,6 @@ export default function SettingsPage({
   const handleRemoveInstanceBlock = (instance: string) => {
     setSession(prevVal => { return { ...prevVal, settings: { ...prevVal.settings, blockedInstances: [ ...prevVal.settings.blockedInstances.filter((i) => i !== instance) ] } }} ) 
   }
-
   return (
     <>
       <div className="flex h-full w-full flex-col gap-8 overflow-y-hidden p-20 max-sm:p-4">

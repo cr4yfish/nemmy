@@ -27,6 +27,7 @@ export default function PostList({
   setCurrentPost = () => null,
   style="modern", // modern or compact
   showCommunity = true,
+
 }: {
   fetchParams?: {
     type_?: ListingType;

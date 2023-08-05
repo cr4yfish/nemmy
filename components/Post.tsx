@@ -285,7 +285,6 @@ export default function Post({
             <div className={`${styles.headerMetadata} justify-between text-xs text-neutral-700 dark:text-neutral-400`}>
 
               <div className={`flex flex-row items-center gap-1 max-sm:flex-wrap`}>
-
                 {post?.community?.icon && showCommunity && (
                   <Link
                     href={`/c/${post?.community?.name}@${
