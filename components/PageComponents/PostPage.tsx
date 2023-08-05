@@ -212,7 +212,7 @@ export default function PostPage({
             {isPoll &&
             <>
               <Card>
-                <Title>Poll</Title>
+                <Title>{postData.post.name.replace("[POLL]", "")}</Title>
                 <Subtitle>Vote by upvoting/downvoting</Subtitle>
                 <BarChart 
                       className="mt-6"
