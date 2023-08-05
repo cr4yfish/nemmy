@@ -197,7 +197,7 @@ export const SessionContextProvider = ({ children }: { children: any }) => {
     if (currentAccount) {
 
       // Add blockedInstances if not set
-      if(!currentAccount?.settings.blockedInstances) {
+      if(currentAccount?.settings.blockedInstances === undefined) {
         currentAccount.settings.blockedInstances = []
       }
       

@@ -156,7 +156,7 @@ export default function PostList({
             .filter(
               (post) =>{
                 // only filter if blockedInstances is set
-                if(session.settings.blockedInstances) {
+                if(session.settings.blockedInstances !== undefined) {
                   return  !session.settings?.blockedInstances?.includes(new URL(post.post.ap_id)?.host)
                 } else {
                   return true

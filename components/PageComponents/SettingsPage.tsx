@@ -50,8 +50,6 @@ export default function SettingsPage({
   }, [settings, currentAccount, setSession]);
 
   const handleBlockInstance = () => {
-    setInstanceForm("");
-
     // safe guard for users without blockedInstances in settings
     const oldBlocks = session.settings?.blockedInstances || [];
 
@@ -67,6 +65,8 @@ export default function SettingsPage({
         },
       };
     });
+
+    setInstanceForm("");
   };
 
   const handleRemoveInstanceBlock = (instance: string) => {
