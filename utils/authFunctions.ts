@@ -526,7 +526,6 @@ export const updateAccount = (updatedAccount: Account) => {
 }
 
 export const updateCurrentAccount = (updatedAccount: Account, session: SessionState, setSession: Dispatch<SetStateAction<SessionState>>) => {
-  console.log("Updating account:", updatedAccount.settings.theme)
   const currentAccount = getCurrentAccount();
   if (currentAccount) {
     updateAccount(updatedAccount);

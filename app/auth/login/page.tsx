@@ -1,7 +1,7 @@
 "use client";
 
 import { GetSiteResponse, PersonView } from "lemmy-js-client";
-import { FormEvent, useState, useEffect } from "react";
+import { FormEvent, useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
@@ -38,7 +38,9 @@ export default function Login() {
   const [inputFocus, setInputFocus] = useState<boolean>(false);
   const [users, setUsers] = useState<PersonView[]>([]);
   const [selectedUser, setSelectedUser] = useState<PersonView | null>(null);
+
   const [loginError, setLoginError] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
 
@@ -73,6 +75,14 @@ export default function Login() {
       };
     });
   }, [selectedUser]);
+
+  const validateHostname = (value: string) => value.match(/^[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}$/i);
+
+  const instanceValid = useMemo(() => {
+    if (form.instance === "") return undefined;
+
+    return validateHostname(form.instance) ? "valid" : "invalid";
+  }, [form.instance]);
 
   const handleSubmit = async (e: FormEvent) => {
     try {
@@ -134,7 +144,9 @@ export default function Login() {
     } catch (e: any) {
       setLoading(false);
       setLoginError(true);
-      console.error(e.message);
+      va.track("login_error", { instance: form.instance, error: e.message })
+      console.error("Got error message:",e.message);
+      setErrorMessage(`${e.message}`)
     }
   };
 
@@ -146,6 +158,7 @@ export default function Login() {
   };
 
   useEffect(() => {
+    setSelectedUser(null);
     const timer = setTimeout(async () => {
       if (form.username.length > 0) await searchUsers(form.username);
     }, 250);
@@ -179,55 +192,54 @@ export default function Login() {
 
         <form
           onSubmit={(e) => handleSubmit(e)}  className={`${styles.loginWrapper} text-neutral-900 dark:text-neutral-100 `}>
-          <Input 
-            label="Username" 
-            variant="bordered" 
-            color="primary" 
-            required
-            disabled={loading}
-            labelPlacement="inside" 
-            defaultValue={form.username}
-            onChange={(e) => setForm({ ...form, username: e.currentTarget.value })}
-            endContent={
-              <ClipLoader
-                color={"#e6b0fa"}
-                size={20}
-                loading={searchingUserLoading}
-                className=""
-              />
-            }
-          />
 
-          {users?.length > 0 && !selectedUser && (
-            <div
-              className="absolute left-0 z-50 flex w-full translate-y-full flex-col gap-4 rounded-lg border border-neutral-300 bg-neutral-100/75 p-4 backdrop-blur-3xl dark:border-neutral-700 dark:bg-neutral-900/90"
-              style={{ bottom: "-10%" }}
-            >
-              {users.map((user, i) => (
-                <div
-                  onClick={() => setSelectedUser(user)}
-                  key={i}
-                  className="flex cursor-pointer flex-row items-center gap-3 border-neutral-700 dark:border-b dark:pb-4"
-                >
-                  <Image
-                    height={40}
-                    width={40}
-                    src={user.person.avatar || DEFAULT_AVATAR}
-                    className="h-10 w-10 overflow-hidden rounded-full object-contain"
-                    alt=""
-                  />
-                  <div className="flex flex-col">
-                    <span className="font-bold">
-                      {user.person.display_name || user.person.name}
-                    </span>
-                    <span className="text-xs dark:text-neutral-300">
-                      @{new URL(user.person.actor_id).hostname}
-                    </span>
+          <div className="relative">
+            <Input 
+              label="Username" 
+              variant="bordered" 
+              color="primary" 
+              required
+              disabled={loading}
+              labelPlacement="inside" 
+              defaultValue={form.username}
+              onChange={(e) => setForm({ ...form, username: e.currentTarget.value })}
+              endContent={
+                <ClipLoader
+                  color={"#e6b0fa"}
+                  size={20}
+                  loading={searchingUserLoading}
+                  className=""
+                />
+              }
+            />
+            {users?.length > 0 && !selectedUser && (
+              <div  className="absolute left-0 z-50 flex w-full translate-y-full flex-col gap-4 rounded-lg border border-neutral-300 bg-neutral-100/75 p-4 backdrop-blur-3xl dark:border-neutral-700 dark:bg-neutral-900/90" style={{ bottom: "-10%" }}>
+                {users.map((user, i) => (
+                  <div
+                    onClick={() => setSelectedUser(user)}
+                    key={i}
+                    className="flex cursor-pointer flex-row items-center gap-3 border-neutral-700 dark:border-b dark:pb-4"
+                  >
+                    <Image
+                      height={40}
+                      width={40}
+                      src={user.person.avatar || DEFAULT_AVATAR}
+                      className="h-10 w-10 overflow-hidden rounded-full object-contain"
+                      alt=""
+                    />
+                    <div className="flex flex-col">
+                      <span className="font-bold">
+                        {user.person.display_name || user.person.name}
+                      </span>
+                      <span className="text-xs dark:text-neutral-300">
+                        @{new URL(user.person.actor_id).hostname}
+                      </span>
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
-          )}
+                ))}
+              </div>
+            )}
+          </div>
 
           <Input 
             label="Password" 
@@ -250,11 +262,14 @@ export default function Login() {
           <Input 
             label="Instance" 
             variant="bordered" 
-            color="primary" 
             required
             disabled={loading}
             labelPlacement="inside" 
-            defaultValue={form.instance}
+            value={form.instance}
+            color={instanceValid === "invalid" ? "danger" : form.instance.length > 0 ? "success" : "primary"}
+            errorMessage={instanceValid === "invalid" && "Please enter a valid Instance"}
+            validationState={instanceValid}
+            defaultValue={form.instance || ""}
             onChange={(e) => setForm({ ...form, instance: e.currentTarget.value })}
           />
 
@@ -268,6 +283,12 @@ export default function Login() {
             onChange={(e) => setForm({ ...form, totp: e.currentTarget.value })}
           />
 
+          {loginError && (
+            <div className="text-red-500 text-sm w-full break-words break-all max-w-lg">
+              {errorMessage}
+              </div>
+          )
+          }
           <button
             disabled={loading}
             className={`${styles.button} ${styles.primary}`}

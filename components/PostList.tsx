@@ -3,7 +3,7 @@
 import { useState, useEffect, cache } from "react";
 import { CommunityId, ListingType, PostView, SortType } from "lemmy-js-client";
 import InfiniteScroll from "react-infinite-scroller";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import va from "@vercel/analytics"
 
 import { useSession } from "@/hooks/auth";
@@ -25,6 +25,7 @@ export default function PostList({
   fetchParams = { limit: DEFAULT_POST_LIMIT, page: 1 },
   initPosts,
   setCurrentPost = () => null,
+  style="modern"
 }: {
   fetchParams?: {
     type_?: ListingType;
@@ -38,6 +39,7 @@ export default function PostList({
   };
   initPosts?: PostView[];
   setCurrentPost?: Function;
+  style?: "modern" | "compact";
 }) {
   const { session } = useSession();
   const { navbar, setNavbar } = useNavbar();
@@ -122,6 +124,13 @@ export default function PostList({
     setCurrentPage(currentPage + 1);
   };
 
+  const isTextPost = (post: PostView) => {
+    if(post.post.url) return false;
+    if(post.post.thumbnail_url) return false;
+    if(post.post.embed_video_url) return false;
+    return true;
+  }
+
   return (
     <motion.div
       id="postList"
@@ -141,15 +150,24 @@ export default function PostList({
         >
           {posts.map((post: PostView, index: number) => {
             return (
-              <Post
-                onClick={() => handleClickPost(post)}
-                post={post}
-                instance={session.currentAccount?.instance}
-                auth={session.currentAccount?.jwt}
-                key={index}
-                postInstance={new URL(post.post.ap_id).host}
-                style="card"
-              />
+              <AnimatePresence key={index}>
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  className=" w-full"
+                >
+                  <Post
+                    onClick={() => handleClickPost(post)}
+                    post={post}
+                    instance={session.currentAccount?.instance}
+                    auth={session.currentAccount?.jwt}
+                    key={index}
+                    postInstance={new URL(post.post.ap_id).host}
+                    style={session.settings.cardType !== "auto" ? session.settings.cardType : isTextPost(post) ? "compact" : "modern"}
+                  />
+                </motion.div>
+              </AnimatePresence>
             );
           })}
 

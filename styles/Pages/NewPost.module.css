@@ -6,14 +6,6 @@
   transform: translateX(-50%);
 }
 
-.input {
-  @apply w-full rounded-lg bg-transparent 
-    p-2 text-3xl font-bold 
-    underline decoration-fuchsia-500 outline-none
-    dark:text-neutral-100
-    max-sm:text-2xl;
-}
-
 .textarea {
   @apply w-full bg-transparent outline-none max-sm:text-sm;
 }

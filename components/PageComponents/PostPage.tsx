@@ -54,6 +54,7 @@ export default function PostPage({
       const pathname = window.location.pathname.split("?")[0];
       history.replaceState({}, "", pathname);
     }
+    console.log(postData);
     setNavbar({
       ...navbar!,
       showSort: false,
@@ -133,14 +134,15 @@ export default function PostPage({
             </div>
 
             <div className={`${styles.postContent}`}>
+
               {/* Display Media e.g. Image, Video, Gif */}
               {postData?.post?.url &&
-                postData?.post?.url?.endsWith(".html") && (
+                !postData?.post?.url?.endsWith(".html") && (
                   <div id="image" className={`${styles.postBodyMedia}`}>
-                    <span>{postData.post.url}</span>
                     {postData?.post?.url && (
                       <AutoMediaType url={postData?.post?.url} />
                     )}
+                    <Link href={postData.post.url} className="a">{new URL(postData.post.url).host}</Link>
                   </div>
                 )}
 

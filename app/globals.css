@@ -2,40 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
 ::-webkit-scrollbar-track {
-  @apply bg-neutral-50;
+  @apply bg-neutral-50 dark:bg-neutral-900;
 }
 ::-webkit-scrollbar-thumb {
-  @apply bg-neutral-200;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
-
-  ::-webkit-scrollbar-track {
-    @apply bg-neutral-900;
-  }
-  ::-webkit-scrollbar-thumb {
-    @apply bg-neutral-700;
-  }
+  @apply bg-neutral-200 dark:bg-neutral-700;
 }
 
 body {
-  @apply bg-neutral-100 dark:bg-neutral-950;
-  color: rgb(var(--foreground-rgb));
   overflow-x: hidden;
 }
-
 
 ::-webkit-scrollbar {
   @apply w-2;

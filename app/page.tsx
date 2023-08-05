@@ -90,6 +90,7 @@ export default async function Home() {
         instance={instance}
         jwt={currentAccount?.jwt}
         siteResponse={siteResponse}
+        currentAccount={currentAccount}
       />
     </div>
   );

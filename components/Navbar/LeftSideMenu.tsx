@@ -45,7 +45,6 @@ export default function LeftSideMenu({
 
   const handleLoadMore = async (page: number) => {
     const data = await listCommunities({ page: page, auth: session.currentAccount?.jwt, type_: "Subscribed", sort: "Active" }, session.currentAccount?.instance);
-    console.log(data);    
     if(typeof data == "boolean" || data?.communities?.length == 0) {
       setHasMore(false);
       return

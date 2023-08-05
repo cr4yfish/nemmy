@@ -6,73 +6,30 @@
 }
 
 .bannerOverlay {
-  @apply absolute top-0 h-full w-full
-    bg-gradient-to-b from-transparent 
-    to-neutral-50 dark:to-neutral-950;
   z-index: -1;
   left: 50%;
   transform: translateX(-50%);
 }
 
-.headerWrapper {
-  @apply mt-20 flex flex-col flex-wrap items-center bg-gradient-to-b
-    from-neutral-50/50
-    to-neutral-50 
-    pt-2 backdrop-blur-sm
-    dark:from-neutral-950/50 dark:to-neutral-950;
-}
 
 .icon {
   @apply h-20 w-20 overflow-hidden rounded-full;
-}
-
-.subscribeButton {
-  @apply rounded-lg bg-fuchsia-200 p-4
-    font-medium text-fuchsia-950;
 }
 
 .description {
   @apply relative flex w-full flex-col items-center overflow-hidden p-4;
 }
 
-.descriptionOverlay {
-  @apply absolute h-full w-full
-    
-    bg-gradient-to-b from-transparent to-neutral-50 dark:to-neutral-950;
-  z-index: 1;
-}
 
 .descriptionContent {
   @apply rounded-lg p-4 transition-all
     duration-300 ease-in-out line-clamp-3;
 }
 
-.descriptionContentExpanded {
-  @apply bg-neutral-50
-    line-clamp-none dark:bg-neutral-950;
-}
-
 .mods {
   @apply flex flex-row flex-wrap gap-4;
 }
 
-.expandButton {
-  @apply absolute bottom-6
-    rounded-lg bg-fuchsia-100 p-4
-    font-medium text-fuchsia-950;
-  z-index: 2;
-}
-
-.postsWrapper {
-  @apply bg-neutral-50 dark:bg-neutral-950
-    dark:pt-4;
-}
-
-.sortsWrapper {
-  @apply flex flex-row flex-wrap items-center justify-center bg-neutral-200 px-28 py-4
-    dark:bg-neutral-900 dark:text-neutral-300
-     max-md:p-6;
-}
 
 .sort {
   @apply flex flex-row items-center gap-1;

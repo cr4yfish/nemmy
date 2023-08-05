@@ -167,7 +167,6 @@ export default function Comments({
 
   useEffect(() => {
     if (commentResponse) {
-      console.log("Comment response mode", commentResponse);
       setReplyCommet(commentResponse.comment_view);
       setCommentsData({ comments: [commentResponse.comment_view] });
       return;
@@ -300,12 +299,15 @@ export default function Comments({
         <div
           className={`${styles.comments} mb-24 max-w-3xl max-md:w-full max-sm:p-2 relative`}
         >
-          {commentsData?.comments?.length > 0 && (
-            <SortButton 
-              type="comment" defaultOption={currentCommentSort}
-              onChange={(sort) => setCurrentCommentSort(sort as CommentSortType)}
-            />
-          )}
+          <div className="px-2">
+            {commentsData?.comments?.length > 0 && (
+              <SortButton 
+                type="comment" defaultOption={currentCommentSort}
+                onChange={(sort) => setCurrentCommentSort(sort as CommentSortType)}
+              />
+            )}
+          </div>
+
 
           {/* Comments  */}
           {commentResponse ? (
