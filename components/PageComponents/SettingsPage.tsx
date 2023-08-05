@@ -262,8 +262,8 @@ export default function SettingsPage({
               </span>
             </CardHeader>
             <CardBody className="pt-1 text-xs">
-              You can block whole instances on Nemmy. What this does is it hide
-              any post from an instance which is in the block list.
+              You can block whole instances on Nemmy. What this does is it hides
+              any post from an instance which is blocked.
             </CardBody>
           </Card>
 
