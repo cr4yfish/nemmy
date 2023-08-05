@@ -151,7 +151,7 @@ npm run dev
 - [x] Community Page
 - [ ] Sort/Filter/Search
   - [ ] Search
-    - [ ] Search for Communities
+    - [X] Search for Communities
     - [x] Search for Posts
     - [ ] Search for Users
   - [x] Filter
@@ -169,7 +169,7 @@ npm run dev
   - [x] Supporting _all_ Lemmy Markdown Features
   - [x] Support Markdown inserts
 - [ ] User Page
-  - [ ] Settings **<- WIP**
+  - [X] Settings **<- Backend done. Will add more stuff later**
   - [x] Notifications
   - [x] User Profile
   - [x] User Posts
@@ -193,14 +193,14 @@ npm run dev
   - [ ] Show UI without connection
 - [ ] Customization
   - [ ] User Themes
-  - [ ] Dark/Light mode per User choice **<- More difficult than expected**
-  - [ ] Compact Style (Like compact.reddit) **<- Design phase**
+  - [X] Dark/Light mode per User choice
+  - [X] Compact Style
   - [ ] Classic Style (Like old.reddit)
 - [ ] QoL Features
   - [ ] Auto-Register to other instances
   - [ ] Subscribe to the same community on multiple instances (like c/nemmy on Lemmy.world and Lemmy.ml)
   - [ ] Bulk Block/Hide Communities with the same or similar Name
-  - [ ] Subscribe/Unsubscribe from Communities while in Search mode (So you don't need to leave the Search page just to unsubscribe/subscribe)
+  - [X] Subscribe/Unsubscribe from Communities while in Search mode (So you don't need to leave the Search page just to unsubscribe/subscribe)
   - [ ] Improved Sorting
 - [ ] _Instanceless_ features
   - [x] Create Communities regardless of instance
