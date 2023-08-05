@@ -91,7 +91,7 @@ export default function SmallUser({
         items-center gap-3 rounded-lg
         border border-fuchsia-500
         bg-neutral-50 p-4 shadow-lg dark:border-fuchsia-300
-        dark:bg-zinc-800 dark:shadow-none max-sm:flex-wrap ${
+        dark:bg-neutral-800 dark:shadow-none max-sm:flex-wrap ${
           opensToTop ? "-translate-y-full" : "translate-y-1/4"
         } ${userHover && styles.active} ${
           userHover && opensToTop && styles.activeToTop
@@ -101,7 +101,7 @@ export default function SmallUser({
           <Image
             className={`${styles.avatar} h-12 w-12
             overflow-hidden rounded-full border border-fuchsia-500
-            bg-slate-200 dark:border-2
+            bg-neutral-200 dark:border-2
          dark:border-fuchsia-300 ${user.avatar ? "" : "object-contain p-1"}`}
             src={user.avatar || DEFAULT_AVATAR}
             alt=""

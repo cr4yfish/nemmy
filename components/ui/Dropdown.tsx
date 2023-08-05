@@ -87,7 +87,7 @@ export default function Dropdown({
                         absolute top-full z-50 flex flex-col gap-2
                         rounded-lg border border-fuchsia-500 bg-neutral-50/70 p-2
                         shadow-lg backdrop-blur-xl
-                        dark:border-fuchsia-300 dark:bg-zinc-800 dark:shadow-none
+                        dark:border-fuchsia-300 dark:bg-neutral-800 dark:shadow-none
                     "
           >
             {options.map((option) => (
