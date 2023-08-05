@@ -8,9 +8,6 @@
 }
 
 .bannerOverlay {
-  @apply absolute left-0 top-0 h-full w-full
-    bg-neutral-900/25
-    backdrop-blur-sm;
   z-index: -1;
 }
 
