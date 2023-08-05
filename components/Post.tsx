@@ -2,6 +2,7 @@ import Image from "next/image";
 import { PostView } from "lemmy-js-client";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
+import Ripple from "react-ripplejs";
 
 import Username from "./User/Username";
 import Vote from "./Vote";
@@ -52,9 +53,10 @@ export default function Post({
       return (
         <>
           <div
-            className={`card ${styles.wrapper} flex-row items-start justify-start gap-4 bg-neutral-900 dark:border-neutral-700 hover:bg-neutral-100 dark:hover:bg-neutral-900 dark:hover:border-neutral-600 `}
+            className={`card ${styles.wrapper} flex-row items-start justify-start gap-4 bg-neutral-50 dark:bg-neutral-900 dark:border-neutral-700 hover:bg-neutral-100 dark:hover:bg-neutral-900 dark:hover:border-neutral-600 `}
             key={post.post.id}
             id={`${post.post.id.toString()}@${baseUrl}`}
+            
           >
             <div className="max-md:hidden">
               <Vote post={post} />
@@ -217,7 +219,7 @@ export default function Post({
                     {/* Display Thumbnail */}
                     {post.post.thumbnail_url && (
                       <Link
-                        className={`${styles.image}`}
+                        className={` w-full h-full relative overflow-hidden min-h-max rounded-xl self-center object-cover place-self-center`}
                         href={post.post.thumbnail_url}
                         target="_blank"
                         rel="noopener noreferrer"
@@ -234,7 +236,7 @@ export default function Post({
 
                 {/* Post has post url and no embedding,thus the url has to link to an Image -> Display Image */}
                 {post?.post?.url && !post?.post?.embed_title && (
-                  <div className={`${styles.image}`}>
+                  <div className={` w-full h-full relative overflow-hidden min-h-max rounded-xl self-center object-cover place-self-center`}>
                     <AutoMediaType
                       url={post?.post?.url}
                       alt={post.post.name}
@@ -295,7 +297,9 @@ export default function Post({
       return (
         <>
           <div
-            className={`card ${styles.wrapper} flex-col items-start justify-start gap-2 py-2 `}
+            className={`card ${styles.wrapper}
+            bg-neutral-50 dark:bg-neutral-900 border-neutral-200 dark:border-neutral-700
+             flex-col items-start justify-start gap-2 py-2 `}
             key={post.post.id}
             id={`${post.post.id.toString()}@${baseUrl}`}
           >

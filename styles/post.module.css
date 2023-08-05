@@ -115,17 +115,6 @@
   width: 100%;
 }
 
-.image {
-  position: relative;
-  border-radius: 9px;
-  overflow: hidden;
-  width: auto;
-  min-height: max-content;
-  object-fit: cover;
-  justify-self: center;
-  align-self: center;
-}
-
 .communityImage,
 .communityIconFill {
   height: 25px;
