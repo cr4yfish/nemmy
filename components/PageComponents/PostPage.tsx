@@ -133,7 +133,7 @@ export default function PostPage({
                 </div>
               </div>
               <div className={`${styles.postHeaderTitle}`}>
-                <h1>{postData?.post?.name}</h1>
+                <h1><RenderMarkdown content={postData?.post?.name} /></h1>
               </div>
             </div>
 
@@ -211,7 +211,7 @@ export default function PostPage({
             {isPoll && (
               <>
                 <Card>
-                  <Title>{postData.post.name.replace("[POLL]", "")}</Title>
+                  <Title><RenderMarkdown content={postData.post.name.replace("[POLL]", "")} /></Title>
                   <Subtitle>Vote by upvoting/downvoting</Subtitle>
                   <BarChart
                     className="mt-6"
