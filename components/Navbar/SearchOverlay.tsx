@@ -26,8 +26,7 @@ import { FormatNumber } from "@/utils/helpers";
 import Post from "../Post";
 import Community from "../Community";
 import EndlessScrollingEnd from "../ui/EndlessSrollingEnd";
-
-import Dropdown from "../ui/Dropdown";
+import TabContent from "../ui/TabContent";
 import UserCard from "../User/UserCard";
 
 function TrendingCommunity({
@@ -175,20 +174,6 @@ function TrendingTopic({
         />
       </Link>
     </motion.div>
-  );
-}
-
-function TabContent({ text, icon }: { text: string; icon: string }) {
-  return (
-    <div className="flex items-center gap-1">
-      <span
-        className="material-symbols-outlined"
-        style={{ fontSize: ".75rem" }}
-      >
-        {icon}
-      </span>
-      <span>{text}</span>
-    </div>
   );
 }
 
