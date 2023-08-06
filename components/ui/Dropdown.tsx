@@ -12,7 +12,7 @@ function Button({
   onChange?: (newOption: Option) => void;
 }) {
   if (!option) {
-    console.error("SortButton: option or label not provided", option);
+    console.error("option or label not provided", option);
     return null;
   }
 

@@ -28,7 +28,7 @@ function Button({
 }) {
   if (!option || !label) {
     console.error(
-      "SortButton: option or label not provided",
+      "option or label not provided",
       option,
       label,
       icon,
