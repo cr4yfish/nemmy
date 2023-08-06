@@ -10,7 +10,7 @@ import { FormatDate } from "@/utils/formatDate";
 export default function CommentSingle({ comment }: { comment: CommentView }) {
   return (
     <>
-      <div className="flex flex-col gap-1 border-b border-neutral-300 px-4 pb-4">
+      <div className="flex flex-col gap-1 border-b border-neutral-300 px-4 pb-4 w-full">
         <div className="flex flex-row flex-wrap items-center">
           <span className="w-fit">
             <Username user={comment.creator} baseUrl="" />
