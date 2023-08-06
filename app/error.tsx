@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { Card, CardBody, CardHeader, Button } from "@nextui-org/react";
 import Link from "next/link";
+import va from "@vercel/analytics"
 
 export default function Error({
   error,
@@ -14,6 +15,7 @@ export default function Error({
   useEffect(() => {
     // Log the error to an error reporting service
     console.error(error);
+    va.track("error", { error: error.message });
   }, [error]);
 
   return (
