@@ -7,9 +7,7 @@ import {
 } from "lemmy-js-client";
 
 import PostList from "../PostList";
-import RenderMarkdown from "../ui/RenderMarkdown";
 import SiteInfoCard from "../SiteInfoCard";
-import LeftSideMenu from "../Navbar/LeftSideMenu";
 
 import { Account } from "@/utils/authFunctions";
 
