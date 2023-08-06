@@ -13,7 +13,6 @@ import { useSession } from "@/hooks/auth";
 import Username from "@/components/User/Username";
 import PostList from "@/components/PostList";
 import RenderMarkdown from "@/components/ui/RenderMarkdown";
-import SortButton from "../ui/SortButton";
 
 import { subscribeToCommunity } from "@/utils/lemmy";
 import { FormatNumber } from "@/utils/helpers";
@@ -41,8 +40,6 @@ export default function CommunityPage({
   useEffect(() => {
     setNavbar({
       ...navbar!,
-      showSort: false,
-      showFilter: false,
       showSearch: true,
       showUser: true,
       showback: true,
@@ -207,18 +204,6 @@ export default function CommunityPage({
           >
             Collapse
           </button>
-        </div>
-      </div>
-
-      <div
-        className={`flex flex-row flex-wrap items-center justify-center bg-neutral-200 px-28 py-4
-    dark:bg-neutral-900 dark:text-neutral-300
-     max-md:p-6`}
-      >
-        <div className="flex w-full max-w-2xl flex-row items-center justify-between px-4">
-          <SortButton
-            onChange={(newSort) => setCurrentSort(newSort as SortType)}
-          />
         </div>
       </div>
 
