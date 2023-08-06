@@ -46,7 +46,11 @@ export default function Post({
     new URL(post.community.actor_id).host || new URL(DEFAULT_INSTANCE).host
   }&preload=true`;
 
-  const communityUrl = `/c/${post.community.name}@${new URL(post.community.actor_id).host}`
+  const communityUrl = `/c/${post.community.name}@${
+    new URL(post.community.actor_id).host
+  }`;
+
+  const target = "_blank";
 
   const isPoll = post.post.name.toLowerCase().startsWith("[poll]");
 
@@ -70,7 +74,7 @@ export default function Post({
                     {showCommunity && (
                       <Link
                         href={communityUrl}
-                        target="_blank"
+                        target={target}
                         className={`${styles.communityImage}`}
                         style={{ width: "50px", height: "50px" }}
                       >
@@ -94,7 +98,7 @@ export default function Post({
                       <Link
                         href={communityUrl}
                         className="prose flex flex-row items-center gap-1 dark:prose-invert"
-                        target="_blank"
+                        target={target}
                       >
                         {showCommunity && (
                           <>
@@ -134,7 +138,7 @@ export default function Post({
                   <Link
                     onClick={onClick}
                     href={postUrl}
-                    target="_blank"
+                    target={target}
                     shallow
                     className={`${styles.headerTitle}`}
                   >
@@ -162,7 +166,7 @@ export default function Post({
                     <Link
                       href={postUrl}
                       shallow
-                      target="_blank"
+                      target={target}
                       className={`${styles.contentOverlay} bg-gradient-to-b 
                       from-neutral-50/30 to-neutral-50/90
                       dark:from-neutral-900/50 dark:to-neutral-900/90`}
@@ -206,7 +210,7 @@ export default function Post({
                         <Link
                           className="a text-xs"
                           href={post.post.url}
-                          target="_blank"
+                          target={target}
                           rel="noopener noreferrer"
                         >
                           {new URL(post.post.url).hostname}
@@ -218,7 +222,7 @@ export default function Post({
                       <Link
                         className={` relative h-full min-h-max w-full place-self-center self-center overflow-hidden rounded-xl object-cover`}
                         href={post.post.thumbnail_url}
-                        target="_blank"
+                        target={target}
                         rel="noopener noreferrer"
                       >
                         <AutoMediaType
@@ -313,7 +317,7 @@ export default function Post({
                 {post?.community?.icon && showCommunity && (
                   <Link
                     href={communityUrl}
-                    target="_blank"
+                    target={target}
                     className={`${styles.communityImage}`}
                   >
                     <Image
@@ -332,7 +336,7 @@ export default function Post({
                     <Link
                       href={communityUrl}
                       className="prose flex flex-col dark:prose-invert"
-                      target="_blank"
+                      target={target}
                     >
                       <span className="text-xs font-bold capitalize">
                         {post.community.name}
@@ -384,7 +388,7 @@ export default function Post({
                 <Link
                   onClick={onClick}
                   href={postUrl}
-                  target="_blank"
+                  target={target}
                   shallow
                   className="relative flex h-full w-full flex-col items-start justify-start"
                 >
@@ -441,7 +445,7 @@ export default function Post({
                           <Link
                             className="a text-xs"
                             href={post.post.url}
-                            target="_blank"
+                            target={target}
                             rel="noopener noreferrer"
                           >
                             {new URL(post.post.url).hostname}
@@ -453,7 +457,7 @@ export default function Post({
                         <Link
                           className={` relative h-full min-h-max w-full place-self-center self-center overflow-hidden rounded-xl object-cover`}
                           href={post.post.thumbnail_url || ""}
-                          target="_blank"
+                          target={target}
                           rel="noopener noreferrer"
                         >
                           <AutoMediaType
@@ -475,7 +479,7 @@ export default function Post({
                     className={` flex overflow-hidden rounded-xl`}
                     style={{ height: "80px", width: "80px" }}
                     href={post.post.thumbnail_url}
-                    target="_blank"
+                    target={target}
                     rel="noopener noreferrer"
                   >
                     <AutoMediaType
