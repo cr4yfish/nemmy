@@ -299,8 +299,10 @@ export default function Post({
         <>
           <div
             className={`card ${styles.wrapper}
-            flex-col items-start justify-start gap-2
-             border-neutral-200 bg-neutral-50 py-2 dark:border-neutral-700 dark:bg-neutral-900 `}
+            flex-col items-start justify-start gap-2 h-full min-h-max max-h-64 overflow-hidden
+             border-neutral-200 bg-neutral-50 py-3 dark:border-neutral-700 dark:bg-neutral-900
+             hover:bg-neutral-100 dark:hover:bg-neutral-800 dark:hover:border-neutral-600
+             `}
             key={post.post.id}
             id={`${post.post.id.toString()}@${baseUrl}`}
           >
@@ -380,10 +382,10 @@ export default function Post({
             </div>
 
             <div
-              className={` flex w-full flex-row items-center justify-between`}
+              className={` flex w-full h-full flex-row gap-4 items-center justify-between`}
             >
               <div
-                className={` relative flex h-20 w-full flex-col items-start justify-start`}
+                className={` relative flex h-full w-full flex-col items-start justify-start`}
               >
                 <Link
                   onClick={onClick}
@@ -399,8 +401,8 @@ export default function Post({
                     {post.post.name}
                   </div>
 
-                  {/* Display Body if post has body and is not a Link */}
-                  {post?.post?.body &&
+                  {/* Display Body if post has body and is not an Embed */}
+                  {post?.post?.body && !post.post.embed_title &&
                     !(
                       post?.post?.embed_title ||
                       post?.post?.url?.endsWith(".html")
@@ -420,7 +422,56 @@ export default function Post({
                           />
                         </div>
                       </>
-                    )}
+                    )
+                  }
+
+                  {/* Display Link if post has link e.g. Article case */}
+                  {(post?.post?.embed_title ||
+                    post?.post?.url?.endsWith(".html")) && (
+                    <div
+                      style={{ marginBottom: "0" }}
+                      className={`${styles.postBodyEmbed} mb-0 border-neutral-300 text-neutral-800 dark:border-neutral-600 dark:text-neutral-200`}
+                    >
+                      <div className="flex flex-col overflow-hidden">
+                        <RenderMarkdown
+                          className={`${styles.postBodyEmbedDescription} overflow-hidden line-clamp-2`}
+                          content={post?.post?.embed_description}
+                          disableLinks
+                        />
+                      </div>
+
+                      <div
+                        className={`${styles.link} flex w-full items-start justify-start p-1 pl-0`}
+                      >
+                        {post.post.url && (
+                          <Link
+                            className="a text-xs"
+                            href={post.post.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            {new URL(post.post.url).hostname}
+                          </Link>
+                        )}
+                      </div>
+                      {/* Display Thumbnail */}
+                      {post.post.thumbnail_url && false && (
+                        <Link
+                          className={` relative h-full min-h-max w-full place-self-center self-center overflow-hidden rounded-xl object-cover`}
+                          href={post.post.thumbnail_url || ""}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <AutoMediaType
+                            url={post.post.thumbnail_url || ""}
+                            alt={post.post.name}
+                            nsfw={post?.post?.nsfw}
+                          />
+                        </Link>
+                      )}
+                    </div>
+                  )}
+
                 </Link>
               </div>
 
