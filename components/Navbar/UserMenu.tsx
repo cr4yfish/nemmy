@@ -7,8 +7,11 @@ import { Mousewheel, Scrollbar } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/scrollbar";
 import { motion } from "framer-motion";
+import va from "@vercel/analytics";
+import { useEffect } from "react";
+import { Badge } from "@nextui-org/react";
 
-import { DEFAULT_AVATAR } from "@/constants/settings";
+import { DEFAULT_AVATAR, DEFAULT_INSTANCE } from "@/constants/settings";
 import { useSession } from "@/hooks/auth";
 
 import styles from "@/styles/components/Navbar/UserMenu.module.css";
@@ -18,7 +21,6 @@ import {
   sortCurrentAccount,
   handleLogout,
 } from "@/utils/authFunctions";
-import { useEffect } from "react";
 
 function UserMenuItem({
   text,
@@ -190,26 +192,33 @@ export default function UserMenu({
           )}
 
           <div className={`${styles.userMenuInteractionsTop}`}>
+
+            <UserMenuItem
+              text="My Profile"
+              icon="account_circle"
+              link={`/u/${session.currentAccount?.user?.person?.name}@${session.currentAccount?.instance}`}
+              close={handleClose}
+              disabled={!session.isLoggedIn}
+            />
+            
             {session.isLoggedIn ? (
-              <Link
-                onClick={() => handleClose()}
-                href={"/inbox"}
-                className="hover:bg-neutral-200 dark:hover:bg-neutral-800"
-              >
-                <button className="relative">
-                  <div className="relative flex h-full w-fit items-center justify-center">
-                    {unreadCount > 0 && (
-                      <span className=" absolute left-1/3 top-0 m-2 rounded-full bg-red-400 px-1 text-xs font-bold text-red-950">
-                        {unreadCount}
-                      </span>
-                    )}
-                    <span className="material-symbols-outlined">
-                      notifications
-                    </span>
-                  </div>
-                  Notifications
+            <Link href="/inbox" className="h-fit max-h-min hover:bg-neutral-200 dark:hover:bg-neutral-800">
+              
+                <button
+                  className="flex items-center justify-center text-neutral-900 dark:text-neutral-100"
+                  onClick={() => {
+                    va.track("click-inbox", {
+                      instance:
+                        session?.currentAccount?.instance || DEFAULT_INSTANCE,
+                    });
+                  }}
+                >
+                  <Badge content={unreadCount}>
+                    <span className="material-symbols-outlined">notifications</span>
+                  </Badge>
+                  <span>Inbox</span>
                 </button>
-              </Link>
+            </Link>
             ) : (
               <UserMenuItem
                 text="Notifications"
@@ -220,13 +229,6 @@ export default function UserMenu({
               />
             )}
 
-            <UserMenuItem
-              text="My Profile"
-              icon="account_circle"
-              link={`/u/${session.currentAccount?.user?.person?.name}@${session.currentAccount?.instance}`}
-              close={handleClose}
-              disabled={!session.isLoggedIn}
-            />
             <UserMenuItem
               text="Create a Post"
               icon="add_circle_outline"
