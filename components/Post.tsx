@@ -301,13 +301,14 @@ export default function Post({
         <>
           <div
             className={`card ${styles.wrapper}
-            h-full max-h-64 min-h-max flex-col items-start justify-start gap-2 overflow-hidden
+            h-full min-h-max flex-col items-start justify-start gap-2 overflow-hidden
              border-neutral-200 bg-neutral-50 py-3 hover:bg-neutral-100 dark:border-neutral-700
              dark:bg-neutral-900 dark:hover:border-neutral-600 dark:hover:bg-neutral-800
              `}
             key={post.post.id}
             id={`${post.post.id.toString()}@${baseUrl}`}
           >
+            {/* Header */}
             <div
               className={`${styles.headerMetadata} justify-between text-xs text-neutral-700 dark:text-neutral-400`}
             >
@@ -379,8 +380,9 @@ export default function Post({
               )}
             </div>
 
+            {/* Body */}
             <div
-              className={` flex h-full w-full flex-row items-center justify-between gap-4`}
+              className={` flex h-full max-h-44 overflow-hidden w-full flex-row items-center justify-between gap-4`}
             >
               <div
                 className={` relative flex h-full w-full flex-col items-start justify-start`}
@@ -492,6 +494,7 @@ export default function Post({
               )}
             </div>
 
+            {/* Footer */}
             <div className={`${styles.footer} justify-start text-neutral-400`}>
               <div className="flex">
                 <Vote post={post} horizontal />
