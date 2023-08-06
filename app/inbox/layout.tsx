@@ -9,8 +9,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     setNavbar({
       ...navbar!,
-      showSort: false,
-      showFilter: false,
       showSearch: false,
       showback: false,
       hidden: false,
