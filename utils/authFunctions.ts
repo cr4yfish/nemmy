@@ -149,6 +149,7 @@ export const handleLogin = async ({
     accounts: [...session.accounts, account],
     siteResponse: accountWithSite.site,
     settings: accountWithSite.settings,
+    isLoggedIn: true,
   });
 
   // save the account
