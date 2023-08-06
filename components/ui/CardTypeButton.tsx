@@ -12,12 +12,12 @@ export default function CardTypeButton() {
   const { session, setSession } = useSession();
 
   return (
-    <Dropdown showArrow className=" text-neutral-700 ">
+    <Dropdown showArrow className=" text-neutral-700 dark:text-neutral-400">
       <DropdownTrigger>
         <Button
           variant="bordered"
           style={{ height: "43.3px" }}
-          className=" text-neutral-700 "
+          className=" text-neutral-700 dark:text-neutral-300"
         >
           <span className="material-symbols-outlined">
             {session.settings.cardType == "auto" && "auto_awesome"}
