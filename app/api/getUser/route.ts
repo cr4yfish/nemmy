@@ -1,5 +1,5 @@
-import { LemmyHttp, ListingType, SortType, CommunityId } from "lemmy-js-client";
-import { DEFAULT_INSTANCE } from "@/constants/settings";
+import { LemmyHttp, SortType } from "lemmy-js-client";
+import { DEFAULT_INSTANCE, DEFAULT_SORT_TYPE } from "@/constants/settings";
 
 // POST /api/getUser
 // Post for security reasons
@@ -11,7 +11,7 @@ export async function GET(req: Request) {
 
     let id = params.get("id") || undefined;
     let username = params.get("username") || undefined;
-    let sort = params.get("sort") || "Active";
+    let sort = params.get("sort") || DEFAULT_SORT_TYPE
     let limit = params.get("limit") || 10;
     let page = params.get("page") || 1;
     let auth = params.get("auth") || undefined;
@@ -25,11 +25,9 @@ export async function GET(req: Request) {
         : DEFAULT_INSTANCE,
     );
     let person = await client.getPersonDetails({
-      person_id: id as unknown as number,
       username: username as unknown as string,
       sort: sort as unknown as SortType,
       page: page as unknown as number,
-      limit: limit as unknown as number,
       auth: auth as unknown as string,
       saved_only: saved_only as unknown as boolean,
     });

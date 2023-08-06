@@ -229,6 +229,14 @@ export default function UserMenu({
               />
             )}
 
+            <UserMenuItem 
+              text="Bookmarks"
+              icon="bookmark"
+              link="/bookmarks"
+              close={handleClose}
+              disabled={!session.isLoggedIn}
+            />
+
             <UserMenuItem
               text="Create a Post"
               icon="add_circle_outline"
