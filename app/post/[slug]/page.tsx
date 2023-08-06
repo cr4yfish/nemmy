@@ -64,7 +64,7 @@ export default async function Post({
   const currentAccount = getCurrentAccountServerSide(cookieStore);
 
   // Data has been preloaded, so we don't need to fetch it again
-  if (preload) {
+  if (false && preload) {
     return (
       <>
         <PostPage
