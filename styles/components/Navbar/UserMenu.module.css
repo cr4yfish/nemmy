@@ -26,6 +26,10 @@
     p-4;
 }
 
+.userProfileActive {
+  @apply border-fuchsia-500 border-2
+}
+
 .userProfileBanner {
   @apply absolute left-0 top-0 h-full w-full 
     overflow-hidden rounded-lg object-cover;

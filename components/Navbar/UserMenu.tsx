@@ -116,12 +116,11 @@ export default function UserMenu({
                 <SwiperSlide
                   onClick={() => handleSwitchAccount(account)}
                   key={index}
-                  className={`${
-                    styles.userProfile
-                  } border-neutral-300 dark:border-neutral-600 ${
-                    account.username == session.currentAccount?.username &&
-                    "border-2 border-fuchsia-500 dark:border-fuchsia-400"
-                  } cursor-pointer`}
+                  className={`${styles.userProfile} cursor-pointer
+                    ${(account.username == session.currentAccount?.username) &&
+                      styles.userProfileActive
+                    } 
+                  `}
                 >
                   <Image
                     width={100}
