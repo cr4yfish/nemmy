@@ -173,7 +173,7 @@ npm run dev
   - [x] Notifications
   - [x] User Profile
   - [x] User Posts
-  - [ ] Bookmarks **<- Almost done**
+  - [X] Bookmarks
   - [x] User Comments
   - [ ] Chat **<- WIP**
 - [x] Sidebar
