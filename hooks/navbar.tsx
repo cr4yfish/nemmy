@@ -6,8 +6,6 @@ import { disablePageScroll, enablePageScroll } from "scroll-lock";
 
 export interface NavbarState {
   showMenu: boolean;
-  showFilter: boolean;
-  showSort: boolean;
   showSearch: boolean;
   showUser: boolean;
   showback: boolean;
@@ -26,8 +24,6 @@ interface NavbarContextProps {
 
 const defaultState: NavbarState = {
   showMenu: false,
-  showFilter: false,
-  showSort: false,
   showSearch: false,
   showUser: false,
   hidden: false,
