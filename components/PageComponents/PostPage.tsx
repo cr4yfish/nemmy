@@ -62,8 +62,6 @@ export default function PostPage({
 
     setNavbar({
       ...navbar!,
-      showSort: false,
-      showFilter: false,
       showSearch: true,
       showback: false,
       hidden: false,
@@ -144,11 +142,10 @@ export default function PostPage({
                 !postData?.post?.url?.endsWith(".html") && (
                   <div id="image" className={`${styles.postBodyMedia}`}>
                     {postData?.post?.url && (
-                      <AutoMediaType url={postData?.post?.url} />
+                      <Link href={postData.post.url} className="a">
+                        <AutoMediaType url={postData?.post?.url} />
+                      </Link>   
                     )}
-                    <Link href={postData.post.url} className="a">
-                      {new URL(postData.post.url).host}
-                    </Link>
                   </div>
                 )}
 
