@@ -125,8 +125,8 @@ export default function PostPage({
                     </span>
                     <div className="dividerDot"></div>
                     <span className="text-xs text-neutral-400">
-                      {postData?.post?.ap_id &&
-                        new URL(postData.post.ap_id).host}
+                      {postData?.community.actor_id &&
+                        new URL(postData.community.actor_id).host}
                     </span>
                   </span>
                 </div>

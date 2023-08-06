@@ -113,7 +113,7 @@ function TrendingTopic({
     >
       <Link
         href={`/post/${post?.post?.id}?instance=${
-          new URL(post?.post?.ap_id).host
+          new URL(post?.community.actor_id).host
         }&preload=true`}
         onClick={() => {
           localStorage.setItem("currentPost", JSON.stringify(post));

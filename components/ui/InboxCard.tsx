@@ -132,7 +132,7 @@ export default function InboxCard({
           </div>
           <div className="dividerDot"></div>
           <div className="">
-            {reply.community.name} @ {new URL(reply.comment.ap_id).host}
+            {reply.community.name} @ {new URL(reply.community.actor_id).host}
           </div>
         </div>
         <div className="flex flex-col gap-2 dark:text-neutral-200">

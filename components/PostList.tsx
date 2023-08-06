@@ -302,7 +302,7 @@ export default function PostList({
               // only filter if blockedInstances is set
               if (session.settings.blockedInstances !== undefined) {
                 return !session.settings?.blockedInstances?.includes(
-                  new URL(post.post.ap_id)?.host,
+                  new URL(post.community.actor_id)?.host,
                 );
               } else {
                 return true;
@@ -329,7 +329,7 @@ export default function PostList({
                       instance={session.currentAccount?.instance}
                       auth={session.currentAccount?.jwt}
                       key={index}
-                      postInstance={new URL(post.post.ap_id).host}
+                      postInstance={new URL(post.community.actor_id).host}
                       style={
                         session.settings?.cardType !== "auto"
                           ? session.settings?.cardType

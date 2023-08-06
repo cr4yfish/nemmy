@@ -43,8 +43,10 @@ export default function Post({
   //const postUrl = `https://${baseUrl}/post/${post.post.id}`;
 
   const postUrl = `/post/${post.post.id}?instance=${
-    postInstance || new URL(DEFAULT_INSTANCE).host
+    new URL(post.community.actor_id).host || new URL(DEFAULT_INSTANCE).host
   }&preload=true`;
+
+  const communityUrl = `/c/${post.community.name}@${new URL(post.community.actor_id).host}`
 
   const isPoll = post.post.name.toLowerCase().startsWith("[poll]");
 
@@ -67,9 +69,7 @@ export default function Post({
                   <div className={`${styles.headerMetadata}`}>
                     {showCommunity && (
                       <Link
-                        href={`/c/${post?.community?.name}@${
-                          new URL(post.post.ap_id).host
-                        }`}
+                        href={communityUrl}
                         target="_blank"
                         className={`${styles.communityImage}`}
                         style={{ width: "50px", height: "50px" }}
@@ -92,9 +92,7 @@ export default function Post({
                     )}
                     <div className={`flex flex-col gap-0`}>
                       <Link
-                        href={`/c/${post?.community?.name}@${
-                          new URL(post.post.ap_id).host
-                        }`}
+                        href={communityUrl}
                         className="prose flex flex-row items-center gap-1 dark:prose-invert"
                         target="_blank"
                       >
@@ -107,7 +105,7 @@ export default function Post({
                             <span className="flex w-fit gap-0 text-xs font-light">
                               <span>@</span>
                               <span className=" text-neutral-700 dark:text-neutral-400 ">
-                                {new URL(post.post.ap_id).host}
+                                {new URL(post.community.actor_id).host}
                               </span>
                             </span>
                           </>
@@ -314,9 +312,7 @@ export default function Post({
               >
                 {post?.community?.icon && showCommunity && (
                   <Link
-                    href={`/c/${post?.community?.name}@${
-                      new URL(post.post.ap_id).host
-                    }`}
+                    href={communityUrl}
                     target="_blank"
                     className={`${styles.communityImage}`}
                   >
@@ -334,9 +330,7 @@ export default function Post({
                 {showCommunity && (
                   <>
                     <Link
-                      href={`/c/${post?.community?.name}@${
-                        new URL(post.post.ap_id).host
-                      }`}
+                      href={communityUrl}
                       className="prose flex flex-col dark:prose-invert"
                       target="_blank"
                     >
@@ -347,7 +341,7 @@ export default function Post({
                       <span className="flex w-fit flex-row items-center gap-0 text-xs font-light">
                         <span>@</span>
                         <span className=" text-xs ">
-                          {new URL(post.post.ap_id).host}
+                          {new URL(post.community.actor_id).host}
                         </span>
                       </span>
                     </Link>
