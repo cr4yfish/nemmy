@@ -36,12 +36,12 @@ function UserMenuItem({
   if (disabled) {
     return (
       <>
-        <div className=" cursor-not-allowed text-neutral-700 dark:text-neutral-400">
+        <a className=" cursor-not-allowed text-neutral-700 dark:text-neutral-400">
           <button className="cursor-not-allowed">
             <span className="material-symbols-outlined">{icon}</span>
             {text}
           </button>
-        </div>
+        </a>
       </>
     );
   } else {
@@ -263,6 +263,7 @@ export default function UserMenu({
             text="Settings"
             icon="settings"
             link="/settings"
+            disabled={!session.isLoggedIn}
             close={handleClose}
           />
 
