@@ -21,7 +21,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   }, []);
 
   return (
-    <div className="flex-col, mb-6 mt-24 flex min-h-screen w-full justify-center py-4">
+    <div className="flex-col, mb-6  flex min-h-screen w-full justify-center py-4">
       {children}
     </div>
   );
