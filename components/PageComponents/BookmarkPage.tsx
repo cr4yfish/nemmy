@@ -48,9 +48,6 @@ export default function BookmarkPage({
   const [morePages, setMorePages] = useState<boolean>(true);
   const [sort, setSort] = useState<SortType | CommentSortType>(DEFAULT_SORT_TYPE);
   const [filter, setFilter] = useState<FilterType>("Posts");
-
-  console.log(initialGetPersonDetailsResponse)
-
   useEffect(() => {
     setCurrentPage(1);
   }, [sort]);
@@ -60,17 +57,11 @@ export default function BookmarkPage({
     setCurrentPage(1);
   }, [filter]);
 
-  useEffect(() => {
-    console.log(posts)
-  }, [posts])
-
   const getData = async ({ page = 1 }: { page?: number }) => {
-    console.log("fetching data")
     const data = await fetch(`/api/getUser?&page=${page}&username=${currentUser.username}&sort=${sort}&instance=${currentUser.instance}&saved_only=true&auth=${currentUser.jwt}`);
     const json = await data.json();
     const posts = json.posts;
     const comments = json.comments;
-    console.log("Got:", json)
 
     if (filter === "Comments") {
       if (comments.length === 0) setMorePages(false);

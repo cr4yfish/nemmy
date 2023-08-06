@@ -55,7 +55,6 @@ export default function Community({
         },
         new URL(community.community.actor_id).host,
       );
-      console.log(res);
       if (res) {
         setIsSubscribed(!isSubscribed);
       }
