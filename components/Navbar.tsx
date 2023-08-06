@@ -21,118 +21,10 @@ import SearchOverlay from "./Navbar/SearchOverlay";
 
 import styles from "@/styles/Navbar.module.css";
 import { disablePageScroll, enablePageScroll } from "scroll-lock";
+import { Badge } from "@nextui-org/react";
 
 const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
-function SortButton({
-  option,
-  label,
-  navbar,
-  setNavbar,
-  icon = undefined,
-  replaceIcon = undefined,
-  setSortOptions,
-  sortOptions,
-}: {
-  option: SortType;
-  label: string;
-  navbar?: NavbarState;
-  setNavbar?: any;
-  icon?: string;
-  replaceIcon?: React.ReactNode;
-  setSortOptions: Function;
-  sortOptions: boolean;
-}) {
-  if (!option || !label || !navbar || !setNavbar) {
-    console.error(
-      "SortButton: option or label not provided",
-      option,
-      label,
-      icon,
-      replaceIcon,
-    );
-    return null;
-  }
-
-  const handleFilterOverlayClose = async () => {
-    navbar &&
-      setNavbar({ ...navbar, overlayActive: false, currentSort: option });
-    await delay(100);
-    setSortOptions(false);
-  };
-
-  return (
-    <>
-      <button
-        onClick={() => {
-          handleFilterOverlayClose();
-        }}
-        className={`${
-          sortOptions &&
-          navbar?.currentSort == option &&
-          "bg-neutral-100 font-bold text-neutral-900 dark:bg-fuchsia-900 dark:text-neutral-50"
-        }`}
-      >
-        {icon && <span className={`material-symbols-outlined`}>{icon}</span>}
-        {replaceIcon}
-        {label}
-      </button>
-    </>
-  );
-}
-
-function FilterButton({
-  label,
-  option,
-  icon,
-  navbar,
-  setNavbar,
-  setFilterClicked,
-  filterClicked,
-}: {
-  label: string;
-  option: ListingType;
-  icon: string;
-  navbar?: NavbarState;
-  setNavbar?: any;
-  setFilterClicked: Function;
-  filterClicked: boolean;
-}) {
-  const { session } = useSession();
-  const router = useRouter();
-
-  const handleFilterOverlayClose = async () => {
-    if (option == "Subscribed") {
-      if (!session?.currentAccount?.user?.person.id) {
-        navbar && setNavbar({ ...navbar, overlayActive: false });
-        setFilterClicked(false);
-        router.push("/auth");
-        return;
-      }
-    }
-
-    navbar &&
-      setNavbar({ ...navbar, overlayActive: false, currentType: option });
-    await delay(100);
-    setFilterClicked(false);
-  };
-
-  return (
-    <>
-      <button
-        onClick={() => handleFilterOverlayClose()}
-        className={`${
-          filterClicked &&
-          navbar?.currentType == option &&
-          "bg-neutral-100 font-bold text-neutral-900 dark:bg-fuchsia-900 dark:text-neutral-50"
-        }`}
-      >
-        <span className="material-symbols-outlined">{icon}</span>
-        {label}
-      </button>
-    </>
-  );
-}
 
 export default function Navbar() {
   const { session, setSession } = useSession();
@@ -253,54 +145,11 @@ export default function Navbar() {
               </div>
             )}
 
-            {navbar?.showFilter && (
-              <button
-                className={`${styles.navButton} bg-neutral-200 text-neutral-900 dark:bg-neutral-800 dark:text-neutral-400`}
-                onClick={() => {
-                  setFilterClicked(!filterClicked);
-                  setSortOptions(false);
-                  handleUserMenuClose();
-                  setNavbar({ ...navbar, overlayActive: !filterClicked });
-                }}
-              >
-                <div>
-                  <span className="material-symbols-outlined">filter_list</span>
-                  <span className={`${styles.navButtonText}`}>
-                    {navbar?.currentType}
-                  </span>
-                </div>
-                <span className="material-symbols-outlined">
-                  arrow_drop_down
-                </span>
-              </button>
-            )}
-
-            {navbar?.showSort && (
-              <button
-                className={`${styles.navButton} bg-neutral-200 text-neutral-900 dark:bg-neutral-800 dark:text-neutral-400`}
-                onClick={() => {
-                  setSortOptions(!sortOptions);
-                  handleUserMenuClose();
-                  handleMenuClose();
-                  setFilterClicked(false);
-                  setNavbar({ ...navbar, overlayActive: !sortOptions });
-                }}
-              >
-                <div className="flex items-center gap-1">
-                  <span className="material-symbols-outlined">sort</span>
-                  <span className={`${styles.navButtonText}`}>
-                    {navbar?.currentSort}
-                  </span>
-                </div>
-                <span className="material-symbols-outlined">
-                  arrow_drop_down
-                </span>
-              </button>
-            )}
           </div>
         </div>
 
         <div className="flex flex-row items-center gap-4">
+
           {navbar?.showSearch && (
             <button
               className="flex items-center justify-center text-neutral-900 dark:text-neutral-100"
@@ -314,6 +163,24 @@ export default function Navbar() {
             >
               <span className="material-symbols-outlined">search</span>
             </button>
+          )}
+
+          {session.isLoggedIn && (
+            <Link href="/inbox" className="h-fit max-h-min" style={{ transform: "translateY(10%)" }}>
+              <Badge content={unreadCount > 0 ? unreadCount : ""}>
+                <button
+                  className="flex items-center justify-center text-neutral-900 dark:text-neutral-100"
+                  onClick={() => {
+                    va.track("click-inbox", {
+                      instance:
+                        session?.currentAccount?.instance || DEFAULT_INSTANCE,
+                    });
+                  }}
+                >
+                  <span className="material-symbols-outlined">notifications</span>
+                </button>
+              </Badge>
+            </Link>
           )}
 
           {navbar?.showUser && (
@@ -369,83 +236,6 @@ export default function Navbar() {
         )}
       </AnimatePresence>
 
-      {/* Filter Options */}
-      <div
-        className={`${styles.filterOptions} 
-        ${filterClicked && styles.filterActive}`}
-      >
-        <FilterButton
-          label="All"
-          option="All"
-          icon="public"
-          navbar={navbar}
-          setNavbar={setNavbar}
-          setFilterClicked={setFilterClicked}
-          filterClicked={filterClicked}
-        />
-        <FilterButton
-          label="Local"
-          option="Local"
-          icon="location_on"
-          navbar={navbar}
-          setNavbar={setNavbar}
-          setFilterClicked={setFilterClicked}
-          filterClicked={filterClicked}
-        />
-        <FilterButton
-          label="Subscribed"
-          option="Subscribed"
-          icon="communities"
-          navbar={navbar}
-          setNavbar={setNavbar}
-          setFilterClicked={setFilterClicked}
-          filterClicked={filterClicked}
-        />
-      </div>
-
-      {/* Sort Options */}
-      <div
-        className={`${styles.sortOptions} ${
-          sortOptions && styles.sortOptionsActive
-        }`}
-      >
-        <SortButton
-          label="Active"
-          option="Active"
-          navbar={navbar}
-          setNavbar={setNavbar}
-          replaceIcon={<span className="active m-2"></span>}
-          setSortOptions={setSortOptions}
-          sortOptions={sortOptions}
-        />
-        <SortButton
-          label="Hot"
-          option="Hot"
-          icon="whatshot"
-          navbar={navbar}
-          setNavbar={setNavbar}
-          setSortOptions={setSortOptions}
-          sortOptions={sortOptions}
-        />
-        <SortButton
-          label="New"
-          option="New"
-          icon="history"
-          navbar={navbar}
-          setNavbar={setNavbar}
-          setSortOptions={setSortOptions}
-          sortOptions={sortOptions}
-        />
-        <SortButton
-          label="Most Comments"
-          option="MostComments"
-          icon="arrows_more_up"
-          navbar={navbar}
-          setNavbar={setNavbar}
-          setSortOptions={setSortOptions}
-          sortOptions={sortOptions}
-        />
-      </div>
 
       {/* Mobile Menu Overlay */}
       <div
