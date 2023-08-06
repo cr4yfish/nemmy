@@ -43,7 +43,7 @@ export default function CommunityPage({
       showSearch: true,
       showUser: true,
       showback: true,
-      icon: "communities",
+      icon: "",
       titleOverride: `c/${communityData.community_view.community.title}`,
     });
   }, []);
