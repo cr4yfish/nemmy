@@ -27,11 +27,11 @@ export async function GET(req: Request) {
     let parent_id = params.get("parent_id") || undefined;
     let saved_only = params.get("saved_only") || undefined;
     let auth = params.get("auth") || undefined;
-    let baseUrl = params.get("baseUrl") || DEFAULT_INSTANCE;
+    let instance = params.get("instance") || undefined;
 
     if (!post_id) throw new Error("post_id is required");
 
-    let client: LemmyHttp = new LemmyHttp(DEFAULT_INSTANCE);
+    let client: LemmyHttp = new LemmyHttp((instance && instance.length > 1 && (instance !== "undefined")) ? `https://${instance}` : DEFAULT_INSTANCE);
 
     let comments: GetCommentsResponse;
 
