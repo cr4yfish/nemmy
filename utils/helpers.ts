@@ -1,3 +1,5 @@
+import { PostView } from "lemmy-js-client";
+
 export function getBufferFromFile(file: File | Blob): Promise<Buffer> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -50,3 +52,10 @@ export function FormatNumber(
 
   return number;
 }
+
+export function isTextPost(post: PostView){
+  if (post.post.url) return false;
+  if (post.post.thumbnail_url) return false;
+  if (post.post.embed_video_url) return false;
+  return true;
+};
