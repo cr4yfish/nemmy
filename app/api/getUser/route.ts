@@ -11,7 +11,7 @@ export async function GET(req: Request) {
 
     let id = params.get("id") || undefined;
     let username = params.get("username") || undefined;
-    let sort = params.get("sort") || DEFAULT_SORT_TYPE
+    let sort = params.get("sort") || DEFAULT_SORT_TYPE;
     let limit = params.get("limit") || 10;
     let page = params.get("page") || 1;
     let auth = params.get("auth") || undefined;

@@ -299,9 +299,9 @@ export default function Post({
         <>
           <div
             className={`card ${styles.wrapper}
-            flex-col items-start justify-start gap-2 h-full min-h-max max-h-64 overflow-hidden
-             border-neutral-200 bg-neutral-50 py-3 dark:border-neutral-700 dark:bg-neutral-900
-             hover:bg-neutral-100 dark:hover:bg-neutral-800 dark:hover:border-neutral-600
+            h-full max-h-64 min-h-max flex-col items-start justify-start gap-2 overflow-hidden
+             border-neutral-200 bg-neutral-50 py-3 hover:bg-neutral-100 dark:border-neutral-700
+             dark:bg-neutral-900 dark:hover:border-neutral-600 dark:hover:bg-neutral-800
              `}
             key={post.post.id}
             id={`${post.post.id.toString()}@${baseUrl}`}
@@ -382,7 +382,7 @@ export default function Post({
             </div>
 
             <div
-              className={` flex w-full h-full flex-row gap-4 items-center justify-between`}
+              className={` flex h-full w-full flex-row items-center justify-between gap-4`}
             >
               <div
                 className={` relative flex h-full w-full flex-col items-start justify-start`}
@@ -402,7 +402,8 @@ export default function Post({
                   </div>
 
                   {/* Display Body if post has body and is not an Embed */}
-                  {post?.post?.body && !post.post.embed_title &&
+                  {post?.post?.body &&
+                    !post.post.embed_title &&
                     !(
                       post?.post?.embed_title ||
                       post?.post?.url?.endsWith(".html")
@@ -422,8 +423,7 @@ export default function Post({
                           />
                         </div>
                       </>
-                    )
-                  }
+                    )}
 
                   {/* Display Link if post has link e.g. Article case */}
                   {(post?.post?.embed_title ||
@@ -458,7 +458,7 @@ export default function Post({
                       {post.post.thumbnail_url && false && (
                         <Link
                           className={` relative h-full min-h-max w-full place-self-center self-center overflow-hidden rounded-xl object-cover`}
-                          href={post.post.thumbnail_url || ""}
+                          href={post.post.thumbnail_url || ""}
                           target="_blank"
                           rel="noopener noreferrer"
                         >
@@ -471,7 +471,6 @@ export default function Post({
                       )}
                     </div>
                   )}
-
                 </Link>
               </div>
 

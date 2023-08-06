@@ -144,7 +144,7 @@ export default function PostPage({
                     {postData?.post?.url && (
                       <Link href={postData.post.url} className="a">
                         <AutoMediaType url={postData?.post?.url} />
-                      </Link>   
+                      </Link>
                     )}
                   </div>
                 )}

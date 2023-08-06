@@ -119,7 +119,8 @@ export default function UserMenu({
                   onClick={() => handleSwitchAccount(account)}
                   key={index}
                   className={`${styles.userProfile} cursor-pointer
-                    ${(account.username == session.currentAccount?.username) &&
+                    ${
+                      account.username == session.currentAccount?.username &&
                       styles.userProfileActive
                     } 
                   `}
@@ -192,7 +193,6 @@ export default function UserMenu({
           )}
 
           <div className={`${styles.userMenuInteractionsTop}`}>
-
             <UserMenuItem
               text="My Profile"
               icon="account_circle"
@@ -200,10 +200,12 @@ export default function UserMenu({
               close={handleClose}
               disabled={!session.isLoggedIn}
             />
-            
+
             {session.isLoggedIn ? (
-            <Link href="/inbox" className="h-fit max-h-min hover:bg-neutral-200 dark:hover:bg-neutral-800">
-              
+              <Link
+                href="/inbox"
+                className="h-fit max-h-min hover:bg-neutral-200 dark:hover:bg-neutral-800"
+              >
                 <button
                   className="flex items-center justify-center text-neutral-900 dark:text-neutral-100"
                   onClick={() => {
@@ -214,11 +216,13 @@ export default function UserMenu({
                   }}
                 >
                   <Badge content={unreadCount}>
-                    <span className="material-symbols-outlined">notifications</span>
+                    <span className="material-symbols-outlined">
+                      notifications
+                    </span>
                   </Badge>
                   <span>Inbox</span>
                 </button>
-            </Link>
+              </Link>
             ) : (
               <UserMenuItem
                 text="Notifications"
@@ -229,7 +233,7 @@ export default function UserMenu({
               />
             )}
 
-            <UserMenuItem 
+            <UserMenuItem
               text="Bookmarks"
               icon="bookmark"
               link="/bookmarks"

@@ -31,7 +31,11 @@ export async function GET(req: Request) {
 
     if (!post_id) throw new Error("post_id is required");
 
-    let client: LemmyHttp = new LemmyHttp((instance && instance.length > 1 && (instance !== "undefined")) ? `https://${instance}` : DEFAULT_INSTANCE);
+    let client: LemmyHttp = new LemmyHttp(
+      instance && instance.length > 1 && instance !== "undefined"
+        ? `https://${instance}`
+        : DEFAULT_INSTANCE,
+    );
 
     let comments: GetCommentsResponse;
 

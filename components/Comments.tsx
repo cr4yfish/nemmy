@@ -92,7 +92,6 @@ export default function Comments({
     };
   }, []);
 
-
   // Save comments to localStorage every 500ms when loaded new Comments
   useEffect(() => {
     if (commentResponse) return;
@@ -290,7 +289,7 @@ export default function Comments({
         >
           <div className="px-2">
             {commentsData?.comments?.length > 0 && (
-              <SortButton 
+              <SortButton
                 current={currentCommentSort}
                 setCurrent={setCurrentCommentSort}
                 sections={[
@@ -306,7 +305,6 @@ export default function Comments({
                 ]}
               />
             )}
-
           </div>
 
           {/* Comments  */}

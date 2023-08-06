@@ -27,7 +27,7 @@
 }
 
 .userProfileActive {
-  @apply border-fuchsia-500 border-2
+  @apply border-2 border-fuchsia-500;
 }
 
 .userProfileBanner {

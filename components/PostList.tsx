@@ -32,7 +32,6 @@ import { isTextPost } from "@/utils/helpers";
 
 import styles from "../styles/postList.module.css";
 
-
 /**
  * PostList
  */
@@ -138,7 +137,6 @@ export default function PostList({
     setCurrentPage(currentPage + 1);
   };
 
-
   return (
     <motion.div
       id="postList"
@@ -225,7 +223,7 @@ export default function PostList({
             </>
           )}
 
-          <SortButton 
+          <SortButton
             current={currentSort}
             setCurrent={setCurrentSort}
             sections={[
@@ -281,11 +279,9 @@ export default function PostList({
               },
             ]}
           />
-
         </div>
 
         <CardTypeButton />
-        
       </div>
 
       <div className=" flex w-full justify-center">
@@ -313,7 +309,10 @@ export default function PostList({
               }
             })
             .filter((post, index) => {
-              return posts.findIndex(post2 => post2.post.id === post.post.id) === index
+              return (
+                posts.findIndex((post2) => post2.post.id === post.post.id) ===
+                index
+              );
             })
             .map((post: PostView, index: number) => {
               return (

@@ -200,7 +200,6 @@ export const SessionContextProvider = ({ children }: { children: any }) => {
         currentAccount.settings.blockedInstances = [];
       }
 
-
       currentAccount.settings = session.settings;
       currentAccount.settings.theme = newTheme;
       updateCurrentAccount(currentAccount, session, setSession);

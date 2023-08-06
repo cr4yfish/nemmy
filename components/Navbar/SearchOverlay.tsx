@@ -402,15 +402,16 @@ export default function SearchOverlay({
         {!isSearching && (
           <div className={`${styles.searchOverlayTrending} overflow-y-auto`}>
             <div className="flex h-fit w-full flex-col gap-2">
-              
-              {trendingTopics.length > 0 && 
-              <motion.span 
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0, transition: { bounce: 0.2 } }}
-                exit={{ opacity: 0, y: 10 }}
-                className="ml-5 text-xs font-bold uppercase dark:text-neutral-200">
-                Popular topics
-              </motion.span>}
+              {trendingTopics.length > 0 && (
+                <motion.span
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0, transition: { bounce: 0.2 } }}
+                  exit={{ opacity: 0, y: 10 }}
+                  className="ml-5 text-xs font-bold uppercase dark:text-neutral-200"
+                >
+                  Popular topics
+                </motion.span>
+              )}
 
               {trendingTopics?.map((post, index) => (
                 <TrendingTopic
@@ -422,15 +423,16 @@ export default function SearchOverlay({
             </div>
 
             <div className="flex h-fit flex-col gap-2">
-              
-              {trendingCommunities.length > 0 && 
-              <motion.span 
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0, transition: { bounce: 0.2 } }}
-                exit={{ opacity: 0, y: 10 }}
-                className="ml-5 text-xs font-bold uppercase dark:text-neutral-200">
-                Trending communities
-              </motion.span>}
+              {trendingCommunities.length > 0 && (
+                <motion.span
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0, transition: { bounce: 0.2 } }}
+                  exit={{ opacity: 0, y: 10 }}
+                  className="ml-5 text-xs font-bold uppercase dark:text-neutral-200"
+                >
+                  Trending communities
+                </motion.span>
+              )}
 
               {trendingCommunities?.map((community, index) => (
                 <TrendingCommunity

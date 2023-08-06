@@ -149,11 +149,11 @@ npm run dev
   - [x] Bookmarking Posts & Comments
 - [x] PWA installable
 - [x] Community Page
-- [X] Sort/Filter/Search
-  - [X] Search
+- [x] Sort/Filter/Search
+  - [x] Search
     - [x] Search for Communities
     - [x] Search for Posts
-    - [X] Search for Users
+    - [x] Search for Users
   - [x] Filter
   - [x] Sorting
   - [x] Explore Section
@@ -173,7 +173,7 @@ npm run dev
   - [x] Notifications
   - [x] User Profile
   - [x] User Posts
-  - [X] Bookmarks
+  - [x] Bookmarks
   - [x] User Comments
   - [ ] Chat **<- WIP**
 - [x] Sidebar

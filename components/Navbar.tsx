@@ -25,7 +25,6 @@ import { Badge } from "@nextui-org/react";
 
 const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
-
 export default function Navbar() {
   const { session, setSession } = useSession();
   const { navbar, setNavbar } = useNavbar();
@@ -144,12 +143,10 @@ export default function Navbar() {
                 <span className="font-bold">{navbar?.titleOverride}</span>
               </div>
             )}
-
           </div>
         </div>
 
         <div className="flex flex-row items-center gap-4">
-
           {navbar?.showSearch && (
             <button
               className="flex items-center justify-center text-neutral-900 dark:text-neutral-100"
@@ -166,7 +163,11 @@ export default function Navbar() {
           )}
 
           {session.isLoggedIn && (
-            <Link href="/inbox" className="h-fit max-h-min" style={{ transform: "translateY(10%)" }}>
+            <Link
+              href="/inbox"
+              className="h-fit max-h-min"
+              style={{ transform: "translateY(10%)" }}
+            >
               <Badge content={unreadCount > 0 ? unreadCount : ""}>
                 <button
                   className="flex items-center justify-center text-neutral-900 dark:text-neutral-100"
@@ -177,7 +178,9 @@ export default function Navbar() {
                     });
                   }}
                 >
-                  <span className="material-symbols-outlined">notifications</span>
+                  <span className="material-symbols-outlined">
+                    notifications
+                  </span>
                 </button>
               </Badge>
             </Link>
@@ -235,7 +238,6 @@ export default function Navbar() {
           />
         )}
       </AnimatePresence>
-
 
       {/* Mobile Menu Overlay */}
       <div

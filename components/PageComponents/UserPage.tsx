@@ -31,8 +31,20 @@ import { FormatNumber, isTextPost } from "@/utils/helpers";
 import postListStyles from "@/styles/postList.module.css";
 import styles from "@/styles/Pages/UserPage.module.css";
 
-import { DEFAULT_AVATAR, DEFAULT_SORT_TYPE, DEFAULT_COMMENT_SORT_TYPE } from "@/constants/settings";
-import { Dropdown, DropdownTrigger, Button, DropdownMenu, DropdownItem, Tab, Tabs } from "@nextui-org/react";
+import {
+  DEFAULT_AVATAR,
+  DEFAULT_SORT_TYPE,
+  DEFAULT_COMMENT_SORT_TYPE,
+} from "@/constants/settings";
+import {
+  Dropdown,
+  DropdownTrigger,
+  Button,
+  DropdownMenu,
+  DropdownItem,
+  Tab,
+  Tabs,
+} from "@nextui-org/react";
 
 function UserStat({ text, icon }: { text: string; icon: string }) {
   return (
@@ -231,7 +243,7 @@ export default function UserPage({
               </div>
             </div>
 
-            <span> 
+            <span>
               <RenderMarkdown content={userData?.person_view?.person?.bio} />
             </span>
 
@@ -251,14 +263,9 @@ export default function UserPage({
         </div>
 
         <div className="flex w-full flex-col items-center gap-4 bg-neutral-50 dark:bg-neutral-950 dark:pt-4">
-          
-          <div
-            className={`${styles.sortsWrapper}  dark:text-neutral-300`}
-          >
+          <div className={`${styles.sortsWrapper}  dark:text-neutral-300`}>
             <div className="flex w-full max-w-2xl flex-row items-center justify-between">
               <div className="relative flex flex-row flex-wrap items-center gap-4">
-
-           
                 <Tabs
                   className="max-sm:hidden"
                   variant="bordered"
@@ -292,7 +299,9 @@ export default function UserPage({
                       <DropdownItem
                         key={"Posts"}
                         startContent={
-                          <span className="material-symbols-outlined">home</span>
+                          <span className="material-symbols-outlined">
+                            home
+                          </span>
                         }
                       >
                         Posts
@@ -320,103 +329,102 @@ export default function UserPage({
                     </DropdownMenu>
                   </Dropdown>
                 </div>
-       
 
+                {filter == "Posts" && (
+                  <SortButton
+                    current={sort}
+                    setCurrent={setSort}
+                    sections={[
+                      {
+                        title: "Most used",
+                        options: [
+                          {
+                            label: "Active",
+                            key: "Active",
+                            icon: "stream",
+                          },
+                          {
+                            label: "Hot",
+                            key: "Hot",
+                            icon: "whatshot",
+                          },
+                          {
+                            label: "Top Day",
+                            key: "TopDay",
+                            icon: "trending_up",
+                          },
+                          {
+                            label: "New",
+                            key: "New",
+                            icon: "history",
+                          },
+                        ],
+                      },
+                      {
+                        title: "Others",
+                        options: [
+                          {
+                            label: "Old",
+                            key: "Old",
+                            icon: "hourglass_top",
+                          },
+                          {
+                            label: "Most Comments",
+                            key: "MostComments",
+                            icon: "comment",
+                          },
+                          {
+                            label: "Top 6h",
+                            key: "TopSixHour",
+                            icon: "counter_6",
+                          },
+                          {
+                            label: "Top All",
+                            key: "TopAll",
+                            icon: "calendar_today",
+                          },
+                        ],
+                      },
+                    ]}
+                  />
+                )}
 
-                {filter == "Posts" && <SortButton 
-                  current={sort}
-                  setCurrent={setSort}
-                  sections={[
-                    {
-                      title: "Most used",
-                      options: [
-                        {
-                          label: "Active",
-                          key: "Active",
-                          icon: "stream",
-                        },
-                        {
-                          label: "Hot",
-                          key: "Hot",
-                          icon: "whatshot",
-                        },
-                        {
-                          label: "Top Day",
-                          key: "TopDay",
-                          icon: "trending_up",
-                        },
-                        {
-                          label: "New",
-                          key: "New",
-                          icon: "history",
-                        },
-                      ],
-                    },
-                    {
-                      title: "Others",
-                      options: [
-                        {
-                          label: "Old",
-                          key: "Old",
-                          icon: "hourglass_top",
-                        },
-                        {
-                          label: "Most Comments",
-                          key: "MostComments",
-                          icon: "comment",
-                        },
-                        {
-                          label: "Top 6h",
-                          key: "TopSixHour",
-                          icon: "counter_6",
-                        },
-                        {
-                          label: "Top All",
-                          key: "TopAll",
-                          icon: "calendar_today",
-                        },
-                      ],
-                    },
-                  ]}
-                />}
-
-                {filter == "Comments" && <SortButton
-                  current={sort}
-                  setCurrent={setSort}
-                  sections={[
-                    {
-                      title: "Sort by",
-                      options: [
-                        {
-                          label: "Hot",
-                          key: "Hot",
-                          icon: "whatshot",
-                        },
-                        {
-                          label: "Top",
-                          key: "Top",
-                          icon: "trending_up",
-                        },
-                        {
-                          label: "New",
-                          key: "New",
-                          icon: "history",
-                        },
-                        {
-                          label: "Old",
-                          key: "Old",
-                          icon: "hourglass_top",
-                        },
-                      ],
-                    },
-                  ]}
-                />}
-
+                {filter == "Comments" && (
+                  <SortButton
+                    current={sort}
+                    setCurrent={setSort}
+                    sections={[
+                      {
+                        title: "Sort by",
+                        options: [
+                          {
+                            label: "Hot",
+                            key: "Hot",
+                            icon: "whatshot",
+                          },
+                          {
+                            label: "Top",
+                            key: "Top",
+                            icon: "trending_up",
+                          },
+                          {
+                            label: "New",
+                            key: "New",
+                            icon: "history",
+                          },
+                          {
+                            label: "Old",
+                            key: "Old",
+                            icon: "hourglass_top",
+                          },
+                        ],
+                      },
+                    ]}
+                  />
+                )}
               </div>
 
-
               <CardTypeButton />
-
             </div>
           </div>
 

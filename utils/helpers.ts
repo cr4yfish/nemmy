@@ -53,9 +53,9 @@ export function FormatNumber(
   return number;
 }
 
-export function isTextPost(post: PostView){
+export function isTextPost(post: PostView) {
   if (post.post.url) return false;
   if (post.post.thumbnail_url) return false;
   if (post.post.embed_video_url) return false;
   return true;
-};
+}
