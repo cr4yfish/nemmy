@@ -37,7 +37,7 @@ import {
 import { cache } from "react";
 import { AccountWithSiteResponse } from "./authFunctions";
 
-export const getUserDetails = async (
+export const getUserDetails = cache(async (
   jwt: string,
   baseUrl: string,
 ): Promise<GetSiteResponse> => {
@@ -45,7 +45,7 @@ export const getUserDetails = async (
     `/api/getSite?auth=${jwt}&baseUrl=${baseUrl}`,
   ).then((res) => res.json());
   return user as GetSiteResponse;
-};
+})
 
 export const listCommunities = cache(
   async (
@@ -63,7 +63,7 @@ export const listCommunities = cache(
   },
 );
 
-export const getPosts = async (
+export const getPosts = cache(async (
   params: GetPosts,
   instance?: string,
 ): Promise<boolean | GetPostsResponse> => {
@@ -75,9 +75,9 @@ export const getPosts = async (
     return false;
   }
   return posts;
-};
+})
 
-export const getTrendingCommunities = async (
+export const getTrendingCommunities = cache(async (
   instance?: string,
 ): Promise<boolean | CommunityView[]> => {
   const communities: ListCommunitiesResponse = await fetch(
@@ -88,9 +88,9 @@ export const getTrendingCommunities = async (
     return false;
   }
   return communities.communities.slice(0, 3);
-};
+})
 
-export const getTrendingTopics = async (
+export const getTrendingTopics = cache(async (
   instance?: string,
 ): Promise<boolean | PostView[]> => {
   const posts: GetPostsResponse = await fetch(
@@ -101,9 +101,9 @@ export const getTrendingTopics = async (
     return false;
   }
   return posts.posts.slice(0, 3);
-};
+})
 
-export const createPost = async (
+export const createPost = (async (
   params: CreatePost,
 ): Promise<boolean | PostResponse> => {
   const response = await fetch(`/api/createPost`, {
@@ -118,9 +118,9 @@ export const createPost = async (
     return false;
   }
   return response as PostResponse;
-};
+})
 
-export const createCommunity = async (
+export const createCommunity = (async (
   params: CreateCommunity,
   instance: string,
 ): Promise<boolean | CommunityResponse> => {
@@ -139,7 +139,7 @@ export const createCommunity = async (
     return false;
   }
   return response as CommunityResponse;
-};
+})
 
 export const sendComment = async (params: CreateComment) => {
   const data: CommentResponse = await fetch(`/api/createComment`, {
@@ -161,7 +161,7 @@ export const sendComment = async (params: CreateComment) => {
   return data.comment_view;
 };
 
-export const getComments = async (
+export const getComments = cache(async (
   params: GetComments,
   baseUrl: string,
 ): Promise<void | GetCommentsResponse> => {
@@ -176,9 +176,9 @@ export const getComments = async (
   } catch (err) {
     console.warn(err);
   }
-};
+})
 
-export const getCommentChildren = async (
+export const getCommentChildren = cache(async (
   params: GetComments,
   baseUrl: string,
 ): Promise<void | GetCommentsResponse> => {
@@ -193,7 +193,7 @@ export const getCommentChildren = async (
   } catch (err) {
     console.warn(err);
   }
-};
+})
 
 /**
  * Contrary to the name, this can also unfollow a community
@@ -219,7 +219,7 @@ export const subscribeToCommunity = async (
   return data;
 };
 
-export const search = async (
+export const search = cache(async (
   params: Search,
 ): Promise<void | SearchResponse> => {
   const data = await fetch(
@@ -229,7 +229,7 @@ export const search = async (
     return console.warn("Something went wrong searching");
   }
   return data;
-};
+})
 
 export const register = async (
   params: Register,
@@ -271,7 +271,7 @@ export const getCaptcha = async (
   return data.response;
 };
 
-export const getFederatedInstances = async (
+export const getFederatedInstances = cache(async (
   params?: GetFederatedInstances,
   instance?: string,
 ): Promise<void | GetFederatedInstancesResponse> => {
@@ -279,16 +279,16 @@ export const getFederatedInstances = async (
     `/api/getFederatedInstances?auth=${params?.auth}&instance=${instance}`,
   ).then((res) => res.json());
   return data;
-};
+})
 
-export const getCuratedInstances = async () => {
+export const getCuratedInstances = cache(async () => {
   const data = await fetch("/api/getCuratedInstances").then((res) =>
     res.json(),
   );
   return data;
-};
+})
 
-export const getReplies = async (
+export const getReplies = cache(async (
   params: GetReplies,
   instance: string,
 ): Promise<void | GetRepliesResponse> => {
@@ -296,9 +296,9 @@ export const getReplies = async (
     `/api/getReplies?auth=${params.auth}&sort=${params.sort}&page=${params.page}&unread_only=${params.unread_only}&instance=${instance}`,
   ).then((res) => res.json());
   return data;
-};
+})
 
-export const getUnreadCount = async (
+export const getUnreadCount = cache(async (
   params: GetUnreadCount,
   instance?: string,
 ): Promise<void | GetUnreadCountResponse> => {
@@ -306,7 +306,7 @@ export const getUnreadCount = async (
     `/api/getUnreadCount?auth=${params.auth}&instance=${instance}`,
   ).then((res) => res.json());
   return data;
-};
+})
 
 export const saveUserSettings = async (
   params: SaveUserSettings,
@@ -322,7 +322,7 @@ export const saveUserSettings = async (
   return data;
 };
 
-export const getUserSettings = (accountWithSite: AccountWithSiteResponse) => {
+export const getUserSettings = cache((accountWithSite: AccountWithSiteResponse) => {
   const localUser = accountWithSite.site.my_user?.local_user_view.local_user;
   const person = accountWithSite.user.person;
   const settings: SaveUserSettings = {
@@ -349,7 +349,7 @@ export const getUserSettings = (accountWithSite: AccountWithSiteResponse) => {
     auth: accountWithSite.jwt,
   };
   return settings;
-};
+})
 
 /**
  * Saves a post
