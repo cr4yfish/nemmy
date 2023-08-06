@@ -382,7 +382,7 @@ export default function Post({
 
             {/* Body */}
             <div
-              className={` flex h-full max-h-44 overflow-hidden w-full flex-row items-center justify-between gap-4`}
+              className={` flex h-full max-h-44 w-full flex-row items-center justify-between gap-4 overflow-hidden`}
             >
               <div
                 className={` relative flex h-full w-full flex-col items-start justify-start`}
@@ -419,7 +419,7 @@ export default function Post({
                           <RenderMarkdown
                             content={post?.post?.body}
                             disableLinks
-                            className="text-xs prose-p:m-0 line-clamp-3"
+                            className="text-xs line-clamp-3 prose-p:m-0"
                           />
                         </div>
                       </>

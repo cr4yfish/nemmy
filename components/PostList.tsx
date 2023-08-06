@@ -71,7 +71,6 @@ export default function PostList({
     fetchParams.type_ || "All",
   );
 
-
   useEffect(() => {
     setNavbar({
       ...navbar!,

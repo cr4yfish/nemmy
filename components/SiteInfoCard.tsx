@@ -23,7 +23,7 @@ export default function SiteInfoCard({
         "
     >
       <div className="prose flex h-fit w-full flex-col gap-2 dark:prose-invert prose-headings:mb-0">
-        <h1 className="capitalize text-lg">{new URL(site.actor_id).host}</h1>
+        <h1 className="text-lg capitalize">{new URL(site.actor_id).host}</h1>
         <span className="text-sm">{site?.description}</span>
         {site.banner && (
           <img
