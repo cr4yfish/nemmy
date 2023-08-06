@@ -65,6 +65,7 @@ export default function PostPage({
       showSearch: true,
       showback: false,
       hidden: false,
+      showUser: true,
       titleOverride: "",
     });
   }, []);
