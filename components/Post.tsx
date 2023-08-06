@@ -145,7 +145,7 @@ export default function Post({
                     <h2
                       className={`${styles.title} text-xl text-neutral-900 dark:text-neutral-100`}
                     >
-                      {post.post.name}
+                      <RenderMarkdown content={post.post.name} />
                     </h2>
                   </Link>
 
@@ -396,7 +396,7 @@ export default function Post({
                     className={`${styles.title} z-10 h-fit w-full text-sm text-neutral-900 dark:text-neutral-100`}
                     style={{ overflow: "visible" }}
                   >
-                    {post.post.name}
+                    <RenderMarkdown content={post.post.name} />
                   </div>
 
                   {/* Display Body if post has body and is not an Embed */}
@@ -417,7 +417,7 @@ export default function Post({
                           <RenderMarkdown
                             content={post?.post?.body}
                             disableLinks
-                            className="text-xs prose-p:m-0"
+                            className="text-xs prose-p:m-0 line-clamp-3"
                           />
                         </div>
                       </>
