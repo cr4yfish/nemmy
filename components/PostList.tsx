@@ -13,7 +13,6 @@ import {
   Button,
   Tabs,
   Tab,
-  DropdownSection,
 } from "@nextui-org/react";
 
 import { useSession } from "@/hooks/auth";
@@ -21,26 +20,18 @@ import { useNavbar } from "@/hooks/navbar";
 
 import EndlessScrollingEnd from "./ui/EndlessSrollingEnd";
 import Loader from "./ui/Loader";
+import SortButton from "./ui/SortButton";
+import CardTypeButton from "./ui/CardTypeButton";
+import Post from "./Post";
+import { FilterType } from "./ui/FilterButton";
+import TabContent from "./ui/TabContent";
 
 import { DEFAULT_INSTANCE, DEFAULT_POST_LIMIT } from "@/constants/settings";
 
-import Post from "./Post";
+import { isTextPost } from "@/utils/helpers";
 
 import styles from "../styles/postList.module.css";
 
-function TabContent({ text, icon }: { text: string; icon: string }) {
-  return (
-    <div className="flex items-center gap-1">
-      <span
-        className="material-symbols-outlined"
-        style={{ fontSize: ".75rem" }}
-      >
-        {icon}
-      </span>
-      <span className="max-xs:hidden">{text}</span>
-    </div>
-  );
-}
 
 /**
  * PostList
@@ -52,6 +43,7 @@ export default function PostList({
   style = "modern", // modern or compact
   showCommunity = true,
   showTypeSwitch = true,
+  showUserTypeSwitch = false,
 }: {
   fetchParams?: {
     type_?: ListingType;
@@ -68,6 +60,7 @@ export default function PostList({
   style?: "modern" | "compact";
   showCommunity?: boolean;
   showTypeSwitch?: boolean;
+  showUserTypeSwitch?: boolean;
 }) {
   const { session, setSession } = useSession();
   const { navbar, setNavbar } = useNavbar();
@@ -82,12 +75,12 @@ export default function PostList({
     fetchParams.type_ || "All",
   );
 
+  const [currentUserType, setCurrentUserType] = useState<FilterType>();
+
   useEffect(() => {
     setNavbar({
       ...navbar!,
       showMenu: true,
-      showSort: false,
-      showFilter: false,
       showSearch: true,
       showUser: true,
       showback: false,
@@ -145,12 +138,6 @@ export default function PostList({
     setCurrentPage(currentPage + 1);
   };
 
-  const isTextPost = (post: PostView) => {
-    if (post.post.url) return false;
-    if (post.post.thumbnail_url) return false;
-    if (post.post.embed_video_url) return false;
-    return true;
-  };
 
   return (
     <motion.div
@@ -238,149 +225,67 @@ export default function PostList({
             </>
           )}
 
-          <Dropdown showArrow shadow="sm">
-            <DropdownTrigger>
-              <Button variant="bordered" style={{ height: "43.3px" }}>
-                {currentSort}{" "}
-                <span className="material-symbols-outlined text-sm">
-                  expand_more
-                </span>
-              </Button>
-            </DropdownTrigger>
-            <DropdownMenu
-              variant="faded"
-              onAction={(key) => setCurrentSort(key as SortType)}
-            >
-              <DropdownSection title={"Most used"}>
-                <DropdownItem
-                  key={"Active"}
-                  startContent={<span className="active m-2"></span>}
-                >
-                  Active
-                </DropdownItem>
-                <DropdownItem
-                  key={"Hot"}
-                  startContent={
-                    <span className="material-symbols-outlined">whatshot</span>
-                  }
-                >
-                  Hot
-                </DropdownItem>
-                <DropdownItem
-                  key={"TopDay"}
-                  startContent={
-                    <span className="material-symbols-outlined">
-                      trending_up
-                    </span>
-                  }
-                >
-                  Top Day
-                </DropdownItem>
-                <DropdownItem
-                  key={"New"}
-                  startContent={
-                    <span className="material-symbols-outlined">history</span>
-                  }
-                >
-                  New
-                </DropdownItem>
-              </DropdownSection>
+          <SortButton 
+            current={currentSort}
+            setCurrent={setCurrentSort}
+            sections={[
+              {
+                title: "Most used",
+                options: [
+                  {
+                    label: "Active",
+                    key: "Active",
+                    icon: "stream",
+                  },
+                  {
+                    label: "Hot",
+                    key: "Hot",
+                    icon: "whatshot",
+                  },
+                  {
+                    label: "Top Day",
+                    key: "TopDay",
+                    icon: "trending_up",
+                  },
+                  {
+                    label: "New",
+                    key: "New",
+                    icon: "history",
+                  },
+                ],
+              },
+              {
+                title: "Others",
+                options: [
+                  {
+                    label: "Old",
+                    key: "Old",
+                    icon: "hourglass_top",
+                  },
+                  {
+                    label: "Most Comments",
+                    key: "MostComments",
+                    icon: "comment",
+                  },
+                  {
+                    label: "Top 6h",
+                    key: "TopSixHour",
+                    icon: "counter_6",
+                  },
+                  {
+                    label: "Top All",
+                    key: "TopAll",
+                    icon: "calendar_today",
+                  },
+                ],
+              },
+            ]}
+          />
 
-              <DropdownSection title={"Others"}>
-                <DropdownItem
-                  key={"Old"}
-                  startContent={
-                    <span className="material-symbols-outlined">
-                      hourglass_top
-                    </span>
-                  }
-                >
-                  Old
-                </DropdownItem>
-                <DropdownItem
-                  key={"MostComments"}
-                  startContent={
-                    <span className="material-symbols-outlined">comment</span>
-                  }
-                >
-                  Most Comments
-                </DropdownItem>
-                <DropdownItem
-                  key={"TopSixHour"}
-                  startContent={
-                    <span className="material-symbols-outlined">counter_6</span>
-                  }
-                >
-                  Top 6h
-                </DropdownItem>
-                <DropdownItem
-                  key={"TopAll"}
-                  startContent={
-                    <span className="material-symbols-outlined">
-                      calendar_today
-                    </span>
-                  }
-                >
-                  Top All
-                </DropdownItem>
-              </DropdownSection>
-            </DropdownMenu>
-          </Dropdown>
         </div>
 
-        <Dropdown showArrow>
-          <DropdownTrigger>
-            <Button variant="bordered" style={{ height: "43.3px" }}>
-              <span className="material-symbols-outlined">
-                {session.settings.cardType == "auto" && "auto_awesome"}
-                {session.settings.cardType == "modern" && "view_agenda"}
-                {session.settings.cardType == "compact" && "view_list"}
-              </span>
-              <span className="capitalize max-sm:hidden">
-                {session.settings.cardType}
-              </span>
-            </Button>
-          </DropdownTrigger>
-          <DropdownMenu
-            variant="faded"
-            onAction={(newKey) =>
-              setSession((prevValue) => {
-                return {
-                  ...prevValue,
-                  settings: {
-                    ...prevValue.settings,
-                    cardType: newKey as "auto" | "modern" | "compact",
-                  },
-                };
-              })
-            }
-          >
-            <DropdownItem
-              key={"auto"}
-              startContent={
-                <span className=" material-symbols-outlined">auto_awesome</span>
-              }
-            >
-              Auto
-            </DropdownItem>
-            <DropdownItem
-              key={"modern"}
-              startContent={
-                <span className=" material-symbols-outlined">view_agenda</span>
-              }
-            >
-              Modern
-            </DropdownItem>
-            <DropdownItem
-              key={"compact"}
-              startContent={
-                <span className=" material-symbols-outlined">view_list</span>
-              }
-            >
-              Compact
-            </DropdownItem>
-          </DropdownMenu>
-        </Dropdown>
+        <CardTypeButton />
+        
       </div>
 
       <div className=" flex w-full justify-center">
@@ -406,6 +311,9 @@ export default function PostList({
               } else {
                 return true;
               }
+            })
+            .filter((post, index) => {
+              return posts.findIndex(post2 => post2.post.id === post.post.id) === index
             })
             .map((post: PostView, index: number) => {
               return (

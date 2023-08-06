@@ -20,16 +20,19 @@ import Loader from "@/components/ui/Loader";
 import Post from "@/components/Post";
 import RenderMarkdown from "@/components/ui/RenderMarkdown";
 import EndlessScrollingEnd from "@/components/ui/EndlessSrollingEnd";
-import SortButton from "../ui/SortButton";
-import FilterButton, { FilterType } from "../ui/FilterButton";
+import { FilterType } from "../ui/FilterButton";
 import CommentSingle from "../ui/CommentSingle";
+import CardTypeButton from "../ui/CardTypeButton";
+import SortButton from "../ui/SortButton";
+import TabContent from "../ui/TabContent";
 
-import { FormatNumber } from "@/utils/helpers";
+import { FormatNumber, isTextPost } from "@/utils/helpers";
 
 import postListStyles from "@/styles/postList.module.css";
 import styles from "@/styles/Pages/UserPage.module.css";
 
-import { DEFAULT_AVATAR, DEFAULT_SORT_TYPE } from "@/constants/settings";
+import { DEFAULT_AVATAR, DEFAULT_SORT_TYPE, DEFAULT_COMMENT_SORT_TYPE } from "@/constants/settings";
+import { Dropdown, DropdownTrigger, Button, DropdownMenu, DropdownItem, Tab, Tabs } from "@nextui-org/react";
 
 function UserStat({ text, icon }: { text: string; icon: string }) {
   return (
@@ -83,8 +86,6 @@ export default function UserPage({
   useEffect(() => {
     setNavbar({
       ...navbar!,
-      showFilter: false,
-      showSort: false,
       showSearch: true,
       showUser: true,
       showback: true,
@@ -99,6 +100,7 @@ export default function UserPage({
   }, [sort]);
 
   useEffect(() => {
+    setSort(filter == "Posts" ? DEFAULT_SORT_TYPE : DEFAULT_COMMENT_SORT_TYPE);
     setPosts([]);
     setComments([]);
     setCurrentPage(1);
@@ -135,11 +137,8 @@ export default function UserPage({
       if (comments.length === 0) setMorePages(false);
       return comments as CommentView[];
     } else if (filter === "Posts") {
-      if (posts.length === 0) setMorePages(false);
+      if (posts?.length === 0) setMorePages(false);
       return posts as PostView[];
-    } else if (filter === "SavedOnly") {
-      if (posts.length === 0) setMorePages(false);
-      return { posts: posts as PostView[], comments: comments as CommentView };
     }
   };
 
@@ -150,9 +149,6 @@ export default function UserPage({
       setComments([...comments, ...(data as CommentView[])]);
     } else if (filter == "Posts") {
       setPosts([...posts, ...(data as PostView[])]);
-    } else if (filter == "SavedOnly") {
-      setPosts([...posts, ...(data.posts as PostView[])]);
-      setComments([...comments, ...(data.comments as CommentView[])]);
     }
 
     setCurrentPage(currentPage + 1);
@@ -235,7 +231,7 @@ export default function UserPage({
               </div>
             </div>
 
-            <span>
+            <span> 
               <RenderMarkdown content={userData?.person_view?.person?.bio} />
             </span>
 
@@ -255,23 +251,172 @@ export default function UserPage({
         </div>
 
         <div className="flex w-full flex-col items-center gap-4 bg-neutral-50 dark:bg-neutral-950 dark:pt-4">
+          
           <div
-            className={`${styles.sortsWrapper} bg-neutral-200 dark:bg-neutral-900 dark:text-neutral-300`}
+            className={`${styles.sortsWrapper}  dark:text-neutral-300`}
           >
             <div className="flex w-full max-w-2xl flex-row items-center justify-between">
               <div className="relative flex flex-row flex-wrap items-center gap-4">
-                <SortButton
-                  onChange={(newSort) => setSort(newSort as SortType)}
-                />
 
-                <FilterButton
-                  onChange={(newFilter: FilterType) => setFilter(newFilter)}
-                />
+           
+                <Tabs
+                  className="max-sm:hidden"
+                  variant="bordered"
+                  selectedKey={filter}
+                  onSelectionChange={(key) => setFilter(key as FilterType)}
+                >
+                  <Tab
+                    key={"Posts"}
+                    title={<TabContent text="Posts" icon="home" />}
+                  ></Tab>
+                  <Tab
+                    key={"Comments"}
+                    title={<TabContent text="Comments" icon="comment" />}
+                  ></Tab>
+                </Tabs>
+
+                <div className=" hidden max-sm:block">
+                  <Dropdown showArrow shadow="sm">
+                    <DropdownTrigger>
+                      <Button variant="bordered" style={{ height: "43.3px" }}>
+                        {filter}{" "}
+                        <span className="material-symbols-outlined text-sm">
+                          expand_more
+                        </span>
+                      </Button>
+                    </DropdownTrigger>
+                    <DropdownMenu
+                      variant="faded"
+                      onAction={(key) => setFilter(key as FilterType)}
+                    >
+                      <DropdownItem
+                        key={"Posts"}
+                        startContent={
+                          <span className="material-symbols-outlined">home</span>
+                        }
+                      >
+                        Posts
+                      </DropdownItem>
+                      <DropdownItem
+                        key={"Comments"}
+                        startContent={
+                          <span className="material-symbols-outlined">
+                            public
+                          </span>
+                        }
+                      >
+                        Comments
+                      </DropdownItem>
+                      <DropdownItem
+                        key={"SavedOnly"}
+                        startContent={
+                          <span className="material-symbols-outlined">
+                            location_on
+                          </span>
+                        }
+                      >
+                        Saved Only
+                      </DropdownItem>
+                    </DropdownMenu>
+                  </Dropdown>
+                </div>
+       
+
+
+                {filter == "Posts" && <SortButton 
+                  current={sort}
+                  setCurrent={setSort}
+                  sections={[
+                    {
+                      title: "Most used",
+                      options: [
+                        {
+                          label: "Active",
+                          key: "Active",
+                          icon: "stream",
+                        },
+                        {
+                          label: "Hot",
+                          key: "Hot",
+                          icon: "whatshot",
+                        },
+                        {
+                          label: "Top Day",
+                          key: "TopDay",
+                          icon: "trending_up",
+                        },
+                        {
+                          label: "New",
+                          key: "New",
+                          icon: "history",
+                        },
+                      ],
+                    },
+                    {
+                      title: "Others",
+                      options: [
+                        {
+                          label: "Old",
+                          key: "Old",
+                          icon: "hourglass_top",
+                        },
+                        {
+                          label: "Most Comments",
+                          key: "MostComments",
+                          icon: "comment",
+                        },
+                        {
+                          label: "Top 6h",
+                          key: "TopSixHour",
+                          icon: "counter_6",
+                        },
+                        {
+                          label: "Top All",
+                          key: "TopAll",
+                          icon: "calendar_today",
+                        },
+                      ],
+                    },
+                  ]}
+                />}
+
+                {filter == "Comments" && <SortButton
+                  current={sort}
+                  setCurrent={setSort}
+                  sections={[
+                    {
+                      title: "Sort by",
+                      options: [
+                        {
+                          label: "Hot",
+                          key: "Hot",
+                          icon: "whatshot",
+                        },
+                        {
+                          label: "Top",
+                          key: "Top",
+                          icon: "trending_up",
+                        },
+                        {
+                          label: "New",
+                          key: "New",
+                          icon: "history",
+                        },
+                        {
+                          label: "Old",
+                          key: "Old",
+                          icon: "hourglass_top",
+                        },
+                      ],
+                    },
+                  ]}
+                />}
+
               </div>
 
-              <div className="flex items-center">
-                <span className="material-symbols-outlined">view_day</span>
-              </div>
+
+              <CardTypeButton />
+
             </div>
           </div>
 
@@ -294,6 +439,13 @@ export default function UserPage({
                     instance={session.currentAccount?.instance}
                     auth={session.currentAccount?.jwt}
                     postInstance={session.currentAccount?.instance}
+                    style={
+                      session.settings?.cardType !== "auto"
+                        ? session.settings?.cardType
+                        : isTextPost(post)
+                        ? "compact"
+                        : "modern"
+                    }
                   />
                 );
               })}

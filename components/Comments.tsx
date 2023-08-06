@@ -11,8 +11,8 @@ import {
 import InfiniteScroll from "react-infinite-scroller";
 import Link from "next/link";
 
-import SortButton from "./ui/SortButton";
 import MdTextarea from "./ui/MdTextarea";
+import SortButton from "./ui/SortButton";
 
 import { sendComment, getComments } from "@/utils/lemmy";
 
@@ -20,8 +20,6 @@ import { useSession } from "@/hooks/auth";
 
 import Comment from "./Comment";
 import WriteCommentOverlay from "./WriteCommentOverlay";
-
-import { DEFAULT_INSTANCE } from "@/constants/settings";
 
 import styles from "@/styles/Pages/PostPage.module.css";
 import EndlessScrollingEnd from "./ui/EndlessSrollingEnd";
@@ -94,17 +92,6 @@ export default function Comments({
     };
   }, []);
 
-  // Try to get comments from localStorage
-  useEffect(() => {
-    if (commentResponse) return;
-    const localStorageComments = localStorage.getItem("comments");
-    if (localStorageComments) {
-      const parsed = JSON.parse(localStorageComments);
-      if (parsed.postId == postId) {
-        setCommentsData({ comments: parsed.comments });
-      }
-    }
-  }, []);
 
   // Save comments to localStorage every 500ms when loaded new Comments
   useEffect(() => {
@@ -198,7 +185,7 @@ export default function Comments({
         page: currentCommentsPage,
         auth: session.currentAccount?.jwt,
       },
-      instance || DEFAULT_INSTANCE,
+      instance || "",
     );
 
     if (data) {
@@ -303,14 +290,23 @@ export default function Comments({
         >
           <div className="px-2">
             {commentsData?.comments?.length > 0 && (
-              <SortButton
-                type="comment"
-                defaultOption={currentCommentSort}
-                onChange={(sort) =>
-                  setCurrentCommentSort(sort as CommentSortType)
-                }
+              <SortButton 
+                current={currentCommentSort}
+                setCurrent={setCurrentCommentSort}
+                sections={[
+                  {
+                    title: "Sort by",
+                    options: [
+                      { label: "Hot", key: "Hot", icon: "whatshot" },
+                      { label: "Top", key: "Top", icon: "trending_up" },
+                      { label: "New", key: "New", icon: "history" },
+                      { label: "Old", key: "Old", icon: "hourglass_top" },
+                    ],
+                  },
+                ]}
               />
             )}
+
           </div>
 
           {/* Comments  */}
