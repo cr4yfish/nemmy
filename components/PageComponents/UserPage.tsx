@@ -110,7 +110,7 @@ export default function UserPage({
     if (!userDataError) return;
     (async () => {
       const data = await fetch(
-        `/api/getUser?username=${pathname}&instance=${session.currentAccount?.instance}`,
+        `/api/getUser?username=${pathname}&instance=${session.currentAccount?.instance}&auth=${session.currentAccount?.jwt}`,
       );
       const json = await data.json();
       if (json.error) {
@@ -127,7 +127,7 @@ export default function UserPage({
   const getData = async ({ page = 1 }: { page?: number }) => {
     const data = await fetch(
       `/api/getUser?limit=${pageLimit}&page=${page}&username=${pathname}&sort=${sort}&instance=${session
-        .currentAccount?.instance}&saved_only=${filter === "SavedOnly"}`,
+        .currentAccount?.instance}&auth=${session.currentAccount?.jwt}`,
     );
     const json = await data.json();
     const posts = json.posts;
