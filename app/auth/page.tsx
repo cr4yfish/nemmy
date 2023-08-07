@@ -1,3 +1,4 @@
+"use client";
 
 import Link from "next/link";
 import Logo from "@/components/Logo";
@@ -5,7 +6,6 @@ import { motion } from "framer-motion";
 import { Button } from "@nextui-org/react";
 
 export default function Auth() {
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}

@@ -381,17 +381,20 @@ export default function SearchOverlay({
                   className="h-full w-full appearance-none bg-transparent font-bold outline-none"
                 />
               </div>
-       
+
               <button
                 type="button"
                 className="flex items-center justify-center"
-                onClick={() => {currentSearch.length == 0 ? handleClose() : setCurrentSearch("")}}
+                onClick={() => {
+                  currentSearch.length == 0
+                    ? handleClose()
+                    : setCurrentSearch("");
+                }}
               >
                 <span className="material-symbols-outlined filled select-none text-neutral-400">
                   cancel
                 </span>
               </button>
-
             </div>
           </form>
         </div>

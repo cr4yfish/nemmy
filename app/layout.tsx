@@ -26,9 +26,7 @@ export default function RootLayout({
       >
         <Providers>
           <SessionContextProvider>
-              <main className={`min-h-screen overflow-x-hidden`}>
-                {children}
-              </main>
+            <main className={`min-h-screen overflow-x-hidden`}>{children}</main>
           </SessionContextProvider>
           <Analytics />
         </Providers>

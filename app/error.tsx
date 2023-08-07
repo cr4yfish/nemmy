@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { Card, CardBody, CardHeader, Button } from "@nextui-org/react";
 import Link from "next/link";
-import va from "@vercel/analytics"
+import va from "@vercel/analytics";
 
 export default function Error({
   error,

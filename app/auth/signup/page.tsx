@@ -19,7 +19,6 @@ import {
   validatePasswordStrong,
 } from "@/utils/regex";
 
-
 import Logo from "@/components/Logo";
 
 import { defaultState, useSession } from "@/hooks/auth";

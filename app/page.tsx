@@ -85,17 +85,23 @@ export default async function Home() {
 
   return (
     <>
-    <Navbar />
-    <div id="feed" className={`mt-24 flex min-h-screen flex-col items-center`}>
-      <FeedPage
-        initPosts={posts}
-        fetchParams={{ page: 2 }}
-        instance={new URL(siteResponse?.site_view.site.actor_id || "").host || instance}
-        jwt={currentAccount?.jwt}
-        siteResponse={siteResponse}
-        currentAccount={currentAccount}
-      />
-    </div>
+      <Navbar />
+      <div
+        id="feed"
+        className={`mt-24 flex min-h-screen flex-col items-center`}
+      >
+        <FeedPage
+          initPosts={posts}
+          fetchParams={{ page: 2 }}
+          instance={
+            new URL(siteResponse?.site_view.site.actor_id || "").host ||
+            instance
+          }
+          jwt={currentAccount?.jwt}
+          siteResponse={siteResponse}
+          currentAccount={currentAccount}
+        />
+      </div>
     </>
   );
 }

@@ -37,7 +37,11 @@ export default function FeedPage({
 }) {
   return (
     <div className="flex w-full flex-row justify-center gap-2 max-lg:gap-0">
-      <PostList fetchParams={fetchParams} initPosts={initPosts} overrideInstance={instance} />
+      <PostList
+        fetchParams={fetchParams}
+        initPosts={initPosts}
+        overrideInstance={instance}
+      />
 
       <div className="mt-16 pt-2">
         <SiteInfoCard siteResponse={siteResponse} />

@@ -1,7 +1,12 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { CommentSortType, GetSiteResponse, ListingType, SortType } from "lemmy-js-client";
+import {
+  CommentSortType,
+  GetSiteResponse,
+  ListingType,
+  SortType,
+} from "lemmy-js-client";
 import {
   getAccounts,
   Account,
@@ -14,7 +19,11 @@ import {
   updateAccount,
   updateCurrentAccount,
 } from "@/utils/authFunctions";
-import { DEFAULT_COMMENT_SORT_TYPE, DEFAULT_INSTANCE, DEFAULT_SORT_TYPE } from "@/constants/settings";
+import {
+  DEFAULT_COMMENT_SORT_TYPE,
+  DEFAULT_INSTANCE,
+  DEFAULT_SORT_TYPE,
+} from "@/constants/settings";
 
 export interface Settings {
   theme: "light" | "dark" | "system";

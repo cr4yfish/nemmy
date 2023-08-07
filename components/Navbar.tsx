@@ -22,12 +22,7 @@ import SearchOverlay from "./Navbar/SearchOverlay";
 
 import styles from "@/styles/Navbar.module.css";
 
-
-export default function Navbar({
-  params
-} : {
-  params?: NavbarState
-}) {
+export default function Navbar({ params }: { params?: NavbarState }) {
   const { session } = useSession();
 
   const [filterClicked, setFilterClicked] = useState(false);
@@ -133,8 +128,7 @@ export default function Navbar({
             onClick={() => {
               setSearchOverlay(true);
               va.track("search-open", {
-                instance:
-                  session?.currentAccount?.instance || DEFAULT_INSTANCE,
+                instance: session?.currentAccount?.instance || DEFAULT_INSTANCE,
               });
             }}
           >
@@ -190,7 +184,6 @@ export default function Navbar({
               />
             </div>
           </button>
-
         </div>
       </nav>
 

@@ -82,7 +82,12 @@ export default function PostList({
 
   const getPosts = cache(async ({ page = 1 }: { page?: number }) => {
     const data = await fetch(
-      `/api/getPosts?page=${page}&community_name=${fetchParams.community_name}&auth=${session?.currentAccount?.jwt}&sort=${currentSort}&type_=${currentType}&instance=${overrideInstance || session.currentAccount?.instance}`,
+      `/api/getPosts?page=${page}&community_name=${
+        fetchParams.community_name
+      }&auth=${session?.currentAccount
+        ?.jwt}&sort=${currentSort}&type_=${currentType}&instance=${
+        overrideInstance || session.currentAccount?.instance
+      }`,
     );
     const json = (await data.json()).posts;
     if (json?.length === 0) {
@@ -93,7 +98,10 @@ export default function PostList({
 
   const handleClickPost = (currenPost: PostView) => {
     va.track("Clicked post on feed", {
-      instance: overrideInstance || session.currentAccount?.instance || DEFAULT_INSTANCE,
+      instance:
+        overrideInstance ||
+        session.currentAccount?.instance ||
+        DEFAULT_INSTANCE,
     });
     localStorage.setItem("currentPost", JSON.stringify(currenPost));
   };
@@ -155,7 +163,11 @@ export default function PostList({
                     key={"Local"}
                     title={
                       <TabContent
-                        text={overrideInstance || session.currentAccount?.instance || "Local"}
+                        text={
+                          overrideInstance ||
+                          session.currentAccount?.instance ||
+                          "Local"
+                        }
                         icon="location_on"
                       />
                     }
@@ -315,7 +327,9 @@ export default function PostList({
                       <Post
                         onClick={() => handleClickPost(post)}
                         post={post}
-                        instance={overrideInstance || session.currentAccount?.instance}
+                        instance={
+                          overrideInstance || session.currentAccount?.instance
+                        }
                         auth={session.currentAccount?.jwt}
                         key={index}
                         postInstance={new URL(post.community.actor_id).host}

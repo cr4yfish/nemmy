@@ -55,7 +55,6 @@ export default function PostPage({
 
     postData?.post?.name &&
       setIsPoll(postData?.post.name.toLowerCase().startsWith("[poll]"));
-
   }, []);
 
   return (
