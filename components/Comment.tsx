@@ -122,7 +122,6 @@ export default function Comment({
       const comments = data as GetCommentsResponse;
       if (!comments || !comments.comments)
         throw new Error("No comments returned from api");
-
       // Remove duplicates from self
       comments.comments = comments.comments.filter((c, index) => {
         return (
@@ -133,11 +132,14 @@ export default function Comment({
       });
 
       // Remove duplicates from all comments
-      comments.comments = comments.comments.filter((c) => {
+      // Update: Backend bug has been fixed
+      // this code should not be necessary anymore
+      // Kepping this just in case
+      /*comments.comments = comments.comments.filter((c, index) => {
         return (
-          allComments.findIndex((c2) => c2.comment.id === c.comment.id) === -1
+          allComments.findIndex((c2) => c2.comment.id === c.comment.id) === index
         );
-      });
+      });*/
 
       // Children are only direct children of the comment,
       // which means their ID is right after the commentView.comment.id in the path (e.g. 1.2)
