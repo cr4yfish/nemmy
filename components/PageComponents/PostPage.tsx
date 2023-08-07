@@ -6,8 +6,6 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { BarChart, Card, Title, Subtitle } from "@tremor/react";
 
-import { useNavbar } from "@/hooks/navbar";
-
 import { AutoMediaType } from "@/utils/AutoMediaType";
 
 import styles from "@/styles/Pages/PostPage.module.css";
@@ -39,8 +37,6 @@ export default function PostPage({
   commentResponse?: CommentResponse;
   postInstance?: string;
 }) {
-  const { navbar, setNavbar } = useNavbar();
-
   const [postData, setPostData] = useState<PostView>(data || ({} as PostView));
   const [isPoll, setIsPoll] = useState<boolean>(false);
 
@@ -60,14 +56,6 @@ export default function PostPage({
     postData?.post?.name &&
       setIsPoll(postData?.post.name.toLowerCase().startsWith("[poll]"));
 
-    setNavbar({
-      ...navbar!,
-      showSearch: true,
-      showback: false,
-      hidden: false,
-      showUser: true,
-      titleOverride: "",
-    });
   }, []);
 
   return (

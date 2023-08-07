@@ -10,6 +10,7 @@ import { DEFAULT_INSTANCE } from "@/constants/settings";
 import { getCurrentAccountServerSide } from "@/utils/authFunctions";
 
 import PostPage from "@/components/PageComponents/PostPage";
+import Navbar from "@/components/Navbar";
 
 const getPostData = cache(
   async (postId: number, jwt?: string, instance?: string) => {

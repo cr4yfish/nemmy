@@ -10,7 +10,6 @@ import Link from "next/link";
 import { createCommunity } from "@/utils/lemmy";
 
 import { useSession } from "@/hooks/auth";
-import { useNavbar } from "@/hooks/navbar";
 
 import RenderMarkdown from "@/components/ui/RenderMarkdown";
 import Input from "@/components/ui/Input";
@@ -100,7 +99,6 @@ function getBufferFromImage(
 }
 
 export default function New() {
-  const { navbar, setNavbar } = useNavbar();
   const { session } = useSession();
   const [form, setForm] = useState<CreateCommunity>({} as CreateCommunity);
 
@@ -123,16 +121,6 @@ export default function New() {
       router.push("/auth");
     }
   }, [session, router]);
-
-  useEffect(() => {
-    if (navbar!.hidden) return;
-
-    navbar &&
-      setNavbar({
-        ...navbar,
-        hidden: true,
-      });
-  }, [navbar, setNavbar]);
 
   // get instances from all logged in user accounts
   useEffect(() => {

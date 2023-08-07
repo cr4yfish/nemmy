@@ -1,17 +1,18 @@
-/* eslint-disable @next/next/no-img-element */
 "use client";
+
 import { useEffect, useState } from "react";
-import { ListingType, SortType } from "lemmy-js-client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { AnimatePresence } from "framer-motion";
 import va from "@vercel/analytics";
+import { Badge } from "@nextui-org/react";
+import { disablePageScroll, enablePageScroll } from "scroll-lock";
 
 import { DEFAULT_INSTANCE, DEFAULT_AVATAR } from "@/constants/settings";
 
 import { useSession } from "@/hooks/auth";
-import { useNavbar, NavbarState } from "@/hooks/navbar";
+import { NavbarState } from "@/hooks/navbar";
 
 import { getUnreadCount } from "@/utils/lemmy";
 
@@ -20,14 +21,14 @@ import LeftSideMenu from "./Navbar/LeftSideMenu";
 import SearchOverlay from "./Navbar/SearchOverlay";
 
 import styles from "@/styles/Navbar.module.css";
-import { disablePageScroll, enablePageScroll } from "scroll-lock";
-import { Badge } from "@nextui-org/react";
 
-const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
-export default function Navbar() {
-  const { session, setSession } = useSession();
-  const { navbar, setNavbar } = useNavbar();
+export default function Navbar({
+  params
+} : {
+  params?: NavbarState
+}) {
+  const { session } = useSession();
 
   const [filterClicked, setFilterClicked] = useState(false);
   const [sortOptions, setSortOptions] = useState(false);
@@ -54,16 +55,12 @@ export default function Navbar() {
   }, [session.pendingAuth, session.currentAccount]);
 
   const handleFilterOverlayClose = async () => {
-    navbar && setNavbar({ ...navbar, overlayActive: false });
-    await delay(100);
     setFilterClicked(false);
     enablePageScroll();
     setSortOptions(false);
   };
 
   const handleUserMenuClose = async () => {
-    navbar && setNavbar({ ...navbar, overlayActive: false });
-    await delay(100);
     enablePageScroll();
     setUserMenu(false);
   };
@@ -87,8 +84,6 @@ export default function Navbar() {
   };
 
   const handleMenuClose = async () => {
-    navbar && setNavbar({ ...navbar, overlayActive: false });
-    await delay(100);
     enablePageScroll();
     setMenu(false);
   };
@@ -98,7 +93,7 @@ export default function Navbar() {
     setSearchOverlay(false);
   };
 
-  if (navbar?.hidden) return null;
+  if (params?.hidden) return null;
 
   return (
     <>
@@ -106,7 +101,6 @@ export default function Navbar() {
         className={`
           ${styles.wrapper} 
           border-neutral-200  bg-neutral-50/25 dark:border-neutral-800 dark:bg-neutral-950/25
-          ${navbar?.hidden && "hidden"} 
         `}
       >
         <div className="flex flex-row items-center gap-6">
@@ -115,52 +109,37 @@ export default function Navbar() {
           </Link>
 
           <div className="flex flex-row items-center gap-4">
-            {navbar?.showMenu && (
-              <button
-                onClick={() => handleMenuOpen()}
-                className={`${styles.menuButton} text-neutral-800 dark:text-neutral-100`}
-              >
-                <span className="material-symbols-outlined">menu</span>
-              </button>
-            )}
+            <button
+              onClick={() => handleMenuOpen()}
+              className={`${styles.menuButton} text-neutral-800 dark:text-neutral-100`}
+            >
+              <span className="material-symbols-outlined">menu</span>
+            </button>
 
-            {navbar?.showback && (
-              <div className={`${styles.backButton}`}>
-                <button
-                  className="flex items-center gap-2"
-                  onClick={() => router.back()}
-                >
-                  <span className="material-symbols-outlined">arrow_back</span>
-                </button>
-              </div>
-            )}
-
-            {navbar?.titleOverride && navbar?.titleOverride?.length > 0 && (
+            {params?.titleOverride && params?.titleOverride?.length > 0 && (
               <div className="flex items-center gap-2">
                 <span className="material-symbols-outlined">
-                  {navbar?.icon}
+                  {params?.icon}
                 </span>
-                <span className="font-bold">{navbar?.titleOverride}</span>
+                <span className="font-bold">{params?.titleOverride}</span>
               </div>
             )}
           </div>
         </div>
 
         <div className="flex flex-row items-center gap-4">
-          {navbar?.showSearch && (
-            <button
-              className="flex items-center justify-center text-neutral-900 dark:text-neutral-100"
-              onClick={() => {
-                setSearchOverlay(true);
-                va.track("search-open", {
-                  instance:
-                    session?.currentAccount?.instance || DEFAULT_INSTANCE,
-                });
-              }}
-            >
-              <span className="material-symbols-outlined">search</span>
-            </button>
-          )}
+          <button
+            className="flex items-center justify-center text-neutral-900 dark:text-neutral-100"
+            onClick={() => {
+              setSearchOverlay(true);
+              va.track("search-open", {
+                instance:
+                  session?.currentAccount?.instance || DEFAULT_INSTANCE,
+              });
+            }}
+          >
+            <span className="material-symbols-outlined">search</span>
+          </button>
 
           {session.isLoggedIn && (
             <Link
@@ -186,36 +165,32 @@ export default function Navbar() {
             </Link>
           )}
 
-          {navbar?.showUser && (
-            <>
-              <button
-                onClick={() => {
-                  handleFilterOverlayClose();
-                  handleUserMenuOpen();
-                  setNavbar({ ...navbar, overlayActive: true });
-                }}
-                className={`${styles.userWrapper} cursor-pointer select-none`}
-              >
-                <div className={styles.userImage}>
-                  <Image
-                    width={40}
-                    height={40}
-                    className={`h-10 w-10 overflow-hidden ${
-                      session?.currentAccount?.user?.person?.avatar
-                        ? "object-cover"
-                        : "object-contain"
-                    } `}
-                    style={{ borderRadius: "50%" }}
-                    src={
-                      session?.currentAccount?.user?.person?.avatar ||
-                      DEFAULT_AVATAR
-                    }
-                    alt={"Account"}
-                  />
-                </div>
-              </button>
-            </>
-          )}
+          <button
+            onClick={() => {
+              handleFilterOverlayClose();
+              handleUserMenuOpen();
+            }}
+            className={`${styles.userWrapper} cursor-pointer select-none`}
+          >
+            <div className={styles.userImage}>
+              <Image
+                width={40}
+                height={40}
+                className={`h-10 w-10 overflow-hidden ${
+                  session?.currentAccount?.user?.person?.avatar
+                    ? "object-cover"
+                    : "object-contain"
+                } `}
+                style={{ borderRadius: "50%" }}
+                src={
+                  session?.currentAccount?.user?.person?.avatar ||
+                  DEFAULT_AVATAR
+                }
+                alt={"Account"}
+              />
+            </div>
+          </button>
+
         </div>
       </nav>
 

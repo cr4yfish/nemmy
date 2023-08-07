@@ -1,20 +1,10 @@
-"use client";
 
 import Link from "next/link";
 import Logo from "@/components/Logo";
-import { useNavbar } from "@/hooks/navbar";
-import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@nextui-org/react";
 
-import styles from "@/styles/Pages/AuthPage.module.css";
-
 export default function Auth() {
-  const { navbar, setNavbar } = useNavbar();
-
-  useEffect(() => {
-    setNavbar({ ...navbar!, hidden: true });
-  }, []);
 
   return (
     <motion.div

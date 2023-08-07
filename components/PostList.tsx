@@ -16,7 +16,6 @@ import {
 } from "@nextui-org/react";
 
 import { useSession } from "@/hooks/auth";
-import { useNavbar } from "@/hooks/navbar";
 
 import EndlessScrollingEnd from "./ui/EndlessSrollingEnd";
 import Loader from "./ui/Loader";
@@ -41,6 +40,7 @@ export default function PostList({
   showCommunity = true,
   showTypeSwitch = true,
   showUserTypeSwitch = false,
+  overrideInstance,
 }: {
   fetchParams?: {
     type_?: ListingType;
@@ -57,10 +57,9 @@ export default function PostList({
   showCommunity?: boolean;
   showTypeSwitch?: boolean;
   showUserTypeSwitch?: boolean;
+  overrideInstance?: string;
 }) {
   const { session, setSession } = useSession();
-  const { navbar, setNavbar } = useNavbar();
-
   const [posts, setPosts] = useState<PostView[]>(initPosts || []);
   const [currentPage, setCurrentPage] = useState<number>(fetchParams.page || 1);
   const [morePages, setMorePages] = useState<boolean>(true);
@@ -72,30 +71,18 @@ export default function PostList({
   );
 
   useEffect(() => {
-    setNavbar({
-      ...navbar!,
-      showMenu: true,
-      showSearch: true,
-      showUser: true,
-      showback: false,
-      hidden: false,
-      titleOverride: "",
-    });
-  }, []);
+    setPosts([]);
+    setCurrentPage(1);
+  }, [fetchParams?.sort, currentSort]);
 
   useEffect(() => {
     setPosts([]);
     setCurrentPage(1);
-  }, [navbar?.currentSort, fetchParams?.sort, currentSort]);
-
-  useEffect(() => {
-    setPosts([]);
-    setCurrentPage(1);
-  }, [navbar?.currentType, currentType, fetchParams.type_]);
+  }, [fetchParams.type_, currentType]);
 
   const getPosts = cache(async ({ page = 1 }: { page?: number }) => {
     const data = await fetch(
-      `/api/getPosts?page=${page}&community_name=${fetchParams.community_name}&auth=${session?.currentAccount?.jwt}&sort=${currentSort}&type_=${currentType}&instance=${session.currentAccount?.instance}`,
+      `/api/getPosts?page=${page}&community_name=${fetchParams.community_name}&auth=${session?.currentAccount?.jwt}&sort=${currentSort}&type_=${currentType}&instance=${overrideInstance || session.currentAccount?.instance}`,
     );
     const json = (await data.json()).posts;
     if (json?.length === 0) {
@@ -106,7 +93,7 @@ export default function PostList({
 
   const handleClickPost = (currenPost: PostView) => {
     va.track("Clicked post on feed", {
-      instance: session.currentAccount?.instance || DEFAULT_INSTANCE,
+      instance: overrideInstance || session.currentAccount?.instance || DEFAULT_INSTANCE,
     });
     localStorage.setItem("currentPost", JSON.stringify(currenPost));
   };
@@ -168,7 +155,7 @@ export default function PostList({
                     key={"Local"}
                     title={
                       <TabContent
-                        text={session.currentAccount?.instance || "Local"}
+                        text={overrideInstance || session.currentAccount?.instance || "Local"}
                         icon="location_on"
                       />
                     }
@@ -328,7 +315,7 @@ export default function PostList({
                       <Post
                         onClick={() => handleClickPost(post)}
                         post={post}
-                        instance={session.currentAccount?.instance}
+                        instance={overrideInstance || session.currentAccount?.instance}
                         auth={session.currentAccount?.jwt}
                         key={index}
                         postInstance={new URL(post.community.actor_id).host}

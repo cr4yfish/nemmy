@@ -13,7 +13,6 @@ import MdTextarea from "@/components/ui/MdTextarea";
 import { listCommunities, createPost } from "@/utils/lemmy";
 import { FormatNumber } from "@/utils/helpers";
 
-import { useNavbar } from "@/hooks/navbar";
 import { useSession } from "@/hooks/auth";
 
 import { DEFAULT_AVATAR } from "@/constants/settings";
@@ -72,7 +71,6 @@ const item = {
 };
 
 export default function New() {
-  const { navbar, setNavbar } = useNavbar();
   const { session } = useSession();
   const [form, setForm] = useState<CreatePost>({} as CreatePost);
   const [step, setStep] = useState<number>(0);
@@ -96,16 +94,6 @@ export default function New() {
       router.push("/auth");
     }
   }, [session]);
-
-  useEffect(() => {
-    if (navbar!.hidden) return;
-
-    navbar &&
-      setNavbar({
-        ...navbar,
-        hidden: true,
-      });
-  }, [navbar, setNavbar]);
 
   const loadMoreCommunities = async (page = 1) => {
     if (!session.currentAccount?.jwt) return;

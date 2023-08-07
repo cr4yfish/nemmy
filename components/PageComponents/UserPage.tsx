@@ -13,7 +13,6 @@ import InfiniteScroll from "react-infinite-scroller";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 
-import { useNavbar } from "@/hooks/navbar";
 import { useSession } from "@/hooks/auth";
 
 import Loader from "@/components/ui/Loader";
@@ -71,7 +70,6 @@ export default function UserPage({
   initialUser: GetPersonDetailsResponse;
   userInstance: string;
 }) {
-  const { navbar, setNavbar } = useNavbar();
   const { session } = useSession();
 
   const [userData, setUserData] =
@@ -94,16 +92,6 @@ export default function UserPage({
 
   // community id
   const pathname = usePathname().split("/")[2];
-
-  useEffect(() => {
-    setNavbar({
-      ...navbar!,
-      showSearch: true,
-      showUser: true,
-      showback: true,
-      titleOverride: "",
-    });
-  }, []);
 
   useEffect(() => {
     setPosts([]);

@@ -1,13 +1,10 @@
 "use client";
 
-import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { GetCommunityResponse, SortType } from "lemmy-js-client";
 import { ClipLoader } from "react-spinners";
 import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
 
-import { useNavbar } from "@/hooks/navbar";
 import { useSession } from "@/hooks/auth";
 
 import Username from "@/components/User/Username";
@@ -28,7 +25,6 @@ export default function CommunityPage({
   initialCommunity: GetCommunityResponse;
   communityInstance: string;
 }) {
-  const { navbar, setNavbar } = useNavbar();
   const { session } = useSession();
   const [communityData, setCommunityData] =
     useState<GetCommunityResponse>(initialCommunity);
@@ -36,17 +32,6 @@ export default function CommunityPage({
   const [currentSort, setCurrentSort] = useState<SortType>(DEFAULT_SORT_TYPE);
 
   const [subscribeLoading, setSubscribeLoading] = useState(false);
-
-  useEffect(() => {
-    setNavbar({
-      ...navbar!,
-      showSearch: true,
-      showUser: true,
-      showback: true,
-      icon: "",
-      titleOverride: `c/${communityData.community_view.community.title}`,
-    });
-  }, []);
 
   const subscribe = async () => {
     if (subscribeLoading) return;

@@ -19,11 +19,9 @@ import {
   validatePasswordStrong,
 } from "@/utils/regex";
 
-import { DEFAULT_INSTANCE } from "@/constants/settings";
 
 import Logo from "@/components/Logo";
 
-import { useNavbar } from "@/hooks/navbar";
 import { defaultState, useSession } from "@/hooks/auth";
 
 import styles from "@/styles/Pages/LoginPage.module.css";
@@ -78,7 +76,6 @@ export default function Register() {
   }>({} as any);
   const { session, setSession } = useSession();
   const router = useRouter();
-  const { navbar, setNavbar } = useNavbar();
   const [loading, setLoading] = useState<boolean>(false);
   const [curatedInstances, setCuratedInstances] = useState<CuratedInstance[]>(
     [],
@@ -112,11 +109,6 @@ export default function Register() {
 
   const [hasVerficationEmail, setHasVerificationEmail] =
     useState<boolean>(false);
-
-  useEffect(() => {
-    if (navbar?.hidden) return;
-    setNavbar({ ...navbar!, hidden: true });
-  }, [navbar, setNavbar]);
 
   // check password strength
   useEffect(() => {

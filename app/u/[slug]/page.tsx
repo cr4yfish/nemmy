@@ -7,6 +7,7 @@ import UserPage from "@/components/PageComponents/UserPage";
 
 import { getCurrentAccountServerSide } from "@/utils/authFunctions";
 import { DEFAULT_INSTANCE } from "@/constants/settings";
+import Navbar from "@/components/Navbar";
 
 const getInitialUser = cache(
   async (
@@ -51,6 +52,7 @@ export default async function User({ params: { slug } }: Props) {
 
   return (
     <>
+      <Navbar />
       <UserPage initialUser={initialUser} userInstance={userInstance} />
     </>
   );

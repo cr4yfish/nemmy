@@ -215,7 +215,7 @@ export default function UserMenu({
                     });
                   }}
                 >
-                  <Badge content={unreadCount}>
+                  <Badge content={Number.isNaN(unreadCount) ? "" : unreadCount}>
                     <span className="material-symbols-outlined">
                       notifications
                     </span>

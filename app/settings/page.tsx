@@ -1,7 +1,4 @@
-import { GetSiteResponse, LemmyHttp } from "lemmy-js-client";
 import { cookies } from "next/dist/client/components/headers";
-
-import { DEFAULT_INSTANCE } from "@/constants/settings";
 
 import { getCurrentAccountServerSide } from "@/utils/authFunctions";
 

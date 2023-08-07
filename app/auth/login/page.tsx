@@ -10,7 +10,6 @@ import va from "@vercel/analytics";
 import { Button, Input } from "@nextui-org/react";
 
 import { defaultState, useSession } from "@/hooks/auth";
-import { useNavbar } from "@/hooks/navbar";
 
 import Logo from "@/components/Logo";
 
@@ -30,7 +29,6 @@ import Image from "next/image";
 
 export default function Login() {
   const { session, setSession } = useSession();
-  const { navbar, setNavbar } = useNavbar();
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
   const [inputFocus, setInputFocus] = useState<boolean>(false);
@@ -58,10 +56,6 @@ export default function Login() {
     instance: "",
     totp: "",
   });
-
-  useEffect(() => {
-    setNavbar({ ...navbar!, hidden: true });
-  }, []);
 
   useEffect(() => {
     if (!selectedUser?.person.name) return;

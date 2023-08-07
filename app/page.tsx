@@ -2,6 +2,7 @@ import { GetSiteResponse, LemmyHttp, PostView } from "lemmy-js-client";
 import { cookies } from "next/dist/client/components/headers";
 
 import FeedPage from "@/components/PageComponents/FeedPage";
+import Navbar from "@/components/Navbar";
 
 import { getCurrentAccountServerSide } from "@/utils/authFunctions";
 
@@ -83,15 +84,18 @@ export default async function Home() {
   }
 
   return (
+    <>
+    <Navbar />
     <div id="feed" className={`mt-24 flex min-h-screen flex-col items-center`}>
       <FeedPage
         initPosts={posts}
         fetchParams={{ page: 2 }}
-        instance={instance}
+        instance={new URL(siteResponse?.site_view.site.actor_id || "").host || instance}
         jwt={currentAccount?.jwt}
         siteResponse={siteResponse}
         currentAccount={currentAccount}
       />
     </div>
+    </>
   );
 }
