@@ -39,7 +39,7 @@ export function FormatDate({ date }: { date: Date }) {
     if (weeks == 1) return `1w`;
     return `${weeks}w`;
   } else if (months < 12) {
-    if (months == 1) return `1m`;
+    if (months == 1) return `1mon`;
     return `${months}m`;
   } else {
     if (years == 1) return `1y`;
