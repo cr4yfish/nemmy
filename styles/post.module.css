@@ -32,11 +32,8 @@
 
 .headerMetadata {
   @apply w-full;
-
   display: flex;
   flex-direction: row;
-  gap: 10px;
-  min-height: 25px;
 }
 
 .headerMetadataContent {
