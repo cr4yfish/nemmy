@@ -49,22 +49,16 @@ export default function Navbar({ params }: { params?: NavbarState }) {
     });
   }, [session.pendingAuth, session.currentAccount]);
 
-  const handleFilterOverlayClose = async () => {
-    setFilterClicked(false);
-    enablePageScroll();
-    setSortOptions(false);
-  };
-
-  const handleUserMenuClose = async () => {
+  const handleMenuClose = async () => {
     enablePageScroll();
     setUserMenu(false);
+    setMenu(false);
   };
 
   const handleUserMenuOpen = async () => {
     va.track("user-menu-open", {
       instance: session?.currentAccount?.instance || DEFAULT_INSTANCE,
     });
-    handleFilterOverlayClose();
     disablePageScroll();
     setUserMenu(true);
   };
@@ -73,14 +67,8 @@ export default function Navbar({ params }: { params?: NavbarState }) {
     va.track("menu-open", {
       instance: session?.currentAccount?.instance || DEFAULT_INSTANCE,
     });
-    handleFilterOverlayClose();
     disablePageScroll();
     setMenu(true);
-  };
-
-  const handleMenuClose = async () => {
-    enablePageScroll();
-    setMenu(false);
   };
 
   const handleCloseSearchOverlay = async () => {
@@ -99,8 +87,12 @@ export default function Navbar({ params }: { params?: NavbarState }) {
         `}
       >
         <div className="flex flex-row items-center gap-6">
-          <Link href="/" className={styles.logo}>
+          <Link href="/" className={`${styles.logo} max-sm:hidden`}>
             Nemmy
+          </Link>
+
+          <Link href={"/"} className={`${styles.logo} hidden max-sm:block`}>
+            N
           </Link>
 
           <div className="flex flex-row items-center gap-4">
@@ -161,7 +153,6 @@ export default function Navbar({ params }: { params?: NavbarState }) {
 
           <button
             onClick={() => {
-              handleFilterOverlayClose();
               handleUserMenuOpen();
             }}
             className={`${styles.userWrapper} cursor-pointer select-none`}
@@ -200,7 +191,7 @@ export default function Navbar({ params }: { params?: NavbarState }) {
       <AnimatePresence>
         {userMenu && (
           <UserMenu
-            handleUserMenuClose={handleUserMenuClose}
+            handleUserMenuClose={handleMenuClose}
             unreadCount={unreadCount}
             router={router}
           />
@@ -210,28 +201,15 @@ export default function Navbar({ params }: { params?: NavbarState }) {
       {/* Mobile Menu Overlay */}
       <div
         onMouseUp={() => {
-          handleUserMenuClose();
           handleMenuClose();
         }}
         onTouchEnd={() => {
-          handleUserMenuClose();
           handleMenuClose();
         }}
         className={`${
           styles.overlay
         } z-50 bg-neutral-200/50 dark:bg-neutral-900/75 ${
           (userMenu || menu) && styles.overlayActive
-        }`}
-      ></div>
-
-      {/* Filter Overlay */}
-      <div
-        onTouchEnd={() => handleFilterOverlayClose()}
-        onMouseUp={() => handleFilterOverlayClose()}
-        className={`${
-          styles.overlay
-        } z-10 bg-neutral-200/50 dark:bg-neutral-900/75 ${
-          (filterClicked || sortOptions) && styles.overlayActive
         }`}
       ></div>
     </>
