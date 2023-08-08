@@ -8,6 +8,7 @@ import {
 
 import PostList from "../PostList";
 import SiteInfoCard from "../SiteInfoCard";
+import FollowedCommunitiesCard from "../FollowedCommunitiesCard";
 
 import { Account } from "@/utils/authFunctions";
 
@@ -37,6 +38,16 @@ export default function FeedPage({
 }) {
   return (
     <div className="flex w-full flex-row justify-center gap-2 max-lg:gap-0">
+      {currentAccount?.jwt && (
+        <div className="mt-16 pt-2">
+          <FollowedCommunitiesCard
+            siteResponse={siteResponse}
+            auth={jwt}
+            instance={currentAccount?.instance}
+          />
+        </div>
+      )}
+
       <PostList
         fetchParams={fetchParams}
         initPosts={initPosts}

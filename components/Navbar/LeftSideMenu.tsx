@@ -11,8 +11,10 @@ import { useSession } from "@/hooks/auth";
 import { DEFAULT_INSTANCE, DEFAULT_AVATAR } from "@/constants/settings";
 
 import Input from "../ui/Input";
+import { SmallCommunityCard } from "../ui/CommunityCard";
 
 import { listCommunities } from "@/utils/lemmy";
+import { handleClickCommunity, getCommunityId } from "@/utils/helpers";
 
 import SiteInfo from "./SiteInfo";
 
@@ -24,18 +26,13 @@ export default function LeftSideMenu({
 }: {
   handleMenuClose?: any;
 }) {
-  const { session } = useSession();
+  const { session, setSession } = useSession();
   const [showSiteInfo, setShowSiteInfo] = useState(false);
   const [communities, setCommunities] = useState<CommunityView[]>([]);
   const [hasMore, setHasMore] = useState(true);
   const [communitySearch, setCommunitySearch] = useState<string>("");
 
-  useEffect(() => {
-    disablePageScroll();
-  }, []);
-
   const handleClose = () => {
-    enablePageScroll();
     handleMenuClose();
   };
 
@@ -144,40 +141,12 @@ export default function LeftSideMenu({
                 {communities
                   ?.filter((c) => c.community.name.includes(communitySearch))
                   .map((community, index) => (
-                    <motion.div
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{
-                        opacity: 1,
-                        y: 0,
-                        transition: { bounce: 0.2 },
-                      }}
-                      exit={{ opacity: 0, y: 10 }}
+                    <SmallCommunityCard
+                      community={community}
+                      session={session}
+                      setSession={setSession}
                       key={index}
-                    >
-                      <Link
-                        href={`/c/${community.community.name}@${
-                          new URL(community.community.actor_id).host
-                        }`}
-                        onClick={() => handleClose()}
-                        className={`${styles.menuCommunity} border-neutral-200 hover:bg-neutral-200 dark:border-neutral-800 dark:hover:bg-neutral-800`}
-                      >
-                        <Image
-                          height={40}
-                          width={40}
-                          className="h-10 w-10 overflow-hidden rounded-full object-cover"
-                          src={community?.community?.icon || DEFAULT_AVATAR}
-                          alt=""
-                        />
-                        <div className="flex h-full flex-col text-xs">
-                          <span className=" font-bold capitalize">
-                            {community.community.name}
-                          </span>
-                          <span className="font-light text-neutral-700 dark:text-neutral-300">
-                            {new URL(community.community.actor_id).host}
-                          </span>
-                        </div>
-                      </Link>
-                    </motion.div>
+                    />
                   ))}
               </InfiniteScroll>
             </>

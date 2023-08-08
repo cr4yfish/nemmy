@@ -80,16 +80,21 @@ export default function PostList({
     setCurrentPage(1);
   }, [fetchParams.type_, currentType]);
 
+  useEffect(() => {
+    setPosts([]);
+    setCurrentPage(1);
+  }, [session.session.selectedCommunities]);
+
   const getPosts = cache(async ({ page = 1 }: { page?: number }) => {
     const data = await fetch(
-      `/api/getPosts?page=${page}&community_name=${
-        fetchParams.community_name
-      }&auth=${session?.currentAccount
+      `/api/getPosts?page=${page}&community_name=${JSON.stringify(
+        fetchParams.community_name || session.session.selectedCommunities,
+      )}&auth=${session?.currentAccount
         ?.jwt}&sort=${currentSort}&type_=${currentType}&instance=${
         overrideInstance || session.currentAccount?.instance
       }`,
     );
-    const json = (await data.json()).posts;
+    const json = await data.json();
     if (json?.length === 0) {
       setMorePages(false);
     }

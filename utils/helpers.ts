@@ -1,4 +1,6 @@
-import { PostView } from "lemmy-js-client";
+import { SessionState } from "@/hooks/auth";
+import { CommunityView, PostView } from "lemmy-js-client";
+import { Dispatch, SetStateAction } from "react";
 
 export function getBufferFromFile(file: File | Blob): Promise<Buffer> {
   return new Promise((resolve, reject) => {
@@ -59,3 +61,66 @@ export function isTextPost(post: PostView) {
   if (post.post.embed_video_url) return false;
   return true;
 }
+
+export const getCommunityId = (name: string, actor_id: string) => {
+  return `${name}@${new URL(actor_id).host}`;
+};
+
+export const handleClickCommunity = (
+  community: CommunityView,
+  session: SessionState,
+  setSession: Dispatch<SetStateAction<SessionState>>,
+) => {
+  if (
+    session.session.selectedCommunities.includes(
+      getCommunityId(community.community.name, community.community.actor_id),
+    )
+  ) {
+    deselectCommunity(community, setSession);
+  } else {
+    selectCommunity(community, setSession);
+  }
+};
+
+const selectCommunity = (
+  community: CommunityView,
+  setSession: Dispatch<SetStateAction<SessionState>>,
+) => {
+  setSession((prevState) => {
+    return {
+      ...prevState,
+      session: {
+        ...prevState.session,
+        selectedCommunities: [
+          ...prevState.session.selectedCommunities,
+          getCommunityId(
+            community.community.name,
+            community.community.actor_id,
+          ),
+        ],
+      },
+    };
+  });
+};
+
+const deselectCommunity = (
+  community: CommunityView,
+  setSession: Dispatch<SetStateAction<SessionState>>,
+) => {
+  setSession((prevState) => {
+    return {
+      ...prevState,
+      session: {
+        ...prevState.session,
+        selectedCommunities: prevState.session.selectedCommunities.filter(
+          (c) =>
+            c !=
+            getCommunityId(
+              community.community.name,
+              community.community.actor_id,
+            ),
+        ),
+      },
+    };
+  });
+};

@@ -66,11 +66,11 @@ export const getPosts = cache(
   async (
     params: GetPosts,
     instance?: string,
-  ): Promise<boolean | GetPostsResponse> => {
-    const posts: GetPostsResponse = await fetch(
+  ): Promise<boolean | PostView[]> => {
+    const posts: PostView[] = await fetch(
       `/api/getPosts?auth=${params.auth}&type_=${params.type_}&sort=${params.sort}&page=${params.page}&limit=${params.limit}&instance=${instance}&saved_only=${params.saved_only}`,
     ).then((res) => res.json());
-    if (!posts.posts) {
+    if (!posts) {
       console.warn("Could not retrieve posts");
       return false;
     }
@@ -93,14 +93,14 @@ export const getTrendingCommunities = cache(
 
 export const getTrendingTopics = cache(
   async (instance?: string): Promise<boolean | PostView[]> => {
-    const posts: GetPostsResponse = await fetch(
+    const posts: PostView[] = await fetch(
       `/api/getPosts?type_=All&sort=TopTwelveHour&limit=3&instance=${instance}`,
     ).then((res) => res.json());
-    if (!posts.posts) {
+    if (!posts) {
       console.warn("Could not retrieve posts");
       return false;
     }
-    return posts.posts.slice(0, 3);
+    return posts.slice(0, 3);
   },
 );
 

@@ -1,5 +1,5 @@
 .menu {
-  @apply h-screen flex-col justify-start gap-6 overflow-x-hidden overflow-y-auto p-6 backdrop-blur-xl max-sm:max-w-xs max-xs:w-72;
+  @apply h-screen flex-col justify-start gap-6 overflow-y-auto overflow-x-hidden p-6 backdrop-blur-xl max-sm:max-w-xs max-xs:w-72;
   position: fixed;
   top: 0;
   left: 0;

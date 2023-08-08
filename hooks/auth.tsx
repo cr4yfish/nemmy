@@ -35,6 +35,11 @@ export interface Settings {
   showAvatars: boolean;
 }
 
+// Like setting, but non-perstistent
+export interface Session {
+  selectedCommunities: string[];
+}
+
 export interface SessionState {
   pendingAuth: boolean;
   accounts: Account[];
@@ -42,6 +47,7 @@ export interface SessionState {
   siteResponse?: GetSiteResponse;
   isLoggedIn: boolean;
   settings: Settings;
+  session: Session;
 }
 
 export const defaultState: SessionState = {
@@ -57,6 +63,9 @@ export const defaultState: SessionState = {
     showNSFW: true,
     showBotAccounts: true,
     showAvatars: true,
+  },
+  session: {
+    selectedCommunities: [],
   },
 };
 
