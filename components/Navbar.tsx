@@ -37,6 +37,8 @@ export default function Navbar({ params }: { params?: NavbarState }) {
 
   const router = useRouter();
 
+  const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
+
   useEffect(() => {
     if (session.pendingAuth || !session?.currentAccount) return;
     getUnreadCount(
@@ -50,9 +52,10 @@ export default function Navbar({ params }: { params?: NavbarState }) {
   }, [session.pendingAuth, session.currentAccount]);
 
   const handleMenuClose = async () => {
-    enablePageScroll();
+    await delay(200);
     setUserMenu(false);
-    setMenu(false);
+    setMenu(false); 
+    enablePageScroll();
   };
 
   const handleUserMenuOpen = async () => {
