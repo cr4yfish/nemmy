@@ -52,7 +52,7 @@ export default function Post({
 
   const target = "_blank";
 
-  const isPoll = post.post.name.toLowerCase().startsWith("[poll]");
+  const isPoll = post.post.name.toLowerCase().includes("[poll]");
 
   switch (style) {
     case "modern":
@@ -70,7 +70,10 @@ export default function Post({
             <div className={`${styles.rightSide}`}>
               <div className={`${styles.header}`}>
                 <div className={`${styles.headerContent}`}>
-                  <div className={`${styles.headerMetadata}`}>
+                  <div
+                    className={`${styles.headerMetadata}`}
+                    style={{ minHeight: "25px", gap: "10px" }}
+                  >
                     {showCommunity && (
                       <Link
                         href={communityUrl}
@@ -302,8 +305,8 @@ export default function Post({
           <div
             className={`card ${styles.wrapper}
             h-full min-h-max flex-col items-start justify-start gap-2 overflow-hidden
-             border-neutral-200 bg-neutral-50 py-3 hover:bg-neutral-100 dark:border-neutral-700
-             dark:bg-neutral-900 dark:hover:border-neutral-600 dark:hover:bg-neutral-800
+             border-neutral-200 bg-neutral-50 py-3 dark:border-neutral-700
+             dark:bg-neutral-900 dark:hover:border-neutral-600
              `}
             key={post.post.id}
             id={`${post.post.id.toString()}@${baseUrl}`}
@@ -313,54 +316,55 @@ export default function Post({
               className={`${styles.headerMetadata} justify-between text-xs text-neutral-700 dark:text-neutral-400`}
             >
               <div
-                className={`flex flex-row items-center gap-1 max-sm:flex-wrap`}
+                className={`flex h-fit flex-row items-center gap-1 max-xs:flex-wrap`}
               >
-                {post?.community?.icon && showCommunity && (
-                  <Link
-                    href={communityUrl}
-                    target={target}
-                    className={`${styles.communityImage}`}
-                  >
-                    <Image
-                      src={post?.community?.icon}
-                      alt=""
-                      height={20}
-                      width={20}
-                      className=" h-full w-full overflow-hidden object-cover"
-                      style={{ borderRadius: "50%" }}
-                    />
-                  </Link>
-                )}
-
-                {showCommunity && (
-                  <>
+                {/* Community */}
+                <div className="flex h-fit flex-row items-center gap-1">
+                  {post?.community?.icon && showCommunity && (
                     <Link
                       href={communityUrl}
-                      className="prose flex flex-col dark:prose-invert"
                       target={target}
+                      style={{ width: "15px", height: "15px" }}
                     >
-                      <span className="text-xs font-bold capitalize">
-                        {post.community.name}
-                      </span>
-
-                      <span className="flex w-fit flex-row items-center gap-0 text-xs font-light">
-                        <span>@</span>
-                        <span className=" text-xs ">
-                          {new URL(post.community.actor_id).host}
-                        </span>
-                      </span>
+                      <Image
+                        src={post?.community?.icon}
+                        alt=""
+                        height={10}
+                        width={10}
+                        className=" h-full w-full overflow-hidden object-cover"
+                        style={{ borderRadius: "50%" }}
+                      />
                     </Link>
+                  )}
 
-                    <div className="dividerDot"></div>
-                  </>
+                  {showCommunity && (
+                    <>
+                      <Link
+                        href={communityUrl}
+                        className="prose flex flex-col dark:prose-invert"
+                        target={target}
+                      >
+                        <span className="text-xs font-bold capitalize">
+                          {post.community.name}
+                        </span>
+                      </Link>
+                    </>
+                  )}
+                </div>
+
+                {showCommunity && (
+                  <div className="dividerDot max-xs:hidden"></div>
                 )}
 
-                <Username user={post.creator} baseUrl={baseUrl} />
+                {/* User */}
+                <div className="flex h-fit flex-row items-center gap-1">
+                  <Username user={post.creator} baseUrl={baseUrl} />
 
-                <div className="dividerDot"></div>
+                  <div className="dividerDot"></div>
 
-                <div className={` text-xs `}>
-                  <FormatDate date={new Date(post.post.published)} />
+                  <div className={` text-xs `}>
+                    <FormatDate date={new Date(post.post.published)} />
+                  </div>
                 </div>
 
                 {post.post.nsfw && (

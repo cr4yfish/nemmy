@@ -54,7 +54,7 @@ export default function PostPage({
     }
 
     postData?.post?.name &&
-      setIsPoll(postData?.post.name.toLowerCase().startsWith("[poll]"));
+      setIsPoll(postData?.post.name.toLowerCase().includes("[poll]"));
   }, []);
 
   return (
