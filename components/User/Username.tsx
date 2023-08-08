@@ -35,7 +35,7 @@ export default function Username({
               className={`${styles.userimage} ${
                 user.avatar ? "" : "p-1/2 object-contain"
               } `}
-              style={{ height: "20px", width: "20px" }}
+              style={{ height: "15px", width: "15px" }}
               src={user.avatar || DEFAULT_AVATAR}
               alt={user.name}
               height={20}
