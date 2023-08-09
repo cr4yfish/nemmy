@@ -604,6 +604,7 @@ export const getCurrentAccountServerSide = (
 export const wipeAccounts = () => {
   deleteCookie(cookieName);
   deleteCookie(cookieDefaultAccountName);
+  deleteCookie(cookieCurrentAccountName);
 };
 
 /**
