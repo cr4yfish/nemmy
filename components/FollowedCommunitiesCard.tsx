@@ -97,7 +97,7 @@ export default function FollowedCommunitiesCard({
         pageStart={1}
         loadMore={async (page) => await handleLoadMore(currentPage)}
         hasMore={hasMore}
-        loader={<Spinner />}
+        loader={<Spinner key="spinner" />}
         className="flex w-full flex-col gap-1"
       >
         {communities

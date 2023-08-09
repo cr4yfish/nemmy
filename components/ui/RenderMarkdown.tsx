@@ -33,7 +33,7 @@ export default function RenderMarkdown({
               a: (h, node) => {
                 return h(
                   node,
-                  "a",
+                  disableLinks ? "span" : "a",
                   {
                     href: node.properties.href,
                     target: "_blank",

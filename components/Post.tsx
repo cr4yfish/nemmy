@@ -1,8 +1,6 @@
 import Image from "next/image";
 import { PostView } from "lemmy-js-client";
 import Link from "next/link";
-import { AnimatePresence, motion } from "framer-motion";
-import Ripple from "react-ripplejs";
 
 import Username from "./User/Username";
 import Vote from "./Vote";
@@ -50,6 +48,8 @@ export default function Post({
   const communityUrl = `/c/${post.community.name}@${
     new URL(post.community.actor_id).host
   }`;
+
+  const isPostArticle = (post?.post?.embed_title || post?.post?.url?.endsWith(".html")) as boolean;
 
   const target = "_blank";
 
@@ -342,12 +342,13 @@ export default function Post({
                     <>
                       <Link
                         href={communityUrl}
-                        className="prose flex flex-col dark:prose-invert"
+                        className="prose flex flex-row gap-1 dark:prose-invert"
                         target={target}
                       >
                         <span className="text-xs font-bold capitalize">
                           {post.community.name}
                         </span>
+                        <span className="text-xs">@{new URL(post.community.actor_id).host}</span>
                       </Link>
                     </>
                   )}
@@ -407,12 +408,7 @@ export default function Post({
                   </div>
 
                   {/* Display Body if post has body and is not an Embed */}
-                  {post?.post?.body &&
-                    !post.post.embed_title &&
-                    !(
-                      post?.post?.embed_title ||
-                      post?.post?.url?.endsWith(".html")
-                    ) && (
+                  {post?.post?.body && !isPostArticle && (
                       <>
                         <div
                           className="absolute left-0 top-0 h-full w-full bg-gradient-to-b from-neutral-50/30 to-neutral-50/90 dark:from-neutral-900/50 dark:to-neutral-900/90"
@@ -431,8 +427,7 @@ export default function Post({
                     )}
 
                   {/* Display Link if post has link e.g. Article case */}
-                  {(post?.post?.embed_title ||
-                    post?.post?.url?.endsWith(".html")) && (
+                  {isPostArticle && (
                     <div
                       style={{ marginBottom: "0" }}
                       className={`${styles.postBodyEmbed} mb-0 border-neutral-300 text-neutral-800 dark:border-neutral-600 dark:text-neutral-200`}
@@ -449,31 +444,13 @@ export default function Post({
                         className={`${styles.link} flex w-full items-start justify-start p-1 pl-0`}
                       >
                         {post.post.url && (
-                          <Link
+                          <span
                             className="a text-xs"
-                            href={post.post.url}
-                            target={target}
-                            rel="noopener noreferrer"
                           >
                             {new URL(post.post.url).hostname}
-                          </Link>
+                          </span>
                         )}
                       </div>
-                      {/* Display Thumbnail */}
-                      {post.post.thumbnail_url && false && (
-                        <Link
-                          className={` relative h-full min-h-max w-full place-self-center self-center overflow-hidden rounded-xl object-cover`}
-                          href={post.post.thumbnail_url || ""}
-                          target={target}
-                          rel="noopener noreferrer"
-                        >
-                          <AutoMediaType
-                            url={post.post.thumbnail_url || ""}
-                            alt={post.post.name}
-                            nsfw={post?.post?.nsfw}
-                          />
-                        </Link>
-                      )}
                     </div>
                   )}
                 </Link>
@@ -483,12 +460,17 @@ export default function Post({
               {post.post.thumbnail_url && (
                 <div className=" flex h-full items-center justify-center">
                   <Link
-                    className={` flex overflow-hidden rounded-xl`}
-                    style={{ height: "80px", width: "80px" }}
+                    className={` flex overflow-hidden rounded-xl h-full w-full object-cover relative`}
+                    style={{ height: "100px", width: "150px" }}
                     href={post.post.thumbnail_url}
                     target={target}
                     rel="noopener noreferrer"
                   >
+                    {isPostArticle && post.post.url &&
+                    <div className=" absolute bottom-0 h-6 w-full bg-black/60 backdrop-blur-xl z-10 flex justify-center items-center">
+                      <span className=" a " style={{ fontSize: "9px"}}>{(new URL(post.post.url).host).replace("wwww.", "")}</span>
+                    </div>
+                    }
                     <AutoMediaType
                       url={post.post.thumbnail_url}
                       alt={post.post.name}
