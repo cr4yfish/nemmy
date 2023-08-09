@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { CommentResponse, PostView } from "lemmy-js-client";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { BarChart, Card, Title, Subtitle } from "@tremor/react";
+import { BarChart, Card, Title, Subtitle, BarList } from "@tremor/react";
 
 import { AutoMediaType } from "@/utils/AutoMediaType";
 
@@ -93,7 +93,7 @@ export default function PostPage({
                         new URL(postData?.community?.actor_id).host
                       }`}
                     >
-                      <span className="text-xs ">
+                      <span className="text-xs capitalize font-bold">
                         {postData?.community?.name}
                       </span>
                     </Link>
@@ -103,7 +103,7 @@ export default function PostPage({
                     className={`${styles.postHeaderMetadataContentUsername} text-xs`}
                   >
                     <div className=" flex flex-row items-center gap-1">
-                      <span className="max-sm:hidden">Posted by</span>
+                      <span className="max-sm:hidden text-neutral-700 dark:text-neutral-400">Posted by</span>
                       <Username user={postData?.creator} baseUrl="" />
                     </div>
 
@@ -206,22 +206,17 @@ export default function PostPage({
                     />
                   </Title>
                   <Subtitle>Vote by upvoting/downvoting</Subtitle>
-                  <BarChart
-                    className="mt-6"
+                  <BarList
                     data={[
                       {
-                        name: "Upvotes",
-                        Upvotes: postData.counts.upvotes,
+                        name: "Yes",
+                        value: postData.counts.upvotes,
                       },
                       {
-                        name: "Downvotes",
-                        Downvotes: postData.counts.downvotes,
-                      },
+                        name: "No",
+                        value: postData.counts.downvotes,
+                      }
                     ]}
-                    index="name"
-                    categories={["Upvotes", "Downvotes"]}
-                    colors={["blue", "orange"]}
-                    yAxisWidth={48}
                   />
                 </Card>
               </>
