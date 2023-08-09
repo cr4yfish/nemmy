@@ -65,7 +65,7 @@ export default async function Comment({
   const postData = (
     await getPostData(
       slug,
-      currentAccount?.instanceAccounts.find(
+      currentAccount?.instanceAccounts?.find(
         (ac) => ac.instance == currentAccount.instanceAccounts[0]?.instance,
       )?.jwt,
       currentAccount?.instanceAccounts[0]?.instance,
@@ -73,7 +73,7 @@ export default async function Comment({
   ).post_view;
   const commentData = await getCommmentData(
     comment_id,
-    currentAccount?.instanceAccounts.find(
+    currentAccount?.instanceAccounts?.find(
       (ac) => ac.instance == currentAccount.instanceAccounts[0]?.instance,
     )?.jwt,
     currentAccount?.instanceAccounts[0]?.instance,
@@ -93,7 +93,7 @@ export default async function Comment({
         data={postData}
         instance={currentAccount?.instanceAccounts[0]?.instance}
         jwt={
-          currentAccount?.instanceAccounts.find(
+          currentAccount?.instanceAccounts?.find(
             (ac) => ac.instance == currentAccount.instanceAccounts[0]?.instance,
           )?.jwt || ""
         }

@@ -6,7 +6,9 @@ import { getClient } from "@/utils/lemmy";
 import FeedPage from "@/components/PageComponents/FeedPage";
 import Navbar from "@/components/Navbar";
 
-import { getCurrentAccountServerSide, wipeAccounts } from "@/utils/authFunctions";
+import {
+ getCurrentAccountServerSide,
+} from "@/utils/authFunctions";
 
 import { DEFAULT_INSTANCE, nextInstance } from "@/constants/settings";
 
@@ -39,14 +41,11 @@ export default async function Home() {
   const cookiesStore = cookies();
   const currentAccount = getCurrentAccountServerSide(cookiesStore);
 
-  if(currentAccount?.hasOwnProperty("jwt")) {
-    wipeAccounts();
-  }
-
   let instance = DEFAULT_INSTANCE;
 
   // {} is the default value if the cookie is not set
   if (
+    currentAccount?.instanceAccounts &&
     currentAccount?.instanceAccounts[0]?.instance &&
     currentAccount.instanceAccounts[0]?.instance.length > 0
   ) {

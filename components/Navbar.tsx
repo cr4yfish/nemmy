@@ -149,8 +149,8 @@ export default function Navbar({ params }: { params?: NavbarState }) {
                   onClick={() => {
                     va.track("click-inbox", {
                       instance:
-                        session?.currentAccount?.instanceAccounts[0].instance ||
-                        DEFAULT_INSTANCE,
+                        session?.currentAccount?.instanceAccounts[0]
+                          ?.instance || DEFAULT_INSTANCE,
                     });
                   }}
                 >

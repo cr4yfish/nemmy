@@ -103,7 +103,7 @@ export const handleLogout = async ({
       // get default account with site response
       const defaultAccountWithSite = getUserDataFromLocalStorage(
         defaultAccount.username,
-        defaultAccount.instanceAccounts[0].instance,
+        defaultAccount.instanceAccounts[0]?.instance,
       );
       setSession({
         ...session,
@@ -119,7 +119,7 @@ export const handleLogout = async ({
       // get new account with site response
       const newAccountWithSite = getUserDataFromLocalStorage(
         newAccounts[0].username,
-        newAccounts[0].instanceAccounts[0].instance,
+        newAccounts[0].instanceAccounts[0]?.instance,
       );
       setSession({
         ...session,
@@ -224,9 +224,9 @@ export const handleAddInstanceToAccount = async ({
     saveUserSettings(
       {
         ...settings, // settings from current account
-        auth: account.instanceAccounts[0].jwt, // jwt from new instance
+        auth: account.instanceAccounts[0]?.jwt, // jwt from new instance
       },
-      accountWithSite.instanceAccounts[0].instance,
+      accountWithSite.instanceAccounts[0]?.instance,
     );
 
     // sync subscriptions
@@ -237,15 +237,15 @@ export const handleAddInstanceToAccount = async ({
       const communityOnCurrentInstance = await getCommuntiy(
         {
           id: follow.community.id,
-          auth: session.currentAccount?.instanceAccounts[0].jwt,
+          auth: session.currentAccount?.instanceAccounts[0]?.jwt,
         },
-        session.currentAccount?.instanceAccounts[0].instance,
+        session.currentAccount?.instanceAccounts[0]?.instance,
       );
       console.log("communityOnCurrentInstance", communityOnCurrentInstance);
 
       console.log(
         "getting community on new instance",
-        accountWithSite.instanceAccounts[0].instance,
+        accountWithSite.instanceAccounts[0]?.instance,
       );
       // get the community from the new instance
       const searchResponse = await search(
@@ -254,7 +254,7 @@ export const handleAddInstanceToAccount = async ({
           q: communityOnCurrentInstance.community_view.community.name,
           listing_type: "All",
         },
-        accountWithSite.instanceAccounts[0].instance,
+        accountWithSite.instanceAccounts[0]?.instance,
       );
       if (searchResponse) {
         const communityOnNewInstance = searchResponse.communities.find(
@@ -273,9 +273,9 @@ export const handleAddInstanceToAccount = async ({
           {
             follow: true,
             community_id: communityOnNewInstance.community.id,
-            auth: accountWithSite.instanceAccounts[0].jwt,
+            auth: accountWithSite.instanceAccounts[0]?.jwt,
           },
-          accountWithSite.instanceAccounts[0].instance,
+          accountWithSite.instanceAccounts[0]?.instance,
         );
       }
       // Copy over follow list
@@ -398,7 +398,7 @@ export const getAllUserDataFromLocalStorage = (): AccountWithSiteResponse[] => {
   accounts.forEach((account) => {
     const accountWithSite = getUserDataFromLocalStorage(
       account.username,
-      account.instanceAccounts[0].instance,
+      account.instanceAccounts[0]?.instance,
     );
     if (accountWithSite) {
       accountsWithSite.push({ ...account, site: accountWithSite });
@@ -569,6 +569,7 @@ export const getCurrentAccount = (): AccountWithSiteResponse | undefined => {
     currentAccount.length > 0
   ) {
     const account = JSON.parse(currentAccount) as Account;
+    if(!account?.instanceAccounts || account.instanceAccounts.length == 0) return undefined;
     const accountWithSite = getUserDataFromLocalStorage(
       account.username,
       account.instanceAccounts[0].instance,
@@ -631,7 +632,7 @@ export const switchToAccount = (
   // get site response
   const accountWithSite = getUserDataFromLocalStorage(
     account.username,
-    account.instanceAccounts[0].instance,
+    account.instanceAccounts[0]?.instance,
   );
 
   // set session to the account
