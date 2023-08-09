@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroller";
 import { GetSiteResponse, CommunityView } from "lemmy-js-client";
 import { motion } from "framer-motion";
@@ -29,28 +29,50 @@ export default function FollowedCommunitiesCard({
 
   const [communities, setCommunities] = useState<CommunityView[]>([]);
   const [hasMore, setHasMore] = useState(true);
+  const [currentPage, setCurrentPage] = useState<number>(1);
   const [communitySearch, setCommunitySearch] = useState<string>("");
 
+  useEffect(() => {
+    setCommunities([]);
+    setHasMore(true);
+    setCurrentPage(1);
+  }, [session.currentAccount?.instanceAccounts]);
+
   const handleLoadMore = async (page: number) => {
+    if (!session.isLoggedIn) return;
     const data = await listCommunities(
       {
         page: page,
-        auth: auth,
+        auth: session.currentAccount?.instanceAccounts[0]?.jwt || "",
         type_: "Subscribed",
         sort: "Active",
       },
-      instance,
+      session.isLoggedIn
+        ? session.currentAccount?.instanceAccounts[0]?.instance
+        : instance,
     );
     if (typeof data == "boolean" || data?.communities?.length == 0) {
       setHasMore(false);
       return;
     }
 
-    setCommunities((prevState) => {
-      return [...prevState, ...data.communities].sort((a, b) =>
-        a.community.name.localeCompare(b.community.name),
+    let newCommunities = [...communities, ...data.communities];
+
+    // Filter duplicates
+    newCommunities.filter((c, index) => {
+      return (
+        newCommunities.findIndex((c2) => c2.community.id == c.community.id) ==
+        index
       );
     });
+
+    // Sort alphabetically
+    newCommunities.sort((a, b) =>
+      a.community.name.localeCompare(b.community.name),
+    );
+
+    setCommunities(newCommunities);
+    setCurrentPage(page + 1);
   };
 
   return (
@@ -72,8 +94,8 @@ export default function FollowedCommunitiesCard({
       />
 
       <InfiniteScroll
-        pageStart={0}
-        loadMore={async (page) => await handleLoadMore(page)}
+        pageStart={1}
+        loadMore={async (page) => await handleLoadMore(currentPage)}
         hasMore={hasMore}
         loader={<Spinner />}
         className="flex w-full flex-col gap-1"

@@ -9,7 +9,14 @@ import "swiper/css/scrollbar";
 import { motion } from "framer-motion";
 import va from "@vercel/analytics";
 import { useEffect } from "react";
-import { Badge } from "@nextui-org/react";
+import {
+  Badge,
+  Dropdown,
+  DropdownMenu,
+  DropdownTrigger,
+  DropdownItem,
+  Button,
+} from "@nextui-org/react";
 
 import { DEFAULT_AVATAR, DEFAULT_INSTANCE } from "@/constants/settings";
 import { useSession } from "@/hooks/auth";
@@ -20,6 +27,7 @@ import {
   switchToAccount,
   sortCurrentAccount,
   handleLogout,
+  sortInstanceAccounts,
 } from "@/utils/authFunctions";
 
 function UserMenuItem({
@@ -141,9 +149,43 @@ export default function UserMenu({
                     alt=""
                   />
                   <div className={`${styles.userProfileText} text-neutral-50`}>
-                    <span className={`${styles.userProfileUsername} text-xs`}>
-                      {account.instance}
-                    </span>
+                    <Dropdown>
+                      <DropdownTrigger>
+                        <Button
+                          variant="light"
+                          className="text-xs"
+                          endContent={
+                            <span className=" material-symbols-outlined">
+                              expand_more
+                            </span>
+                          }
+                        >
+                          {
+                            session.currentAccount?.instanceAccounts[0]
+                              ?.instance
+                          }
+                        </Button>
+                      </DropdownTrigger>
+                      <DropdownMenu variant="faded">
+                        {account.instanceAccounts.map((instanceAccount) => (
+                          <DropdownItem key={instanceAccount.instance}>
+                            <Button
+                              onClick={() =>
+                                sortInstanceAccounts(
+                                  instanceAccount,
+                                  session,
+                                  setSession,
+                                )
+                              }
+                              variant="faded"
+                              className="w-full"
+                            >
+                              {instanceAccount.instance}
+                            </Button>
+                          </DropdownItem>
+                        ))}
+                      </DropdownMenu>
+                    </Dropdown>
                     {account.username.length > 30 ? (
                       <Marquee>
                         <span
@@ -196,7 +238,7 @@ export default function UserMenu({
             <UserMenuItem
               text="My Profile"
               icon="account_circle"
-              link={`/u/${session.currentAccount?.user?.person?.name}@${session.currentAccount?.instance}`}
+              link={`/u/${session.currentAccount?.user?.person?.name}@${session.currentAccount?.instanceAccounts[0]?.instance}`}
               close={handleClose}
               disabled={!session.isLoggedIn}
             />
@@ -211,7 +253,8 @@ export default function UserMenu({
                   onClick={() => {
                     va.track("click-inbox", {
                       instance:
-                        session?.currentAccount?.instance || DEFAULT_INSTANCE,
+                        session?.currentAccount?.instanceAccounts[0]
+                          ?.instance || DEFAULT_INSTANCE,
                     });
                   }}
                 >

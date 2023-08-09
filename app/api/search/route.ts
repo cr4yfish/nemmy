@@ -10,6 +10,8 @@ import {
 } from "lemmy-js-client";
 import { DEFAULT_INSTANCE } from "@/constants/settings";
 
+import { getClient } from "@/utils/lemmy";
+
 // GET /api/search
 export const dynamic = "force-dynamic";
 
@@ -26,8 +28,9 @@ export async function GET(req: Request) {
     let listing_type = params.get("listing_type") || "All";
     let page = params.get("page") || 1;
     let auth = params.get("auth") || "";
+    let instance = params.get("instance") || undefined;
 
-    let client: LemmyHttp = new LemmyHttp(DEFAULT_INSTANCE);
+    let client: LemmyHttp = getClient(instance);
     let searchResponse = await client.search({
       q: q as unknown as string,
       community_id: community_id as unknown as CommunityId,

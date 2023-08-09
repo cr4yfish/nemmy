@@ -1,6 +1,8 @@
 import { GetSiteResponse, LemmyHttp, PostView } from "lemmy-js-client";
 import { cookies } from "next/dist/client/components/headers";
 
+import { getClient } from "@/utils/lemmy";
+
 import FeedPage from "@/components/PageComponents/FeedPage";
 import Navbar from "@/components/Navbar";
 
@@ -17,9 +19,7 @@ async function getInitialPosts({
   instance: string;
   auth?: string;
 }) {
-  const client = new LemmyHttp(
-    instance ? `https://${instance.replace("https://", "")}` : DEFAULT_INSTANCE,
-  );
+  const client = getClient(instance);
   return (
     await client.getPosts({
       type_: "All",
@@ -31,9 +31,7 @@ async function getInitialPosts({
 }
 
 async function getInitialSiteResponse(instance: string) {
-  const client = new LemmyHttp(
-    instance ? `https://${instance.replace("https://", "")}` : DEFAULT_INSTANCE,
-  );
+  const client = getClient(instance);
   return await client.getSite();
 }
 
@@ -44,8 +42,11 @@ export default async function Home() {
   let instance = DEFAULT_INSTANCE;
 
   // {} is the default value if the cookie is not set
-  if (currentAccount?.instance && currentAccount.instance.length > 0) {
-    instance = currentAccount.instance;
+  if (
+    currentAccount?.instanceAccounts[0]?.instance &&
+    currentAccount.instanceAccounts[0]?.instance.length > 0
+  ) {
+    instance = currentAccount.instanceAccounts[0]?.instance;
   }
 
   let posts: PostView[] = [];
@@ -53,7 +54,7 @@ export default async function Home() {
   try {
     posts = await getInitialPosts({
       instance: instance,
-      auth: currentAccount?.jwt,
+      auth: currentAccount?.instanceAccounts[0]?.jwt || "",
     });
     siteResponse = await getInitialSiteResponse(instance);
   } catch (e) {
@@ -97,7 +98,6 @@ export default async function Home() {
             new URL(siteResponse?.site_view.site.actor_id || "").host ||
             instance
           }
-          jwt={currentAccount?.jwt}
           siteResponse={siteResponse}
           currentAccount={currentAccount}
         />

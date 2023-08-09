@@ -182,7 +182,7 @@ export default function Comments({
         post_id: postData.post.id,
         sort: currentCommentSort,
         page: currentCommentsPage,
-        auth: session.currentAccount?.jwt,
+        auth: session.currentAccount?.instanceAccounts[0]?.jwt,
       },
       instance || "",
     );

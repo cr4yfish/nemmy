@@ -1,6 +1,8 @@
 import { LemmyHttp, PostId, CommentId } from "lemmy-js-client";
 import { DEFAULT_INSTANCE } from "@/constants/settings";
 
+import { getClient } from "@/utils/lemmy";
+
 export const dynamic = "force-dynamic";
 
 export async function GET(req: Request) {
@@ -11,10 +13,11 @@ export async function GET(req: Request) {
     let id = params.get("id");
     let comment_id = params.get("comment_id") || "0";
     let auth = params.get("auth") || "";
+    let instance = params.get("instance") || undefined;
 
     if (!id) throw new Error("id is required");
 
-    let client: LemmyHttp = new LemmyHttp(DEFAULT_INSTANCE);
+    let client: LemmyHttp = getClient(instance);
 
     let posts = await client.getPost({
       id: id as unknown as PostId,

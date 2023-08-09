@@ -3,6 +3,7 @@ import { cookies } from "next/dist/client/components/headers";
 import { cache } from "react";
 import { LemmyHttp, SortType } from "lemmy-js-client";
 
+import { getClient } from "@/utils/lemmy";
 import BookmarkPage from "@/components/PageComponents/BookmarkPage";
 
 import { getCurrentAccountServerSide } from "@/utils/authFunctions";
@@ -18,11 +19,7 @@ const getSaved = cache(
     instance?: string;
     username: string;
   }): Promise<GetPersonDetailsResponse> => {
-    let client: LemmyHttp = new LemmyHttp(
-      instance && instance.length > 1 && instance !== "undefined"
-        ? `https://${instance}`
-        : DEFAULT_INSTANCE,
-    );
+    let client: LemmyHttp = getClient(instance);
 
     return await client.getPersonDetails({
       username: username,
@@ -46,8 +43,8 @@ export default async function Inbox({}: {}) {
   if (!currentAccount) return <></>;
 
   const saved = await getSaved({
-    jwt: currentAccount.jwt,
-    instance: currentAccount.instance,
+    instance: currentAccount.instanceAccounts[0]?.instance,
+    jwt: currentAccount.instanceAccounts[0]?.jwt,
     username: currentAccount.username,
   });
 

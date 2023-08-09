@@ -1,13 +1,15 @@
 import { LemmyHttp, Login } from "lemmy-js-client";
 import { DEFAULT_INSTANCE } from "@/constants/settings";
 
+import { getClient } from "@/utils/lemmy";
+
 async function userLogin(
   username: string,
   password: string,
   baseUrl: string,
   totp_2fa_token: string = "",
 ) {
-  let client: LemmyHttp = new LemmyHttp(baseUrl);
+  let client = getClient(baseUrl);
   let loginForm: Login = {
     username_or_email: username,
     password: password,

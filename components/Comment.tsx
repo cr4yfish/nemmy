@@ -85,7 +85,7 @@ export default function Comment({
   const [loaded, setLoaded] = useState<boolean>(false);
 
   const { data, error } = useSWR(
-    `/api/getComments?post_id=${commentView.comment.post_id}&parent_id=${commentView.comment.id}&sort=Top&page=1&auth=${session.currentAccount?.jwt}`,
+    `/api/getComments?post_id=${commentView.comment.post_id}&parent_id=${commentView.comment.id}&sort=Top&page=1&auth=${session.currentAccount?.instanceAccounts[0]?.jwt}`,
     fetcher,
   );
 
@@ -194,7 +194,7 @@ export default function Comment({
     if (!commentView?.comment) return;
 
     const response = await sendComment({
-      auth: session.currentAccount.jwt,
+      auth: session.currentAccount.instanceAccounts[0]?.jwt,
       content: replyText,
       parent_id: commentView.comment.id,
       post_id: commentView.comment.post_id,
@@ -269,12 +269,14 @@ export default function Comment({
                     </span>
                     Reply
                   </button>
-                  {session?.currentAccount?.jwt && (
+                  {session?.currentAccount?.instanceAccounts[0]?.jwt && (
                     <BookmarkButton
                       type="comment"
                       id={commentView.comment.id}
-                      auth={session.currentAccount.jwt}
-                      instance={session.currentAccount.instance}
+                      auth={session.currentAccount.instanceAccounts[0]?.jwt}
+                      instance={
+                        session.currentAccount.instanceAccounts[0]?.instance
+                      }
                       initState={commentView.saved}
                     />
                   )}

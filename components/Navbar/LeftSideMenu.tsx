@@ -37,14 +37,15 @@ export default function LeftSideMenu({
   };
 
   const handleLoadMore = async (page: number) => {
+    if (!session.isLoggedIn) return;
     const data = await listCommunities(
       {
         page: page,
-        auth: session.currentAccount?.jwt,
+        auth: session.currentAccount?.instanceAccounts[0]?.jwt,
         type_: "Subscribed",
         sort: "Active",
       },
-      session.currentAccount?.instance,
+      session.currentAccount?.instanceAccounts[0]?.instance,
     );
     if (typeof data == "boolean" || data?.communities?.length == 0) {
       setHasMore(false);
@@ -95,7 +96,7 @@ export default function LeftSideMenu({
                 Current Instance
               </span>
               <span className="font-bold ">
-                {session.currentAccount?.instance ||
+                {session.currentAccount?.instanceAccounts[0]?.instance ||
                   new URL(DEFAULT_INSTANCE).host}
               </span>
             </div>

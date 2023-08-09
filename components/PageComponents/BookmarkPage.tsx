@@ -71,7 +71,7 @@ export default function BookmarkPage({
 
   const getData = async ({ page = 1 }: { page?: number }) => {
     const data = await fetch(
-      `/api/getUser?&page=${page}&username=${currentUser.username}&sort=${sort}&instance=${currentUser.instance}&saved_only=true&auth=${currentUser.jwt}`,
+      `/api/getUser?&page=${page}&username=${currentUser.username}&sort=${sort}&instance=${currentUser.instanceAccounts[0]?.instance}&saved_only=true&auth=${currentUser.instanceAccounts[0]?.jwt}`,
     );
     const json = await data.json();
     const posts = json.posts;
@@ -284,9 +284,15 @@ export default function BookmarkPage({
                     <Post
                       post={post}
                       key={post.post.id}
-                      instance={session.currentAccount?.instance}
-                      auth={session.currentAccount?.jwt}
-                      postInstance={session.currentAccount?.instance}
+                      instance={
+                        session.currentAccount?.instanceAccounts[0]?.instance
+                      }
+                      instanceAccount={
+                        session.currentAccount?.instanceAccounts[0]
+                      }
+                      postInstance={
+                        session.currentAccount?.instanceAccounts[0]?.instance
+                      }
                       style={
                         session.settings?.cardType !== "auto"
                           ? session.settings?.cardType

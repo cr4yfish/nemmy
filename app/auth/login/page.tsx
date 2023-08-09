@@ -20,6 +20,7 @@ import {
   handleLogin,
   Account,
   AccountWithSiteResponse,
+  handleAddInstanceToAccount,
 } from "@/utils/authFunctions";
 
 import { DEFAULT_AVATAR } from "@/constants/settings";
@@ -89,21 +90,35 @@ export default function Login() {
       let password: string = passwordEle.value;
 
       const accounts = getAccounts();
+
       // check if there's an account with the same username and instance
       const hasAccount = accounts.find(
         (account) =>
-          account.username == username && account.instance == form.instance,
+          account.username == username &&
+          account.instanceAccounts.some((ac) => ac.instance == form.instance),
+      );
+
+      // check if there's an account with the same username but different instance
+      // => if so, add the instance to the account
+      const hasAccountWithSameInstance = accounts.find(
+        (account) =>
+          account.username == username &&
+          !account.instanceAccounts.some((ac) => ac.instance == form.instance),
       );
 
       // if there's any pair of jwt and session, redirect to home since user is already logged in
       if (hasAccount) {
         setLoading(false);
-        alert("You already have this account saved");
+        alert("You already have an account for this instance.");
         router.push("/");
         return;
       }
 
       va.track("login", { instance: form.instance });
+
+      if (hasAccountWithSameInstance) {
+        va.track("add_instance_to_account", { instance: form.instance });
+      }
 
       // get jwt token
       const jwt = await fetch("/api/auth/login", {
@@ -116,24 +131,46 @@ export default function Login() {
 
       // get user details
       const user = await getUserDetails(jwt.jwt, form.instance);
+      console.log("Got user from instance:", user);
 
-      if (!user.my_user) throw new Error("User not found");
+      if (!user.my_user)
+        throw new Error(
+          "User has not been found on " +
+            form.instance +
+            " for some reason. Please report the issue. Maybe the instance is down?",
+        );
 
       const accountWithSite: AccountWithSiteResponse = {
         username: form.username,
-        instance: form.instance,
-        jwt: jwt.jwt,
+        instanceAccounts: [
+          {
+            instance: form.instance,
+            jwt: jwt.jwt,
+          },
+        ],
         user: user.my_user.local_user_view,
         site: user,
         settings: defaultState.settings,
       };
 
-      await handleLogin({
-        accountWithSite: accountWithSite,
-        session: session,
-        setSession: setSession,
-        router: router,
-      });
+      // Either add instance to account or add new account
+      if (hasAccountWithSameInstance) {
+        console.log("Add instance to account");
+        await handleAddInstanceToAccount({
+          accountWithSite: accountWithSite,
+          session: session,
+          setSession: setSession,
+          router: router,
+        });
+        return;
+      } else {
+        await handleLogin({
+          accountWithSite: accountWithSite,
+          session: session,
+          setSession: setSession,
+          router: router,
+        });
+      }
     } catch (e: any) {
       setLoading(false);
       setLoginError(true);

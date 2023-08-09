@@ -1,6 +1,8 @@
 import { LemmyHttp, PostId, CommentId } from "lemmy-js-client";
 import { DEFAULT_INSTANCE } from "@/constants/settings";
 
+import { getClient } from "@/utils/lemmy";
+
 export async function POST(req: Request) {
   try {
     const body = await req.json();
@@ -11,10 +13,11 @@ export async function POST(req: Request) {
     let language_id = body.language_id || undefined;
     let form_id = body.form_id || undefined;
     let parent_id = body.parent_id || undefined;
+    let instance = body.instance || undefined;
 
     if (!content || !post_id || !auth) throw new Error("missing parameters");
 
-    let client: LemmyHttp = new LemmyHttp(DEFAULT_INSTANCE);
+    let client = getClient(instance);
 
     let response = await client.createComment({
       content: content as unknown as string,

@@ -11,13 +11,13 @@ import { getCurrentAccountServerSide } from "@/utils/authFunctions";
 
 import PostPage from "@/components/PageComponents/PostPage";
 import Navbar from "@/components/Navbar";
+import { getClient } from "@/utils/lemmy";
 
 const getPostData = cache(
   async (postId: number, jwt?: string, instance?: string) => {
     try {
-      let client: LemmyHttp = new LemmyHttp(
-        instance ? `https://${instance}` : DEFAULT_INSTANCE,
-      );
+      console.log("Getting post from instance", instance);
+      let client: LemmyHttp = getClient(instance);
 
       let posts = await client.getPost({
         id: postId as unknown as PostId,
@@ -27,7 +27,7 @@ const getPostData = cache(
       return posts;
     } catch (e) {
       // Force default instance, disable auth
-      let client: LemmyHttp = new LemmyHttp(DEFAULT_INSTANCE);
+      let client: LemmyHttp = getClient();
 
       let posts = await client.getPost({
         id: postId as unknown as PostId,
@@ -47,7 +47,7 @@ export async function generateMetadata(
   { params: { slug }, searchParams: { instance } }: Props,
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
-  const postData = await getPostData(slug, instance);
+  const postData = await getPostData(slug, undefined, instance);
 
   return {
     title: postData.post_view.post.name + " - Nemmy",
@@ -61,6 +61,7 @@ export default async function Post({
   params: { slug },
   searchParams: { preload, instance },
 }: Props) {
+  console.log(instance);
   const cookieStore = cookies();
   const currentAccount = getCurrentAccountServerSide(cookieStore);
 
@@ -69,8 +70,8 @@ export default async function Post({
     return (
       <>
         <PostPage
-          instance={currentAccount?.instance}
-          jwt={currentAccount?.jwt}
+          instance={currentAccount?.instanceAccounts[0]?.instance}
+          jwt={currentAccount?.instanceAccounts[0]?.jwt || ""}
           shallow
           postId={slug}
         />
@@ -81,8 +82,8 @@ export default async function Post({
   const postData = (
     await getPostData(
       slug,
-      currentAccount?.jwt,
-      instance || currentAccount?.instance,
+      currentAccount?.instanceAccounts[0]?.jwt,
+      instance || currentAccount?.instanceAccounts[0]?.instance,
     )
   ).post_view;
 
@@ -90,9 +91,9 @@ export default async function Post({
     <>
       <PostPage
         data={postData}
-        instance={currentAccount?.instance}
+        instance={currentAccount?.instanceAccounts[0]?.instance}
         postInstance={instance}
-        jwt={currentAccount?.jwt}
+        jwt={currentAccount?.instanceAccounts[0]?.jwt || ""}
         postId={slug}
       />
     </>

@@ -269,8 +269,12 @@ export default function Register() {
       router: router,
       accountWithSite: {
         username: form.username,
-        instance: form.instance,
-        jwt: res.jwt,
+        instanceAccounts: [
+          {
+            instance: form.instance,
+            jwt: res.jwt,
+          },
+        ],
         user: user.my_user!.local_user_view,
         site: user,
         settings: defaultState.settings,

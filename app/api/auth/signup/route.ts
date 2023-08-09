@@ -1,6 +1,8 @@
 import { LemmyHttp, Login } from "lemmy-js-client";
 import { DEFAULT_INSTANCE } from "@/constants/settings";
 
+import { getClient } from "@/utils/lemmy";
+
 export async function POST(req: Request) {
   try {
     const body = await req.json();
@@ -15,7 +17,7 @@ export async function POST(req: Request) {
       honeypot = body.honeypot,
       answer = body.answer;
 
-    const client = new LemmyHttp(instance);
+    const client = getClient(instance);
 
     const register = await client.register({
       username,

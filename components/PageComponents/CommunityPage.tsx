@@ -45,10 +45,10 @@ export default function CommunityPage({
     const res = await subscribeToCommunity(
       {
         community_id: communityData.community_view.community.id,
-        auth: session.currentAccount.jwt,
+        auth: session.currentAccount.instanceAccounts[0]?.jwt,
         follow: true,
       },
-      session.currentAccount.instance,
+      session.currentAccount.instanceAccounts[0]?.instance,
     );
     if (!res) {
       console.error("Could not follow community");

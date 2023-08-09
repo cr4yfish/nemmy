@@ -90,21 +90,21 @@ export default function New() {
   // Check if user is logged in
   useEffect(() => {
     if (session.pendingAuth) return;
-    if (!session.currentAccount?.jwt) {
+    if (!session.currentAccount?.instanceAccounts[0]?.jwt) {
       router.push("/auth");
     }
   }, [session]);
 
   const loadMoreCommunities = async (page = 1) => {
-    if (!session.currentAccount?.jwt) return;
+    if (!session.currentAccount?.instanceAccounts[0]?.jwt) return;
     const newCommunities = await listCommunities(
       {
         sort: "Hot",
         type_: "Subscribed",
         page: page,
-        auth: session.currentAccount.jwt,
+        auth: session.currentAccount.instanceAccounts[0]?.jwt,
       },
-      session.currentAccount.instance,
+      session.currentAccount.instanceAccounts[0]?.instance,
     );
     if (typeof newCommunities === "boolean")
       return console.error("Failed to fetch communities");
@@ -150,7 +150,7 @@ export default function New() {
       body: form.body,
       nsfw: form.nsfw,
       language_id: form.language_id,
-      auth: session.currentAccount.jwt,
+      auth: session.currentAccount.instanceAccounts[0]?.jwt || "",
     });
 
     if (typeof res == "boolean") return alert("Failed to create post");

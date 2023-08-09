@@ -8,15 +8,14 @@ import UserPage from "@/components/PageComponents/UserPage";
 import { getCurrentAccountServerSide } from "@/utils/authFunctions";
 import { DEFAULT_INSTANCE } from "@/constants/settings";
 import Navbar from "@/components/Navbar";
+import { getClient } from "@/utils/lemmy";
 
 const getInitialUser = cache(
   async (
     username: string,
     instance?: string,
   ): Promise<GetPersonDetailsResponse> => {
-    const client = new LemmyHttp(
-      instance ? `https://${instance}` : DEFAULT_INSTANCE,
-    );
+    const client = getClient(instance);
     return await client.getPersonDetails({ username });
   },
 );
@@ -48,7 +47,10 @@ export default async function User({ params: { slug } }: Props) {
   const cookiesStore = cookies();
   const account = getCurrentAccountServerSide(cookiesStore);
 
-  const initialUser = await getInitialUser(userName, account?.instance);
+  const initialUser = await getInitialUser(
+    userName,
+    account?.instanceAccounts[0]?.instance,
+  );
 
   return (
     <>

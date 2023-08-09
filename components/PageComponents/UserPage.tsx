@@ -110,7 +110,7 @@ export default function UserPage({
     if (!userDataError) return;
     (async () => {
       const data = await fetch(
-        `/api/getUser?username=${pathname}&instance=${session.currentAccount?.instance}&auth=${session.currentAccount?.jwt}`,
+        `/api/getUser?username=${pathname}&instance=${session.currentAccount?.instanceAccounts[0]?.instance}&auth=${session.currentAccount?.instanceAccounts[0]?.jwt}`,
       );
       const json = await data.json();
       if (json.error) {
@@ -126,7 +126,7 @@ export default function UserPage({
 
   const getData = async ({ page = 1 }: { page?: number }) => {
     const data = await fetch(
-      `/api/getUser?limit=${pageLimit}&page=${page}&username=${pathname}&sort=${sort}&instance=${session.currentAccount?.instance}&auth=${session.currentAccount?.jwt}`,
+      `/api/getUser?limit=${pageLimit}&page=${page}&username=${pathname}&sort=${sort}&instance=${session.currentAccount?.instanceAccounts[0]?.instance}&auth=${session.currentAccount?.instanceAccounts[0]?.jwt}`,
     );
     const json = await data.json();
     const posts = json.posts;
@@ -431,9 +431,15 @@ export default function UserPage({
                   <Post
                     post={post}
                     key={post.post.id}
-                    instance={session.currentAccount?.instance}
-                    auth={session.currentAccount?.jwt}
-                    postInstance={session.currentAccount?.instance}
+                    instance={
+                      session.currentAccount?.instanceAccounts[0]?.instance
+                    }
+                    instanceAccount={
+                      session.currentAccount?.instanceAccounts[0]
+                    }
+                    postInstance={
+                      session.currentAccount?.instanceAccounts[0]?.instance
+                    }
                     style={
                       session.settings?.cardType !== "auto"
                         ? session.settings?.cardType

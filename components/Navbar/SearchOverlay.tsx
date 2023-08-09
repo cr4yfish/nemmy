@@ -216,7 +216,9 @@ export default function SearchOverlay({
   useEffect(() => {
     searchInputRef.current?.focus(); // Focus searchbar on mount
 
-    getTrendingCommunities(session.currentAccount?.instance).then((data) => {
+    getTrendingCommunities(
+      session.currentAccount?.instanceAccounts[0]?.instance,
+    ).then((data) => {
       if (typeof data === "boolean") return;
       setTrendingCommunities(data);
     });
@@ -292,7 +294,7 @@ export default function SearchOverlay({
       searchParams: {
         page: currentPage,
         q: currentSearch,
-        auth: session?.currentAccount?.jwt || undefined,
+        auth: session?.currentAccount?.instanceAccounts[0]?.jwt || undefined,
       },
     });
 

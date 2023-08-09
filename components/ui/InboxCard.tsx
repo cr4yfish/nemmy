@@ -13,9 +13,10 @@ import Username from "@/components/User/Username";
 import RenderMarkdown from "@/components/ui/RenderMarkdown";
 import { FormatDate } from "@/utils/formatDate";
 import { ClipLoader } from "react-spinners";
+import { getClient } from "@/utils/lemmy";
 
 const getReplyComment = async (id: number, auth: string, instance: string) => {
-  const lemmy = new LemmyHttp(`https://${instance}`);
+  const lemmy = getClient(instance);
   const comment = await lemmy.getComment({
     id: id,
     auth: auth,
@@ -24,7 +25,7 @@ const getReplyComment = async (id: number, auth: string, instance: string) => {
 };
 
 const markAsRead = async (id: number, auth: string, instance: string) => {
-  const lemmy = new LemmyHttp(`https://${instance}`);
+  const lemmy = getClient(instance);
   const comment = await lemmy.markCommentReplyAsRead({
     comment_reply_id: id,
     auth: auth,

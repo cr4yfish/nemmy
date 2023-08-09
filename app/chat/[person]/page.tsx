@@ -13,6 +13,7 @@ import RenderError from "@/components/ui/RenderError";
 import { getCurrentAccountServerSide } from "@/utils/authFunctions";
 
 import styles from "@/styles/chat.module.css";
+import { getClient } from "@/utils/lemmy";
 
 // Returns all messages from a specific user, sorted by newest message
 async function getMessages({
@@ -24,9 +25,7 @@ async function getMessages({
   instance: string;
   creator: string;
 }): Promise<PrivateMessageView[]> {
-  const client = new LemmyHttp(
-    instance ? `https://${instance}` : DEFAULT_INSTANCE,
-  );
+  const client = getClient(instance);
   const messages = await client.getPrivateMessages({
     auth: auth,
     page: 1,
@@ -96,8 +95,8 @@ export default async function UserChat({
       );
 
     const messages = await getMessages({
-      auth: currentAccount.jwt,
-      instance: currentAccount.instance,
+      auth: currentAccount.instanceAccounts[0]?.jwt,
+      instance: currentAccount.instanceAccounts[0]?.instance,
       creator: person,
     });
 

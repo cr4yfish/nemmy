@@ -89,7 +89,11 @@ export default function Vote({
     if (!id) id = post ? post.post.id : false;
     if (!id) throw new Error("No id found");
 
-    const response = await vote(1, id, session?.currentAccount?.jwt);
+    const response = await vote(
+      1,
+      id,
+      session?.currentAccount?.instanceAccounts[0]?.jwt,
+    );
     const newVotes = response?.counts?.score;
     setScore(newVotes);
   };
@@ -107,7 +111,11 @@ export default function Vote({
     if (!id) id = post ? post.post.id : false;
     if (!id) throw new Error("No id found");
 
-    const response = await vote(-1, id, session.currentAccount.jwt);
+    const response = await vote(
+      -1,
+      id,
+      session.currentAccount.instanceAccounts[0]?.jwt,
+    );
     const newVotes = response?.counts?.score;
     setScore(newVotes);
   };

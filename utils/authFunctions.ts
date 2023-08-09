@@ -1,10 +1,23 @@
 import { deleteCookie, setCookie, getCookie } from "cookies-next";
 import { OptionsType } from "cookies-next/lib/types";
 import { SessionState, Settings } from "@/hooks/auth";
-import { GetSiteResponse, LemmyHttp, LocalUserView } from "lemmy-js-client";
+import {
+  GetSiteResponse,
+  LemmyHttp,
+  LocalUserView,
+  SiteResponse,
+} from "lemmy-js-client";
 import { ReadonlyRequestCookies } from "next/dist/server/web/spec-extension/adapters/request-cookies";
 
 import { Dispatch, SetStateAction } from "react";
+import {
+  getClient,
+  getCommuntiy,
+  getUserSettings,
+  saveUserSettings,
+  search,
+  subscribeToCommunity,
+} from "./lemmy";
 
 export const cookieName = "accounts";
 export const cookieCurrentAccountName = "currentAccount";
@@ -17,9 +30,13 @@ const defaultCookieSettings: OptionsType = {
   secure: process.env.NODE_ENV == "production",
 };
 
-export interface Account {
-  jwt: string;
+export type InstanceAccount = {
   instance: string;
+  jwt: string;
+};
+
+export interface Account {
+  instanceAccounts: InstanceAccount[];
   username: string;
   user: LocalUserView;
   settings: Settings;
@@ -42,7 +59,7 @@ export const handleLogout = async ({
   session: SessionState;
   setSession: React.Dispatch<React.SetStateAction<SessionState>>;
   router: any;
-  account?: Account;
+  account?: Account | AccountWithSiteResponse;
 }) => {
   if (!account) return;
   const accounts = getAccounts();
@@ -84,12 +101,14 @@ export const handleLogout = async ({
     if (defaultAccount) {
       setCurrentAccount(defaultAccount.username);
       // get default account with site response
-      const defaultAccountWithSite =
-        getUserDataFromLocalStorage(defaultAccount);
+      const defaultAccountWithSite = getUserDataFromLocalStorage(
+        defaultAccount.username,
+        defaultAccount.instanceAccounts[0].instance,
+      );
       setSession({
         ...session,
         currentAccount: defaultAccount,
-        siteResponse: defaultAccountWithSite?.site,
+        siteResponse: defaultAccountWithSite,
         accounts: newAccounts,
       });
     }
@@ -98,11 +117,14 @@ export const handleLogout = async ({
     if (!defaultAccount && newAccounts.length > 0) {
       setCurrentAccount(newAccounts[0].username);
       // get new account with site response
-      const newAccountWithSite = getUserDataFromLocalStorage(newAccounts[0]);
+      const newAccountWithSite = getUserDataFromLocalStorage(
+        newAccounts[0].username,
+        newAccounts[0].instanceAccounts[0].instance,
+      );
       setSession({
         ...session,
         currentAccount: newAccounts[0],
-        siteResponse: newAccountWithSite?.site,
+        siteResponse: newAccountWithSite,
         accounts: newAccounts,
       });
     }
@@ -135,9 +157,8 @@ export const handleLogin = async ({
   accountWithSite: AccountWithSiteResponse;
 }) => {
   const account: Account = {
-    jwt: accountWithSite.jwt,
-    instance: accountWithSite.instance,
     username: accountWithSite.username,
+    instanceAccounts: accountWithSite.instanceAccounts,
     user: accountWithSite.user,
     settings: accountWithSite.settings,
   };
@@ -168,6 +189,136 @@ export const handleLogin = async ({
   router.push("/");
 };
 
+export const handleAddInstanceToAccount = async ({
+  session,
+  setSession,
+  router,
+  accountWithSite,
+}: {
+  session: SessionState;
+  setSession: React.Dispatch<React.SetStateAction<SessionState>>;
+  router: any;
+  accountWithSite: AccountWithSiteResponse;
+}) => {
+  const account: Account = {
+    username: accountWithSite.username,
+    instanceAccounts: accountWithSite.instanceAccounts,
+    user: accountWithSite.user,
+    settings: accountWithSite.settings,
+  };
+
+  // sync settings and subscriptions
+  // if there is a current account
+  const currentSiteResponse = getUserDataFromLocalStorage(
+    account.username,
+    session.currentAccount?.instanceAccounts[0]?.instance || "",
+  );
+  const currentAccount = getCurrentAccount();
+  if (currentSiteResponse && currentAccount) {
+    console.log("syncing settings and subscriptions");
+    const settings = getUserSettings({
+      ...currentAccount,
+      site: currentSiteResponse,
+    });
+
+    saveUserSettings(
+      {
+        ...settings, // settings from current account
+        auth: account.instanceAccounts[0].jwt, // jwt from new instance
+      },
+      accountWithSite.instanceAccounts[0].instance,
+    );
+
+    // sync subscriptions
+    const currentFollow = currentSiteResponse.my_user?.follows;
+    console.log("currentFollow", currentFollow);
+    for (const follow of currentFollow || []) {
+      // get the community from the new instance
+      const communityOnCurrentInstance = await getCommuntiy(
+        {
+          id: follow.community.id,
+          auth: session.currentAccount?.instanceAccounts[0].jwt,
+        },
+        session.currentAccount?.instanceAccounts[0].instance,
+      );
+      console.log("communityOnCurrentInstance", communityOnCurrentInstance);
+
+      console.log(
+        "getting community on new instance",
+        accountWithSite.instanceAccounts[0].instance,
+      );
+      // get the community from the new instance
+      const searchResponse = await search(
+        {
+          type_: "Communities",
+          q: communityOnCurrentInstance.community_view.community.name,
+          listing_type: "All",
+        },
+        accountWithSite.instanceAccounts[0].instance,
+      );
+      if (searchResponse) {
+        const communityOnNewInstance = searchResponse.communities.find(
+          (community) =>
+            community.community.name ==
+            communityOnCurrentInstance.community_view.community.name,
+        );
+        console.log("communityOnNewInstance", communityOnNewInstance);
+
+        if (!communityOnNewInstance) {
+          console.error("Failed to find community on new instance");
+          continue;
+        }
+        // subscribe to the community on the new instance
+        const res = await subscribeToCommunity(
+          {
+            follow: true,
+            community_id: communityOnNewInstance.community.id,
+            auth: accountWithSite.instanceAccounts[0].jwt,
+          },
+          accountWithSite.instanceAccounts[0].instance,
+        );
+      }
+      // Copy over follow list
+      if (accountWithSite.site.my_user)
+        accountWithSite.site.my_user.follows = currentFollow || [];
+    }
+  }
+
+  const userData = await saveUserDataToLocalStorage(accountWithSite); // local storage
+
+  if (!userData) {
+    console.error("Failed to get and store user data");
+  }
+
+  // add instanceAccount to account with same username
+  const newAccount = getSingleAccount(accountWithSite.username);
+  newAccount?.instanceAccounts.push(accountWithSite.instanceAccounts[0]);
+
+  const newAccounts = getAccounts().filter(
+    (acc) => acc.username != accountWithSite.username,
+  );
+  newAccounts.push(newAccount as Account);
+
+  overrideAccounts(newAccounts);
+  setCurrentAccount(account.username);
+
+  // set session to the account
+  setSession({
+    ...session,
+    currentAccount: account,
+    accounts: [...session.accounts, account],
+    siteResponse: accountWithSite.site,
+    settings: accountWithSite.settings,
+    isLoggedIn: true,
+  });
+
+  // set the account to the current account
+  setCurrentAccount(account.username);
+
+  // redirect to home
+  router.push("/");
+};
+
 /**
  * Gets the user data from the instance
  * Will always fetch new data
@@ -179,7 +330,7 @@ export const getUserData = async (
   instance: string,
   jwt?: string,
 ): Promise<GetSiteResponse | undefined> => {
-  const client = new LemmyHttp(`https://${instance}`);
+  const client = getClient(instance);
   const site = await client.getSite({ auth: jwt });
   return site;
 };
@@ -195,17 +346,20 @@ export const saveUserDataToLocalStorage = async (
 ): Promise<GetSiteResponse | undefined> => {
   // check if the user data is already in localStorage
   const userDataRaw = localStorage.getItem(
-    `${account.username}@${account.instance}`,
+    `${account.username}@${account.instanceAccounts[0]?.instance}`,
   );
   if (userDataRaw) {
     const userData = JSON.parse(userDataRaw) as GetSiteResponse;
     return userData;
   }
 
-  const userData = await getUserData(account.instance, account.jwt);
+  const userData = await getUserData(
+    account.instanceAccounts[0]?.instance,
+    account.instanceAccounts[0]?.jwt,
+  );
   if (userData) {
     localStorage.setItem(
-      `${account.username}@${account.instance}`,
+      `${account.username}@${account.instanceAccounts[0]?.instance}`,
       JSON.stringify(userData),
     );
     return userData;
@@ -221,14 +375,13 @@ export const saveUserDataToLocalStorage = async (
  * @returns
  */
 export const getUserDataFromLocalStorage = (
-  account: Account,
-): AccountWithSiteResponse | undefined => {
-  const userDataRaw = localStorage.getItem(
-    `${account.username}@${account.instance}`,
-  );
+  username: string,
+  instance: string,
+): GetSiteResponse | undefined => {
+  const userDataRaw = localStorage.getItem(`${username}@${instance}`);
   if (userDataRaw) {
     const userData = JSON.parse(userDataRaw) as GetSiteResponse;
-    return { ...account, site: userData };
+    return userData;
   }
   return undefined;
 };
@@ -243,9 +396,12 @@ export const getAllUserDataFromLocalStorage = (): AccountWithSiteResponse[] => {
   const accounts = getAccounts();
   const accountsWithSite: AccountWithSiteResponse[] = [];
   accounts.forEach((account) => {
-    const accountWithSite = getUserDataFromLocalStorage(account);
+    const accountWithSite = getUserDataFromLocalStorage(
+      account.username,
+      account.instanceAccounts[0].instance,
+    );
     if (accountWithSite) {
-      accountsWithSite.push(accountWithSite);
+      accountsWithSite.push({ ...account, site: accountWithSite });
     }
   });
   return accountsWithSite;
@@ -388,6 +544,7 @@ export const setDefaultAccount = (username: string) => {
 
 /**
  * Sets the current account as a cookie
+ * Can also update the current account
  * @param username
  */
 export const setCurrentAccount = (username: string) => {
@@ -412,8 +569,12 @@ export const getCurrentAccount = (): AccountWithSiteResponse | undefined => {
     currentAccount.length > 0
   ) {
     const account = JSON.parse(currentAccount) as Account;
-    const accountWithSite = getUserDataFromLocalStorage(account);
-    return accountWithSite; // can be undefined
+    const accountWithSite = getUserDataFromLocalStorage(
+      account.username,
+      account.instanceAccounts[0].instance,
+    );
+    if (!accountWithSite) return undefined;
+    return { ...account, site: accountWithSite }; // can be undefined
   }
   return undefined;
 };
@@ -467,14 +628,17 @@ export const switchToAccount = (
   setCurrentAccount(account.username);
 
   // get site response
-  const accountWithSite = getUserDataFromLocalStorage(account);
+  const accountWithSite = getUserDataFromLocalStorage(
+    account.username,
+    account.instanceAccounts[0].instance,
+  );
 
   // set session to the account
   setSession((prevState) => {
     return {
       ...prevState,
       currentAccount: account,
-      siteResponse: accountWithSite?.site,
+      siteResponse: accountWithSite,
     };
   });
 };
@@ -514,6 +678,29 @@ export const sortCurrentAccount = (
 };
 
 /**
+ * Sorts instance accounts in state, so that "instanceAccount" is first
+ */
+export const sortInstanceAccounts = (
+  instanceAccount: InstanceAccount,
+  session: SessionState,
+  setSession: Dispatch<SetStateAction<SessionState>>,
+) => {
+  const currentAccount = getCurrentAccount();
+  if (currentAccount) {
+    const newAccounts = currentAccount.instanceAccounts.filter(
+      (acc) => acc.instance != instanceAccount.instance,
+    ); // Remove instance account
+    newAccounts.unshift(instanceAccount); // Add instance account as first element
+
+    const newCurrentAccount = {
+      ...currentAccount,
+      instanceAccounts: newAccounts,
+    };
+    updateCurrentAccount(newCurrentAccount, session, setSession);
+  }
+};
+
+/**
  * Updates the account in the cookie
  * @param updatedAccount
  */
@@ -538,7 +725,16 @@ export const updateCurrentAccount = (
     updateAccount(updatedAccount);
     setCurrentAccount(updatedAccount.username);
 
-    const accountWithSite = getUserDataFromLocalStorage(updatedAccount);
+    const site = getUserDataFromLocalStorage(
+      updatedAccount.username,
+      updatedAccount?.instanceAccounts[0]?.instance,
+    );
+    if (!site) return;
+    const accountWithSite: AccountWithSiteResponse = {
+      ...updatedAccount,
+      site: site,
+    };
+
     if (accountWithSite) {
       accountWithSite.settings = updatedAccount.settings;
       setSession((prevState) => {
@@ -550,4 +746,32 @@ export const updateCurrentAccount = (
       });
     }
   }
+};
+
+/**
+ * takes account and updates it to new system if necessary
+ * @param account
+ */
+export const updateAccountToNewSystem = (account: any): Account => {
+  if (account.instance || account.jwt) {
+    const newInstanceAccount: InstanceAccount = {
+      instance: account.instance,
+      jwt: account.jwt,
+    };
+
+    account.instanceAccounts = [newInstanceAccount];
+    account.delete("instance");
+    account.delete("jwt");
+    return account;
+  }
+  // No changes needed
+  return account;
+};
+
+export const updateAccountsToNewSystem = (accounts: Account[]): Account[] => {
+  const newAccounts: Account[] = [];
+  for (const account in accounts) {
+    newAccounts.push(updateAccountToNewSystem(account));
+  }
+  return newAccounts;
 };

@@ -8,12 +8,11 @@ import { DEFAULT_INSTANCE } from "@/constants/settings";
 import { getCurrentAccountServerSide } from "@/utils/authFunctions";
 
 import PostPage from "@/components/PageComponents/PostPage";
+import { getClient } from "@/utils/lemmy";
 
 async function getPostData(postId: number, jwt?: string, instance?: string) {
   try {
-    let client: LemmyHttp = new LemmyHttp(
-      instance ? `https://${instance}` : DEFAULT_INSTANCE,
-    );
+    let client: LemmyHttp = getClient(instance);
 
     let posts = await client.getPost({
       id: postId as unknown as PostId,
@@ -23,7 +22,7 @@ async function getPostData(postId: number, jwt?: string, instance?: string) {
     return posts;
   } catch (e) {
     // Force default instance, disable auth
-    let client: LemmyHttp = new LemmyHttp(DEFAULT_INSTANCE);
+    let client: LemmyHttp = getClient();
 
     let posts = await client.getPost({
       id: postId as unknown as PostId,
@@ -39,9 +38,7 @@ async function getCommmentData(
   instance?: string,
 ): Promise<CommentResponse | void> {
   try {
-    let client: LemmyHttp = new LemmyHttp(
-      instance ? `https://${instance}` : DEFAULT_INSTANCE,
-    );
+    let client: LemmyHttp = getClient(instance);
 
     let comment = await client.getComment({
       id: commentId,
@@ -66,12 +63,20 @@ export default async function Comment({
   const currentAccount = getCurrentAccountServerSide(cookieStore);
 
   const postData = (
-    await getPostData(slug, currentAccount?.jwt, currentAccount?.instance)
+    await getPostData(
+      slug,
+      currentAccount?.instanceAccounts.find(
+        (ac) => ac.instance == currentAccount.instanceAccounts[0]?.instance,
+      )?.jwt,
+      currentAccount?.instanceAccounts[0]?.instance,
+    )
   ).post_view;
   const commentData = await getCommmentData(
     comment_id,
-    currentAccount?.jwt,
-    currentAccount?.instance,
+    currentAccount?.instanceAccounts.find(
+      (ac) => ac.instance == currentAccount.instanceAccounts[0]?.instance,
+    )?.jwt,
+    currentAccount?.instanceAccounts[0]?.instance,
   );
 
   if (!postData || !commentData) {
@@ -86,8 +91,12 @@ export default async function Comment({
     <>
       <PostPage
         data={postData}
-        instance={currentAccount?.instance}
-        jwt={currentAccount?.jwt}
+        instance={currentAccount?.instanceAccounts[0]?.instance}
+        jwt={
+          currentAccount?.instanceAccounts.find(
+            (ac) => ac.instance == currentAccount.instanceAccounts[0]?.instance,
+          )?.jwt || ""
+        }
         postId={slug}
         commentResponse={commentData}
       />

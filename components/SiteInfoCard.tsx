@@ -1,8 +1,14 @@
+"use client";
+
 import { GetSiteResponse } from "lemmy-js-client";
+import { useState, useEffect } from "react";
 
 import RenderMarkdown from "./ui/RenderMarkdown";
 
+import { useSession } from "@/hooks/auth";
+
 import { FormatNumber } from "@/utils/helpers";
+import { getUserDataFromLocalStorage } from "@/utils/authFunctions";
 import Username from "./User/Username";
 import Snack from "./ui/Snack";
 
@@ -11,8 +17,21 @@ export default function SiteInfoCard({
 }: {
   siteResponse: GetSiteResponse | null;
 }) {
-  const site = siteResponse?.site_view.site;
-  const counts = siteResponse?.site_view.counts;
+  const { session } = useSession();
+
+  const [site, setSite] = useState(siteResponse);
+
+  useEffect(() => {
+    if (!session.isLoggedIn) return;
+    if (!session.currentAccount?.instanceAccounts) return;
+
+    const newSite = getUserDataFromLocalStorage(
+      session.currentAccount.username,
+      session.currentAccount.instanceAccounts[0]?.instance,
+    );
+    if (!newSite) return;
+    setSite(newSite);
+  }, [session.currentAccount, session.isLoggedIn]);
 
   if (!site) return null;
 
@@ -24,39 +43,42 @@ export default function SiteInfoCard({
     >
       <div className="prose flex h-fit w-full flex-col gap-2 dark:prose-invert prose-headings:mb-0">
         <span className=" text-lg  font-bold capitalize">
-          {new URL(site.actor_id).host}
+          {new URL(site.site_view.site.actor_id).host}
         </span>
-        <span className="text-sm">{site?.description}</span>
-        {site.banner && (
+        <span className="text-sm">{site?.site_view.site.description}</span>
+        {site.site_view.site.banner && (
           <img
             className="mt-0 overflow-hidden rounded-xl"
-            src={site?.banner}
+            src={site?.site_view.site.banner}
             alt=""
           />
         )}
       </div>
 
       <div className="flex w-full flex-row flex-wrap items-center gap-2 rounded-lg border-neutral-700 p-2 dark:border">
-        {counts?.users && (
+        {site.site_view.counts?.users && (
           <Snack
-            text={FormatNumber(counts.users, true).toString()}
+            text={FormatNumber(site.site_view.counts.users, true).toString()}
             icon="people"
           />
         )}
-        {counts?.communities && (
+        {site.site_view.counts?.communities && (
           <Snack
-            text={FormatNumber(counts.communities, true).toString()}
+            text={FormatNumber(
+              site.site_view.counts.communities,
+              true,
+            ).toString()}
             icon="communities"
           />
         )}
-        {counts?.posts && (
+        {site.site_view.counts?.posts && (
           <Snack
-            text={FormatNumber(counts.posts, true).toString()}
+            text={FormatNumber(site.site_view.counts.posts, true).toString()}
             icon="edit"
           />
         )}
-        {counts?.posts && (
-          <Snack text={siteResponse.version.split("-")[0]} icon="update" />
+        {site.site_view.counts?.posts && (
+          <Snack text={site.version.split("-")[0]} icon="update" />
         )}
       </div>
 
@@ -65,11 +87,11 @@ export default function SiteInfoCard({
           Instance Admins
         </span>
         <div className="flex flex-row flex-wrap gap-2">
-          {siteResponse.admins.map((admin) => (
+          {site.admins.map((admin) => (
             <Username
               key={admin.person.id}
               user={admin.person}
-              baseUrl={new URL(site.actor_id).host}
+              baseUrl={new URL(site.site_view.site.actor_id).host}
             />
           ))}
         </div>
@@ -79,7 +101,10 @@ export default function SiteInfoCard({
         <span className="prose font-bold dark:prose-invert">
           Instance Sidebar
         </span>
-        <RenderMarkdown className="w-full text-xs" content={site?.sidebar} />
+        <RenderMarkdown
+          className="w-full text-xs"
+          content={site?.site_view.site.sidebar}
+        />
       </div>
     </div>
   );

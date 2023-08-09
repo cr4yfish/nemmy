@@ -59,7 +59,7 @@ export default function WriteCommentOverlay({
       content: replyCommentText,
       post_id: post.post?.id,
       parent_id: comment?.comment?.id,
-      auth: session.currentAccount.jwt,
+      auth: session.currentAccount.instanceAccounts[0]?.jwt,
     });
 
     if (!response) return alert("Something went wrong");

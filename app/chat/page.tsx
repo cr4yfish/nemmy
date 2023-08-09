@@ -10,6 +10,7 @@ import { FormatDate } from "@/utils/formatDate";
 import RenderMarkdown from "@/components/ui/RenderMarkdown";
 import RenderError from "@/components/ui/RenderError";
 import { getCurrentAccountServerSide } from "@/utils/authFunctions";
+import { getClient } from "@/utils/lemmy";
 
 export const metadata = {
   title: "Chat - Nemmy",
@@ -24,9 +25,7 @@ async function getChats({
   instance: string;
 }): Promise<PrivateMessagesResponse> {
   try {
-    const client = new LemmyHttp(
-      instance ? `https://${instance}` : DEFAULT_INSTANCE,
-    );
+    const client = getClient(instance);
     const chats = await client.getPrivateMessages({
       auth: auth,
       page: 1,
@@ -111,8 +110,8 @@ export default async function Chat() {
       );
 
     let chats = await getChats({
-      auth: currentAccount.jwt,
-      instance: currentAccount.instance,
+      instance: currentAccount.instanceAccounts[0]?.instance,
+      auth: currentAccount.instanceAccounts[0]?.jwt || "",
     });
     const recipient = chats.private_messages[0].recipient;
 

@@ -191,7 +191,7 @@ export default function New() {
   // Step 4: Final Step
   const handleStep4 = async (e: FormEvent) => {
     e.preventDefault();
-    if (!accountToUse.jwt)
+    if (!accountToUse)
       return alert("You must be logged in to create a Community");
 
     // Get the account from the instance
@@ -206,7 +206,7 @@ export default function New() {
         nsfw: form.nsfw,
         posting_restricted_to_mods: form.posting_restricted_to_mods,
         discussion_languages: form.discussion_languages,
-        auth: accountToUse.jwt,
+        auth: accountToUse.instanceAccounts[0]?.jwt || "",
       },
       new URL(instance.site_view.site.actor_id).host,
     );

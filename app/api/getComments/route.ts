@@ -9,6 +9,8 @@ import {
 } from "lemmy-js-client";
 import { DEFAULT_INSTANCE } from "@/constants/settings";
 
+import { getClient } from "@/utils/lemmy";
+
 export const dynamic = "force-dynamic";
 
 export async function GET(req: Request) {
@@ -31,11 +33,7 @@ export async function GET(req: Request) {
 
     if (!post_id) throw new Error("post_id is required");
 
-    let client: LemmyHttp = new LemmyHttp(
-      instance && instance.length > 1 && instance !== "undefined"
-        ? `https://${instance}`
-        : DEFAULT_INSTANCE,
-    );
+    let client: LemmyHttp = getClient(instance);
 
     let comments: GetCommentsResponse;
 

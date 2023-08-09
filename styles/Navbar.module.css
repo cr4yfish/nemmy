@@ -85,7 +85,6 @@
   @apply pointer-events-none fixed left-0 top-0  min-h-screen
     w-full 
     opacity-0
-    backdrop-blur-sm
     duration-300 ease-out transition-all;
 }
 

@@ -51,7 +51,7 @@ export default function Community({
         {
           community_id: community.community.id,
           follow: !isSubscribed,
-          auth: session.currentAccount.jwt,
+          auth: session.currentAccount.instanceAccounts[0]?.jwt,
         },
         new URL(community.community.actor_id).host,
       );

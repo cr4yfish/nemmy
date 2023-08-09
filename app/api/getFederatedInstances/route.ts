@@ -1,6 +1,8 @@
 import { LemmyHttp, PostId, CommentId } from "lemmy-js-client";
 import { DEFAULT_INSTANCE } from "@/constants/settings";
 
+import { getClient } from "@/utils/lemmy";
+
 export const dynamic = "force-dynamic";
 
 export async function GET(req: Request) {
@@ -10,11 +12,7 @@ export async function GET(req: Request) {
     let auth = params.get("auth") || "";
     let instance = params.get("instance") || undefined;
 
-    let client: LemmyHttp = new LemmyHttp(
-      instance && instance !== "undefined"
-        ? `https://${instance}`
-        : DEFAULT_INSTANCE,
-    );
+    let client: LemmyHttp = getClient(instance);
 
     let instances = await client.getFederatedInstances({
       auth: auth as unknown as string,

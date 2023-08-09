@@ -1,6 +1,8 @@
 import { LemmyHttp, ListingType, SortType } from "lemmy-js-client";
 import { DEFAULT_INSTANCE } from "@/constants/settings";
 
+import { getClient } from "@/utils/lemmy";
+
 export const dynamic = "force-dynamic";
 
 export async function GET(req: Request) {
@@ -14,11 +16,7 @@ export async function GET(req: Request) {
     let auth = params.get("auth") || undefined;
     let instance = params.get("instance") || undefined;
 
-    let client: LemmyHttp = new LemmyHttp(
-      instance && instance.length > 1 && instance !== "undefined"
-        ? `https://${instance}`
-        : DEFAULT_INSTANCE,
-    );
+    let client: LemmyHttp = getClient(instance);
     let communities = await client.listCommunities({
       type_: type_ as unknown as ListingType,
       auth: auth as unknown as string,

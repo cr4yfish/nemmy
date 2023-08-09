@@ -3,6 +3,8 @@ import { cookies } from "next/dist/client/components/headers";
 import { ResolvingMetadata, Metadata } from "next";
 import { cache } from "react";
 
+import { getClient } from "@/utils/lemmy";
+
 import { getCurrentAccountServerSide } from "@/utils/authFunctions";
 
 import { DEFAULT_INSTANCE } from "@/constants/settings";
@@ -11,11 +13,7 @@ import CommunityPage from "@/components/PageComponents/CommunityPage";
 
 const getInitialCommunity = cache(
   async (communityName: string, instance?: string) => {
-    const client = new LemmyHttp(
-      instance
-        ? `https://${instance.replace("https://", "")}`
-        : DEFAULT_INSTANCE,
-    );
+    const client = getClient(instance);
     return await client.getCommunity({ name: communityName });
   },
 );
@@ -33,7 +31,7 @@ export async function generateMetadata(
 
   const communityResponse = await getInitialCommunity(
     slug.replace("%40", "@"),
-    account?.instance,
+    account?.instanceAccounts[0]?.instance,
   );
 
   const community = communityResponse.community_view.community;
@@ -56,7 +54,7 @@ export default async function Community({
 
   const community = await getInitialCommunity(
     slug.replace("%40", "@"),
-    account?.instance,
+    account?.instanceAccounts[0]?.instance,
   );
 
   const communityInstance = slug.split("%40")[1];

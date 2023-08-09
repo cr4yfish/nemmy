@@ -11,6 +11,7 @@ import InboxInfiniteScroller from "@/components/ui/InboxInfiniteScroller";
 
 import { DEFAULT_INSTANCE } from "@/constants/settings";
 import { getCurrentAccountServerSide } from "@/utils/authFunctions";
+import { getClient } from "@/utils/lemmy";
 
 const getReplies = cache(
   async ({
@@ -20,9 +21,7 @@ const getReplies = cache(
     jwt?: string;
     instance?: string;
   }): Promise<GetRepliesResponse> => {
-    const lemmy = new LemmyHttp(
-      instance ? `https://${instance}` : DEFAULT_INSTANCE,
-    );
+    const lemmy = getClient(instance);
     const replies = await lemmy.getReplies({
       auth: jwt ? jwt : "",
       sort: "New",
@@ -49,8 +48,8 @@ export default async function Inbox({
   if (!currentAccount) return <></>;
 
   const replies = await getReplies({
-    jwt: currentAccount?.jwt,
-    instance: currentAccount?.instance,
+    instance: currentAccount?.instanceAccounts[0]?.instance,
+    jwt: currentAccount?.instanceAccounts[0]?.jwt,
   });
   return (
     <>
@@ -59,15 +58,15 @@ export default async function Inbox({
           <InboxCard
             key={i}
             reply={reply}
-            auth={currentAccount?.jwt}
-            instance={currentAccount?.instance}
+            auth={currentAccount?.instanceAccounts[0]?.jwt || ""}
+            instance={currentAccount?.instanceAccounts[0]?.instance || ""}
           />
         ))}
         {currentAccount && (
           <InboxInfiniteScroller
             initReplies={replies}
-            auth={currentAccount.jwt}
-            instance={currentAccount.instance}
+            auth={currentAccount.instanceAccounts[0]?.jwt || ""}
+            instance={currentAccount.instanceAccounts[0]?.instance}
           />
         )}
       </div>

@@ -38,12 +38,12 @@ export default function FeedPage({
 }) {
   return (
     <div className="flex w-full flex-row justify-center gap-2 max-lg:gap-0">
-      {currentAccount?.jwt && (
+      {currentAccount?.instanceAccounts[0]?.jwt && (
         <div className="mt-16 pt-2">
           <FollowedCommunitiesCard
             siteResponse={siteResponse}
             auth={jwt}
-            instance={currentAccount?.instance}
+            instance={currentAccount?.instanceAccounts[0]?.instance}
           />
         </div>
       )}

@@ -5,8 +5,12 @@ import {
   CommentSortType,
   GetSiteResponse,
   ListingType,
+  LocalUserView,
   SortType,
 } from "lemmy-js-client";
+
+import { useRouter } from "next/navigation";
+
 import {
   getAccounts,
   Account,
@@ -18,6 +22,11 @@ import {
   setCurrentAccount,
   updateAccount,
   updateCurrentAccount,
+  updateAccountToNewSystem,
+  updateAccountsToNewSystem,
+  saveAccount,
+  overrideAccounts,
+  handleLogout,
 } from "@/utils/authFunctions";
 import {
   DEFAULT_COMMENT_SORT_TYPE,
@@ -51,7 +60,12 @@ export interface SessionState {
 }
 
 export const defaultState: SessionState = {
-  currentAccount: undefined,
+  currentAccount: {
+    instanceAccounts: [],
+    settings: {} as Settings,
+    username: "",
+    user: {} as LocalUserView,
+  },
   accounts: [],
   pendingAuth: true,
   isLoggedIn: false,
@@ -103,6 +117,7 @@ export function setTheme(
 
 export const SessionContextProvider = ({ children }: { children: any }) => {
   const [session, setSession] = useState<SessionState>(defaultState);
+  const router = useRouter();
 
   // Auto fetch session data
   useEffect(() => {
@@ -112,7 +127,7 @@ export const SessionContextProvider = ({ children }: { children: any }) => {
       // Clean deprecated system
       cleanDeprecatedSystem();
 
-      const accounts = getAccounts();
+      let accounts = getAccounts();
       const hasAccounts = accounts.length > 0;
 
       if (hasAccounts) {
@@ -122,11 +137,27 @@ export const SessionContextProvider = ({ children }: { children: any }) => {
         if (currentAccountWithSite) {
           setTheme(currentAccountWithSite?.settings?.theme || "system");
 
-          const currentAccount = {
+          // Update to new system by just logging users out if they use the old system
+          if (
+            currentAccountWithSite.hasOwnProperty("jwt") ||
+            currentAccountWithSite.hasOwnProperty("instance")
+          ) {
+            alert(
+              "You are using an old version of the Authentication system. You will be logged out and and have to log in again to upgrade to the new system.",
+            );
+            // log out and reset
+            handleLogout({
+              session,
+              setSession,
+              router,
+              account: currentAccountWithSite,
+            });
+          }
+
+          const currentAccount: Account = {
             user: currentAccountWithSite.user,
             username: currentAccountWithSite.username,
-            jwt: currentAccountWithSite.jwt,
-            instance: currentAccountWithSite.instance,
+            instanceAccounts: currentAccountWithSite.instanceAccounts,
             settings: currentAccountWithSite.settings,
           };
 
@@ -163,6 +194,11 @@ export const SessionContextProvider = ({ children }: { children: any }) => {
         return;
       } else {
         // Has no accounts
+
+        // Make new empty accounts cookies
+        const newAccounts: Account[] = [];
+        overrideAccounts(newAccounts);
+
         throw new Error("No accounts found");
       }
     } catch (e) {
@@ -179,6 +215,7 @@ export const SessionContextProvider = ({ children }: { children: any }) => {
             siteResponse: res,
             isLoggedIn: false,
             settings: defaultState.settings,
+            currentAccount: defaultState.currentAccount,
           });
           return;
         })
@@ -190,6 +227,7 @@ export const SessionContextProvider = ({ children }: { children: any }) => {
             pendingAuth: false,
             isLoggedIn: false,
             settings: defaultState.settings,
+            currentAccount: defaultState.currentAccount,
           });
           return;
         });

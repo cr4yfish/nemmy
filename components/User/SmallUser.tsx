@@ -46,7 +46,7 @@ export default function SmallUser({
     const userUrl = `${user.name}@${new URL(user.actor_id).host}`;
 
     const data = await fetch(
-      `/api/getUser?username=${userUrl}&instance=${session.currentAccount?.instance}`,
+      `/api/getUser?username=${userUrl}&instance=${session.currentAccount?.instanceAccounts[0]?.instance}`,
     );
     const json = await data.json();
     if (json.error) {

@@ -1,6 +1,8 @@
 import { LemmyHttp, SortType } from "lemmy-js-client";
 import { DEFAULT_INSTANCE, DEFAULT_SORT_TYPE } from "@/constants/settings";
 
+import { getClient } from "@/utils/lemmy";
+
 // POST /api/getUser
 // Post for security reasons
 export const dynamic = "force-dynamic";
@@ -19,11 +21,8 @@ export async function GET(req: Request) {
 
     let instance = params.get("instance") || undefined;
 
-    let client: LemmyHttp = new LemmyHttp(
-      instance && instance.length > 1 && instance !== "undefined"
-        ? `https://${instance}`
-        : DEFAULT_INSTANCE,
-    );
+    let client: LemmyHttp = getClient(instance);
+
     let person = await client.getPersonDetails({
       username: username as unknown as string,
       sort: sort as unknown as SortType,

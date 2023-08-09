@@ -15,12 +15,13 @@ import { AutoMediaType, isImageType } from "@/utils/AutoMediaType";
 import styles from "../styles/post.module.css";
 import BookmarkButton from "./ui/BookmarkButton";
 import { DEFAULT_INSTANCE } from "@/constants/settings";
+import { Account, InstanceAccount } from "@/utils/authFunctions";
 
 export default function Post({
   post,
   onClick = () => null,
   instance,
-  auth,
+  instanceAccount,
   postInstance,
   style = "modern",
   showCommunity = true,
@@ -28,7 +29,7 @@ export default function Post({
   post: PostView;
   onClick?: () => void;
   instance?: string;
-  auth?: string;
+  instanceAccount?: InstanceAccount;
   postInstance?: string;
   style?: "modern" | "compact";
   showCommunity?: boolean;
@@ -276,10 +277,10 @@ export default function Post({
                     </span>
                   </button>
 
-                  {auth && instance && post.post.id && (
+                  {instanceAccount && instance && post.post.id && (
                     <BookmarkButton
                       id={post.post.id}
-                      auth={auth}
+                      auth={instanceAccount.jwt}
                       instance={instance}
                       initState={post.saved}
                       onChange={(newState) => (post.saved = newState)}
@@ -512,10 +513,10 @@ export default function Post({
                   </span>
                 </button>
 
-                {auth && instance && post.post.id && (
+                {instanceAccount && instance && post.post.id && (
                   <BookmarkButton
                     id={post.post.id}
-                    auth={auth}
+                    auth={instanceAccount.jwt}
                     instance={instance}
                     initState={post.saved}
                     onChange={(newState) => (post.saved = newState)}

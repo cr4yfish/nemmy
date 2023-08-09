@@ -1,6 +1,8 @@
 import { LemmyHttp } from "lemmy-js-client";
 import { DEFAULT_INSTANCE } from "@/constants/settings";
 
+import { getClient } from "@/utils/lemmy";
+
 // POST /api/getUser
 // Post for security reasons
 export async function POST(req: Request) {
@@ -16,6 +18,8 @@ export async function POST(req: Request) {
     // determines if post or comment is liked
     let isComment = (body.isComment as boolean) || false;
 
+    let instance = body.instance || undefined;
+
     if (!post_id || !score || !auth) {
       return new Response(
         JSON.stringify({ error: "Missing required fields" }),
@@ -28,7 +32,7 @@ export async function POST(req: Request) {
       auth: auth,
     };
 
-    let client: LemmyHttp = new LemmyHttp(DEFAULT_INSTANCE);
+    let client: LemmyHttp = getClient(instance);
     let response = !isComment
       ? await client.likePost({
           ...reqBody,

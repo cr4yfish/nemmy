@@ -73,25 +73,25 @@ export default function PostList({
   useEffect(() => {
     setPosts([]);
     setCurrentPage(1);
-  }, [fetchParams?.sort, currentSort]);
-
-  useEffect(() => {
-    setPosts([]);
-    setCurrentPage(1);
-  }, [fetchParams.type_, currentType]);
-
-  useEffect(() => {
-    setPosts([]);
-    setCurrentPage(1);
-  }, [session.session.selectedCommunities]);
+  }, [
+    fetchParams?.sort,
+    currentSort,
+    fetchParams?.type_,
+    currentType,
+    session.session.selectedCommunities,
+    session.currentAccount?.instanceAccounts,
+  ]);
 
   const getPosts = cache(async ({ page = 1 }: { page?: number }) => {
     const data = await fetch(
       `/api/getPosts?page=${page}&community_name=${JSON.stringify(
         fetchParams.community_name || session.session.selectedCommunities,
-      )}&auth=${session?.currentAccount
+      )}&auth=${session?.currentAccount?.instanceAccounts[0]
         ?.jwt}&sort=${currentSort}&type_=${currentType}&instance=${
-        overrideInstance || session.currentAccount?.instance
+        (session.isLoggedIn &&
+          session.currentAccount?.instanceAccounts[0]?.instance) ||
+        overrideInstance ||
+        DEFAULT_INSTANCE
       }`,
     );
     const json = await data.json();
@@ -105,7 +105,7 @@ export default function PostList({
     va.track("Clicked post on feed", {
       instance:
         overrideInstance ||
-        session.currentAccount?.instance ||
+        session.currentAccount?.instanceAccounts[0]?.instance ||
         DEFAULT_INSTANCE,
     });
     localStorage.setItem("currentPost", JSON.stringify(currenPost));
@@ -113,11 +113,11 @@ export default function PostList({
 
   const handleLoadMore = cache(async () => {
     const data = await getPosts({ page: currentPage });
-    if (!data) return;
+    if (!data || data.length == 0) return;
 
     // Filter out duplicates
     // Duplicates can happen when a posts changes ranking between page loads
-    const uniquePosts = data.filter((post) => {
+    const uniquePosts = data?.filter((post) => {
       return !posts.some((post2) => post.post.id === post2.post.id);
     });
 
@@ -148,9 +148,7 @@ export default function PostList({
                 <Tabs
                   className="max-sm:hidden"
                   variant="bordered"
-                  disabledKeys={
-                    session.currentAccount?.jwt ? [] : ["Subscribed"]
-                  }
+                  disabledKeys={session.isLoggedIn ? [] : ["Subscribed"]}
                   selectedKey={currentType}
                   onSelectionChange={(key) =>
                     setCurrentType(key as ListingType)
@@ -169,8 +167,9 @@ export default function PostList({
                     title={
                       <TabContent
                         text={
+                          session.currentAccount?.instanceAccounts[0]
+                            ?.instance ||
                           overrideInstance ||
-                          session.currentAccount?.instance ||
                           "Local"
                         }
                         icon="location_on"
@@ -333,9 +332,13 @@ export default function PostList({
                         onClick={() => handleClickPost(post)}
                         post={post}
                         instance={
-                          overrideInstance || session.currentAccount?.instance
+                          overrideInstance ||
+                          session.currentAccount?.instanceAccounts[0]?.instance
                         }
-                        auth={session.currentAccount?.jwt}
+                        instanceAccount={
+                          session.currentAccount?.instanceAccounts &&
+                          session.currentAccount?.instanceAccounts[0]
+                        }
                         key={index}
                         postInstance={new URL(post.community.actor_id).host}
                         style={

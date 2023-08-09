@@ -40,10 +40,11 @@ export default function Navbar({ params }: { params?: NavbarState }) {
   const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
   useEffect(() => {
-    if (session.pendingAuth || !session?.currentAccount) return;
+    if (session.pendingAuth || !session?.currentAccount || !session.isLoggedIn)
+      return;
     getUnreadCount(
-      { auth: session.currentAccount.jwt },
-      session.currentAccount?.instance,
+      { auth: session.currentAccount.instanceAccounts[0]?.jwt || "" },
+      session.currentAccount?.instanceAccounts[0]?.instance,
     ).then((data) => {
       if (!data) return;
       const total = data.replies + data.mentions;
@@ -54,13 +55,15 @@ export default function Navbar({ params }: { params?: NavbarState }) {
   const handleMenuClose = async () => {
     await delay(200);
     setUserMenu(false);
-    setMenu(false); 
+    setMenu(false);
     enablePageScroll();
   };
 
   const handleUserMenuOpen = async () => {
     va.track("user-menu-open", {
-      instance: session?.currentAccount?.instance || DEFAULT_INSTANCE,
+      instance:
+        session?.currentAccount?.instanceAccounts[0]?.instance ||
+        DEFAULT_INSTANCE,
     });
     disablePageScroll();
     setUserMenu(true);
@@ -68,7 +71,9 @@ export default function Navbar({ params }: { params?: NavbarState }) {
 
   const handleMenuOpen = async () => {
     va.track("menu-open", {
-      instance: session?.currentAccount?.instance || DEFAULT_INSTANCE,
+      instance:
+        session?.currentAccount?.instanceAccounts[0]?.instance ||
+        DEFAULT_INSTANCE,
     });
     disablePageScroll();
     setMenu(true);
@@ -123,7 +128,9 @@ export default function Navbar({ params }: { params?: NavbarState }) {
             onClick={() => {
               setSearchOverlay(true);
               va.track("search-open", {
-                instance: session?.currentAccount?.instance || DEFAULT_INSTANCE,
+                instance:
+                  session?.currentAccount?.instanceAccounts[0]?.instance ||
+                  DEFAULT_INSTANCE,
               });
             }}
           >
@@ -142,7 +149,8 @@ export default function Navbar({ params }: { params?: NavbarState }) {
                   onClick={() => {
                     va.track("click-inbox", {
                       instance:
-                        session?.currentAccount?.instance || DEFAULT_INSTANCE,
+                        session?.currentAccount?.instanceAccounts[0].instance ||
+                        DEFAULT_INSTANCE,
                     });
                   }}
                 >
