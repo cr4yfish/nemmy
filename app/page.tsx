@@ -6,9 +6,7 @@ import { getClient } from "@/utils/lemmy";
 import FeedPage from "@/components/PageComponents/FeedPage";
 import Navbar from "@/components/Navbar";
 
-import {
- getCurrentAccountServerSide,
-} from "@/utils/authFunctions";
+import { getCurrentAccountServerSide } from "@/utils/authFunctions";
 
 import { DEFAULT_INSTANCE, nextInstance } from "@/constants/settings";
 

@@ -569,7 +569,8 @@ export const getCurrentAccount = (): AccountWithSiteResponse | undefined => {
     currentAccount.length > 0
   ) {
     const account = JSON.parse(currentAccount) as Account;
-    if(!account?.instanceAccounts || account.instanceAccounts.length == 0) return undefined;
+    if (!account?.instanceAccounts || account.instanceAccounts.length == 0)
+      return undefined;
     const accountWithSite = getUserDataFromLocalStorage(
       account.username,
       account.instanceAccounts[0].instance,

@@ -10,14 +10,13 @@ export async function middleware(req: NextRequest) {
 
   // Wipe old system
   if (accounts?.value && currentAccount?.value && defaultAccount?.value) {
-    if(JSON.parse(currentAccount.value || "").hasOwnProperty("jwt")) {
-      console.log("Wiping old system")
+    if (JSON.parse(currentAccount.value || "").hasOwnProperty("jwt")) {
+      console.log("Wiping old system");
       response.cookies.delete("accounts");
       response.cookies.delete("currentAccount");
       response.cookies.delete("defaultAccount");
     }
   }
-  
 
   return response;
 }
