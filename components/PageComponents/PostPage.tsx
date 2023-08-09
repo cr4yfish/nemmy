@@ -121,7 +121,7 @@ export default function PostPage({
               </div>
               <div className={`${styles.postHeaderTitle}`}>
                 <h1>
-                  <RenderMarkdown content={postData?.post?.name} />
+                  <RenderMarkdown content={postData?.post?.name.replace("[POLL]", "")} />
                 </h1>
               </div>
             </div>

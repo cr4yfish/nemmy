@@ -430,7 +430,7 @@ export default function Post({
                     className={`${styles.title} z-10 h-fit w-full text-sm text-neutral-900 dark:text-neutral-100`}
                     style={{ overflow: "visible" }}
                   >
-                    <RenderMarkdown content={post.post.name} />
+                    <RenderMarkdown content={post.post.name.replace("[POLL]", "")} />
                   </div>
 
                   {/* Display Body if post has body and is not an Embed */}
