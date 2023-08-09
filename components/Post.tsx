@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { PostView } from "lemmy-js-client";
 import Link from "next/link";
+import { BarList, Card } from "@tremor/react";
 
 import Username from "./User/Username";
 import Vote from "./Vote";
@@ -55,6 +56,18 @@ export default function Post({
 
   const isPoll = post.post.name.toLowerCase().includes("[poll]");
 
+  const pollData = [
+    {
+      name: "Yes",
+      value: post.counts.upvotes,
+      
+    },
+    {
+      name: "No",
+      value: post.counts.downvotes,
+    },
+  ]
+
   switch (style) {
     case "modern":
       return (
@@ -69,11 +82,13 @@ export default function Post({
             </div>
 
             <div className={`${styles.rightSide}`}>
+
+              {/* Header */}
               <div className={`${styles.header}`}>
                 <div className={`${styles.headerContent}`}>
                   <div
                     className={`${styles.headerMetadata}`}
-                    style={{ minHeight: "25px", gap: "10px" }}
+                    style={{ gap: "10px" }}
                   >
                     {showCommunity && (
                       <Link
@@ -161,6 +176,7 @@ export default function Post({
                 </div>
               </div>
 
+              {/* Body */}
               <div className={`${styles.content}`}>
                 {/* Display Overlay if post has no media */}
                 {!post?.post?.embed_title && // 100% dont display content overlay
@@ -264,6 +280,16 @@ export default function Post({
                 )}
               </div>
 
+              {/* Display Poll */}
+              {isPoll && (
+                <>
+                <BarList 
+                  data={pollData}
+                />
+                </>
+              )}
+
+              {/* Footer */}
               <div className={`${styles.footer} max-md:justify-between`}>
                 <div className="hidden max-md:flex">
                   <Vote post={post} horizontal />
@@ -305,7 +331,7 @@ export default function Post({
         <>
           <div
             className={`card ${styles.wrapper}
-            h-full min-h-max flex-col items-start justify-start gap-2 overflow-hidden
+            h-full min-h-max flex-col items-start justify-start overflow-hidden
              border-neutral-200 bg-neutral-50 py-3 dark:border-neutral-700
              dark:bg-neutral-900 dark:hover:border-neutral-600
              `}
@@ -320,42 +346,42 @@ export default function Post({
                 className={`flex h-fit flex-row items-center gap-1 max-xs:flex-wrap`}
               >
                 {/* Community */}
-                <div className="flex h-fit flex-row items-center gap-1">
-                  {post?.community?.icon && showCommunity && (
-                    <Link
-                      href={communityUrl}
-                      target={target}
-                      style={{ width: "15px", height: "15px" }}
-                    >
-                      <Image
-                        src={post?.community?.icon}
-                        alt=""
-                        height={10}
-                        width={10}
-                        className=" h-full w-full overflow-hidden object-cover"
-                        style={{ borderRadius: "50%" }}
-                      />
-                    </Link>
-                  )}
+                {showCommunity && (
+                  <>
+                  <div className="flex h-fit flex-row items-center gap-1">
 
-                  {showCommunity && (
-                    <>
+                    {post?.community?.icon && (
                       <Link
                         href={communityUrl}
-                        className="prose flex flex-row gap-1 dark:prose-invert"
                         target={target}
+                        style={{ width: "15px", height: "15px" }}
                       >
-                        <span className="text-xs font-bold capitalize">
-                          {post.community.name}
-                        </span>
-                        <span className="text-xs">@{new URL(post.community.actor_id).host}</span>
+                        <Image
+                          src={post?.community?.icon}
+                          alt=""
+                          height={10}
+                          width={10}
+                          className=" h-full w-full overflow-hidden object-cover"
+                          style={{ borderRadius: "50%" }}
+                        />
                       </Link>
-                    </>
-                  )}
-                </div>
+                    )}
+                        
+                    <Link
+                      href={communityUrl}
+                      className="prose flex flex-row gap-1 dark:prose-invert"
+                      target={target}
+                    >
+                      <span className="text-xs font-bold capitalize">
+                        {post.community.name}
+                      </span>
+                      <span className="text-xs">@{new URL(post.community.actor_id).host}</span>
+                    </Link>
+                  </div>
 
-                {showCommunity && (
+               
                   <div className="dividerDot max-xs:hidden"></div>
+                  </>
                 )}
 
                 {/* User */}
@@ -408,7 +434,7 @@ export default function Post({
                   </div>
 
                   {/* Display Body if post has body and is not an Embed */}
-                  {post?.post?.body && !isPostArticle && (
+                  {post?.post?.body && !isPostArticle && !isPoll && (
                       <>
                         <div
                           className="absolute left-0 top-0 h-full w-full bg-gradient-to-b from-neutral-50/30 to-neutral-50/90 dark:from-neutral-900/50 dark:to-neutral-900/90"
@@ -427,7 +453,7 @@ export default function Post({
                     )}
 
                   {/* Display Link if post has link e.g. Article case */}
-                  {isPostArticle && (
+                  {isPostArticle && !isPoll &&(
                     <div
                       style={{ marginBottom: "0" }}
                       className={`${styles.postBodyEmbed} mb-0 border-neutral-300 text-neutral-800 dark:border-neutral-600 dark:text-neutral-200`}
@@ -480,6 +506,18 @@ export default function Post({
                 </div>
               )}
             </div>
+
+            {/* Display Poll */}
+            {isPoll && (
+              <>
+              <div className="w-full">
+                <BarList 
+                  data={pollData}
+                />                
+              </div>
+
+              </>
+            )}
 
             {/* Footer */}
             <div className={`${styles.footer} justify-start text-neutral-400`}>
