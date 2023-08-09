@@ -57,8 +57,8 @@ export default function Vote({
     }
   }, [session, comment]);
 
-  const vote = async (score: number, post_id: number, auth?: string) => {
-    if (!score || !post_id || !auth) throw new Error("Missing parameters");
+  const vote = async (score: number, post_id: number, auth?: string, instance?: string) => {
+    if (!post_id || !auth) throw new Error("Missing parameters");
 
     const response = await fetch("/api/votePost", {
       method: "POST",
@@ -67,6 +67,7 @@ export default function Vote({
         score: score,
         auth: auth,
         isComment: isComment,
+        instance: instance,
       }),
     }).then((res) => res.json());
     return isComment
@@ -92,11 +93,35 @@ export default function Vote({
     const response = await vote(
       1,
       id,
-      session?.currentAccount?.instanceAccounts[0]?.jwt,
+      session.currentAccount?.instanceAccounts[0]?.jwt,
+      session.currentAccount?.instanceAccounts[0]?.instance,
     );
     const newVotes = response?.counts?.score;
     setScore(newVotes);
   };
+
+  const handleClearVote = async () => {
+    if (!session?.currentAccount) return alert("You must be logged in to vote");
+
+    liked && setScore(score - 1);
+    disliked && setScore(score + 1);
+
+    setDisliked(false);
+    setLiked(false);
+
+    let id = isComment && comment ? comment.comment.id : false;
+    if (!id) id = post ? post.post.id : false;
+    if (!id) throw new Error("No id found");
+
+    const response = await vote(
+      0,
+      id,
+      session.currentAccount.instanceAccounts[0]?.jwt,
+      session.currentAccount.instanceAccounts[0]?.instance,
+    );
+    const newVotes = response?.counts?.score;
+    setScore(newVotes);
+  }
 
   const handleDislike = async () => {
     if (!session?.currentAccount) return alert("You must be logged in to vote");
@@ -115,6 +140,7 @@ export default function Vote({
       -1,
       id,
       session.currentAccount.instanceAccounts[0]?.jwt,
+      session.currentAccount.instanceAccounts[0]?.instance,
     );
     const newVotes = response?.counts?.score;
     setScore(newVotes);
@@ -128,7 +154,7 @@ export default function Vote({
         } text-neutral-700 dark:text-neutral-300`}
       >
         <span
-          onClick={() => handleLike()}
+          onClick={() => liked ? handleClearVote() : handleLike()}
           className={`material-symbols-outlined ${
             styles.upvote
           } hover:text-fuchsia-300 ${liked && "filled text-fuchsia-400"}`}
@@ -144,7 +170,7 @@ export default function Vote({
           />
         </span>
         <span
-          onClick={() => handleDislike()}
+          onClick={() => disliked ? handleClearVote() : handleDislike()}
           className={`material-symbols-outlined rotate-180 ${
             styles.downvote
           } hover:text-indigo-300 ${disliked && "filled text-blue-400"}`}

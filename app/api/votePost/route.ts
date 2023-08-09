@@ -12,7 +12,7 @@ export async function POST(req: Request) {
     // is either post_id or comment_id, depending on isComment
     let post_id = (body.post_id as number) || undefined;
 
-    let score = (body.score as number) || undefined;
+    let score = body.score as number;
     let auth = (body.auth as string) || undefined;
 
     // determines if post or comment is liked
@@ -20,7 +20,7 @@ export async function POST(req: Request) {
 
     let instance = body.instance || undefined;
 
-    if (!post_id || !score || !auth) {
+    if (!post_id || (score === undefined )|| !auth) {
       return new Response(
         JSON.stringify({ error: "Missing required fields" }),
         { status: 400, headers: { "Content-Type": "application/json" } },
