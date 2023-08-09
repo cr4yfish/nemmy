@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { CommentResponse, PostView } from "lemmy-js-client";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { BarChart, Card, Title, Subtitle, BarList } from "@tremor/react";
+import { BarChart, Card, Title, Subtitle, BarList, BarListProps } from "@tremor/react";
 
 import { AutoMediaType } from "@/utils/AutoMediaType";
 
@@ -19,6 +19,21 @@ import RenderMarkdown from "@/components/ui/RenderMarkdown";
 import Comments from "../Comments";
 import Image from "next/image";
 import { DEFAULT_AVATAR } from "@/constants/settings";
+
+type Poll = {
+  config: BarListProps["data"];
+  name: string;
+}
+
+const defaultPoll: Poll = {
+  name: "",
+  config: []
+}
+
+// removes [POLL_*] from the text
+function cleanPollText(text: string): string {
+  return text.replace(/\[POLL_(?:DATA|NAME|OPTION|END)\]/gm, "");
+}
 
 export default function PostPage({
   data,
@@ -39,6 +54,8 @@ export default function PostPage({
 }) {
   const [postData, setPostData] = useState<PostView>(data || ({} as PostView));
   const [isPoll, setIsPoll] = useState<boolean>(false);
+  const [isCustomPoll, setIsCustomPoll] = useState<boolean>(false);
+  const [poll, setPoll] = useState<Poll>(defaultPoll);
 
   useEffect(() => {
     const localStoragePost = localStorage.getItem("currentPost");
@@ -55,7 +72,34 @@ export default function PostPage({
 
     postData?.post?.name &&
       setIsPoll(postData?.post.name.toLowerCase().includes("[poll]"));
-  }, []);
+
+    const pollRegex = /^\[POLL_(?:DATA|NAME|OPTION|END)\].*$/gm;
+    const matches = data?.post?.body?.match(pollRegex);
+    setPoll(defaultPoll)
+    for(const match of matches || []) {
+      
+      if(match.includes("[POLL_DATA]")) {
+        console.log("Poll data found")
+        setIsCustomPoll(true);
+      } else if(match.includes("[POLL_NAME]")) {
+        console.log("Poll name found", match)
+        setPoll(prev => ({...prev, name: cleanPollText(match)}));
+
+      } else if(match.includes("[POLL_OPTION]")) {
+        console.log("Poll option found", match)
+        setPoll(prev => ({...prev, config: [...prev?.config, {name: cleanPollText(match), value: 0}]}));
+      } else if(match.includes("[POLL_END]")) {
+        console.log("Poll end found", match)
+      }
+    }
+
+    // remove poll config from body
+    const body = data?.post?.body?.replace(pollRegex, "");
+    setPostData(prev => ({...prev, post: {...prev?.post, body}}));
+
+    console.log(data?.post?.body)
+    console.log("Matches:",matches);
+  }, [data]);
 
   return (
     <>
@@ -202,21 +246,11 @@ export default function PostPage({
                 <Card>
                   <Title>
                     <RenderMarkdown
-                      content={postData.post.name.replace("[POLL]", "")}
+                      content={poll.name}
                     />
                   </Title>
-                  <Subtitle>Vote by upvoting/downvoting</Subtitle>
                   <BarList
-                    data={[
-                      {
-                        name: "Yes",
-                        value: postData.counts.upvotes,
-                      },
-                      {
-                        name: "No",
-                        value: postData.counts.downvotes,
-                      }
-                    ]}
+                    data={poll.config}
                   />
                 </Card>
               </>
