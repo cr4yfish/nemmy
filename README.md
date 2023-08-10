@@ -91,6 +91,8 @@ This means that there is no single huge "Lemmy Server" but many smaller "instanc
 
 ## Support
 Creating and hosting Nemmy on fast infrastructure costs time (money) and money. If you want to support me, you can do so by donating.
+Since this is a passion project, I don't expect or want to earn any money from it.
+All of the donated money will be used **exclusively** to pay for the server and domain costs.
 
 - [BuyMeACoffee](https://www.buymeacoffee.com/cr4yfish)
 
@@ -225,7 +227,7 @@ Ideas for Q4+
 ## FOSS
 
 - Nemmy will always be 100% Open Source, no strings attached.
-- Nemmy will always be 100% free to use (I might start adding donation options if the Hosting Costs rise)
+- Nemmy will always be 100% free to use
 
 ## Security
 
