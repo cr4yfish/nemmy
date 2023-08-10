@@ -88,6 +88,12 @@ This means that there is no single huge "Lemmy Server" but many smaller "instanc
 - Lemmy JS-Client
 - Tailwind
 
+
+## Support
+Creating and hosting Nemmy on fast infrastructure costs time (money) and money. If you want to support me, you can do so by donating.
+
+- [BuyMeACoffee](https://www.buymeacoffee.com/cr4yfish)
+
 ## Getting started
 
 ### Production Setup
