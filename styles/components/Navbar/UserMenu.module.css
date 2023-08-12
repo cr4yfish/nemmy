@@ -1,5 +1,6 @@
 .userMenu {
-  @apply h-screen w-80 flex-col justify-between gap-6 overflow-hidden p-6 backdrop-blur-xl max-sm:w-80 max-xs:w-72;
+  @apply h-screen w-80 flex-col justify-between gap-6 overflow-hidden p-6 backdrop-blur-xl
+   max-sm:w-80 max-xs:w-72 rounded-tl-3xl rounded-bl-3xl border-l ;
   position: fixed;
   top: 0;
   right: 0;

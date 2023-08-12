@@ -105,7 +105,9 @@ export default function UserMenu({
         animate={{ opacity: 1, x: 0, transition: { bounce: 0 } }}
         exit={{ opacity: 0, x: 300 }}
         id="usermenu"
-        className={`${styles.userMenu} bg-neutral-50/75 dark:bg-neutral-950/75`}
+        className={`${styles.userMenu} border-neutral-200 dark:border-neutral-700 
+          bg-neutral-50/75 dark:bg-neutral-950/75 shadow-lg dark:shadow-none
+        `}
       >
         <div className={`flex h-full w-full flex-col gap-4`}>
           {
