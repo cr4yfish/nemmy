@@ -23,7 +23,7 @@ import {
   handleAddInstanceToAccount,
 } from "@/utils/authFunctions";
 
-import { DEFAULT_AVATAR } from "@/constants/settings";
+import { DEFAULT_AVATAR, DEFAULT_INSTANCE } from "@/constants/settings";
 
 import styles from "@/styles/Pages/LoginPage.module.css";
 import Image from "next/image";
@@ -54,7 +54,7 @@ export default function Login() {
     username: "",
     password: "",
     saveLogin: false,
-    instance: "",
+    instance: DEFAULT_INSTANCE.replace("https://", ""),
     totp: "",
   });
 

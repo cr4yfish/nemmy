@@ -24,6 +24,7 @@ import Logo from "@/components/Logo";
 import { defaultState, useSession } from "@/hooks/auth";
 
 import styles from "@/styles/Pages/LoginPage.module.css";
+import { DEFAULT_INSTANCE } from "@/constants/settings";
 
 interface CuratedInstance {
   // Instance hostname
@@ -72,7 +73,15 @@ export default function Register() {
     showNSFW: boolean;
     instance: string;
     captcha: string;
-  }>({} as any);
+  }>({
+    username: "",
+    email: "",
+    password: "",
+    saveLogin: false,
+    showNSFW: false,
+    instance: DEFAULT_INSTANCE.replace("https://", ""),
+    captcha: "",
+  });
   const { session, setSession } = useSession();
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
