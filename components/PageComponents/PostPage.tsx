@@ -12,7 +12,6 @@ import styles from "@/styles/Pages/PostPage.module.css";
 import markdownStyle from "@/styles/util/markdown.module.css";
 
 import { FormatDate } from "@/utils/formatDate";
-import { cleanPollText, pollRegex } from "../Poll";
 
 import Username from "@/components/User/Username";
 import Vote from "@/components/Vote";
@@ -46,10 +45,6 @@ export default function PostPage({
   useEffect(() => {
     postData?.post?.name &&
       setIsPoll(postData?.post.name.toLowerCase().includes("[poll]"));
-
-      // remove poll config from body
-      const body = data?.post?.body?.replace(pollRegex, "");
-      setPostData(prev => ({...prev, post: {...prev?.post, body}}));
   }, [data]);
 
   return (

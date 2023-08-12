@@ -117,10 +117,10 @@ export default function Comments({
 
     const comment = await sendComment({
       content: replyCommentText,
-      post_id: postId,
+      post_id: postData.post.id,
       parent_id: replyComment?.comment?.id,
       auth: session.currentAccount.instanceAccounts[0].jwt,
-    });
+    }, session.currentAccount.instanceAccounts[0].instance);
 
     if (!comment) return alert("Something went wrong");
 

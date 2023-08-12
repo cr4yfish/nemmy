@@ -20,7 +20,7 @@ export async function GET(req: Request) {
     let sort = params.get("sort");
     let page = params.get("page");
     let unread_only = params.get("unread_only");
-    let instance = params.get("instance");
+    let instance = params.get("instance") || undefined;
 
     let client: LemmyHttp = getClient(instance);
 

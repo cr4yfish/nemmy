@@ -151,13 +151,13 @@ export default function New() {
       nsfw: form.nsfw,
       language_id: form.language_id,
       auth: session.currentAccount.instanceAccounts[0]?.jwt || "",
-    });
+    }, session.currentAccount.instanceAccounts[0]?.instance);
 
     if (typeof res == "boolean") return alert("Failed to create post");
 
     const postUrl = res.post_view.post.id;
 
-    router.push("/post/" + postUrl);
+    router.push("/post/" + postUrl + `?instance=${session.currentAccount.instanceAccounts[0]?.instance}`);
   };
 
   const handleClose = () => {

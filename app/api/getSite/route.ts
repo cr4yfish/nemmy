@@ -11,7 +11,7 @@ export async function GET(req: Request) {
     let params = new URL(req.url).searchParams;
 
     let auth = params.get("auth");
-    let instance = params.get("instance");
+    let instance = params.get("instance") || undefined;
 
     if (!auth) throw new Error("auth is required");
 
