@@ -7,7 +7,7 @@ const withPWA = require("next-pwa")({
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    unoptimized: true,
+    unoptimized: process.env.DISABLE_IMAGE_OPTIMIZATION === "true",
     minimumCacheTTL: 60,
     remotePatterns: [
       {
