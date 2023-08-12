@@ -16,7 +16,9 @@ export const BACKUP_INSTANCES = [
   "https://lemmy.sdf.org",
 ];
 
-export let DEFAULT_INSTANCE = BACKUP_INSTANCES[0];
+const envInstance = process.env.NEXT_PUBLIC_DEFAULT_INSTANCE;
+
+export let DEFAULT_INSTANCE = envInstance || BACKUP_INSTANCES[0];
 export const DEFAULT_AVATAR = "https://i.imgur.com/IN6ZY30.png";
 export const DEFAULT_POST_LIMIT = 2;
 export const DEFAULT_SORT_TYPE = "Hot";

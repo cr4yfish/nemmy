@@ -42,7 +42,7 @@ import { DEFAULT_INSTANCE } from "@/constants/settings";
 
 // Server side usage
 export const getClient = (instance=DEFAULT_INSTANCE) => {
-  const instanceUrl = instance && instance !== "undefined" ? `https://${instance.replace("https://", "")}` : DEFAULT_INSTANCE;
+  const instanceUrl = instance && instance !== "undefined" ? `https://${instance.replace("https://", "")}` : (DEFAULT_INSTANCE.includes("https://") ? DEFAULT_INSTANCE : `https://${DEFAULT_INSTANCE}`);
   const client = new LemmyHttp(instanceUrl);
   return client;
 };
