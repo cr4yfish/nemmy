@@ -1,5 +1,7 @@
 FROM node:20-alpine AS build-env
 
+ARG NEXT_PUBLIC_DEFAULT_INSTANCE
+
 ENV NEXT_TELEMETRY_DISABLED 1
 WORKDIR /app
 COPY package*.json ./
@@ -18,6 +20,7 @@ WORKDIR /app
 ENV NODE_ENV production
 ENV PORT 3000
 ENV NEXT_TELEMETRY_DISABLED 1
+ENV NEXT_PUBLIC_DEFAULT_INSTANCE=$NEXT_PUBLIC_DEFAULT_INSTANCE
 
 COPY --from=build-env /app/next.config.js ./
 COPY --from=build-env /app/.next /app/.next

@@ -129,6 +129,25 @@ docker run nemmy
 
 Nemmy will now run on the local network. To be able to access the server from the internet, you'll have to open the port `3000`.
 
+### Setting your instance as default
+In case you're hosting Nemmy as an UI for your own instance, you might want to set it as the default instance.
+
+To do that, you can set the `NEXT_PUBLIC_DEFAULT_INSTANCE` environment variable to your instance's URL.
+
+The instsance URL should be in the format of https://some.instance, for example https://lemmy.ml
+
+#### With Docker
+  
+  ```
+  docker run -e NEXT_PUBLIC_DEFAULT_INSTANCE=YOUR_INSTANCE nemmy
+  ```
+
+#### Without Docker
+
+  ```
+  NEXT_PUBLIC_DEFAULT_INSTANCE=YOUR_INSTANCE npm run start
+  ```
+
 ### Development Setup
 
 To setup Nemmy for development, there are only a few steps to take.
