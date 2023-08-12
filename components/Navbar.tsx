@@ -219,7 +219,7 @@ export default function Navbar({ params }: { params?: NavbarState }) {
         }}
         className={`${
           styles.overlay
-        } z-50 bg-neutral-200/50 dark:bg-neutral-900/75 ${
+        } z-50 bg-neutral-200/50 dark:bg-neutral-900/75 backdrop-blur-sm ${
           (userMenu || menu) && styles.overlayActive
         }`}
       ></div>
