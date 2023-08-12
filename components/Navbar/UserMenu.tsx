@@ -153,7 +153,7 @@ export default function UserMenu({
                       <DropdownTrigger>
                         <Button
                           variant="light"
-                          className="text-xs"
+                          className="text-xs text-neutral-50"
                           endContent={
                             <span className=" material-symbols-outlined">
                               expand_more
