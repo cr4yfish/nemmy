@@ -23,7 +23,7 @@
     "eslint-config-next": "13.4.7",
     "framer-motion": "^10.12.18",
     "jsonwebtoken": "^9.0.1",
-    "lemmy-js-client": "^0.18.1-rc.2",
+    "lemmy-js-client": "0.19.0-rc.2",
     "material-symbols": "^0.9.0",
     "next": "13.4.12",
     "next-pwa": "^5.6.0",

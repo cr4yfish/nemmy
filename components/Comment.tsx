@@ -85,7 +85,7 @@ export default function Comment({
   const [loaded, setLoaded] = useState<boolean>(false);
 
   const { data, error } = useSWR(
-    `/api/getComments?post_id=${commentView.comment.post_id}&parent_id=${commentView.comment.id}&sort=Top&page=1&auth=${session.currentAccount?.instanceAccounts[0]?.jwt}`,
+    `/api/getComments?post_id=${commentView.comment.post_id}&parent_id=${commentView.comment.id}&sort=Top&page=1&auth=${session.currentAccount?.instanceAccounts[0]?.jwt}&instance=${new URL(commentView.community.actor_id).host}`,
     fetcher,
   );
 
@@ -224,7 +224,7 @@ export default function Comment({
           ) : (
             <>
               <div className={`${styles.username}`}>
-                <Username user={commentView?.creator} baseUrl="" />
+                <Username user={commentView?.creator} instance="" />
               </div>
               <div className="dividerDot"></div>
               <span className={`${styles.date}`}>

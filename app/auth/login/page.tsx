@@ -180,9 +180,9 @@ export default function Login() {
     }
   };
 
-  const getUserDetails = async (jwt: string, baseUrl: string) => {
+  const getUserDetails = async (jwt: string, instance: string) => {
     const user: GetSiteResponse = await fetch(
-      `/api/getSite?auth=${jwt}&baseUrl=${baseUrl}`,
+      `/api/getSite?auth=${jwt}&instance=${instance}`,
     ).then((res) => res.json());
     return user as GetSiteResponse;
   };

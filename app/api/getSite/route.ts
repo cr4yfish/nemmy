@@ -11,11 +11,11 @@ export async function GET(req: Request) {
     let params = new URL(req.url).searchParams;
 
     let auth = params.get("auth");
-    let baseUrl = params.get("baseUrl");
+    let instance = params.get("instance");
 
     if (!auth) throw new Error("auth is required");
 
-    let client: LemmyHttp = getClient(baseUrl);
+    let client: LemmyHttp = getClient(instance);
 
     let site = await client.getSite({
       auth: auth as unknown as string,

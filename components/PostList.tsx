@@ -331,16 +331,11 @@ export default function PostList({
                       <Post
                         onClick={() => handleClickPost(post)}
                         post={post}
-                        instance={
-                          overrideInstance ||
-                          session.currentAccount?.instanceAccounts[0]?.instance
-                        }
                         instanceAccount={
                           session.currentAccount?.instanceAccounts &&
                           session.currentAccount?.instanceAccounts[0]
                         }
                         key={index}
-                        postInstance={new URL(post.community.actor_id).host}
                         style={
                           session.settings?.cardType !== "auto"
                             ? session.settings?.cardType

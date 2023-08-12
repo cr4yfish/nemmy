@@ -100,7 +100,7 @@ export default function SiteInfo({
                 <Username
                   key={admin.person.id}
                   user={admin.person}
-                  baseUrl={new URL(site.actor_id).host}
+                  instance={new URL(site.actor_id).host}
                 />
               ))}
             </div>

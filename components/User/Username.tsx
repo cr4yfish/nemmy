@@ -11,11 +11,11 @@ import styles from "../../styles/User/Username.module.css";
 
 export default function Username({
   user,
-  baseUrl,
+  instance,
   opensToTop = false,
 }: {
   user: Person;
-  baseUrl: string;
+  instance: string;
   opensToTop?: boolean;
 }) {
   const [userHover, setUserHover] = useState<boolean>(false);
@@ -49,7 +49,7 @@ export default function Username({
             user={user}
             userHover={userHover}
             setUserHover={setUserHover}
-            baseUrl={baseUrl}
+            instance={instance}
             opensToTop={opensToTop}
             style={{ position: "absolute", top: "100%", left: "0" }}
           />

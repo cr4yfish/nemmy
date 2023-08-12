@@ -21,7 +21,7 @@ export default function SmallUser({
   opensToTop = false,
 }: {
   user: Person;
-  baseUrl: string;
+  instance: string;
   userHover: boolean;
   setUserHover: Function;
   style?: CSSProperties;
@@ -37,7 +37,7 @@ export default function SmallUser({
 
   const actor_id = new URL(user.actor_id);
 
-  const baseUrl = actor_id.hostname;
+  const instance = actor_id.hostname;
 
   const getUserData = async () => {
     if (loading) return;
@@ -123,7 +123,7 @@ export default function SmallUser({
               <span className=" select-all text-neutral-700 dark:text-neutral-400 ">
                 @{user.name}
               </span>{" "}
-              {!user.local && !user.display_name && `on ${baseUrl}`}
+              {!user.local && !user.display_name && `on ${instance}`}
             </span>
           </div>
         </div>
@@ -140,7 +140,7 @@ export default function SmallUser({
         )}
         <Link
           className="flex h-full"
-          href={`/u/${user.name}@${baseUrl}`}
+          href={`/u/${user.name}@${instance}`}
           target="_blank"
         >
           <span className="material-symbols-outlined text-neutral-700 dark:text-neutral-400">

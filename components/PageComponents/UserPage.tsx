@@ -431,14 +431,8 @@ export default function UserPage({
                   <Post
                     post={post}
                     key={post.post.id}
-                    instance={
-                      session.currentAccount?.instanceAccounts[0]?.instance
-                    }
                     instanceAccount={
                       session.currentAccount?.instanceAccounts[0]
-                    }
-                    postInstance={
-                      session.currentAccount?.instanceAccounts[0]?.instance
                     }
                     style={
                       session.settings?.cardType !== "auto"

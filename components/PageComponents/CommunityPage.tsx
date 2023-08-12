@@ -175,7 +175,7 @@ export default function CommunityPage({
                 {communityData?.moderators?.map((moderator) => (
                   <Username
                     user={moderator?.moderator}
-                    baseUrl=""
+                    instance=""
                     key={moderator?.moderator?.id}
                     opensToTop
                   />

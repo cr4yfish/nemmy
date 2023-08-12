@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { CommentResponse, PostView } from "lemmy-js-client";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { BarChart, Card, Title, Subtitle, BarList, BarListProps } from "@tremor/react";
+import Image from "next/image";
 
 import { AutoMediaType } from "@/utils/AutoMediaType";
 
@@ -12,28 +12,16 @@ import styles from "@/styles/Pages/PostPage.module.css";
 import markdownStyle from "@/styles/util/markdown.module.css";
 
 import { FormatDate } from "@/utils/formatDate";
+import { cleanPollText, pollRegex } from "../Poll";
 
 import Username from "@/components/User/Username";
 import Vote from "@/components/Vote";
 import RenderMarkdown from "@/components/ui/RenderMarkdown";
 import Comments from "../Comments";
-import Image from "next/image";
+import Poll from "../Poll";
+
+
 import { DEFAULT_AVATAR } from "@/constants/settings";
-
-type Poll = {
-  config: BarListProps["data"];
-  name: string;
-}
-
-const defaultPoll: Poll = {
-  name: "",
-  config: []
-}
-
-// removes [POLL_*] from the text
-function cleanPollText(text: string): string {
-  return text.replace(/\[POLL_(?:DATA|NAME|OPTION|END)\]/gm, "");
-}
 
 export default function PostPage({
   data,
@@ -54,51 +42,14 @@ export default function PostPage({
 }) {
   const [postData, setPostData] = useState<PostView>(data || ({} as PostView));
   const [isPoll, setIsPoll] = useState<boolean>(false);
-  const [isCustomPoll, setIsCustomPoll] = useState<boolean>(false);
-  const [poll, setPoll] = useState<Poll>(defaultPoll);
 
   useEffect(() => {
-    const localStoragePost = localStorage.getItem("currentPost");
-
-    if (localStoragePost) {
-      const parsed = JSON.parse(localStoragePost) as PostView;
-      parsed?.post?.id == postId && setPostData(parsed);
-
-      // pathname is like /post/id?preload=true
-      // we want to remove the ?preload=true part
-      const pathname = window.location.pathname.split("?")[0];
-      history.replaceState({}, "", pathname);
-    }
-
     postData?.post?.name &&
       setIsPoll(postData?.post.name.toLowerCase().includes("[poll]"));
 
-    const pollRegex = /^\[POLL_(?:DATA|NAME|OPTION|END)\].*$/gm;
-    const matches = data?.post?.body?.match(pollRegex);
-    setPoll(defaultPoll)
-    for(const match of matches || []) {
-      
-      if(match.includes("[POLL_DATA]")) {
-        console.log("Poll data found")
-        setIsCustomPoll(true);
-      } else if(match.includes("[POLL_NAME]")) {
-        console.log("Poll name found", match)
-        setPoll(prev => ({...prev, name: cleanPollText(match)}));
-
-      } else if(match.includes("[POLL_OPTION]")) {
-        console.log("Poll option found", match)
-        setPoll(prev => ({...prev, config: [...prev?.config, {name: cleanPollText(match), value: 0}]}));
-      } else if(match.includes("[POLL_END]")) {
-        console.log("Poll end found", match)
-      }
-    }
-
-    // remove poll config from body
-    const body = data?.post?.body?.replace(pollRegex, "");
-    setPostData(prev => ({...prev, post: {...prev?.post, body}}));
-
-    console.log(data?.post?.body)
-    console.log("Matches:",matches);
+      // remove poll config from body
+      const body = data?.post?.body?.replace(pollRegex, "");
+      setPostData(prev => ({...prev, post: {...prev?.post, body}}));
   }, [data]);
 
   return (
@@ -148,7 +99,7 @@ export default function PostPage({
                   >
                     <div className=" flex flex-row items-center gap-1">
                       <span className="max-sm:hidden text-neutral-700 dark:text-neutral-400">Posted by</span>
-                      <Username user={postData?.creator} baseUrl="" />
+                      <Username user={postData?.creator} instance="" />
                     </div>
 
                     <div className="dividerDot"></div>
@@ -242,18 +193,7 @@ export default function PostPage({
 
             {/* Has a poll */}
             {isPoll && (
-              <>
-                <Card>
-                  <Title>
-                    <RenderMarkdown
-                      content={poll.name}
-                    />
-                  </Title>
-                  <BarList
-                    data={poll.config}
-                  />
-                </Card>
-              </>
+              <Poll post={postData} />
             )}
 
             <div className={`${styles.postInteractions}`}>
@@ -275,8 +215,6 @@ export default function PostPage({
       {postData?.post?.id && (
         <Comments
           postId={postData?.post?.id}
-          instance={postInstance}
-          jwt={jwt}
           postData={postData}
           setPostData={setPostData}
           commentResponse={commentResponse}

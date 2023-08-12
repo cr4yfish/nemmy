@@ -34,15 +34,11 @@ function Loader() {
 
 export default function Comments({
   postId,
-  jwt,
-  instance,
   setPostData,
   postData,
   commentResponse,
 }: {
   postId: number;
-  jwt?: string;
-  instance?: string;
   setPostData: (postData: PostView) => void;
   postData: PostView;
   commentResponse?: CommentResponse;
@@ -117,13 +113,13 @@ export default function Comments({
     e.preventDefault();
     setReplyLoading(true);
 
-    if (!jwt || !postId || replyCommentText?.length < 1) return;
+    if (!session.isLoggedIn || !session.currentAccount?.instanceAccounts[0].jwt || !postId || replyCommentText?.length < 1) return;
 
     const comment = await sendComment({
       content: replyCommentText,
       post_id: postId,
       parent_id: replyComment?.comment?.id,
-      auth: jwt,
+      auth: session.currentAccount.instanceAccounts[0].jwt,
     });
 
     if (!comment) return alert("Something went wrong");
@@ -158,7 +154,7 @@ export default function Comments({
       return;
     }
     handleLoadMoreComments();
-  }, [forceCommentUpdate, instance, session.pendingAuth]);
+  }, [forceCommentUpdate, session.currentAccount?.instanceAccounts[0]?.instance, session.pendingAuth]);
 
   useEffect(() => {
     // load parent comment if reply is set
@@ -184,7 +180,7 @@ export default function Comments({
         page: currentCommentsPage,
         auth: session.currentAccount?.instanceAccounts[0]?.jwt,
       },
-      instance || "",
+      new URL(postData.community.actor_id).host || "",
     );
 
     if (data) {

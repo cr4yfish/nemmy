@@ -16,7 +16,7 @@ export default function CommentSingle({ comment }: { comment: CommentView }) {
       >
         <div className="flex flex-row flex-wrap items-center">
           <span className="w-fit">
-            <Username user={comment.creator} baseUrl="" />
+            <Username user={comment.creator} instance="" />
           </span>
 
           <div className="dividerDot"></div>

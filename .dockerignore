@@ -15,3 +15,6 @@ next-env.d.ts
 
 # ignore service worker files
 public/sw.*
+
+# local files
+*.local

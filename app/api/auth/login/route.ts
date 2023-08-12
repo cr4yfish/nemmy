@@ -6,10 +6,10 @@ import { getClient } from "@/utils/lemmy";
 async function userLogin(
   username: string,
   password: string,
-  baseUrl: string,
+  instance: string,
   totp_2fa_token: string = "",
 ) {
-  let client = getClient(baseUrl);
+  let client = getClient(instance);
   let loginForm: Login = {
     username_or_email: username,
     password: password,

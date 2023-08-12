@@ -40,28 +40,28 @@ import {
 import { AccountWithSiteResponse } from "./authFunctions";
 import { DEFAULT_INSTANCE } from "@/constants/settings";
 
-export const getClient = (instance?: string | null) => {
-  const client = new LemmyHttp(
-    instance && instance !== "undefined"
-      ? `https://${instance.replace("https://", "")}`
-      : DEFAULT_INSTANCE,
-  );
+// Server side usage
+export const getClient = (instance=DEFAULT_INSTANCE) => {
+  const instanceUrl = instance && instance !== "undefined" ? `https://${instance.replace("https://", "")}` : DEFAULT_INSTANCE;
+  const client = new LemmyHttp(instanceUrl);
   return client;
 };
 
+// Rest down below is client side
+
 export const getUserDetails = async (
   jwt: string,
-  baseUrl: string,
+  instance=DEFAULT_INSTANCE,
 ): Promise<GetSiteResponse> => {
   const user: GetSiteResponse = await fetch(
-    `/api/getSite?auth=${jwt}&baseUrl=${baseUrl}`,
+    `/api/getSite?auth=${jwt}&instance=${instance}`,
   ).then((res) => res.json());
   return user as GetSiteResponse;
 };
 
 export const listCommunities = async (
   params: ListCommunities,
-  instance?: string,
+  instance=DEFAULT_INSTANCE,
 ): Promise<boolean | ListCommunitiesResponse> => {
   const communities: ListCommunitiesResponse = await fetch(
     `/api/listCommunities?auth=${params.auth}&type_=${params.type_}&sort=${params.sort}&page=${params.page}&instance=${instance}`,
@@ -75,7 +75,7 @@ export const listCommunities = async (
 
 export const getPosts = async (
   params: GetPosts,
-  instance?: string,
+  instance=DEFAULT_INSTANCE,
 ): Promise<boolean | PostView[]> => {
   const posts: PostView[] = await fetch(
     `/api/getPosts?auth=${params.auth}&type_=${params.type_}&sort=${params.sort}&page=${params.page}&limit=${params.limit}&instance=${instance}&saved_only=${params.saved_only}`,
@@ -88,7 +88,7 @@ export const getPosts = async (
 };
 
 export const getTrendingCommunities = async (
-  instance?: string,
+  instance=DEFAULT_INSTANCE,
 ): Promise<boolean | CommunityView[]> => {
   const communities: ListCommunitiesResponse = await fetch(
     `/api/listCommunities?type_=All&sort=TopTwelveHour&limit=3&instance=${instance}`,
@@ -101,7 +101,7 @@ export const getTrendingCommunities = async (
 };
 
 export const getTrendingTopics = async (
-  instance?: string,
+  instance=DEFAULT_INSTANCE,
 ): Promise<boolean | PostView[]> => {
   const posts: PostView[] = await fetch(
     `/api/getPosts?type_=All&sort=TopTwelveHour&limit=3&instance=${instance}`,
@@ -115,13 +115,17 @@ export const getTrendingTopics = async (
 
 export const createPost = async (
   params: CreatePost,
+  instance=DEFAULT_INSTANCE,
 ): Promise<boolean | PostResponse> => {
   const response = await fetch(`/api/createPost`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(params),
+    body: JSON.stringify({
+      ...params,
+      instance,
+    }),
   }).then((res) => res.json());
   if (!response?.post_view.post?.id) {
     console.warn("Could not create post");
@@ -132,7 +136,7 @@ export const createPost = async (
 
 export const createCommunity = async (
   params: CreateCommunity,
-  instance: string,
+  instance=DEFAULT_INSTANCE,
 ): Promise<boolean | CommunityResponse> => {
   const response = await fetch("/api/createCommunity", {
     method: "POST",
@@ -151,7 +155,7 @@ export const createCommunity = async (
   return response as CommunityResponse;
 };
 
-export const sendComment = async (params: CreateComment) => {
+export const sendComment = async (params: CreateComment, instance=DEFAULT_INSTANCE) => {
   const data: CommentResponse = await fetch(`/api/createComment`, {
     method: "POST",
     headers: {
@@ -162,6 +166,7 @@ export const sendComment = async (params: CreateComment) => {
       auth: params.auth,
       post_id: params.post_id,
       parent_id: params.parent_id,
+      instance,
     }),
   }).then((res) => res.json());
 
@@ -173,11 +178,11 @@ export const sendComment = async (params: CreateComment) => {
 
 export const getComments = async (
   params: GetComments,
-  baseUrl: string,
+  instance=DEFAULT_INSTANCE,
 ): Promise<void | GetCommentsResponse> => {
   try {
     const data = await fetch(
-      `/api/getComments?post_id=${params.post_id}&sort=${params.sort}&limit=${params.limit}&page=${params.page}&max_depth=${params.max_depth}&parent_id=${params.parent_id}&baseUrl=${baseUrl}&type_=All&auth=${params.auth}`,
+      `/api/getComments?post_id=${params.post_id}&sort=${params.sort}&limit=${params.limit}&page=${params.page}&max_depth=${params.max_depth}&parent_id=${params.parent_id}&instance=${instance}&type_=All&auth=${params.auth}`,
     ).then((res) => res.json());
     if (!data?.comments) {
       return console.warn("Something went wrong getting the comments");
@@ -190,11 +195,11 @@ export const getComments = async (
 
 export const getCommentChildren = async (
   params: GetComments,
-  baseUrl: string,
+  instance=DEFAULT_INSTANCE,
 ): Promise<void | GetCommentsResponse> => {
   try {
     const data = await fetch(
-      `/api/getComments?post_id=${params.post_id}&parent_id=${params.parent_id}&sort=Top&page=1&auth=${params.auth}`,
+      `/api/getComments?post_id=${params.post_id}&parent_id=${params.parent_id}&sort=Top&page=1&auth=${params.auth}&instance=${instance}`,
     ).then((res) => res.json());
     if (!data?.comments) {
       return console.warn("Something went wrong getting the comments");
@@ -212,7 +217,7 @@ export const getCommentChildren = async (
  */
 export const subscribeToCommunity = async (
   params: FollowCommunity,
-  instance: string,
+  instance=DEFAULT_INSTANCE,
 ): Promise<CommentResponse> => {
   const data = await fetch("/api/subscribeCommunity", {
     method: "POST",
@@ -231,7 +236,7 @@ export const subscribeToCommunity = async (
 
 export const search = async (
   params: Search,
-  instance?: string,
+  instance=DEFAULT_INSTANCE,
 ): Promise<void | SearchResponse> => {
   const data = await fetch(
     `/api/search?q=${params.q}&type_=${params.type_}&auth=${params.auth}&listing_type=${params.listing_type}&instance=${instance}`,
@@ -244,7 +249,7 @@ export const search = async (
 
 export const register = async (
   params: Register,
-  instance: string,
+  instance=DEFAULT_INSTANCE,
 ): Promise<void | LoginResponse> => {
   const data = await fetch("/api/auth/signup", {
     method: "POST",
@@ -267,7 +272,7 @@ export const register = async (
 
 export const getCaptcha = async (
   params: GetCaptcha,
-  instance: string,
+  instance=DEFAULT_INSTANCE,
 ): Promise<void | GetCaptchaResponse> => {
   const data = await fetch("/api/auth/getCaptcha", {
     method: "POST",
@@ -284,7 +289,7 @@ export const getCaptcha = async (
 
 export const getFederatedInstances = async (
   params?: GetFederatedInstances,
-  instance?: string,
+  instance=DEFAULT_INSTANCE,
 ): Promise<void | GetFederatedInstancesResponse> => {
   const data = await fetch(
     `/api/getFederatedInstances?auth=${params?.auth}&instance=${instance}`,
@@ -301,7 +306,7 @@ export const getCuratedInstances = async () => {
 
 export const getReplies = async (
   params: GetReplies,
-  instance: string,
+  instance=DEFAULT_INSTANCE,
 ): Promise<void | GetRepliesResponse> => {
   const data = await fetch(
     `/api/getReplies?auth=${params.auth}&sort=${params.sort}&page=${params.page}&unread_only=${params.unread_only}&instance=${instance}`,
@@ -311,7 +316,7 @@ export const getReplies = async (
 
 export const getUnreadCount = async (
   params: GetUnreadCount,
-  instance?: string,
+  instance=DEFAULT_INSTANCE,
 ): Promise<void | GetUnreadCountResponse> => {
   const data = await fetch(
     `/api/getUnreadCount?auth=${params.auth}&instance=${instance}`,
@@ -321,7 +326,7 @@ export const getUnreadCount = async (
 
 export const saveUserSettings = async (
   params: SaveUserSettings,
-  instance: string,
+  instance=DEFAULT_INSTANCE,
 ): Promise<void | LoginResponse> => {
   const data = await fetch("/api/saveUserSettings", {
     method: "POST",
@@ -368,7 +373,7 @@ export const getUserSettings = (accountWithSite: AccountWithSiteResponse) => {
  * @param instance
  * @returns
  */
-export async function savePost(params: SavePost, instance: string) {
+export async function savePost(params: SavePost, instance=DEFAULT_INSTANCE) {
   const data = await fetch("/api/savePost", {
     method: "POST",
     headers: {
@@ -385,7 +390,7 @@ export async function savePost(params: SavePost, instance: string) {
  * @param instance
  * @returns
  */
-export async function saveComment(params: SaveComment, instance?: string) {
+export async function saveComment(params: SaveComment, instance=DEFAULT_INSTANCE) {
   const data = await fetch("/api/saveComment", {
     method: "POST",
     headers: {
@@ -396,7 +401,7 @@ export async function saveComment(params: SaveComment, instance?: string) {
   return data as CommentResponse;
 }
 
-export async function getCommuntiy(params: GetCommunity, instance?: string) {
+export async function getCommuntiy(params: GetCommunity, instance=DEFAULT_INSTANCE) {
   const data = await fetch(
     `/api/getCommunity?auth=${params.auth}&community_id=${params.id}&community_name=${params.name}&instance=${instance}`,
   ).then((res) => res.json());

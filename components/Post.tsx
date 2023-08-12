@@ -19,17 +19,13 @@ import { Account, InstanceAccount } from "@/utils/authFunctions";
 export default function Post({
   post,
   onClick = () => null,
-  instance,
   instanceAccount,
-  postInstance,
   style = "modern",
   showCommunity = true,
 }: {
   post: PostView;
   onClick?: () => void;
-  instance?: string;
   instanceAccount?: InstanceAccount;
-  postInstance?: string;
   style?: "modern" | "compact";
   showCommunity?: boolean;
 }) {
@@ -37,10 +33,10 @@ export default function Post({
 
   const hasMedia = post.post.embed_video_url || post.post.thumbnail_url;
 
-  const baseUrl = new URL(post.community.actor_id).hostname;
+  const instance = new URL(post.community.actor_id).hostname;
   // https://lemmy.ml/post/1681855
   //
-  //const postUrl = `https://${baseUrl}/post/${post.post.id}`;
+  //const postUrl = `https://${instance}/post/${post.post.id}`;
 
   const postUrl = `/post/${post.post.id}?instance=${
     new URL(post.community.actor_id).host || new URL(DEFAULT_INSTANCE).host
@@ -75,7 +71,7 @@ export default function Post({
           <div
             className={`card ${styles.wrapper} flex-row items-start justify-start gap-4 bg-neutral-50 hover:bg-neutral-100 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:border-neutral-600 dark:hover:bg-neutral-900 `}
             key={post.post.id}
-            id={`${post.post.id.toString()}@${baseUrl}`}
+            id={`${post.post.id.toString()}@${instance}`}
           >
             <div className="max-md:hidden">
               <Vote post={post} />
@@ -138,7 +134,7 @@ export default function Post({
                         <div
                           className={`${styles.user} text-neutral-500 dark:text-neutral-400`}
                         >
-                          <Username user={post.creator} baseUrl={baseUrl} />
+                          <Username user={post.creator} instance={instance} />
                           <div className="dividerDot"></div>
                           <div className={`${styles.date}`}>
                             <FormatDate date={new Date(post.post.published)} />
@@ -336,7 +332,7 @@ export default function Post({
              dark:bg-neutral-900 dark:hover:border-neutral-600
              `}
             key={post.post.id}
-            id={`${post.post.id.toString()}@${baseUrl}`}
+            id={`${post.post.id.toString()}@${instance}`}
           >
             {/* Header */}
             <div
@@ -386,7 +382,7 @@ export default function Post({
 
                 {/* User */}
                 <div className="flex h-fit flex-row items-center gap-1">
-                  <Username user={post.creator} baseUrl={baseUrl} />
+                  <Username user={post.creator} instance={instance} />
 
                   <div className="dividerDot"></div>
 

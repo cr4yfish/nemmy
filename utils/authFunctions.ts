@@ -95,6 +95,7 @@ export const handleLogout = async ({
         accounts: newAccounts,
         siteResponse: undefined,
       });
+      return;
     }
 
     // if there is a default account, set the current account to the default account

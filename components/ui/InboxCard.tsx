@@ -91,7 +91,7 @@ export default function InboxCard({
               {isPostComment ? "chat" : "reply"}
             </span>
             <span className="flex flex-col flex-wrap items-start justify-start gap-0">
-              <Username user={reply.creator} baseUrl="" />
+              <Username user={reply.creator} instance="" />
               <span className=" text-neutral-600 dark:text-neutral-400">
                 has replied to your{" "}
                 {isPostComment ? `post "${reply.post.name}"` : "comment"}

@@ -124,7 +124,7 @@ export default function WriteCommentOverlay({
         {comment?.comment?.content ? (
           <div className="flex flex-col">
             <div className="flex flex-row">
-              <Username user={comment?.creator} baseUrl="" />
+              <Username user={comment?.creator} instance="" />
             </div>
             <div>
               <RenderMarkdown content={comment?.comment?.content} />
@@ -145,7 +145,7 @@ export default function WriteCommentOverlay({
                 {post?.creator && (
                   <div className=" h-full">
                     <span className="font-bold">{post.creator.name}</span>
-                    <Username user={post.creator} baseUrl="" />
+                    <Username user={post.creator} instance="" />
                   </div>
                 )}
               </div>

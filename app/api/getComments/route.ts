@@ -53,6 +53,7 @@ export async function GET(req: Request) {
         auth: auth as unknown as string,
       });
     } else {
+      console.log("Getting cmments without parent")
       comments = await client.getComments({
         // one of these is causing an error right now
         type_: type_ as unknown as ListingType,
@@ -67,6 +68,7 @@ export async function GET(req: Request) {
         auth: auth as unknown as string,
       });
     }
+    console.log("Got comments:", comments.comments.length)
     return new Response(JSON.stringify(comments), {
       status: 200,
       headers: { "Content-Type": "application/json" },
