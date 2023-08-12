@@ -353,6 +353,7 @@ export default function SearchOverlay({
         initial={{ opacity: 0, y: 1000 }}
         animate={{ opacity: 1, y: 0, transition: { bounce: 0 } }}
         exit={{ opacity: 0, y: 1000 }}
+        data-scroll-lock-scrollable
       >
         <div
           className={`${styles.searchInputWrapper} border-neutral-300 bg-neutral-50 dark:border-neutral-600 dark:bg-neutral-950`}
@@ -452,6 +453,7 @@ export default function SearchOverlay({
             <div
               className="relative flex w-full flex-row items-center justify-center gap-2 py-5 max-sm:px-4"
               style={{ maxWidth: "42rem" }}
+              data-scroll-lock-scrollable
             >
               <Tabs
                 variant="underlined"
@@ -475,7 +477,7 @@ export default function SearchOverlay({
               </Tabs>
             </div>
 
-            <div className="relative h-fit w-full max-w-full overflow-auto px-4 pb-10">
+            <div className="relative h-fit w-full max-w-full overflow-auto px-4 pb-10" data-scroll-lock-scrollable>
               <InfiniteScroll
                 pageStart={2}
                 loadMore={handleLoadMore}

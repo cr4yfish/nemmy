@@ -105,7 +105,8 @@ export default function UserMenu({
         animate={{ opacity: 1, x: 0, transition: { bounce: 0 } }}
         exit={{ opacity: 0, x: 300 }}
         id="usermenu"
-        className={`${styles.userMenu} border-neutral-200 dark:border-neutral-700 
+        data-scroll-lock-scrollable
+        className={`scrollable ${styles.userMenu} border-neutral-200 dark:border-neutral-700 
           bg-neutral-50/75 dark:bg-neutral-950/75 shadow-lg dark:shadow-none
         `}
       >

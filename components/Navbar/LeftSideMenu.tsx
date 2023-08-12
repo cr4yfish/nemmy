@@ -2,7 +2,6 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { disablePageScroll, enablePageScroll } from "scroll-lock";
 import Image from "next/image";
 import InfiniteScroll from "react-infinite-scroller";
 
@@ -81,7 +80,8 @@ export default function LeftSideMenu({
       </AnimatePresence>
       <motion.div
         id="menu"
-        className={`${styles.menu} overflow-y-scroll bg-neutral-50/75 dark:bg-neutral-950/75`}
+        data-scroll-lock-scrollable
+        className={`scrollable ${styles.menu} overflow-y-scroll bg-neutral-50/75 dark:bg-neutral-950/75`}
         initial={{ opacity: 0, x: -300 }}
         animate={{ opacity: 1, x: 0, transition: { bounce: 0 } }}
         exit={{ opacity: 0, x: -300 }}
