@@ -63,6 +63,11 @@
 
 <!-- ABOUT THE PROJECT -->
 
+# Notice
+Nemmy will continue being down for an undefined amount of time since Vercel has suspended my account and will only allow me to continue deploying if I pay 20€/month for a pro account. I don't have that kind of money so all of my Web-projects (including Nemmy) will be on-hold until I win the lottery or something lol.
+
+As for why I'm not moving my projects somewhere else: I have no motivation left after that whole fiasco. Maybe I'll come back someday - might even be tomorrow, I don't know yet.
+
 ## About The Project
 
 Nemmy is a Progressive Web App (PWA) for Lemmy. Lemmy is kinda like Reddit, but federated so a CEO can't just fuck over everyone.
