@@ -1,2 +1,6 @@
+[build]
+  command = "npm run build"
+  publish = ".next"
+
 [dev]
     targetPort=30001
