@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { CaptchaResponse } from "lemmy-js-client";
-import va from "@vercel/analytics";
 import { Input, Button, Checkbox } from "@nextui-org/react";
 
 import { register, getCaptcha, getCuratedInstances } from "@/utils/lemmy";
@@ -235,8 +234,6 @@ export default function Register() {
     if (!isValid) return;
     if (!form.captcha || !form.instance) return;
 
-    va.track("signup", { instance: form.instance });
-
     const res = await register(
       {
         username: form.username,
@@ -267,7 +264,6 @@ export default function Register() {
     if (!user) {
       alert("Could not get user data");
       setLoading(false);
-      va.track("error", { instance: form.instance });
       return;
     }
 

@@ -7,7 +7,6 @@ import { Mousewheel, Scrollbar } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/scrollbar";
 import { motion } from "framer-motion";
-import va from "@vercel/analytics";
 import { useEffect } from "react";
 import {
   Badge,
@@ -253,13 +252,6 @@ export default function UserMenu({
               >
                 <button
                   className="flex items-center justify-center text-neutral-900 dark:text-neutral-100"
-                  onClick={() => {
-                    va.track("click-inbox", {
-                      instance:
-                        session?.currentAccount?.instanceAccounts[0]
-                          ?.instance || DEFAULT_INSTANCE,
-                    });
-                  }}
                 >
                   <Badge content={Number.isNaN(unreadCount) ? "" : unreadCount}>
                     <span className="material-symbols-outlined">

@@ -6,7 +6,6 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ClipLoader } from "react-spinners";
-import va from "@vercel/analytics";
 import { Button, Input } from "@nextui-org/react";
 
 import { defaultState, useSession } from "@/hooks/auth";
@@ -114,12 +113,6 @@ export default function Login() {
         return;
       }
 
-      va.track("login", { instance: form.instance });
-
-      if (hasAccountWithSameInstance) {
-        va.track("add_instance_to_account", { instance: form.instance });
-      }
-
       // get jwt token
       const jwt = await fetch("/api/auth/login", {
         method: "POST",
@@ -174,7 +167,6 @@ export default function Login() {
     } catch (e: any) {
       setLoading(false);
       setLoginError(true);
-      va.track("login_error", { instance: form.instance, error: e.message });
       console.error("Got error message:", e.message);
       setErrorMessage(`${e.message}`);
     }

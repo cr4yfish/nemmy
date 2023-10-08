@@ -17,8 +17,7 @@ export default function PrivacyPolicy() {
       <div className="mt-20 p-6">
         <h1 className="text-3xl font-bold">Privacy Policy</h1>
         <div>
-          I dont collect any personal data on the app. There is Vercel Analytics
-          but it doesnt collect any personal data.
+          I dont collect any personal data on the app. 
         </div>
       </div>
     </>

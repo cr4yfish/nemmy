@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { AnimatePresence } from "framer-motion";
-import va from "@vercel/analytics";
 import { Badge } from "@nextui-org/react";
 import { disablePageScroll, enablePageScroll } from "scroll-lock";
 
@@ -60,21 +59,11 @@ export default function Navbar({ params }: { params?: NavbarState }) {
   };
 
   const handleUserMenuOpen = async () => {
-    va.track("user-menu-open", {
-      instance:
-        session?.currentAccount?.instanceAccounts[0]?.instance ||
-        DEFAULT_INSTANCE,
-    });
     disablePageScroll();
     setUserMenu(true);
   };
 
   const handleMenuOpen = async () => {
-    va.track("menu-open", {
-      instance:
-        session?.currentAccount?.instanceAccounts[0]?.instance ||
-        DEFAULT_INSTANCE,
-    });
     disablePageScroll();
     setMenu(true);
   };
@@ -127,11 +116,6 @@ export default function Navbar({ params }: { params?: NavbarState }) {
             className="flex items-center justify-center text-neutral-900 dark:text-neutral-100"
             onClick={() => {
               setSearchOverlay(true);
-              va.track("search-open", {
-                instance:
-                  session?.currentAccount?.instanceAccounts[0]?.instance ||
-                  DEFAULT_INSTANCE,
-              });
             }}
           >
             <span className="material-symbols-outlined">search</span>
@@ -147,11 +131,6 @@ export default function Navbar({ params }: { params?: NavbarState }) {
                 <button
                   className="flex items-center justify-center text-neutral-900 dark:text-neutral-100"
                   onClick={() => {
-                    va.track("click-inbox", {
-                      instance:
-                        session?.currentAccount?.instanceAccounts[0]
-                          ?.instance || DEFAULT_INSTANCE,
-                    });
                   }}
                 >
                   <span className="material-symbols-outlined">

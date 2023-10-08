@@ -4,7 +4,6 @@ import { useState, useEffect, cache } from "react";
 import { CommunityId, ListingType, PostView, SortType } from "lemmy-js-client";
 import InfiniteScroll from "react-infinite-scroller";
 import { AnimatePresence, motion } from "framer-motion";
-import va from "@vercel/analytics";
 import {
   Dropdown,
   DropdownItem,
@@ -102,12 +101,6 @@ export default function PostList({
   });
 
   const handleClickPost = (currenPost: PostView) => {
-    va.track("Clicked post on feed", {
-      instance:
-        overrideInstance ||
-        session.currentAccount?.instanceAccounts[0]?.instance ||
-        DEFAULT_INSTANCE,
-    });
     localStorage.setItem("currentPost", JSON.stringify(currenPost));
   };
 

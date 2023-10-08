@@ -1,7 +1,6 @@
 import "./globals.css";
 import { Montserrat } from "next/font/google";
 import "material-symbols";
-import { Analytics } from "@vercel/analytics/react";
 import { SessionContextProvider } from "@/hooks/auth";
 import { Providers } from "./providers";
 const montserrat = Montserrat({ subsets: ["latin"] });
@@ -28,7 +27,6 @@ export default function RootLayout({
           <SessionContextProvider>
             <main className={`min-h-screen overflow-x-hidden`}>{children}</main>
           </SessionContextProvider>
-          <Analytics />
         </Providers>
       </body>
     </html>
