@@ -183,7 +183,7 @@ export default function PostList({
                     </DropdownTrigger>
                     <DropdownMenu
                       variant="faded"
-                      onAction={(key) => setCurrentType(key as ListingType)}
+                      onAction={(key: any) => setCurrentType(key as ListingType)}
                     >
                       <DropdownItem
                         key={"Subscribed"}
