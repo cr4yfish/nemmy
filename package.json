@@ -19,7 +19,7 @@
     "cookies-next": "^2.1.2",
     "encoding": "^0.1.13",
     "eslint": "8.43.0",
-    "eslint-config-next": "13.4.7",
+    "eslint-config-next": "14.0.0",
     "framer-motion": "^10.12.18",
     "jsonwebtoken": "^9.0.1",
     "lemmy-js-client": "0.19.0-rc.2",
